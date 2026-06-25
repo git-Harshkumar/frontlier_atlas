@@ -27,7 +27,7 @@ function NavItem({ label, active, onClick }: NavItemProps) {
     <a
       href="#"
       onClick={(e) => { e.preventDefault(); onClick?.(); }}
-      className={`flex items-center px-2 rounded-md cursor-pointer transition-colors no-underline leading-5 nav-item ${
+      className={`flex items-center px-0 rounded-md cursor-pointer transition-colors no-underline leading-5 nav-item ${
         active
           ? "bg-[#fff1ee] text-[#E8442A] font-semibold"
           : "text-gray-600 font-medium hover:bg-gray-50 hover:text-[#F97316]"
@@ -40,7 +40,7 @@ function NavItem({ label, active, onClick }: NavItemProps) {
 
 function SectionLabel({ label }: { label: string }) {
   return (
-    <div className="px-2 section-label font-semibold tracking-[0.1em] uppercase text-gray-400">
+    <div className="px-0 section-label font-semibold tracking-[0.1em] uppercase text-gray-400">
       {label}
     </div>
   );
@@ -137,7 +137,7 @@ export default function Sidebar() {
         justify-content: space-between;
         padding-top: 0.8vh;
         padding-bottom: 1vh;
-        padding-left: 12px;
+        padding-left: 0;
       }
       .sidebar-content .nav-item {
         font-size: clamp(12px, 1.6vh, 17px);
@@ -164,7 +164,7 @@ export default function Sidebar() {
     <>
       {/* Desktop sidebar — static, no scroll */}
       <aside
-        className="fixed left-0 hidden lg:flex flex-col bg-white border-r border-gray-200 z-20 w-[220px] overflow-visible"
+        className="fixed left-0 hidden lg:flex flex-col bg-white border-r border-gray-200 z-20 w-[260px] overflow-visible pl-20 pr-8"
         style={{ top: TOPBAR_H, height: `calc(100dvh - ${TOPBAR_H}px)` }}
       >
         <SidebarContent />
@@ -181,7 +181,7 @@ export default function Sidebar() {
 
       {/* Mobile drawer — starts at top:0, full 100dvh, close button sits below topbar via padding */}
       <div
-        className={`fixed left-0 top-0 w-[280px] max-w-[85vw] bg-white border-r border-gray-200 z-50 flex flex-col h-dvh shadow-[4px_0_20px_rgba(0,0,0,0.1)] transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] lg:hidden overflow-y-auto ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed left-0 top-0 w-[320px] max-w-[85vw] bg-white border-r border-gray-200 z-50 flex flex-col h-dvh shadow-[4px_0_20px_rgba(0,0,0,0.1)] transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] lg:hidden overflow-y-auto pl-4 pr-8 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"

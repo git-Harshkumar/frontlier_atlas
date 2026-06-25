@@ -83,7 +83,7 @@ function IsometricIllustration() {
 
 function HeroSection({ active, setActive }: { active: string; setActive: (t: string) => void }) {
   return (
-    <div className="bg-gradient-to-r from-white via-[#fff5f4] to-[#ffeeec] pt-5 pb-0 pl-0 lg:pl-8 mb-5 overflow-hidden">
+    <div className="bg-gradient-to-r from-white via-[#fff5f4] to-[#ffeeec] pt-5 pb-0 pl-0 lg:pl-6 mb-5 overflow-hidden">
       <div className="flex items-center justify-between h-auto min-h-[120px] lg:h-[148px] flex-col lg:flex-row gap-2 lg:gap-0">
         <div className="flex-none text-center lg:text-left w-full lg:w-auto px-4 lg:px-0">
           <h1 className="text-3xl lg:text-5xl font-extrabold text-gray-900 leading-tight mb-2 tracking-tight">
@@ -303,7 +303,7 @@ export default function ResearchHomePage() {
   const [activeTab, setActiveTab] = useState("Today");
   return (
     <div className="min-h-screen bg-white font-sans">
-      <div className="max-w-[1200px] mx-auto px-5 pb-8 lg:pb-12">
+      <div className="max-w-[1200px] mx-auto md:px-14 pb-8 lg:pb-12 px-4">
         <HeroSection active={activeTab} setActive={setActiveTab} />
         <div className="flex flex-col gap-3">
           {PAPERS.map(p => <PaperCard key={p.title} {...p} />)}
