@@ -6,18 +6,19 @@
 
 :root {
   --color-brand-red: #E8442A;
-  --color-brand-orange: #F97316;
+  --color-brand-orange: #D94F1E;
+  --color-brand-orange-hover: #C0451A;
 
-  --color-bg: #ffffff;
-  --color-surface: #f9f9f9;
-  --color-surface-hover: #f3f3f3;
-  --color-border: #e5e5e5;
-  --color-border-light: #f0f0f0;
+  --color-bg: #EDEAE3;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f5ede6;
+  --color-border: #e8ddd6;
+  --color-border-light: #f0e8e0;
 
   --color-text-primary: #111111;
   --color-text-secondary: #555555;
   --color-text-muted: #888888;
-  --color-text-link: #E8442A;
+  --color-text-link: #D94F1E;
 
   --sidebar-width: 220px;
   --topbar-height: 52px;
@@ -31,8 +32,7 @@
   padding: 0;
 }
 
-html,
-body {
+html, body {
   font-family: var(--font-inter);
   background-color: var(--color-bg);
   color: var(--color-text-primary);
@@ -42,16 +42,54 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+
+/* ── Button Utilities ─────────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #D94F1E;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
 }
-::-webkit-scrollbar-track {
-  background: transparent;
+
+.btn-primary:hover {
+  background-color: #C0451A;
 }
-::-webkit-scrollbar-thumb {
-  background: #ddd;
-  border-radius: 3px;
+
+.btn-primary:active {
+  background-color: #A83C16;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #D94F1E;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #D94F1E;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(217, 79, 30, 0.08);
 }
 
 .tag-chip {
@@ -87,8 +125,7 @@ body {
 }
 
 .nav-active {
-  background-color: #fef2f0;
-  color: var(--color-brand-red);
+  color: #D94F1E;
   font-weight: 600;
 }
 
@@ -124,10 +161,4 @@ body {
   overflow: hidden;
 }
 
-.z-45 {
-  z-index: 45;
-}
-
-.duration-250 {
-  transition-duration: 250ms;
-}
+.z-45 { z-index: 45; }
