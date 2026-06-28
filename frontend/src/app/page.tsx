@@ -4,7 +4,7 @@ import ResearchHomePage from "@/components/home/ResearchHomePage";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#EDEAE3]">
       <TopBar />
       <Sidebar />
 
