@@ -26,7 +26,8 @@ export const getPapers = async (prisma: PrismaClient, limit: number = 50, skip: 
       paperUrl: true,
       projectUrl: true,
       citationCount: true,
-      createdAt: true
+      createdAt: true,
+      arxivId: true
     }
   });
 };

@@ -1,8 +1,9 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import { env } from 'hono/adapter'
 import { PrismaClient } from '@prisma/client'
-import { PrismaNeon } from '@prisma/adapter-neon'
-import { Pool } from '@neondatabase/serverless'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
 
 import authRoutes from './routes/auth.routes.js'
 import paperRoutes from './routes/paper.routes.js'
@@ -27,7 +28,7 @@ const app = new Hono<Env>()
 
 // Configure CORS
 app.use('*', cors({
-  origin: '*',
+  origin: (origin) => origin || 'http://localhost:3000',
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
@@ -37,21 +38,38 @@ app.use('*', cors({
 
 // 2. Per-Request Prisma Client Lifecycle Middleware
 app.use('*', async (c, next) => {
-  // Pass the Cloudflare environment variable DIRECTLY to the adapter
-  const pool = new Pool({ connectionString: c.env.DATABASE_URL })
-  const adapter = new PrismaNeon(pool)
+  const DATABASE_URL = c.env.DATABASE_URL as string;
+  
+  // Strip quotes if they were included in the .dev.vars file
+  const cleanUrl = DATABASE_URL ? DATABASE_URL.replace(/^"|"$/g, '') : '';
+  
+  // Workaround for 'nodejs_compat' mode in Cloudflare Workers:
+  // The pg/neon library checks process.env if it exists, which it does in compat mode but it's empty!
+  if (typeof process !== 'undefined' && process.env) {
+    process.env.DATABASE_URL = cleanUrl;
+  }
+  
+  // Initialize Prisma strictly on a per-request basis for Cloudflare Workers
+  const pool = new Pool({ connectionString: cleanUrl })
+  const adapter = new PrismaPg(pool)
   const prisma = new PrismaClient({ adapter })
   
-  // Attach the client strictly typed
   c.set('prisma', prisma)
   
   await next()
   
-  await prisma.$disconnect()
+  // IMPORTANT: We explicitly do NOT call await prisma.$disconnect() here.
+  // In the Cloudflare Edge runtime with Neon, calling disconnect() attempts to gracefully 
+  // close WebSockets which causes the worker runtime to hang and crash with a 500 error.
 })
 
 // Register Routes
-app.get('/health', (c) => c.json({ status: 'ok', message: 'FrontierAtlas V1 API is running perfectly! 🚀' }));
+app.get('/health', (c) => c.json({ 
+  status: 'ok', 
+  message: 'FrontierAtlas V1 API is running perfectly! 🚀',
+  bindings: Object.keys(c.env),
+  dbUrl: c.env.DATABASE_URL
+}));
 app.route("/api/v1/auth", authRoutes);
 app.route("/api/v1/research-papers", paperRoutes);
 app.route("/api/v1/authors", authorRoutes);

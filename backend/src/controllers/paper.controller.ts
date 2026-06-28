@@ -31,7 +31,12 @@ export const getPapers = async (c: Context) => {
       data: papers
     }, 200);
   } catch (error: any) {
-    return c.json({ status: "error", detail: error.message }, 500);
+    return c.json({ 
+      status: "error", 
+      detail: error.message, 
+      dbUrl: (c.env as any).DATABASE_URL,
+      bindings: Object.keys(c.env || {})
+    }, 500);
   }
 };
 
