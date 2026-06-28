@@ -3,7 +3,7 @@ import { cors } from 'hono/cors'
 import { env } from 'hono/adapter'
 import { PrismaClient } from '@prisma/client'
 import { PrismaNeon } from '@prisma/adapter-neon'
-import { Pool } from '@neondatabase/serverless'
+import { Pool, neonConfig } from '@neondatabase/serverless'
 
 import authRoutes from './routes/auth.routes.js'
 import paperRoutes from './routes/paper.routes.js'
@@ -48,6 +48,9 @@ app.use('*', async (c, next) => {
   if (typeof process !== 'undefined' && process.env) {
     process.env.DATABASE_URL = cleanUrl;
   }
+  
+  // Set Cloudflare WebSocket constructor for Neon Serverless
+  neonConfig.webSocketConstructor = WebSocket;
   
   // Initialize Prisma strictly on a per-request basis for Cloudflare Workers
   const pool = new Pool({ connectionString: cleanUrl })
