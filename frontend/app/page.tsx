@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
       <Navbar />
-      <div className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll flex flex-col">
+      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll flex flex-col">
         
         {/* Hero Section Container */}
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-6">

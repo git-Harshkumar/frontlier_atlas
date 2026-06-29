@@ -56,9 +56,12 @@ function mapBackendPaper(raw: Record<string, unknown>): Paper {
   };
 }
 
-export async function getPapers(): Promise<Paper[]> {
+export async function getPapers(page: number = 1): Promise<Paper[]> {
   try {
-    const response = await fetchApi<PapersResponse>('/api/v1/research-papers');
+    const response = await fetchApi<PapersResponse>(
+      `/api/v1/research-papers?page=${page}&limit=20`
+    );
+
     return response.data.papers.map(mapBackendPaper);
   } catch (error) {
     console.error('Failed to fetch research papers:', error);

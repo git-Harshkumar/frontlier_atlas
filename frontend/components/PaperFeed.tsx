@@ -213,33 +213,60 @@ function PaperCard({ paper }: { paper: Paper }) {
 /* ─── List ───────────────────────────────────────────────────────────────── */
 export default function PaperList() {
   const [papers, setPapers] = useState<Paper[]>([]);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+
+ useEffect(() => {
+  const scrollContainer = document.getElementById(
+    "scroll-container"
+  ) as HTMLElement;
+
+  if (!scrollContainer) return;
+
+  function handleScroll() {
+    console.log("SCROLLING");
+
+    const nearBottom =
+      scrollContainer.scrollTop + scrollContainer.clientHeight >=
+      scrollContainer.scrollHeight - 500;
+
+    if (nearBottom && !loading && hasMore) {
+  console.log("BOTTOM REACHED");
+  setPage((prev) => prev + 1);
+}
+  }
+
+  scrollContainer.addEventListener("scroll", handleScroll);
+
+  return () => {
+    scrollContainer.removeEventListener("scroll", handleScroll);
+  };
+}, [loading, hasMore]);
 
   useEffect(() => {
     async function loadPapers() {
-      try {
-        setLoading(true);
-        const data = await getPapers();
-        setPapers(data);
-        setError(null);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to load papers. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadPapers();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="pb-12 pt-8 flex justify-center items-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E40AF]"></div>
-      </div>
-    );
+  try {
+    setLoading(true);
+    const data = await getPapers(page);
+    if (data.length === 0) {
+  setHasMore(false);
+}
+    
+    setPapers((prev) => [...prev, ...data]);
+    setError(null);
+  } catch (err) {
+    console.error(err);
+    setError('Failed to load papers. Please try again later.');
+  } finally {
+    setLoading(false);
   }
+}
+    loadPapers();
+  }, [page]);
+
+ 
 
   if (error) {
     return (
@@ -250,10 +277,18 @@ export default function PaperList() {
   }
 
   return (
-    <div className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0">
-      {papers.map((paper) => (
-        <PaperCard key={paper.id} paper={paper} />
-      ))}
-    </div>
-  );
+  <div className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0">
+
+    {papers.map((paper) => (
+      <PaperCard key={paper.id} paper={paper} />
+    ))}
+
+    {loading && (
+      <div className="flex justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E40AF]" />
+      </div>
+    )}
+
+  </div>
+);
 }

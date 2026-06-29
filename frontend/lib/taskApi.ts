@@ -6,33 +6,43 @@ export interface TaskItem {
   icon: string;
 }
 
+interface BackendTask {
+  id: string;
+  name: string;
+  slug: string;
+  color: string | null;
+}
+
 export interface TasksResponse {
   status: string;
-  data: {
-    tasks: TaskItem[];
-  };
+  count: number;
+  data: BackendTask[];
 }
+
+const ICON_MAP: Record<string, string> = {
+  agents: "bot",
+  reasoning: "brain",
+  "language-modeling": "message-square",
+  "coding-agents": "code",
+  "computer-use": "monitor",
+  "world-models": "globe",
+  robotics: "cpu",
+  "text-generation": "message-square",
+  "image-generation": "monitor",
+  "video-generation": "monitor",
+  "audio-generation": "bot",
+};
 
 export async function getTasks(): Promise<TaskItem[]> {
   try {
-    const response = await fetchApi<Record<string, unknown>>('/api/v1/tasks');
-    if (Array.isArray(response)) {
-      return response as TaskItem[];
-    }
-    if (response && 'data' in response) {
-      const data = response.data;
-      if (Array.isArray(data)) {
-        return data as TaskItem[];
-      }
-      if (data && typeof data === 'object' && 'tasks' in data) {
-        const tasks = (data as Record<string, unknown>).tasks;
-        if (Array.isArray(tasks)) {
-          return tasks as TaskItem[];
-        }
-      }
-    }
-    console.warn('Unexpected API response format for tasks:', response);
-    return [];
+    const response = await fetchApi<TasksResponse>('/api/v1/tasks');
+    const tasks = Array.isArray(response?.data) ? response.data : [];
+
+    return tasks.map((t) => ({
+      id: t.id,
+      label: t.name,
+      icon: ICON_MAP[t.slug] || "bot",
+    }));
   } catch (error) {
     console.error('Failed to fetch tasks:', error);
     throw error;
