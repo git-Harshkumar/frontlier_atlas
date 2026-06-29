@@ -20,15 +20,27 @@ export const ingestPaper = async (c: Context) => {
 
 export const getPapers = async (c: Context) => {
   const prisma = c.var.prisma;
-  const limit = Number(c.req.query('limit')) || 50;
-  const skip = Number(c.req.query('skip')) || 0;
+  const sort = c.req.query('sort') || 'trending';
+  const task = c.req.query('task');
+  const method = c.req.query('method');
+  const period = c.req.query('period') || 'all';
+  const page = Number(c.req.query('page')) || 1;
+  const limit = Number(c.req.query('limit')) || 20;
 
   try {
-    const papers = await paperService.getPapers(prisma, limit, skip);
+    const result = await paperService.getPapers(prisma, {
+      sort,
+      task,
+      method,
+      period,
+      page,
+      limit
+    });
+
     return c.json({
       status: "success",
-      count: papers.length,
-      data: papers
+      count: result.papers.length,
+      data: result
     }, 200);
   } catch (error: any) {
     return c.json({ 
