@@ -11,7 +11,14 @@
   },
   "include": [
     "src/**/*",
-    "scripts/**/*",
+    "scripts/daily-sync.ts",
     "prisma.config.ts"
+  ],
+  "exclude": [
+    "scripts/importPaperAuthors.ts",
+    "scripts/importPaperRepositories.ts",
+    "scripts/importAuthors.ts",
+    "scripts/importPapers.ts",
+    "scripts/importRepositories.ts"
   ]
 }
