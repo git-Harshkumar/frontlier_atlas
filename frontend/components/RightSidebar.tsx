@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowRight, Sparkles, Heart, MessageCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, Sparkles, Heart, MessageCircle, Loader2 } from "lucide-react";
+import { getModels, type ModelData } from "@/lib/modelApi";
 
 // X (Twitter) icon
 function XIcon({ size = 14, className = "" }: { size?: number; className?: string }) {
@@ -32,45 +33,30 @@ function GithubIcon({ size = 14, className = "" }: { size?: number; className?: 
 
 export default function RightSidebar() {
   const [activeTab, setActiveTab] = useState("all");
+  const [models, setModels] = useState<ModelData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const trendingTopics = [
-    {
-      platform: "x",
-      source: "X / Twitter",
-      time: "2h ago",
-      title: "LongRPE 2.0 is a game changer for long context. 10M tokens without quality collapse.",
-      likes: "201",
-      comments: "24",
-    },
-    {
-      platform: "reddit",
-      source: "r/MachineLearning",
-      time: "4h ago",
-      title: "Kimi K2 technical report is insane. 128K context with 1T params and beats GPT-4.1 on coding.",
-      likes: "342",
-      comments: "128",
-    },
-    {
-      platform: "github",
-      source: "huggingface/transformers",
-      time: "6h ago",
-      title: "New fine-tuning recipe that improves reasoning models by 23% on average.",
-      likes: "89",
-      comments: "12",
-    },
-    {
-      platform: "x",
-      source: "X / Twitter",
-      time: "7h ago",
-      title: "MuJoCo World Model Suite introduces the most realistic physics simulation yet.",
-      likes: "77",
-      comments: "31",
-    },
-  ];
+  useEffect(() => {
+    async function loadModels() {
+      try {
+        setLoading(true);
+        const data = await getModels();
+        setModels(data);
+        setError(null);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load models. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadModels();
+  }, []);
 
   const filteredTopics = activeTab === "all" 
-    ? trendingTopics 
-    : trendingTopics.filter(topic => topic.platform === activeTab);
+    ? models 
+    : models.filter(topic => topic.platform === activeTab);
 
   return (
     <aside className="flex flex-col w-full shrink-0 justify-start pb-12">
@@ -122,7 +108,15 @@ export default function RightSidebar() {
 
         {/* List */}
         <div className="flex flex-col min-h-[300px]">
-          {filteredTopics.length === 0 ? (
+          {loading ? (
+            <div className="flex items-center justify-center py-10 text-[13px] text-[#8B8B8B] gap-2">
+              <Loader2 size={16} className="animate-spin" /> Loading...
+            </div>
+          ) : error ? (
+            <div className="flex items-center justify-center py-10 text-[13px] font-semibold text-[#F55036]">
+              {error}
+            </div>
+          ) : filteredTopics.length === 0 ? (
             <div className="flex items-center justify-center py-10 text-[13px] font-semibold text-[#8B8B8B]">
               No topics found.
             </div>

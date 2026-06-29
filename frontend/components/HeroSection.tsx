@@ -1,6 +1,54 @@
-import { Search, Bot, Brain, Eye, Code2, Cpu, Grid } from "lucide-react";
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { Search, Bot, Brain, Eye, Code2, Cpu, Grid, Loader2 } from "lucide-react";
+import { searchPapers, type Paper } from "@/lib/paperApi";
 
 export default function HeroSection() {
+  const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [results, setResults] = useState<Paper[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  useEffect(() => {
+    async function performSearch() {
+      if (!debouncedQuery.trim()) {
+        setResults([]);
+        setIsSearching(false);
+        return;
+      }
+      setIsSearching(true);
+      try {
+        const data = await searchPapers(debouncedQuery);
+        setResults(data);
+      } catch (error) {
+        console.error("Search failed", error);
+        setResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }
+    performSearch();
+  }, [debouncedQuery]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   const tags = [
     { label: "Agents", icon: Bot },
     { label: "Reasoning", icon: Brain },
@@ -22,14 +70,54 @@ export default function HeroSection() {
         </p>
 
         {/* Search Bar */}
-        <div className="w-full max-w-[640px] relative shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-full bg-white border border-[#E5E5E0] flex items-center px-4 md:px-5 h-11 mb-3 md:mb-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-shadow cursor-text mx-auto">
+        <div ref={searchRef} className="w-full max-w-[640px] relative shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-full bg-white border border-[#E5E5E0] flex items-center px-4 md:px-5 h-11 mb-3 md:mb-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-shadow mx-auto">
           <Search size={18} className="text-[#737373] mr-2 md:mr-3 shrink-0 md:w-[20px] md:h-[20px]" />
-          <span className="flex-1 text-[#737373] text-[13px] md:text-[15px] truncate mr-2 text-left">
-            Search papers, authors, topics, methods...
-          </span>
-          <kbd className="inline-flex shrink-0 bg-[#F8F7F2] border border-[#DCDCD7] rounded-md px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-[12px] text-[#737373] font-medium shadow-sm">
-            ⌘ K
-          </kbd>
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setShowDropdown(true);
+            }}
+            onFocus={() => setShowDropdown(true)}
+            placeholder="Search papers, authors, topics, methods..."
+            className="bg-transparent outline-none flex-1 text-[#111111] placeholder:text-[#737373] text-[13px] md:text-[15px] truncate mr-2 text-left w-full"
+          />
+          {isSearching ? (
+            <Loader2 size={16} className="text-[#737373] shrink-0 animate-spin md:w-[20px] md:h-[20px]" />
+          ) : (
+            <kbd className="inline-flex shrink-0 bg-[#F8F7F2] border border-[#DCDCD7] rounded-md px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-[12px] text-[#737373] font-medium shadow-sm">
+              ⌘ K
+            </kbd>
+          )}
+
+          {/* Dropdown */}
+          {showDropdown && query.trim() && (
+            <div className="absolute top-[100%] left-0 right-0 mt-2 bg-white border border-[#E5E5E0] rounded-[16px] shadow-[0_12px_40px_rgb(0,0,0,0.12)] max-h-[320px] overflow-y-auto z-50 py-2 text-left cursor-default">
+              {isSearching ? (
+                <div className="px-4 py-4 text-[13px] text-[#737373] flex items-center justify-center gap-2">
+                  <Loader2 size={16} className="animate-spin" /> Searching...
+                </div>
+              ) : results.length > 0 ? (
+                <ul>
+                  {results.map((paper) => (
+                    <li key={paper.id} className="px-4 py-3 hover:bg-[#F8F7F2] cursor-pointer border-b border-[#F5F5F5] last:border-0 transition-colors">
+                      <div className="text-[14px] font-medium text-[#111111] line-clamp-1">{paper.title}</div>
+                      <div className="text-[12px] text-[#8B8B8B] truncate mt-1">
+                        {paper.authors}
+                        <span className="mx-1.5 text-[#DCDCD7]">·</span>
+                        {paper.date}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="px-4 py-4 text-[13px] text-[#737373] text-center">
+                  No results found for &quot;{query}&quot;
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Tags */}

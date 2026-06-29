@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Github, MessageCircle } from "lucide-react";
-import { papers } from "@/data/mockData";
+import { getPapers, type Paper } from "@/lib/paperApi";
 import Image from "next/image";
 
 /* ─── Tag color map ──────────────────────────────────────────────────────── */
@@ -95,14 +96,18 @@ function SotaDisplay({ sota }: { sota: string }) {
 /* ─── Thumbnail ──────────────────────────────────────────────────────────── */
 function PaperThumbnail({ title, thumbnail }: { title: string; thumbnail: string }) {
   return (
-    <div className="w-full xl:w-[170px] h-[180px] sm:h-[220px] xl:h-[240px] shrink-0 border border-[#E5E5E0] rounded-md xl:rounded-none bg-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.07)] relative">
-      <Image
-        src={thumbnail}
-        alt={title}
-        fill
-        className="object-cover object-top"
-        sizes="(max-width: 1280px) 100vw, 170px"
-      />
+    <div className="w-full xl:w-[170px] h-[180px] sm:h-[220px] xl:h-[240px] shrink-0 border border-[#E5E5E0] rounded-md xl:rounded-none bg-[#F8F7F2] overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.07)] relative flex items-center justify-center">
+      {thumbnail ? (
+        <Image
+          src={thumbnail}
+          alt={title || "Paper thumbnail"}
+          fill
+          className="object-cover object-top"
+          sizes="(max-width: 1280px) 100vw, 170px"
+        />
+      ) : (
+        <div className="text-[#8B8B8B] text-[10px] font-mono px-4 text-center">No Cover</div>
+      )}
     </div>
   );
 }
@@ -133,9 +138,19 @@ function Metric({
 }
 
 /* ─── Paper Card ─────────────────────────────────────────────────────────── */
-function PaperCard({ paper }: { paper: (typeof papers)[0] }) {
+function PaperCard({ paper }: { paper: Paper }) {
   // Parse upvotes string to float for stars/hr, e.g. "11.2K" -> "11.2"
   const upvotesNum = parseFloat(paper.upvotes) || 38.7;
+
+  // Safely parse authors
+  let displayAuthors = "Unknown Authors";
+  if (typeof paper.authors === 'string') {
+    displayAuthors = paper.authors;
+  } else if (Array.isArray(paper.authors)) {
+    displayAuthors = paper.authors.map(a => typeof a === 'object' ? a.name : a).join(", ");
+  } else if (paper.authors && typeof paper.authors === 'object') {
+    displayAuthors = (paper.authors as any).name || "Unknown Author";
+  }
 
   return (
     <div className="group flex flex-col xl:flex-row gap-4 xl:gap-6 p-4 xl:py-6 xl:px-6 xl:-mx-6 border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] bg-white xl:bg-transparent min-w-0 cursor-pointer hover:shadow-md xl:hover:bg-white xl:hover:shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all duration-200 rounded-xl xl:rounded-none h-full">
@@ -153,7 +168,7 @@ function PaperCard({ paper }: { paper: (typeof papers)[0] }) {
 
         {/* Authors + date */}
         <p className="text-[13px] font-normal text-[#555555] mb-3 truncate">
-          {paper.authors}
+          {displayAuthors}
           <span className="mx-2 text-[#DCDCD7]">·</span>
           {paper.date}
         </p>
@@ -170,7 +185,7 @@ function PaperCard({ paper }: { paper: (typeof papers)[0] }) {
 
         {/* Tasks (Row 2) */}
         <div className="flex flex-nowrap items-center gap-2 mb-2 w-full overflow-hidden">
-          {paper.tags.map((t) => {
+          {paper.tags?.map((t) => {
             const colorKey = getTagColor(t);
             return <Pill key={t} label={t} colorKey={colorKey} />;
           })}
@@ -196,7 +211,7 @@ function PaperCard({ paper }: { paper: (typeof papers)[0] }) {
             <Github size={13} className="text-[#8B8B8B] shrink-0" />
           </Metric>
 
-          <Metric value={paper.citations.toString()} label="Citations">
+          <Metric value={(paper.citations || 0).toString()} label="Citations">
             <MessageCircle size={13} className="text-[#8B8B8B] shrink-0" />
           </Metric>
         </div>
@@ -207,6 +222,42 @@ function PaperCard({ paper }: { paper: (typeof papers)[0] }) {
 
 /* ─── List ───────────────────────────────────────────────────────────────── */
 export default function PaperList() {
+  const [papers, setPapers] = useState<Paper[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadPapers() {
+      try {
+        setLoading(true);
+        const data = await getPapers();
+        setPapers(data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to load papers. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadPapers();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="pb-12 pt-8 flex justify-center items-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E40AF]"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="pb-12 pt-8 flex justify-center items-center text-[#F55036]">
+        <p className="text-[14px]">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0">
       {papers.map((paper) => (
