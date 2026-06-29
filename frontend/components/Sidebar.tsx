@@ -1,26 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Flame, Clock, Star, Bot, Brain, MessageSquare, Code2,
   Monitor, Globe, Cpu, Zap, Link, RefreshCw, Layers,
   BarChart2, Target, Plug, FileText, ImageIcon, Video, Volume2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getTasks } from "@/lib/taskApi";
 
-function getTaskIcon(iconName: string) {
-  switch (iconName) {
-    case "bot": return <Bot size={14} />;
-    case "brain": return <Brain size={14} />;
-    case "message-square": return <MessageSquare size={14} />;
-    case "code": return <Code2 size={14} />;
-    case "monitor": return <Monitor size={14} />;
-    case "globe": return <Globe size={14} />;
-    case "cpu": return <Cpu size={14} />;
-    default: return <Bot size={14} />;
-  }
-}
+
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -62,35 +50,23 @@ function NavItem({
 export default function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
   const [activeItem, setActiveItem] = useState("Trending Papers");
 
-  const [fetchedTasks, setFetchedTasks] = useState<{ label: string; icon: React.ReactNode }[]>([]);
-  const [tasksLoading, setTasksLoading] = useState(true);
-  const [tasksError, setTasksError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadTasks() {
-      try {
-        setTasksLoading(true);
-        const data = await getTasks();
-        const mappedTasks = data.map((t) => ({
-          label: t.label,
-          icon: getTaskIcon(t.icon),
-        }));
-        setFetchedTasks(mappedTasks);
-        setTasksError(null);
-      } catch (err) {
-        console.error(err);
-        setTasksError("Failed to load tasks. Please try again later.");
-      } finally {
-        setTasksLoading(false);
-      }
-    }
-    loadTasks();
-  }, []);
 
+  // Static Navigation Sections
   const discover = [
     { label: "Trending Papers", icon: <Flame size={14} className={activeItem === "Trending Papers" ? "text-[#F55036] fill-[#F55036]" : ""} /> },
     { label: "Latest Papers", icon: <Clock size={14} /> },
     { label: "Most GitHub Stars", icon: <Star size={14} /> },
+  ];
+
+  const tasks = [
+    { label: "Agents", icon: <Bot size={14} /> },
+    { label: "Reasoning", icon: <Brain size={14} /> },
+    { label: "Language Modeling", icon: <MessageSquare size={14} /> },
+    { label: "Coding Agents", icon: <Code2 size={14} /> },
+    { label: "Computer Use", icon: <Monitor size={14} /> },
+    { label: "World Models", icon: <Globe size={14} /> },
+    { label: "Robotics", icon: <Cpu size={14} /> },
   ];
 
   const methods = [
@@ -131,34 +107,20 @@ export default function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
             />
           ))}
         </div>
-
         <div className="flex flex-col">
           <SectionLabel>TASKS</SectionLabel>
-          {tasksLoading ? (
-            <div className="px-3 py-2 text-[11px] text-[#8B8B8B] flex items-center gap-2">
-              <span className="w-3.5 h-3.5 flex items-center justify-center animate-spin">
-                <RefreshCw size={12} />
-              </span>
-              Loading...
-            </div>
-          ) : tasksError ? (
-            <div className="px-3 py-2 text-[11px] text-[#F55036]">
-              {tasksError}
-            </div>
-          ) : (
-            fetchedTasks.map((item) => (
-              <NavItem
-                key={item.label}
-                icon={item.icon}
-                label={item.label}
-                isActive={activeItem === item.label}
-                onClick={() => {
-                  setActiveItem(item.label);
-                  onItemClick?.();
-                }}
-              />
-            ))
-          )}
+          {tasks.map((item) => (
+            <NavItem
+              key={item.label}
+              icon={item.icon}
+              label={item.label}
+              isActive={activeItem === item.label}
+              onClick={() => {
+                setActiveItem(item.label);
+                onItemClick?.();
+              }}
+            />
+          ))}
         </div>
 
         <div className="flex flex-col">
@@ -192,7 +154,6 @@ export default function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
             />
           ))}
         </div>
-
       </div>
     </aside>
   );

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { filterTabs } from "@/data/mockData";
 import { cn } from "@/lib/utils";
+
+const filterTabs = ["Today", "This Week", "This Month", "All time"];
 
 interface FilterTabsProps {
   onSelect?: (tab: string) => void;

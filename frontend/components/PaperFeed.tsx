@@ -140,10 +140,10 @@ function Metric({
 /* ─── Paper Card ─────────────────────────────────────────────────────────── */
 function PaperCard({ paper }: { paper: Paper }) {
   // Parse upvotes string to float for stars/hr, e.g. "11.2K" -> "11.2"
-  const upvotesNum = parseFloat(paper.upvotes) || 38.7;
+  const upvotesNum = parseFloat(paper.upvotes) || 0;
 
   return (
-    <div className="group flex flex-col xl:flex-row gap-4 xl:gap-6 p-4 xl:py-6 xl:px-6 xl:-mx-6 border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] bg-white xl:bg-transparent min-w-0 cursor-pointer hover:shadow-md xl:hover:bg-white xl:hover:shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all duration-200 rounded-xl xl:rounded-none h-full">
+    <div className="group flex flex-col xl:flex-row gap-4 xl:gap-6 p-4 xl:py-6 xl:px-6 border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] bg-white xl:bg-transparent min-w-0 cursor-pointer hover:shadow-md xl:hover:bg-white xl:hover:shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all duration-200 rounded-xl xl:rounded-none h-full">
       {/* LEFT — PDF thumbnail */}
       <div className="flex flex-col justify-center shrink-0 w-full xl:w-auto">
         <PaperThumbnail title={paper.title} thumbnail={paper.thumbnail} />
