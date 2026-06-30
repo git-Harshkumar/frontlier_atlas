@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     description: "Discover and track the latest breakthroughs in AI and machine learning research.",
     type: "website",
   },
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({

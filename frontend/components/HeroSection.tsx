@@ -65,10 +65,10 @@ export default function HeroSection({
   ];
 
   return (
-    <div className="w-full flex flex-col items-center justify-center pt-4 md:pt-5 pb-4 md:pb-10 px-4 md:px-10 rounded-[24px] relative overflow-hidden shrink-0 text-center border border-[#FDECE8]" style={{ background: "linear-gradient(180deg, #FFF6F3 0%, #F8F7F2 100%)" }}>
+    <div className="w-full flex flex-col items-center justify-center pt-3 md:pt-5 pb-3 md:pb-10 px-4 md:px-10 rounded-[24px] relative overflow-hidden shrink-0 text-center border border-[#FDECE8]" style={{ background: "linear-gradient(180deg, #FFF6F3 0%, #F8F7F2 100%)" }}>
 
       <div className="w-full flex flex-col items-center z-10">
-        <h1 className="text-[26px] sm:text-[28px] md:text-[32px] lg:text-[36px] font-bold leading-[1.2] md:leading-[1.05] tracking-tight text-[#111111] mb-2 md:mb-1.5 whitespace-normal md:whitespace-nowrap">
+        <h1 className="text-[17px] min-[375px]:text-[19px] sm:text-[24px] md:text-[32px] lg:text-[36px] font-bold leading-[1.2] md:leading-[1.05] tracking-tight text-[#111111] mb-2 md:mb-1.5 whitespace-nowrap">
           Discover what&apos;s next in <span className="text-[#F55036]">AI research.</span>
         </h1>
         <p className="text-[#555555] text-[14px] md:text-[15px] leading-[1.6] md:leading-[1.5] mb-3 md:mb-4 whitespace-normal md:whitespace-nowrap max-w-[400px] md:max-w-none">
@@ -127,18 +127,19 @@ export default function HeroSection({
         </div>
 
         {/* Tags */}
-        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 w-full max-w-[640px] h-auto overflow-visible md:h-[44px] md:overflow-hidden">
+        <div className="flex flex-nowrap items-center justify-center gap-1 md:gap-3 w-full max-w-[900px] overflow-hidden whitespace-nowrap px-1 md:px-2 pb-2 md:pb-0">
           {tags.map((tag) => (
             <button
               key={tag.label}
+<<<<<<< HEAD
               onClick={() =>
                 setSelectedTag(
                   selectedTag === tag.label ? undefined : tag.label
                 )
               }
               className={`flex shrink-0 items-center gap-2 rounded-full px-4 py-2 min-h-[44px] md:min-h-[32px] transition-all cursor-pointer group ${selectedTag === tag.label
-                  ? "bg-[#F55036] text-white border-[#F55036]"
-                  : "bg-white border border-[#E5E5E0] hover:border-[#F55036] hover:shadow-sm"
+                ? "bg-[#F55036] text-white border-[#F55036]"
+                : "bg-white border border-[#E5E5E0] hover:border-[#F55036] hover:shadow-sm"
                 }`}
             >
               <tag.icon
@@ -152,6 +153,12 @@ export default function HeroSection({
               >
                 {tag.label}
               </span>
+=======
+              className="flex shrink-0 items-center gap-1 md:gap-2 bg-white border border-[#E5E5E0] rounded-full px-1.5 md:px-4 py-0.5 md:py-2 min-h-[16px] md:min-h-[32px] hover:border-[#F55036] hover:shadow-sm transition-all cursor-pointer group"
+            >
+              <tag.icon className="w-2 h-2 md:w-4 md:h-4 text-[#F55036] group-hover:scale-110 transition-transform" />
+              <span className="text-[6.5px] md:text-[13px] font-bold text-[#111111]">{tag.label}</span>
+>>>>>>> e94a742 (feat(frontend): improve mobile hero section)
             </button>
           ))}
         </div>
