@@ -131,34 +131,26 @@ export default function HeroSection({
           {tags.map((tag) => (
             <button
               key={tag.label}
-<<<<<<< HEAD
               onClick={() =>
                 setSelectedTag(
                   selectedTag === tag.label ? undefined : tag.label
                 )
               }
-              className={`flex shrink-0 items-center gap-2 rounded-full px-4 py-2 min-h-[44px] md:min-h-[32px] transition-all cursor-pointer group ${selectedTag === tag.label
-                ? "bg-[#F55036] text-white border-[#F55036]"
+              className={`flex shrink-0 items-center gap-1 md:gap-2 rounded-full px-1.5 md:px-4 py-0.5 md:py-2 min-h-[16px] md:min-h-[32px] transition-all cursor-pointer group ${selectedTag === tag.label
+                ? "bg-[#F55036] text-white border border-[#F55036]"
                 : "bg-white border border-[#E5E5E0] hover:border-[#F55036] hover:shadow-sm"
                 }`}
             >
               <tag.icon
-                size={16}
-                className={`transition-transform group-hover:scale-110 ${selectedTag === tag.label ? "text-white" : "text-[#F55036]"
+                className={`w-2 h-2 md:w-4 md:h-4 transition-transform group-hover:scale-110 ${selectedTag === tag.label ? "text-white" : "text-[#F55036]"
                   }`}
               />
               <span
-                className={`text-[13px] font-bold ${selectedTag === tag.label ? "text-white" : "text-[#111111]"
+                className={`text-[6.5px] md:text-[13px] font-bold ${selectedTag === tag.label ? "text-white" : "text-[#111111]"
                   }`}
               >
                 {tag.label}
               </span>
-=======
-              className="flex shrink-0 items-center gap-1 md:gap-2 bg-white border border-[#E5E5E0] rounded-full px-1.5 md:px-4 py-0.5 md:py-2 min-h-[16px] md:min-h-[32px] hover:border-[#F55036] hover:shadow-sm transition-all cursor-pointer group"
-            >
-              <tag.icon className="w-2 h-2 md:w-4 md:h-4 text-[#F55036] group-hover:scale-110 transition-transform" />
-              <span className="text-[6.5px] md:text-[13px] font-bold text-[#111111]">{tag.label}</span>
->>>>>>> e94a742 (feat(frontend): improve mobile hero section)
             </button>
           ))}
         </div>
