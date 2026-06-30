@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@hono/zod-validator": "^0.8.0",
+    "@napi-rs/canvas": "^1.0.1",
     "@neondatabase/serverless": "^1.1.0",
     "@prisma/adapter-neon": "^7.8.0",
     "@prisma/adapter-pg": "^7.8.0",
@@ -22,6 +23,7 @@
     "csv-parser": "^3.2.1",
     "dotenv": "^17.4.2",
     "hono": "^4.12.27",
+    "pdfjs-dist": "^6.1.200",
     "pg": "^8.22.0",
     "slugify": "^1.6.9",
     "xlsx": "^0.18.5",

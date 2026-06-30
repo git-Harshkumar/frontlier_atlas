@@ -34,6 +34,11 @@ model Paper {
   githubForks     Int?              @default(0) @map("github_forks")
   githubStars     Int?              @default(0) @map("github_stars")
   githubUrl       String?           @map("github_url")
+  thumbnailUrl    String?           @map("thumbnail_url")
+  isOfficialCode  Boolean?          @default(false) @map("is_official_code")
+  hfUpvotes       Int?              @default(0) @map("hf_upvotes")
+  trendingScore   Float?            @default(0) @map("trending_score")
+  discoverySource String?           @map("discovery_source")
   authors         PaperAuthor[]
   conferences     PaperConference[]
   datasets        PaperDataset[]

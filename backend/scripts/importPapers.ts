@@ -97,6 +97,30 @@ const merged = papers.map((paper) => {
     language:
       g?.language ??
       e?.language ??
+      null,
+
+    thumbnailUrl:
+      e?.thumbnail_url ??
+      null,
+
+    isOfficialCode:
+      e?.is_official_code ??
+      null,
+
+    hfUpvotes:
+      Number(
+        e?.hf_upvotes ??
+        0
+      ),
+
+    trendingScore:
+      Number(
+        e?.trending_score ??
+        0
+      ),
+
+    discoverySource:
+      e?.discovery_source ??
       null
 
   };
@@ -130,7 +154,17 @@ const paperRecords = merged.map((paper) => ({
 
   githubForks: paper.githubForks,
 
-  language: paper.language
+  language: paper.language,
+
+  thumbnailUrl: paper.thumbnailUrl,
+
+  isOfficialCode: paper.isOfficialCode,
+
+  hfUpvotes: paper.hfUpvotes,
+
+  trendingScore: paper.trendingScore,
+
+  discoverySource: paper.discoverySource
 }));
 
 console.log("Prepared records:", paperRecords.length);

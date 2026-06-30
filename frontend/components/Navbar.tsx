@@ -2,10 +2,20 @@
 
 import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
+import SearchBar from "@/components/SearchBar";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isMethodsActive = pathname.startsWith("/methods");
+  const isTasksActive = pathname.startsWith("/tasks");
+  const isModelsActive = pathname.startsWith("/models");
+  const isDatasetsActive = pathname.startsWith("/datasets");
+  const isAuthorsActive = pathname.startsWith("/authors");
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -44,13 +54,73 @@ export default function Navbar() {
               <line x1="4" y1="18" x2="20" y2="18"/>
             </svg>
           </button>
-          <div className="flex items-center cursor-pointer relative w-[140px] lg:w-[160px] h-8 lg:h-9">
+          <Link href="/" className="flex items-center relative w-[140px] lg:w-[160px] h-8 lg:h-9">
             <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="(max-width: 1024px) 140px, 160px" />
-          </div>
+          </Link>
         </div>
 
-        {/* Center — Search (Desktop) Removed */}
-        <div className="hidden lg:flex flex-1 justify-center">
+        {/* Center — Search Bar (Desktop) */}
+        <div className="hidden lg:flex flex-1 items-center justify-center max-w-[400px]">
+          <SearchBar variant="compact" placeholder="Search..." initialQuery="" />
+        </div>
+
+        {/* Center — Nav Links (Desktop) */}
+        <div className="hidden lg:flex items-center gap-6">
+          <Link
+            href="/tasks"
+            className={cn(
+              "text-[13px] font-medium transition-colors no-underline",
+              isTasksActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            )}
+          >
+            Tasks
+          </Link>
+          <Link
+            href="/methods"
+            className={cn(
+              "text-[13px] font-medium transition-colors no-underline",
+              isMethodsActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            )}
+          >
+            Methods
+          </Link>
+          <Link
+            href="/models"
+            className={cn(
+              "text-[13px] font-medium transition-colors no-underline",
+              isModelsActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            )}
+          >
+            Models
+          </Link>
+          <Link
+            href="/datasets"
+            className={cn(
+              "text-[13px] font-medium transition-colors no-underline",
+              isDatasetsActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            )}
+          >
+            Datasets
+          </Link>
+          <Link
+            href="/authors"
+            className={cn(
+              "text-[13px] font-medium transition-colors no-underline",
+              isAuthorsActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            )}
+          >
+            Authors
+          </Link>
         </div>
 
         {/* Right (Desktop) */}
@@ -66,8 +136,14 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Right (CTA) */}
-        <div className="flex lg:hidden items-center shrink-0">
+        {/* Mobile Right (Search + CTA) */}
+        <div className="flex lg:hidden items-center gap-2 shrink-0">
+          <Link href="/search" className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-[#EBEBE6] transition-colors">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+          </Link>
           <button className="bg-[#F55036] hover:bg-[#E0462D] text-white text-[12px] font-bold px-4 py-2 rounded-md transition-colors cursor-pointer border-none tracking-wide uppercase min-h-[40px]">
             Submit
           </button>

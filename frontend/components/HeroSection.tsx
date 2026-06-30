@@ -3,13 +3,15 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, Bot, Brain, Eye, Code2, Cpu, Grid, Loader2 } from "lucide-react";
 import { searchPapers, type Paper } from "@/lib/paperApi";
+import Link from "next/link";
+import { slugify } from "@/lib/methods";
 
 export default function HeroSection({
   selectedTag,
   setSelectedTag,
 }: {
   selectedTag?: string;
-  setSelectedTag: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setSelectedTag: (tag: string | undefined) => void;
 }) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -110,7 +112,17 @@ export default function HeroSection({
                     <li key={paper.id} className="px-4 py-3 hover:bg-[#F8F7F2] cursor-pointer border-b border-[#F5F5F5] last:border-0 transition-colors">
                       <div className="text-[14px] font-medium text-[#111111] line-clamp-1">{paper.title}</div>
                       <div className="text-[12px] text-[#8B8B8B] truncate mt-1">
-                        {paper.authors}
+                        {paper.authorNames.map((name, i) => (
+                          <span key={name}>
+                            {i > 0 && <span className="text-[#DCDCD7]">, </span>}
+                            <Link
+                              href={`/authors/${slugify(name)}`}
+                              className="hover:text-[#F55036] transition-colors no-underline"
+                            >
+                              {name}
+                            </Link>
+                          </span>
+                        ))}
                         <span className="mx-1.5 text-[#DCDCD7]">·</span>
                         {paper.date}
                       </div>
@@ -131,7 +143,6 @@ export default function HeroSection({
           {tags.map((tag) => (
             <button
               key={tag.label}
-<<<<<<< HEAD
               onClick={() =>
                 setSelectedTag(
                   selectedTag === tag.label ? undefined : tag.label
@@ -153,12 +164,6 @@ export default function HeroSection({
               >
                 {tag.label}
               </span>
-=======
-              className="flex shrink-0 items-center gap-1 md:gap-2 bg-white border border-[#E5E5E0] rounded-full px-1.5 md:px-4 py-0.5 md:py-2 min-h-[16px] md:min-h-[32px] hover:border-[#F55036] hover:shadow-sm transition-all cursor-pointer group"
-            >
-              <tag.icon className="w-2 h-2 md:w-4 md:h-4 text-[#F55036] group-hover:scale-110 transition-transform" />
-              <span className="text-[6.5px] md:text-[13px] font-bold text-[#111111]">{tag.label}</span>
->>>>>>> e94a742 (feat(frontend): improve mobile hero section)
             </button>
           ))}
         </div>
