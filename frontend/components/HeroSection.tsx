@@ -4,7 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import { Search, Bot, Brain, Eye, Code2, Cpu, Grid, Loader2 } from "lucide-react";
 import { searchPapers, type Paper } from "@/lib/paperApi";
 
-export default function HeroSection() {
+export default function HeroSection({
+  selectedTag,
+  setSelectedTag,
+}: {
+  selectedTag?: string;
+  setSelectedTag: React.Dispatch<React.SetStateAction<string | undefined>>;
+}) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [results, setResults] = useState<Paper[]>([]);
@@ -60,7 +66,7 @@ export default function HeroSection() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center pt-4 md:pt-5 pb-4 md:pb-10 px-4 md:px-10 rounded-[24px] relative overflow-hidden shrink-0 text-center border border-[#FDECE8]" style={{ background: "linear-gradient(180deg, #FFF6F3 0%, #F8F7F2 100%)" }}>
-      
+
       <div className="w-full flex flex-col items-center z-10">
         <h1 className="text-[26px] sm:text-[28px] md:text-[32px] lg:text-[36px] font-bold leading-[1.2] md:leading-[1.05] tracking-tight text-[#111111] mb-2 md:mb-1.5 whitespace-normal md:whitespace-nowrap">
           Discover what&apos;s next in <span className="text-[#F55036]">AI research.</span>
@@ -123,12 +129,29 @@ export default function HeroSection() {
         {/* Tags */}
         <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 w-full max-w-[640px] h-auto overflow-visible md:h-[44px] md:overflow-hidden">
           {tags.map((tag) => (
-            <button 
+            <button
               key={tag.label}
-              className="flex shrink-0 items-center gap-2 bg-white border border-[#E5E5E0] rounded-full px-4 py-2 min-h-[44px] md:min-h-[32px] hover:border-[#F55036] hover:shadow-sm transition-all cursor-pointer group"
+              onClick={() =>
+                setSelectedTag(
+                  selectedTag === tag.label ? undefined : tag.label
+                )
+              }
+              className={`flex shrink-0 items-center gap-2 rounded-full px-4 py-2 min-h-[44px] md:min-h-[32px] transition-all cursor-pointer group ${selectedTag === tag.label
+                  ? "bg-[#F55036] text-white border-[#F55036]"
+                  : "bg-white border border-[#E5E5E0] hover:border-[#F55036] hover:shadow-sm"
+                }`}
             >
-              <tag.icon size={16} className="text-[#F55036] group-hover:scale-110 transition-transform" />
-              <span className="text-[13px] font-bold text-[#111111]">{tag.label}</span>
+              <tag.icon
+                size={16}
+                className={`transition-transform group-hover:scale-110 ${selectedTag === tag.label ? "text-white" : "text-[#F55036]"
+                  }`}
+              />
+              <span
+                className={`text-[13px] font-bold ${selectedTag === tag.label ? "text-white" : "text-[#111111]"
+                  }`}
+              >
+                {tag.label}
+              </span>
             </button>
           ))}
         </div>

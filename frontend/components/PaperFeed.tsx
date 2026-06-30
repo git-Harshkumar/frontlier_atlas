@@ -211,7 +211,11 @@ function PaperCard({ paper }: { paper: Paper }) {
 }
 
 /* ─── List ───────────────────────────────────────────────────────────────── */
-export default function PaperList() {
+export default function PaperList({
+  selectedTag,
+}: {
+  selectedTag?: string;
+}) {
   const [papers, setPapers] = useState<Paper[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -246,10 +250,21 @@ export default function PaperList() {
 }, [loading, hasMore]);
 
   useEffect(() => {
+  setPapers([]);
+  setPage(1);
+  setHasMore(true);
+}, [selectedTag]);
+
+  useEffect(() => {
     async function loadPapers() {
   try {
     setLoading(true);
-    const data = await getPapers(page);
+    const task =
+  selectedTag && selectedTag !== "All Topics"
+    ? selectedTag.toLowerCase().replace(/\s+/g, "-")
+    : undefined;
+
+const data = await getPapers(page, task);
     if (data.length === 0) {
   setHasMore(false);
 }
@@ -264,7 +279,7 @@ export default function PaperList() {
   }
 }
     loadPapers();
-  }, [page]);
+  }, [page, selectedTag]);
 
  
 

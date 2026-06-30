@@ -56,11 +56,23 @@ function mapBackendPaper(raw: Record<string, unknown>): Paper {
   };
 }
 
-export async function getPapers(page: number = 1): Promise<Paper[]> {
+export async function getPapers(
+  page: number = 1,
+  task?: string
+): Promise<Paper[]> {
   try {
-    const response = await fetchApi<PapersResponse>(
-      `/api/v1/research-papers?page=${page}&limit=20`
-    );
+    const query = new URLSearchParams({
+  page: page.toString(),
+  limit: "20",
+});
+
+if (task) {
+  query.append("task", task);
+}
+
+const response = await fetchApi<PapersResponse>(
+  `/api/v1/research-papers?${query.toString()}`
+);
 
     return response.data.papers.map(mapBackendPaper);
   } catch (error) {
