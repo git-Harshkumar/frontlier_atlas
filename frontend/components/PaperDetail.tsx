@@ -165,7 +165,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
       }
       try {
         const taskSlug = paper.tasks[0].task.slug;
-        const data = await getPapers(1, { task: taskSlug });
+        const data = await getPapers(1, taskSlug);
         setRelatedPapers(data.filter((p) => String(p.id) !== String(paper.id)).slice(0, 4));
       } catch { /* ignore */ }
       setRelatedLoading(false);
@@ -259,6 +259,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
         {/* Paper preview image */}
         {paper.thumbnailUrl && (
           <div className="mb-6 rounded-lg overflow-hidden border border-[#E5E5E0] bg-white">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={paper.thumbnailUrl}
               alt={`Preview of ${paper.title}`}
@@ -403,11 +404,11 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
               <Section title="Related Papers">
                 <div className="space-y-2">
                   {relatedPapers.map((rp) => (
-                    <Link key={rp.id} href={`/papers/${rp.slug}`} className="block no-underline group">
+                    <Link key={rp.id} href={`/papers/${rp.id}`} className="block no-underline group">
                       <div className="bg-white border border-[#E5E5E0] rounded-lg p-3 hover:border-[#F55036]/30 hover:shadow-sm transition-all duration-200">
                         <h3 className="text-[13px] font-semibold text-[#111111] group-hover:text-[#F55036] transition-colors line-clamp-2 mb-1">{rp.title}</h3>
                         <div className="flex items-center gap-2 text-[11px] text-[#8B8B8B]">
-                          <span>{rp.authorNames.slice(0, 3).join(", ")}{rp.authorNames.length > 3 ? " et al." : ""}</span>
+                          <span className="truncate">{rp.authors}</span>
                           <span>·</span>
                           <span>{rp.date}</span>
                         </div>
