@@ -38,20 +38,24 @@ export default function RightSidebar() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let ignore = false;
     async function loadModels() {
       try {
         setLoading(true);
         const data = await getModels();
+        if (ignore) return;
         setModels(data);
         setError(null);
       } catch (err) {
+        if (ignore) return;
         console.error(err);
         setError("Failed to load models. Please try again later.");
       } finally {
-        setLoading(false);
+        if (!ignore) setLoading(false);
       }
     }
     loadModels();
+    return () => { ignore = true; };
   }, []);
 
   const filteredTopics = activeTab === "all" 
