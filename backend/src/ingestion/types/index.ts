@@ -7,6 +7,7 @@ export interface NormalizedPaper {
   publicationDate: Date | null;
   paperUrl: string | null;
   pdfUrl: string | null;
+  thumbnailUrl: string | null;
   sourceUrl: string | null;
   projectUrl: string | null;
   githubUrl: string | null;

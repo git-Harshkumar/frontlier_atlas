@@ -1,6 +1,7 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client"
+  runtime  = "cloudflare"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -20,6 +21,7 @@ model Paper {
   doi             String?
   paperUrl        String?           @map("paper_url")
   pdfUrl          String?           @map("pdf_url")
+  thumbnailUrl    String?           @map("thumbnail_url")
   sourceUrl       String?           @map("source_url")
   projectUrl      String?           @map("project_url")
   citationCount   Int               @default(0) @map("citation_count")

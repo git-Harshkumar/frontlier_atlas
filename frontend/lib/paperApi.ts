@@ -21,6 +21,9 @@ export interface PapersResponse {
   count: number;
   data: {
     papers: Record<string, unknown>[];
+    total: number;
+    page: number;
+    hasMore: boolean;
   };
 }
 
@@ -42,7 +45,7 @@ function mapBackendPaper(raw: Record<string, unknown>): Paper {
   return {
     id: Number(raw.id) || String(raw.id),
     title: String(raw.title || "Untitled Paper"),
-    thumbnail: String(raw.thumbnail || ""),
+    thumbnail: String(raw.thumbnail_url || raw.thumbnail || ""),
     authors: displayAuthors,
     date: formattedDate,
     description: String(raw.abstract || ""),

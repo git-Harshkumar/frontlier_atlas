@@ -10,6 +10,7 @@ const paperIngestSchema = z.object({
   content: z.object({
     title: z.string(),
     paper_url: z.string().url().optional(),
+    thumbnail_url: z.string().url().optional(),
     github_url: z.string().url().optional(),
     github_stars: z.number().default(0)
   })
@@ -19,6 +20,8 @@ const paperUpdateSchema = z.object({
   title: z.string().optional(),
   abstract: z.string().optional(),
   paperUrl: z.string().url().optional(),
+  thumbnailUrl: z.string().url().optional(),
+  thumbnail_url: z.string().url().optional(),
   projectUrl: z.string().url().optional()
 });
 

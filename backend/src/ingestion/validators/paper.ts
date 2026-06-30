@@ -13,6 +13,7 @@ export const NormalizedPaperSchema = z.object({
   publicationDate: z.date().nullable(),
   paperUrl: UrlSchema,
   pdfUrl: UrlSchema,
+  thumbnailUrl: UrlSchema,
   sourceUrl: UrlSchema,
   projectUrl: UrlSchema,
   githubUrl: UrlSchema,

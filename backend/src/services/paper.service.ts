@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 
 type GetPapersQuery = {
   sort?: 'latest' | 'stars' | 'trending' | string;
@@ -10,6 +10,14 @@ type GetPapersQuery = {
   skip?: number | string;
 };
 
+const exposeThumbnailUrl = <T extends { thumbnailUrl?: string | null }>(paper: T) => {
+  const { thumbnailUrl, ...rest } = paper;
+  return {
+    ...rest,
+    thumbnail_url: thumbnailUrl ?? null,
+  };
+};
+
 export const ingestPaper = async (prisma: PrismaClient, data: any) => {
   const safeTitle = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   const slug = `${safeTitle.substring(0, 50)}-${Math.random().toString(36).substring(2, 10)}`;
@@ -18,6 +26,7 @@ export const ingestPaper = async (prisma: PrismaClient, data: any) => {
       slug,
       title: data.title,
       paperUrl: data.paper_url,
+      thumbnailUrl: data.thumbnail_url,
       projectUrl: data.github_url,
       citationCount: data.github_stars || 0
     }
@@ -100,6 +109,7 @@ export const getPapers = async (
         slug: true,
         title: true,
         abstract: true,
+        thumbnailUrl: true,
         publicationDate: true,
         arxivId: true,
         paperUrl: true,
@@ -164,7 +174,7 @@ export const getPapers = async (
 
   return {
     papers: papers.map((paper) => ({
-      ...paper,
+      ...exposeThumbnailUrl(paper),
       authors: paper.authors.map(({ author }) => author),
       tasks: paper.tasks.map(({ task }) => task),
       methods: paper.methods.map(({ method }) => method),
@@ -176,7 +186,7 @@ export const getPapers = async (
 };
 
 export const getPaperBySlug = async (prisma: PrismaClient, slug: string) => {
-  return prisma.paper.findUnique({
+  const paper = await prisma.paper.findUnique({
     where: { slug },
     include: {
       authors: { include: { author: true } },
@@ -185,13 +195,21 @@ export const getPaperBySlug = async (prisma: PrismaClient, slug: string) => {
       tasks: { include: { task: true } }
     }
   });
+
+  return paper ? exposeThumbnailUrl(paper) : null;
 };
 
 export const updatePaper = async (prisma: PrismaClient, slug: string, data: any) => {
-  return prisma.paper.update({
+  const { thumbnail_url, ...rest } = data;
+  const paper = await prisma.paper.update({
     where: { slug },
-    data
+    data: {
+      ...rest,
+      ...(thumbnail_url !== undefined ? { thumbnailUrl: thumbnail_url } : {}),
+    }
   });
+
+  return exposeThumbnailUrl(paper);
 };
 
 export const deletePaper = async (prisma: PrismaClient, slug: string) => {

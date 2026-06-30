@@ -75,6 +75,11 @@ const merged = papers.map((paper) => {
       e?.pdf_url ??
       paper.pdf_url,
 
+    thumbnailUrl:
+      e?.thumbnail_url ??
+      paper.thumbnail_url ??
+      null,
+
     githubUrl:
       g?.github_url ??
       e?.github_url ??
@@ -123,6 +128,8 @@ const paperRecords = merged.map((paper) => ({
   sourceUrl: paper.sourceUrl,
 
   pdfUrl: paper.pdfUrl,
+
+  thumbnailUrl: paper.thumbnailUrl,
 
   githubUrl: paper.githubUrl,
 

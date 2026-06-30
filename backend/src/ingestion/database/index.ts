@@ -97,6 +97,7 @@ export class DatabaseSyncer {
               publicationDate: paper.publicationDate,
               paperUrl: paper.paperUrl,
               pdfUrl: paper.pdfUrl,
+              thumbnailUrl: paper.thumbnailUrl,
               sourceUrl: paper.sourceUrl,
               projectUrl: paper.projectUrl,
               githubUrl: paper.githubUrl,
