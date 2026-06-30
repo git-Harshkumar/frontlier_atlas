@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 
 export const getModels = async (prisma: PrismaClient, limit: number = 50, skip: number = 0) => {
   return prisma.model.findMany({
