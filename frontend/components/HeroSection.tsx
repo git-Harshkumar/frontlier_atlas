@@ -3,15 +3,13 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, Bot, Brain, Eye, Code2, Cpu, Grid, Loader2 } from "lucide-react";
 import { searchPapers, type Paper } from "@/lib/paperApi";
-import Link from "next/link";
-import { slugify } from "@/lib/methods";
 
 export default function HeroSection({
   selectedTag,
   setSelectedTag,
 }: {
   selectedTag?: string;
-  setSelectedTag: (tag: string | undefined) => void;
+  setSelectedTag: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -112,17 +110,7 @@ export default function HeroSection({
                     <li key={paper.id} className="px-4 py-3 hover:bg-[#F8F7F2] cursor-pointer border-b border-[#F5F5F5] last:border-0 transition-colors">
                       <div className="text-[14px] font-medium text-[#111111] line-clamp-1">{paper.title}</div>
                       <div className="text-[12px] text-[#8B8B8B] truncate mt-1">
-                        {paper.authorNames.map((name, i) => (
-                          <span key={name}>
-                            {i > 0 && <span className="text-[#DCDCD7]">, </span>}
-                            <Link
-                              href={`/authors/${slugify(name)}`}
-                              className="hover:text-[#F55036] transition-colors no-underline"
-                            >
-                              {name}
-                            </Link>
-                          </span>
-                        ))}
+                        {paper.authors}
                         <span className="mx-1.5 text-[#DCDCD7]">·</span>
                         {paper.date}
                       </div>
@@ -148,17 +136,17 @@ export default function HeroSection({
                   selectedTag === tag.label ? undefined : tag.label
                 )
               }
-              className={`flex shrink-0 items-center gap-1 md:gap-2 rounded-full px-1.5 md:px-3 py-0.5 md:py-1.5 min-h-[16px] md:min-h-[26px] transition-all cursor-pointer group ${selectedTag === tag.label
+              className={`flex shrink-0 items-center gap-1 md:gap-2 rounded-full px-1.5 md:px-4 py-0.5 md:py-2 min-h-[16px] md:min-h-[32px] transition-all cursor-pointer group ${selectedTag === tag.label
                 ? "bg-[#F55036] text-white border border-[#F55036]"
                 : "bg-white border border-[#E5E5E0] hover:border-[#F55036] hover:shadow-sm"
                 }`}
             >
               <tag.icon
-                className={`w-2 h-2 md:w-3.5 md:h-3.5 transition-transform group-hover:scale-110 ${selectedTag === tag.label ? "text-white" : "text-[#F55036]"
+                className={`w-2 h-2 md:w-4 md:h-4 transition-transform group-hover:scale-110 ${selectedTag === tag.label ? "text-white" : "text-[#F55036]"
                   }`}
               />
               <span
-                className={`text-[6.5px] md:text-[11.5px] font-bold ${selectedTag === tag.label ? "text-white" : "text-[#111111]"
+                className={`text-[6.5px] md:text-[13px] font-bold ${selectedTag === tag.label ? "text-white" : "text-[#111111]"
                   }`}
               >
                 {tag.label}

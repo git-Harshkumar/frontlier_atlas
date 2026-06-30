@@ -1,30 +1,14 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import PaperList from "@/components/PaperFeed";
+import PaperTabs from "@/components/PaperTabs";
 import RightSidebar from "@/components/RightSidebar";
 import HeroSection from "@/components/HeroSection";
-import type { PaperFilters as Filters } from "@/lib/paperApi";
 
 export default function Home() {
   const [selectedTag, setSelectedTag] = useState<string | undefined>(undefined);
-  const [filters, setFilters] = useState<Filters>({});
-
-  const handleTagChange = useCallback((tag: string | undefined) => {
-    setSelectedTag(tag);
-    if (tag && tag !== "All Topics") {
-      const slug = tag.toLowerCase().replace(/\s+/g, "-");
-      setFilters((prev) => ({ ...prev, task: slug }));
-    } else {
-      setFilters((prev) => {
-        const next = { ...prev };
-        delete next.task;
-        return next;
-      });
-    }
-  }, []);
-
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
       <Navbar />
@@ -33,9 +17,9 @@ export default function Home() {
         {/* Hero Section Container */}
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-6">
           <HeroSection
-            selectedTag={selectedTag}
-            setSelectedTag={handleTagChange}
-          />
+  selectedTag={selectedTag}
+  setSelectedTag={setSelectedTag}
+/>
         </div>
 
         {/* 3-Column Layout */}
@@ -46,7 +30,8 @@ export default function Home() {
           </div>
 
           <main className="flex-1 min-w-0 max-w-full">
-            <PaperList filters={filters} />
+            <PaperTabs />
+            <PaperList selectedTag={selectedTag} />
           </main>
           
           <div className="hidden xl:block w-[280px] shrink-0 sticky top-4">

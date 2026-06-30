@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Star, Quote, Calendar, FileText, GitBranch, ExternalLink } from "lucide-react";
-import { getPapers, type Paper, type PaperFilters } from "@/lib/paperApi";
-import { slugify } from "@/lib/methods";
-import Link from "next/link";
+import { useState, useEffect } from "react";
+import { Github, MessageCircle } from "lucide-react";
+import { getPapers, type Paper } from "@/lib/paperApi";
+import Image from "next/image";
 
-const TAG_COLORS: Record<string, { bg: string; text: string }> = {
-  purple: { bg: "bg-[#F3E8FF]", text: "text-[#6B21A8]" },
-  blue: { bg: "bg-[#E0F2FE]", text: "text-[#0369A1]" },
-  green: { bg: "bg-[#ECFDF5]", text: "text-[#047857]" },
-  cyan: { bg: "bg-[#CFFAFE]", text: "text-[#0E7490]" },
-  gray: { bg: "bg-white", text: "text-[#111111]" },
+/* ─── Tag color map ──────────────────────────────────────────────────────── */
+const TAG_COLORS: Record<string, { bg: string; text: string; dot: string; border?: string }> = {
+  purple: { bg: "bg-[#F3E8FF]", text: "text-[#6B21A8]", dot: "bg-[#9333EA]", border: "border border-[#D8B4FE]" },
+  blue: { bg: "bg-[#E0F2FE]", text: "text-[#0369A1]", dot: "bg-[#0284C7]", border: "border border-[#BAE6FD]" },
+  green: { bg: "bg-[#ECFDF5]", text: "text-[#047857]", dot: "bg-[#10B981]", border: "border border-[#A7F3D0]" },
+  cyan: { bg: "bg-[#CFFAFE]", text: "text-[#0E7490]", dot: "bg-[#06B6D4]", border: "border border-[#A5F3FC]" },
+  gray: { bg: "bg-white", text: "text-[#111111]", dot: "", border: "border border-[#E5E5E0]" },
 };
 
 function getTagColor(label: string): string {
@@ -24,229 +24,286 @@ function getTagColor(label: string): string {
   return map[label] || "gray";
 }
 
+
+/* ─── Pill tag ───────────────────────────────────────────────────────────── */
 function Pill({ label, colorKey }: { label: string; colorKey: string }) {
   const c = TAG_COLORS[colorKey] || TAG_COLORS.gray;
+  const isGray = colorKey === "gray";
+
   return (
-    <span className={`h-[20px] inline-flex items-center px-1.5 rounded text-[10px] font-medium ${c.bg} ${c.text} whitespace-nowrap`}>
+    <span
+      className={`h-[28px] xl:h-[24px] inline-flex items-center px-3 xl:px-2 rounded-[4px] text-[11px] font-mono cursor-pointer hover:opacity-80 transition-opacity ${c.bg} ${c.text} ${c.border || ""} whitespace-nowrap`}
+    >
+      {!isGray && (
+        <span className={`w-1.5 h-1.5 rounded-full mr-2 shrink-0 ${c.dot}`} />
+      )}
       {label}
     </span>
   );
 }
 
-function FormatNumber({ n }: { n: number }) {
-  return <span className="tabular-nums">{n >= 1000 ? (n / 1000).toFixed(1) + "k" : String(n)}</span>;
-}
 
-function PaperCard({ paper }: { paper: Paper }) {
-  const starCount = parseInt(paper.upvotes) || 0;
-  const citationCount = paper.citations || 0;
-  const hasActions = !!(paper.pdfUrl || paper.githubUrl || paper.arxivId);
-  const previewUrl = paper.thumbnailUrl;
+
+/* ─── SOTA Display ───────────────────────────────────────────────────────── */
+function SotaDisplay({ sota }: { sota: string }) {
+  if (!sota) return null;
+  const segments = sota.split(" • ");
 
   return (
-    <div className="bg-white border border-[#E5E5E0] rounded-lg hover:border-[#F55036]/30 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-200 flex">
-      {/* Thumbnail */}
-      {previewUrl && (
-        <Link href={`/papers/${paper.slug}`} className="shrink-0 w-[100px] md:w-[120px] no-underline">
-          <div className="relative w-full h-full min-h-[140px] bg-[#F8F7F2] rounded-l-lg overflow-hidden">
-            <img
-              src={previewUrl}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-              loading="lazy"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-            />
-          </div>
-        </Link>
+    <div className="mb-[12px] text-[11.5px] tracking-tight flex flex-nowrap items-center gap-x-2 gap-y-1 overflow-hidden whitespace-nowrap w-full">
+      {segments.map((segment, idx) => {
+        const isSota = segment.startsWith("SOTA on ");
+        const isOn = segment.includes(" on ");
+
+        let prefix = "";
+        let benchmarks = segment;
+
+        if (isSota) {
+          benchmarks = segment.replace("SOTA on ", "");
+        } else if (isOn) {
+          const parts = segment.split(" on ");
+          prefix = parts[0];
+          benchmarks = parts[1];
+        }
+
+        return (
+          <span key={idx} className="inline-flex items-center">
+            {idx > 0 && <span className="text-[#9CA3AF] mx-1.5 font-normal">•</span>}
+
+            {isSota ? (
+              <>
+                <span className="text-[#B48C52] font-semibold mr-1 tracking-wide">SOTA</span>
+                <span className="mr-1 text-[10px]">🏆</span>
+                <span className="text-[#8B8B8B] mr-1 font-normal">on</span>
+                <span className="text-[#1E40AF] font-mono text-[11.5px] tracking-tighter">{benchmarks}</span>
+              </>
+            ) : isOn ? (
+              <>
+                <span className="text-[#8B8B8B] font-normal mr-1">{prefix}</span>
+                <span className="text-[#8B8B8B] mr-1 font-normal">on</span>
+                <span className="text-[#1E40AF] font-mono text-[11.5px] tracking-tighter">{benchmarks}</span>
+              </>
+            ) : (
+              <span className="text-[#8B8B8B] font-normal tracking-tight">{segment}</span>
+            )}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ─── Thumbnail ──────────────────────────────────────────────────────────── */
+function PaperThumbnail({ title, thumbnail }: { title: string; thumbnail: string }) {
+  return (
+    <div className="w-full xl:w-[170px] h-[180px] sm:h-[220px] xl:h-[240px] shrink-0 border border-[#E5E5E0] rounded-md xl:rounded-none bg-[#F8F7F2] overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.07)] relative flex items-center justify-center">
+      {thumbnail ? (
+        <Image
+          src={thumbnail}
+          alt={title || "Paper thumbnail"}
+          fill
+          className="object-cover object-top"
+          sizes="(max-width: 1280px) 100vw, 170px"
+        />
+      ) : (
+        <div className="text-[#8B8B8B] text-[10px] font-mono px-4 text-center">No Cover</div>
       )}
+    </div>
+  );
+}
 
-      <div className="flex-1 min-w-0 p-3 md:p-4">
-        <Link href={`/papers/${paper.slug}`} className="no-underline">
-          {/* Title */}
-          <h3 className="text-[15px] md:text-[16px] font-bold text-[#111111] leading-[1.3] mb-1 hover:text-[#F55036] transition-colors line-clamp-2">
-            {paper.title}
-          </h3>
-        </Link>
+/* ─── Metric block ───────────────────────────────────────────────────────── */
+function Metric({
+  value,
+  label,
+  children,
+}: {
+  value: string;
+  label: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <div className="flex items-center gap-1.5">
+        {children}
+        <span className="text-[14.5px] font-bold text-[#111111] leading-none tabular-nums">
+          {value}
+        </span>
+      </div>
+      <span className="text-[8px] font-bold text-[#8B8B8B] uppercase tracking-[0.08em] leading-none">
+        {label}
+      </span>
+    </div>
+  );
+}
 
-        {/* Authors */}
-        {paper.authorNames.length > 0 && (
-          <p className="text-[12px] text-[#555555] mb-1.5 truncate">
-            {paper.authorNames.slice(0, 5).join(", ")}
-            {paper.authorNames.length > 5 ? " et al." : ""}
-          </p>
-        )}
+/* ─── Paper Card ─────────────────────────────────────────────────────────── */
+function PaperCard({ paper }: { paper: Paper }) {
+  // Parse upvotes string to float for stars/hr, e.g. "11.2K" -> "11.2"
+  const upvotesNum = parseFloat(paper.upvotes) || 0;
 
-        {/* Abstract preview */}
-        {paper.description && (
-          <p className="text-[12px] text-[#8B8B8B] leading-[1.5] mb-2 line-clamp-2">
-            {paper.description}
-          </p>
-        )}
+  return (
+    <div className="group flex flex-col xl:flex-row gap-4 xl:gap-6 p-4 xl:py-6 xl:px-6 border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] bg-white xl:bg-transparent min-w-0 cursor-pointer hover:shadow-md xl:hover:bg-white xl:hover:shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all duration-200 rounded-xl xl:rounded-none h-full">
+      {/* LEFT — PDF thumbnail */}
+      <div className="flex flex-col justify-center shrink-0 w-full xl:w-auto">
+        <PaperThumbnail title={paper.title} thumbnail={paper.thumbnail} />
+      </div>
 
-        {/* Tags */}
-        {(paper.tags.length > 0 || paper.additionalTags.length > 0) && (
-          <div className="flex flex-wrap items-center gap-1 mb-2">
-            {paper.tags.map((t) => (
-              <Link
-                key={t}
-                href={`/tasks/${slugify(t)}`}
-                className="no-underline hover:opacity-80 transition-opacity"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Pill label={t} colorKey={getTagColor(t)} />
-              </Link>
-            ))}
-            {paper.additionalTags.map((t) => (
-              <Link
-                key={t}
-                href={`/methods/${slugify(t)}`}
-                className="no-underline hover:opacity-80 transition-opacity"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Pill label={t} colorKey={getTagColor(t)} />
-              </Link>
-            ))}
-          </div>
-        )}
+      {/* RIGHT — Content */}
+      <div className="flex-1 min-w-0 flex flex-col xl:pr-8">
+        {/* Title */}
+        <h3 className="text-[18px] xl:text-[20px] font-serif font-medium text-[#2D2D2D] leading-[1.3] mb-2 group-hover:text-[#F55036] transition-colors line-clamp-3 xl:line-clamp-2">
+          {paper.title}
+        </h3>
 
-        {/* Bottom row: metadata + actions */}
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[#8B8B8B]">
-            {paper.date && paper.date !== "Unknown Date" && (
-              <span className="flex items-center gap-1">
-                <Calendar size={11} />
-                {paper.date}
-              </span>
-            )}
-            {citationCount > 0 && (
-              <span className="flex items-center gap-1">
-                <Quote size={11} />
-                <FormatNumber n={citationCount} />
-              </span>
-            )}
-            {starCount > 0 && (
-              <span className="flex items-center gap-1">
-                <Star size={11} />
-                {starCount >= 1000 ? `${(starCount / 1000).toFixed(1)}k` : starCount}
-              </span>
-            )}
-            {paper.language && (
-              <span className="text-[10px] text-[#BFBFBA]">{paper.language}</span>
-            )}
-            {paper.conference && (
-              <span className="inline-flex items-center px-1.5 py-0.5 bg-[#F8F7F2] border border-[#E5E5E0] rounded text-[10px] font-medium text-[#555555]">
-                {paper.conference}
-              </span>
-            )}
-          </div>
+        {/* Authors + date */}
+        <p className="text-[13px] font-normal text-[#555555] mb-3 truncate">
+          {paper.authors}
+          <span className="mx-2 text-[#DCDCD7]">·</span>
+          {paper.date}
+        </p>
 
-          {/* Action buttons */}
-          {hasActions && (
-            <div className="flex items-center gap-1 shrink-0">
-              {paper.pdfUrl && (
-                <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-[#555555] hover:text-[#F55036] hover:bg-[#F8F7F2] rounded-md border border-[#E5E5E0] transition-colors no-underline" title="PDF">
-                  <FileText size={11} />
-                </a>
-              )}
-              {paper.githubUrl && (
-                <a href={paper.githubUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-[#555555] hover:text-[#F55036] hover:bg-[#F8F7F2] rounded-md border border-[#E5E5E0] transition-colors no-underline" title="Code">
-                  <GitBranch size={11} />
-                </a>
-              )}
-              {paper.arxivId && (
-                <a href={`https://arxiv.org/abs/${paper.arxivId}`} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-[#555555] hover:text-[#F55036] hover:bg-[#F8F7F2] rounded-md border border-[#E5E5E0] transition-colors no-underline" title="arXiv">
-                  <ExternalLink size={11} />
-                </a>
-              )}
-            </div>
-          )}
+        {/* Description */}
+        <p className="text-[14px] font-normal text-[#555555] leading-[1.6] mb-4 line-clamp-3">
+          {paper.description}
+        </p>
+
+        {/* Benchmark / SOTA (Row 1) */}
+        <div className="w-full overflow-hidden">
+          <SotaDisplay sota={paper.sota} />
+        </div>
+
+        {/* Tasks (Row 2) */}
+        <div className="flex flex-nowrap items-center gap-2 mb-2 w-full overflow-hidden">
+          {paper.tags?.map((t) => {
+            const colorKey = getTagColor(t);
+            return <Pill key={t} label={t} colorKey={colorKey} />;
+          })}
+        </div>
+
+        {/* Methods (Row 3) */}
+        <div className="flex flex-nowrap items-center gap-2 w-full overflow-hidden">
+          {paper.additionalTags?.map((t) => {
+            const colorKey = getTagColor(t);
+            return <Pill key={t} label={t} colorKey={colorKey} />;
+          })}
+        </div>
+      </div>
+
+      {/* RIGHT — Metrics */}
+      <div className="shrink-0 flex items-stretch xl:pl-[24px] xl:pr-[32px] border-t xl:border-t-0 xl:border-l border-[#E5E5E0] mt-auto xl:mt-0 pt-4 xl:pt-0 w-full xl:w-auto">
+        <div className="flex flex-row xl:flex-col justify-around xl:justify-around items-center w-full xl:w-[64px] xl:py-2 gap-2 xl:gap-0">
+          <Metric value={`↑${upvotesNum}`} label="Stars / Hr">
+            {/* Minimal optional icon if needed */}
+          </Metric>
+
+          <Metric value={paper.repo} label="Repo">
+            <Github size={13} className="text-[#8B8B8B] shrink-0" />
+          </Metric>
+
+          <Metric value={(paper.citations || 0).toString()} label="Citations">
+            <MessageCircle size={13} className="text-[#8B8B8B] shrink-0" />
+          </Metric>
         </div>
       </div>
     </div>
   );
 }
 
-export default function PaperList({ filters }: { filters?: PaperFilters }) {
-  const filtersStr = JSON.stringify(filters);
+/* ─── List ───────────────────────────────────────────────────────────────── */
+export default function PaperList({
+  selectedTag,
+}: {
+  selectedTag?: string;
+}) {
   const [papers, setPapers] = useState<Paper[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
-  const loadingRef = useRef(loading);
-  const hasMoreRef = useRef(hasMore);
 
-  loadingRef.current = loading;
-  hasMoreRef.current = hasMore;
+ useEffect(() => {
+  const scrollContainer = document.getElementById(
+    "scroll-container"
+  ) as HTMLElement;
+
+  if (!scrollContainer) return;
+
+  function handleScroll() {
+    console.log("SCROLLING");
+
+    const nearBottom =
+      scrollContainer.scrollTop + scrollContainer.clientHeight >=
+      scrollContainer.scrollHeight - 500;
+
+    if (nearBottom && !loading && hasMore) {
+  console.log("BOTTOM REACHED");
+  setPage((prev) => prev + 1);
+}
+  }
+
+  scrollContainer.addEventListener("scroll", handleScroll);
+
+  return () => {
+    scrollContainer.removeEventListener("scroll", handleScroll);
+  };
+}, [loading, hasMore]);
 
   useEffect(() => {
-    const scrollContainer = document.getElementById("scroll-container") as HTMLElement;
-    if (!scrollContainer) return;
-
-    function handleScroll() {
-      const nearBottom =
-        scrollContainer.scrollTop + scrollContainer.clientHeight >=
-        scrollContainer.scrollHeight - 500;
-
-      if (nearBottom && !loadingRef.current && hasMoreRef.current) {
-        setPage((prev) => prev + 1);
-      }
-    }
-
-    scrollContainer.addEventListener("scroll", handleScroll);
-    return () => scrollContainer.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    setPapers([]);
-    setPage(1);
-    setHasMore(true);
-  }, [filtersStr]);
+  setPapers([]);
+  setPage(1);
+  setHasMore(true);
+}, [selectedTag]);
 
   useEffect(() => {
     async function loadPapers() {
-      try {
-        setLoading(true);
-        const data = await getPapers(page, filters);
-        if (data.length === 0) {
-          setHasMore(false);
-        }
+  try {
+    setLoading(true);
+    const task =
+  selectedTag && selectedTag !== "All Topics"
+    ? selectedTag.toLowerCase().replace(/\s+/g, "-")
+    : undefined;
 
-        setPapers((prev) => {
-          const existingIds = new Set(prev.map((p) => p.id));
-          const newPapers = data.filter((p) => !existingIds.has(p.id));
-          return [...prev, ...newPapers];
-        });
-        setError(null);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load papers. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    }
+const data = await getPapers(page, task);
+    if (data.length === 0) {
+  setHasMore(false);
+}
+    
+    setPapers((prev) => [...prev, ...data]);
+    setError(null);
+  } catch (err) {
+    console.error(err);
+    setError('Failed to load papers. Please try again later.');
+  } finally {
+    setLoading(false);
+  }
+}
     loadPapers();
-  }, [page, filtersStr]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, selectedTag]);
+
+ 
 
   if (error) {
     return (
-      <div className="pb-12 pt-8 flex justify-center items-center">
-        <p className="text-[14px] text-[#F55036]">{error}</p>
+      <div className="pb-12 pt-8 flex justify-center items-center text-[#F55036]">
+        <p className="text-[14px]">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="pb-12 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-4">
-      {papers.map((paper) => (
-        <PaperCard key={paper.id} paper={paper} />
-      ))}
+  <div className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0">
 
-      {loading && (
-        <div className="flex justify-center py-8 col-span-full">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E40AF]" />
-        </div>
-      )}
-    </div>
-  );
+    {papers.map((paper) => (
+      <PaperCard key={paper.id} paper={paper} />
+    ))}
+
+    {loading && (
+      <div className="flex justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E40AF]" />
+      </div>
+    )}
+
+  </div>
+);
 }
