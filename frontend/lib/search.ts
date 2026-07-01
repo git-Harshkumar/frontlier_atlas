@@ -102,13 +102,15 @@ async function fallbackSearch(query: string, limit: number): Promise<SearchResul
   }));
 
   // Other entities require client-side filtering
-  const [tasks, models, datasets, authors, papersData] = await Promise.all([
+  const [tasks, models, datasets, authors, papersResult] = await Promise.all([
     getTasks(),
     getModels(),
     getDatasets(),
     getAuthors(),
-    getPapers(1),
+    getPapers({ page: 1 }),
   ]);
+
+  const papersData = papersResult.papers;
 
   const tasksFiltered = tasks
     .filter((t) => t.name.toLowerCase().includes(q))

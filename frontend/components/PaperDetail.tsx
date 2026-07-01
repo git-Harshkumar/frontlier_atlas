@@ -165,8 +165,8 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
       }
       try {
         const taskSlug = paper.tasks[0].task.slug;
-        const data = await getPapers(1, taskSlug);
-        setRelatedPapers(data.filter((p) => String(p.id) !== String(paper.id)).slice(0, 4));
+        const result = await getPapers({ page: 1, task: taskSlug });
+        setRelatedPapers(result.papers.filter((p) => String(p.id) !== String(paper.id)).slice(0, 4));
       } catch { /* ignore */ }
       setRelatedLoading(false);
     }
@@ -400,24 +400,24 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
             )}
 
             {/* Related Papers */}
-            {!relatedLoading && relatedPapers.length > 0 && (
-              <Section title="Related Papers">
-                <div className="space-y-2">
-                  {relatedPapers.map((rp) => (
-                    <Link key={rp.id} href={`/papers/${rp.id}`} className="block no-underline group">
-                      <div className="bg-white border border-[#E5E5E0] rounded-lg p-3 hover:border-[#F55036]/30 hover:shadow-sm transition-all duration-200">
-                        <h3 className="text-[13px] font-semibold text-[#111111] group-hover:text-[#F55036] transition-colors line-clamp-2 mb-1">{rp.title}</h3>
-                        <div className="flex items-center gap-2 text-[11px] text-[#8B8B8B]">
-                          <span className="truncate">{rp.authors}</span>
-                          <span>·</span>
-                          <span>{rp.date}</span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </Section>
-            )}
+        {!relatedLoading && relatedPapers.length > 0 && (
+          <Section title="Related Papers">
+            <div className="space-y-2">
+              {relatedPapers.map((rp) => (
+                <Link key={rp.slug || rp.id} href={`/papers/${rp.slug || rp.id}`} className="block no-underline group">
+                  <div className="bg-white border border-[#E5E5E0] rounded-lg p-3 hover:border-[#F55036]/30 hover:shadow-sm transition-all duration-200">
+                    <h3 className="text-[13px] font-semibold text-[#111111] group-hover:text-[#F55036] transition-colors line-clamp-2 mb-1">{rp.title}</h3>
+                    <div className="flex items-center gap-2 text-[11px] text-[#8B8B8B]">
+                      <span className="truncate">{rp.authors}</span>
+                      <span>·</span>
+                      <span>{rp.date}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </Section>
+        )}
           </div>
 
           {/* ===== RIGHT SIDEBAR ===== */}
