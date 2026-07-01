@@ -49,12 +49,15 @@ export default function RightSidebar() {
   useEffect(() => {
     async function loadDiscussions() {
       try {
+         console.log("➡️ Loading discussions...");
         setLoading(true);
         const data = await getDiscussions();
+           console.log("✅ Discussions loaded", data);
         setDiscussions(data);
         setError(null);
       } catch (err) {
-        console.error(err);
+        console.error("❌ Discussion fetch failed", err);
+       
         setError("Failed to load discussions. Please try again later.");
       } finally {
         setLoading(false);
@@ -68,6 +71,8 @@ const filteredTopics =
   activeTab === "all"
     ? discussions
     : discussions.filter(topic => topic.platform === activeTab);
+    console.log("discussions =", discussions);
+console.log("filteredTopics =", filteredTopics);
 
   return (
     <aside className="flex flex-col w-full shrink-0 justify-start pb-12">
@@ -99,14 +104,7 @@ const filteredTopics =
           >
             X/Twitter
           </button>
-          <button 
-            onClick={() => setActiveTab("reddit")}
-            className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${
-              activeTab === "reddit" ? "bg-[#EBEBE6] text-[#F55036]" : "text-[#8B8B8B] hover:bg-[#EBEBE6] hover:text-[#111111]"
-            }`}
-          >
-            Reddit
-          </button>
+          
           <button 
             onClick={() => setActiveTab("github")}
             className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${
@@ -143,7 +141,7 @@ const filteredTopics =
               {/* Raw Icon */}
               <div className="shrink-0 pt-0.5">
                 {topic.platform === "x" && <XIcon size={22} className="text-[#111111]" />}
-                {topic.platform === "reddit" && <RedditIcon size={24} className="text-[#111111]" />}
+                
                 {topic.platform === "github" && <GithubIcon size={22} className="text-[#111111]" />}
               </div>
 

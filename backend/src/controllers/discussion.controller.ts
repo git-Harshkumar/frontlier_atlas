@@ -13,6 +13,7 @@ export const getDiscussions = async (c: Context) => {
       data: discussions,
     });
   } catch (error: any) {
+      console.error("Discussion Error:", error);
     return c.json(
       {
         status: "error",
