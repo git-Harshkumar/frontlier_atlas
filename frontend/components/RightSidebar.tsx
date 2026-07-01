@@ -1,8 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowRight, Sparkles, Heart, MessageCircle, Loader2 } from "lucide-react";
-import { getModels, type ModelData } from "@/lib/modelApi";
+import {
+  ArrowRight,
+  Sparkles,
+  Star,
+  GitFork,
+  Heart,
+  MessageCircle,
+  Loader2,
+} from "lucide-react";
+import { getDiscussions, type Discussion } from "@/lib/discussionApi"
+
 
 // X (Twitter) icon
 function XIcon({ size = 14, className = "" }: { size?: number; className?: string }) {
@@ -33,30 +42,32 @@ function GithubIcon({ size = 14, className = "" }: { size?: number; className?: 
 
 export default function RightSidebar() {
   const [activeTab, setActiveTab] = useState("all");
-  const [models, setModels] = useState<ModelData[]>([]);
+  const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function loadModels() {
+    async function loadDiscussions() {
       try {
         setLoading(true);
-        const data = await getModels();
-        setModels(data);
+        const data = await getDiscussions();
+        setDiscussions(data);
         setError(null);
       } catch (err) {
         console.error(err);
-        setError("Failed to load models. Please try again later.");
+        setError("Failed to load discussions. Please try again later.");
       } finally {
         setLoading(false);
       }
     }
-    loadModels();
+    loadDiscussions();
   }, []);
 
-  const filteredTopics = activeTab === "all" 
-    ? models 
-    : models.filter(topic => topic.platform === activeTab);
+
+const filteredTopics =
+  activeTab === "all"
+    ? discussions
+    : discussions.filter(topic => topic.platform === activeTab);
 
   return (
     <aside className="flex flex-col w-full shrink-0 justify-start pb-12">
@@ -122,8 +133,13 @@ export default function RightSidebar() {
             </div>
           ) : (
             filteredTopics.map((topic, idx) => (
-            <div key={idx} className="flex gap-4 py-4 border-b border-[#E5E5E0] last:border-b-0 group cursor-pointer">
-              
+            <a
+  key={idx}
+  href={topic.url}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex gap-4 py-4 border-b border-[#E5E5E0] last:border-b-0 group cursor-pointer hover:bg-[#F8F7F2] rounded-lg transition-colors"
+>
               {/* Raw Icon */}
               <div className="shrink-0 pt-0.5">
                 {topic.platform === "x" && <XIcon size={22} className="text-[#111111]" />}
@@ -134,31 +150,32 @@ export default function RightSidebar() {
               {/* Content */}
               <div className="flex-1 flex flex-col min-w-0">
                 {/* Meta */}
-                <div className="flex items-center gap-1.5 text-[11px] font-medium mb-1">
-                  <span className="text-[#555555]">{topic.source}</span>
-                  <span className="text-[#DCDCD7]">•</span>
-                  <span className="text-[#8B8B8B]">{topic.time}</span>
-                </div>
+                {/* Meta */}
+<div className="flex items-center gap-1.5 text-[11px] font-medium mb-1">
+  <span className="text-[#555555]">{topic.source}</span>
+  <span className="text-[#DCDCD7]">•</span>
+  <span className="text-[#8B8B8B]">{topic.time}</span>
+</div>
                 
-                {/* Title */}
-                <h4 className="text-[13px] font-bold text-[#111111] leading-[1.5] mb-3 group-hover:text-[#F55036] transition-colors">
-                  {topic.title}
-                </h4>
+               <h4 className="text-[13px] font-bold text-[#111111] leading-[1.5] mb-3 group-hover:text-[#F55036] transition-colors">
+  {topic.title}
+</h4>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 text-[11px] font-semibold text-[#8B8B8B]">
-                  <div className="flex items-center gap-1.5">
-                    <Heart size={14} className="text-[#8B8B8B]" />
-                    <span>{topic.likes}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <MessageCircle size={14} className="text-[#8B8B8B]" />
-                    <span>{topic.comments}</span>
-                  </div>
-                </div>
+<div className="flex items-center gap-4 text-[11px] font-semibold text-[#8B8B8B]">
+  <div className="flex items-center gap-1.5">
+    <Star size={14} />
+    <span>{topic.likes}</span>
+  </div>
+
+  <div className="flex items-center gap-1.5">
+    <GitFork size={14} />
+    <span>{topic.comments}</span>
+  </div>
+</div>
               </div>
 
-            </div>
+               </a>
             ))
           )}
         </div>
