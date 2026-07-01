@@ -173,7 +173,7 @@ const Metric = memo(({
           {value}
         </span>
       </div>
-      <span className={`text-[8px] font-bold text-[#8B8B8B] uppercase tracking-[0.08em] leading-none ${isInteractive ? 'group-hover/metric:text-[#F55036] transition-colors' : ''}`}>
+      <span className={`text-[8px] font-semibold text-[#8B8B8B] uppercase tracking-[0.08em] leading-none ${isInteractive ? 'group-hover/metric:text-[#F55036] transition-colors' : ''}`}>
         {label}
       </span>
     </div>
@@ -206,7 +206,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
         {/* RIGHT — Content */}
         <div className="flex-1 min-w-0 flex flex-col xl:pr-8">
           {/* Title */}
-          <h3 className="text-[18px] xl:text-[20px] font-medium text-[#2D2D2D] leading-[1.3] mb-2 group-hover:text-[#F55036] transition-colors line-clamp-3 xl:line-clamp-2">
+          <h3 className="text-[18px] xl:text-[20px] font-semibold text-[#2D2D2D] leading-[1.3] mb-2 group-hover:text-[#F55036] transition-colors line-clamp-3 xl:line-clamp-2">
             {paper.title}
           </h3>
 

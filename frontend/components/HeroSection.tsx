@@ -76,7 +76,7 @@ export default function HeroSection({
   return (
     <div className="w-full flex flex-col items-center justify-center pt-4 md:pt-6 pb-6 md:pb-10 relative shrink-0 text-center">
       <div className="w-full flex flex-col items-center z-10">
-        <h1 className="text-[17px] min-[375px]:text-[19px] sm:text-[24px] md:text-[32px] lg:text-[36px] font-bold leading-[1.2] md:leading-[1.05] tracking-tight text-[#111111] mb-2 md:mb-1.5 whitespace-nowrap">
+        <h1 className="text-[17px] min-[375px]:text-[19px] sm:text-[24px] md:text-[32px] lg:text-[36px] font-extrabold leading-[1.2] md:leading-[1.05] tracking-tight text-[#111111] mb-2 md:mb-1.5 whitespace-nowrap">
           Discover what&apos;s next in <span className="text-[#F55036]">AI research.</span>
         </h1>
         <p className="text-[#555555] text-[14px] md:text-[15px] leading-[1.6] md:leading-[1.5] mb-3 md:mb-4 whitespace-normal md:whitespace-nowrap max-w-[400px] md:max-w-none">

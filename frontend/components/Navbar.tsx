@@ -55,7 +55,7 @@ export default function Navbar() {
 
         {/* Right (Desktop) */}
         <div className="hidden lg:flex items-center gap-3 shrink-0">
-          <button className="bg-[#F55036] hover:bg-[#E0462D] text-white text-[12px] font-bold px-4 py-1.5 rounded-md transition-colors cursor-pointer border-none tracking-wide uppercase">
+          <button className="bg-[#F55036] hover:bg-[#E0462D] text-white text-[12px] font-semibold px-4 py-1.5 rounded-md transition-colors cursor-pointer border-none tracking-wide uppercase">
             Submit
           </button>
           <div className="w-8 h-8 rounded-full bg-[#EBEBE6] flex items-center justify-center cursor-pointer hover:bg-[#DCDCD7] transition-colors">
@@ -68,7 +68,7 @@ export default function Navbar() {
 
         {/* Mobile Right (CTA) */}
         <div className="flex lg:hidden items-center shrink-0">
-          <button className="bg-[#F55036] hover:bg-[#E0462D] text-white text-[12px] font-bold px-4 py-2 rounded-md transition-colors cursor-pointer border-none tracking-wide uppercase min-h-[40px]">
+          <button className="bg-[#F55036] hover:bg-[#E0462D] text-white text-[12px] font-semibold px-4 py-2 rounded-md transition-colors cursor-pointer border-none tracking-wide uppercase min-h-[40px]">
             Submit
           </button>
         </div>
