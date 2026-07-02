@@ -1,234 +1,292 @@
 "use client";
+import React, { useState } from "react";
+import {
+  LayoutGrid,
+  List,
+  Users,
+  FileText,
+  Layers,
+  Box,
+  Cpu,
+  Eye,
+  MessageSquare,
+  Image as ImageIcon,
+  Music,
+  Puzzle,
+  Globe,
+  Brain,
+  TrendingUp,
+  Sparkles,
+  Zap,
+  Shield,
+  BarChart3,
+  ArrowRight,
+  ChevronRight,
+  Plus,
+} from "lucide-react";
+import Navbar from "@/components/Navbar";
+import Image from "next/image";
+import bgImage from "@/public/bg-image.png";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { Search, ArrowUpDown, AlertCircle, Inbox } from "lucide-react";
-import { getTasks, type TaskItem } from "@/lib/tasks";
-import TaskCard from "@/components/TaskCard";
-import Link from "next/link";
-
-const LIMIT = 12;
-
-function SkeletonCard() {
-  return (
-    <div className="ds-card p-5 flex flex-col gap-3 animate-pulse">
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-[#E5E5E0]" />
-          <div className="h-5 bg-[#E5E5E0] rounded w-2/3" />
-        </div>
-        <div className="h-4 bg-[#E5E5E0] rounded w-16" />
-      </div>
-    </div>
-  );
+// Type definitions
+interface CapabilityItem {
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  title: string;
+  desc: string;
+  count: string;
 }
 
-function SkeletonGrid() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {Array.from({ length: LIMIT }).map((_, i) => (
-        <SkeletonCard key={i} />
-      ))}
-    </div>
-  );
+type DomainItem = string;
+
+interface SectionData {
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  color: string;
+  iconColor: string;
+  data: CapabilityItem[] | DomainItem[];
 }
 
-export default function TasksPage() {
-  const [allTasks, setAllTasks] = useState<TaskItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<"name">("name");
-  const [page, setPage] = useState(1);
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+type SectionsType = {
+  [key: string]: SectionData;
+};
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(search);
-      setPage(1);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [search]);
+const FrontierAtlas = () => {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [activeFilter, setActiveFilter] = useState("All Domains");
 
-  const fetchTasks = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getTasks();
-      setAllTasks(data);
-    } catch (err) {
-      console.error("Failed to fetch tasks:", err);
-      setError("Failed to load tasks. Please try again later.");
-    } finally {
-      setLoading(false);
+  // Data sections with icons and colors
+  const sections: SectionsType = {
+    "Core Capabilities": {
+      icon: Users,
+      color: "#fce8ec",
+      iconColor: "#e11d48",
+      data: [
+        { icon: Users, title: "Agents", desc: "Autonomous systems that perceive, reason, and act.", count: "1.5k papers" },
+        { icon: Zap, title: "Anomaly Detection", desc: "Identifying unusual patterns in data.", count: "3.6k papers" },
+        { icon: Box, title: "Autonomous Driving", desc: "AI for self-driving and intelligent vehicles.", count: "5.6k papers" },
+        { icon: Cpu, title: "Coding Agents", desc: "AI agents for code generation and assistance.", count: "3.8k papers" },
+        { icon: Globe, title: "Computer Use Agents", desc: "Agents that interact with computers.", count: "2.2k papers" },
+        { icon: Shield, title: "Deepfake & Forensics", desc: "Synthesizing detection and media forensics.", count: "2.1k papers" },
+        { icon: FileText, title: "Document Understanding", desc: "Extracting insights from documents.", count: "8.6k papers" },
+        { icon: Layers, title: "Embedding Models", desc: "Representation learning and embeddings.", count: "3.6k papers" },
+        { icon: MessageSquare, title: "Language Modeling", desc: "Models for understanding and generating text.", count: "62.4k papers" },
+        { icon: Eye, title: "OCR", desc: "Optical character recognition.", count: "4.8k papers" },
+        { icon: Puzzle, title: "Omni Models", desc: "Unified models for vision, text, and audio.", count: "2.6k papers" },
+        { icon: Brain, title: "Reasoning", desc: "Logical reasoning and problem solving.", count: "5.7k papers" },
+        { icon: BarChart3, title: "Reinforcement Learning", desc: "Learning through rewards and feedback.", count: "17.9k papers" },
+        { icon: Box, title: "Remote Sensing", desc: "Earth observation and satellite imagery.", count: "4.6k papers" },
+        { icon: Zap, title: "Robotics", desc: "Robotic perception, control, and manipulation.", count: "7.7k papers" },
+        { icon: Layers, title: "Scene Text Recognition", desc: "Reading text in natural scenes.", count: "3.6k papers" },
+      ]
+    },
+    "Perception & Understanding": {
+      icon: Eye,
+      color: "#e0f2fe",
+      iconColor: "#0284c7",
+      data: ["3D Generation", "3D Instance Segmentation", "3D Object Detection", "3D Semantic Segmentation", "Depth Estimation", "Document Layout Analysis", "Earth Observation", "Face Recognition", "Image Classification", "Image Editing", "Image Generation", "Image Segmentation", "Image Super-Resolution", "Image Restoration", "Medical Imaging", "Object Counting", "Object Detection", "Pose Estimation", "Semi-Supervised Image Classification", "Text-to-Image"]
+    },
+    "Content Generation": {
+      icon: Sparkles,
+      color: "#dcfce7",
+      iconColor: "#16a34a",
+      data: ["Audio Generation", "Audio Understanding", "Motion Generation", "Optical Flow", "Text-to-SQL", "Text Generation", "Video Generation", "Video Understanding", "Video Restoration"]
+    },
+    "Language & Communication": {
+      icon: MessageSquare,
+      color: "#fef3c7",
+      iconColor: "#d97706",
+      data: ["Entity Typing", "Machine Translation", "Named Entity Recognition", "Part-of-Speech Tagging", "Question Answering", "Relation Extraction", "Summarization", "Table Question Answering", "Text Classification", "Text-to-SQL"]
+    },
+    Audio: {
+      icon: Music,
+      color: "#f3e8ff",
+      iconColor: "#9333ea",
+      data: ["Audio Classification", "Audio Generation", "Audio Understanding", "Audio Restoration"]
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    fetchTasks();
-  }, [fetchTasks]);
+  const filterButtons = ["All Domains", ...Object.keys(sections)];
 
-  const filtered = useMemo(() => {
-    let result = allTasks;
-    if (debouncedSearch) {
-      const q = debouncedSearch.toLowerCase();
-      result = result.filter((t) => t.name.toLowerCase().includes(q));
-    }
-    if (sort === "name") {
-      result = [...result].sort((a, b) => a.name.localeCompare(b.name));
-    }
-    return result;
-  }, [allTasks, debouncedSearch, sort]);
+  const getFilteredData = (): SectionsType => {
+    if (activeFilter === "All Domains") return sections;
+    return { [activeFilter]: sections[activeFilter as keyof typeof sections] };
+  };
 
-  const total = filtered.length;
-  const totalPages = Math.ceil(total / LIMIT);
-  const displayed = filtered.slice((page - 1) * LIMIT, page * LIMIT);
+  // Type guard to check if item is CapabilityItem
+  const isCapabilityItem = (item: CapabilityItem | DomainItem): item is CapabilityItem => {
+    return typeof item === 'object' && item !== null && 'icon' in item && 'title' in item;
+  };
 
-  return (
-    <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
-      <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 xl:px-12 py-8">
-        <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
-          <Link href="/" className="hover:text-[#F55036] transition-colors no-underline">
-            Home
-          </Link>
-          <span>/</span>
-          <span className="text-[#555555] font-medium">Tasks</span>
-        </nav>
-
-        <div className="mb-8">
-          <h1 className="text-[28px] md:text-[32px] font-bold tracking-tight mb-2">
-            Tasks
-          </h1>
-          <p className="text-[#555555] text-[14px] md:text-[15px]">
-            Browse and discover research tasks addressed across AI papers.
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
-          <div className="relative flex-1 w-full sm:max-w-[360px]">
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8B8B8B]" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search tasks..."
-              className="ds-input w-full pl-10 pr-4 h-10 text-[13px]"
-            />
-          </div>
-
-          <div className="flex items-center gap-2">
-            <ArrowUpDown size={14} className="text-[#8B8B8B]" />
-            <button
-              onClick={() => setSort("name")}
-              className={`px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors ${
-                sort === "name"
-                  ? "bg-[#FF5A1F] text-white border-[#FF5A1F]"
-                  : "bg-white text-[#555555] border-[#E5E5E0] hover:border-[#FF5A1F]"
-              }`}
-            >
-              Name
-            </button>
-          </div>
-        </div>
-
-        {loading && <SkeletonGrid />}
-
-        {error && !loading && (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <AlertCircle size={32} className="text-[#FF5A1F]" />
-            <p className="text-[14px] text-[#FF5A1F]">{error}</p>
-            <button
-              onClick={fetchTasks}
-              className="ds-button text-[12px]"
-            >
-              Retry
-            </button>
-          </div>
-        )}
-
-        {!loading && !error && displayed.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Inbox size={32} className="text-[#8B8B8B]" />
-            <p className="text-[14px] text-[#555555]">
-              {debouncedSearch
-                ? `No tasks match "${debouncedSearch}"`
-                : "No tasks found."}
-            </p>
-            {debouncedSearch && (
-              <button
-                onClick={() => {
-                  setSearch("");
-                  setDebouncedSearch("");
-                }}
-                className="ds-button-ghost text-[12px]"
-              >
-                Clear search
-              </button>
+  const renderGridItem = (item: CapabilityItem | DomainItem, isCapability: boolean) => {
+    return (
+      <div className="bg-white p-4 rounded-xl shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] border border-gray-100 hover:shadow-md transition-shadow group cursor-pointer">
+        <div className="flex items-start justify-between">
+          <div className="p-2 bg-gray-50 rounded-lg group-hover:bg-gray-100 transition-colors">
+            {isCapability && isCapabilityItem(item) ? (
+              <item.icon size={20} className="text-[#3b82f6]" />
+            ) : (
+              <ImageIcon size={14} className="text-gray-500" />
             )}
           </div>
-        )}
-
-        {!loading && !error && displayed.length > 0 && (
+        </div>
+        {isCapability && isCapabilityItem(item) ? (
           <>
-            <div className="text-[13px] text-[#8B8B8B] mb-4">
-              Showing {displayed.length} of {total} task{total !== 1 ? "s" : ""}
+            <h3 className="font-semibold text-gray-800 mt-2 text-sm">{item.title}</h3>
+            <p className="text-xs text-gray-500 mt-1 leading-tight line-clamp-2">{item.desc}</p>
+            <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-400">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
+              {item.count}
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {displayed.map((task) => (
-                <TaskCard key={task.id} task={task} />
-              ))}
-            </div>
-
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-10">
-                <button
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  disabled={page === 1}
-                  className="ds-button-ghost text-[12px] disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Previous
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1)
-                  .filter((p) => {
-                    if (totalPages <= 7) return true;
-                    if (p === 1 || p === totalPages) return true;
-                    if (Math.abs(p - page) <= 1) return true;
-                    return false;
-                  })
-                  .map((p, idx, arr) => {
-                    const showEllipsis = idx > 0 && p - arr[idx - 1] > 1;
-                    return (
-                      <span key={p} className="flex items-center">
-                        {showEllipsis && (
-                          <span className="px-1 text-[#8B8B8B] text-[13px]">...</span>
-                        )}
-                        <button
-                          onClick={() => setPage(p)}
-                          className={`w-8 h-8 rounded-full text-[12px] font-medium transition-colors ${
-                            page === p
-                              ? "bg-[#FF5A1F] text-white"
-                              : "text-[#555555] hover:bg-[#EBEBE6]"
-                          }`}
-                        >
-                          {p}
-                        </button>
-                      </span>
-                    );
-                  })}
-
-                <button
-                  onClick={() => setPage((p) => p + 1)}
-                  disabled={page >= totalPages}
-                  className="ds-button-ghost text-[12px] disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Next
-                </button>
-              </div>
-            )}
           </>
+        ) : (
+          <span className="text-xs font-medium text-gray-700 mt-2 block">{item as string}</span>
         )}
+      </div>
+    );
+  };
+
+  const renderListItem = (item: CapabilityItem | DomainItem, index: number, data: (CapabilityItem | DomainItem)[], isCapability: boolean) => {
+    return (
+      <div key={index} className={`flex items-center justify-between p-4 hover:bg-gray-50 transition-colors cursor-pointer ${index !== data.length - 1 ? "border-b border-gray-100" : ""}`}>
+        <div className="flex items-center gap-4">
+          <div className="p-2 bg-gray-50 rounded-lg">
+            {isCapability && isCapabilityItem(item) ? (
+              <item.icon size={20} className="text-[#3b82f6]" />
+            ) : (
+              <ImageIcon size={14} className="text-gray-500" />
+            )}
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-800 text-sm">
+              {isCapability && isCapabilityItem(item) ? item.title : item as string}
+            </h3>
+            {isCapability && isCapabilityItem(item) && <p className="text-xs text-gray-500">{item.desc}</p>}
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          {isCapability && isCapabilityItem(item) && <span className="text-xs text-gray-400">{item.count}</span>}
+          <ChevronRight size={16} className="text-gray-300" />
+        </div>
+      </div>
+    );
+  };
+
+  const renderSection = (title: string, section: SectionData) => {
+    const isCapability = title === "Core Capabilities";
+    const data = section.data;
+    const Icon = section.icon;
+
+    return (
+      <section key={title} className="mb-12">
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-full" style={{ backgroundColor: section.color, color: section.iconColor }}>
+              <Icon size={20} />
+            </div>
+            <h2 className="text-xl font-bold text-gray-800">{title}</h2>
+            <span className="text-sm text-gray-400 ml-2">{data.length} domains</span>
+          </div>
+          <button className="flex items-center gap-1 text-[#0ea5e9] text-sm font-medium hover:underline">
+            View all <ArrowRight size={14} />
+          </button>
+        </div>
+
+        {viewMode === "grid" ? (
+          <div className={`grid ${isCapability ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"} gap-4`}>
+            {data.map((item: CapabilityItem | DomainItem, idx: number) => renderGridItem(item, isCapability))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+            {data.map((item: CapabilityItem | DomainItem, idx: number) => renderListItem(item, idx, data, isCapability))}
+          </div>
+        )}
+      </section>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F8F7F2] font-sans text-slate-800">
+      <Navbar />
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Hero Section */}
+        <div className="flex flex-col md:flex-row justify-between items-start mb-12 relative overflow-hidden min-h-[400px]">
+          <div className="absolute inset-0 w-full h-full overflow-hidden">
+            <Image src={bgImage} alt="Abstract 3D shapes" fill className="object-contain object-right-top md:object-right-center opacity-80 mix-blend-multiply" priority style={{ transform: "scale(1.05)" }} />
+          </div>
+          <div className="md:w-1/2 z-10 pt-4">
+            <div className="text-xs font-semibold text-[#0ea5e9] uppercase tracking-wider mb-2">Browse Research</div>
+            <h1 className="text-5xl font-bold mb-4 tracking-tight text-gray-900">
+              All Research<br />
+              <span className="text-[#e11d48]">Domains</span>
+            </h1>
+            <p className="text-gray-500 text-lg mb-8 max-w-md leading-relaxed">Explore the full spectrum of AI research across tasks, methods, and applications.</p>
+            <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+              {[{ label: "Domains", value: "56" }, { label: "Papers", value: "100K+" }, { label: "Researchers", value: "12K+" }].map((stat, i) => (
+                <div key={i}>
+                  <div className="font-bold text-2xl text-gray-800 mt-1 border-r-2">{stat.value}</div>
+                  <div className="border-r-2 pr-4">{stat.label}</div>
+                </div>
+              ))}
+              <div className="flex items-center gap-2 border-2 rounded-xl h-[30px] px-3 mt-3">
+                <TrendingUp size={14} className="text-gray-600" />
+                <span className="text-gray-600 font-medium text-sm">Daily updates</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Filter & View Toggle */}
+        <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
+          <div className="flex flex-wrap gap-3">
+            {filterButtons.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-colors ${
+                  activeFilter === filter
+                    ? "bg-gray-900 text-white"
+                    : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+          <div className="flex bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+            {(["grid", "list"] as const).map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setViewMode(mode)}
+                className={`px-3 py-2 transition-colors ${mode === "list" ? "border-l border-gray-200" : ""} ${
+                  viewMode === mode ? "bg-gray-50 text-[#e11d48]" : "text-gray-400 hover:text-gray-600"
+                }`}
+              >
+                {mode === "grid" ? <LayoutGrid size={16} /> : <List size={16} />}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Render Sections */}
+        {Object.entries(getFilteredData()).map(([title, section]) => renderSection(title, section))}
+
+        {/* Bottom CTA */}
+        <div className="mt-16 bg-[#f8fafc] rounded-xl border border-gray-200 p-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-start gap-4">
+            <div className="p-2 bg-[#fee2e2] rounded-full text-[#ef4444]">
+              <MessageSquare size={20} />
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-800">Can&apos;t find what you&apos;re looking for?</h4>
+              <p className="text-sm text-gray-500 mt-0.5">Suggest a new domain or help us improve our taxonomy to better organize AI research.</p>
+            </div>
+          </div>
+          <button className="flex items-center gap-2 bg-[#e11d48] hover:bg-[#be123c] text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm whitespace-nowrap">
+            <Plus size={16} /> Suggest a Domain
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default FrontierAtlas;

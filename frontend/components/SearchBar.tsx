@@ -142,11 +142,11 @@ export default function SearchBar({
   };
 
   return (
-    <div ref={containerRef} className="relative w-full">
+    <div ref={containerRef} className="relative w-full max-w-full">
       <form onSubmit={handleSubmit} className="relative">
         <Search
           size={variant === "compact" ? 16 : 18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B8B8B]"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B8B8B] shrink-0"
         />
         <input
           ref={inputRef}
@@ -156,9 +156,24 @@ export default function SearchBar({
           onFocus={() => setShowSuggestions(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className={`ds-input w-full pl-10 pr-10 ${
-            variant === "compact" ? "h-9 text-[12px]" : "h-10 text-[13px]"
-          }`}
+          className={`
+            w-full 
+            bg-white 
+            border border-[#E5E5E0] 
+            rounded-lg 
+            text-[#111111]
+            placeholder:text-[#8B8B8B]
+            transition-all 
+            duration-200
+            focus:outline-none 
+            focus:border-[#F55036]
+            focus:ring-2 
+            focus:ring-[#F55036]/20
+            ${variant === "compact" 
+              ? "h-9 text-[13px] pl-8 pr-8" 
+              : "h-10 lg:h-11 text-[13px] lg:text-[14px] pl-9 pr-9"
+            }
+          `}
           aria-label="Search"
           aria-autocomplete="list"
           aria-controls="search-suggestions"
@@ -167,7 +182,7 @@ export default function SearchBar({
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8B8B8B] hover:text-[#111111] transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8B8B8B] hover:text-[#111111] transition-colors p-1 rounded-full hover:bg-[#F5F5F0]"
             aria-label="Clear search"
           >
             <X size={variant === "compact" ? 16 : 18} />
@@ -176,7 +191,7 @@ export default function SearchBar({
         {loading && (
           <Loader2
             size={variant === "compact" ? 16 : 18}
-            className="absolute right-10 top-1/2 -translate-y-1/2 text-[#8B8B8B] animate-spin"
+            className="absolute right-10 top-1/2 -translate-y-1/2 text-[#F55036] animate-spin"
           />
         )}
       </form>
@@ -185,7 +200,21 @@ export default function SearchBar({
         <ul
           id="search-suggestions"
           role="listbox"
-          className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#E5E5E0] rounded-lg shadow-lg z-50 max-h-[400px] overflow-y-auto"
+          className="
+            absolute 
+            top-full 
+            left-0 
+            right-0 
+            mt-1 lg:mt-2 
+            bg-white 
+            border border-[#E5E5E0] 
+            rounded-lg 
+            shadow-lg 
+            z-50 
+            max-h-[300px] lg:max-h-[400px] 
+            overflow-y-auto
+            overflow-x-hidden
+          "
         >
           {suggestions.map((suggestion, index) => (
             <li
@@ -196,25 +225,37 @@ export default function SearchBar({
                 router.push(`/${suggestion.type === 'papers' ? 'papers' : suggestion.type}/${suggestion.slug}`);
                 setShowSuggestions(false);
               }}
-              className={`px-4 py-3 cursor-pointer transition-colors border-b border-[#EBEBE6] last:border-b-0 ${
-                index === selectedIndex
+              className={`
+                px-3 lg:px-4 
+                py-2.5 lg:py-3 
+                cursor-pointer 
+                transition-colors 
+                duration-150
+                border-b border-[#EBEBE6] 
+                last:border-b-0
+                ${index === selectedIndex
                   ? "bg-[#F8F7F2]"
                   : "hover:bg-[#F8F7F2]"
-              }`}
+                }
+              `}
             >
-              <div className="flex items-start gap-3">
-                <span className="text-lg shrink-0">{getSuggestionIcon(suggestion.type)}</span>
+              <div className="flex items-start gap-2.5 lg:gap-3">
+                <span className="text-base lg:text-lg shrink-0 mt-0.5">
+                  {getSuggestionIcon(suggestion.type)}
+                </span>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[14px] font-medium text-[#111111] truncate">
+                  <div className="flex flex-wrap items-center gap-1.5 lg:gap-2">
+                    <span className="text-[13px] lg:text-[14px] font-medium text-[#111111] truncate">
                       {suggestion.title}
                     </span>
-                    <span className="text-[10px] font-medium text-[#8B8B8B] uppercase tracking-wide shrink-0">
+                    <span className="text-[9px] lg:text-[10px] font-medium text-[#8B8B8B] uppercase tracking-wide shrink-0 bg-[#F5F5F0] px-1.5 py-0.5 rounded">
                       {getSuggestionTypeLabel(suggestion.type)}
                     </span>
                   </div>
                   {suggestion.subtitle && (
-                    <p className="text-[12px] text-[#555555] mt-0.5">{suggestion.subtitle}</p>
+                    <p className="text-[11px] lg:text-[12px] text-[#555555] mt-0.5 truncate">
+                      {suggestion.subtitle}
+                    </p>
                   )}
                 </div>
               </div>

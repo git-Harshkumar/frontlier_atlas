@@ -1,27 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback, memo, Profiler } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef, memo } from "react";
 import { Github, MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { getPapers, type Paper } from "@/lib/paperApi";
+import { getPapers, type GetPapersResult, type Paper } from "@/lib/paperApi";
 import Image from "next/image";
-
-// --- Performance Logger ---
-const logRender = (
-  id: string,
-  phase: 'mount' | 'update' | 'nested-update',
-  actualDuration: number,
-  baseDuration: number,
-  startTime: number,
-  commitTime: number
-) => {
-  console.group(`[Profiler] ${id} (${phase})`);
-  console.log(`- Actual duration: ${actualDuration.toFixed(2)}ms`);
-  console.log(`- Base duration: ${baseDuration.toFixed(2)}ms`);
-  console.log(`- Start time: ${startTime.toFixed(2)}ms`);
-  console.log(`- Commit time: ${commitTime.toFixed(2)}ms`);
-  console.groupEnd();
-};
 
 /* ─── Tag color map ──────────────────────────────────────────────────────── */
 const TAG_COLORS: Record<string, { bg: string; text: string; dot: string; border?: string }> = {
@@ -234,107 +217,192 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
 });
 PaperCard.displayName = "PaperCard";
 
+const PaperCardSkeleton = memo(() => {
+  return (
+    <div className="flex flex-col xl:flex-row gap-4 xl:gap-6 p-4 xl:py-6 xl:px-6 border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] bg-white xl:bg-transparent min-w-0 rounded-xl xl:rounded-none h-full animate-pulse">
+      <div className="flex flex-col justify-center shrink-0 w-full xl:w-auto">
+        <div className="w-full xl:w-[170px] h-[180px] sm:h-[220px] xl:h-[240px] shrink-0 border border-[#E5E5E0] rounded-md xl:rounded-none bg-[#EFEDE6]" />
+      </div>
+
+      <div className="flex-1 min-w-0 flex flex-col xl:pr-8">
+        <div className="h-6 bg-[#EFEDE6] rounded mb-2 w-11/12" />
+        <div className="h-6 bg-[#EFEDE6] rounded mb-3 w-7/12" />
+        <div className="h-4 bg-[#EFEDE6] rounded mb-2 w-8/12" />
+        <div className="h-4 bg-[#EFEDE6] rounded mb-2 w-full" />
+        <div className="h-4 bg-[#EFEDE6] rounded mb-2 w-11/12" />
+        <div className="h-4 bg-[#EFEDE6] rounded mb-4 w-9/12" />
+        <div className="h-4 bg-[#EFEDE6] rounded mb-[12px] w-10/12" />
+        <div className="flex gap-2 mb-2 overflow-hidden">
+          <div className="h-[28px] xl:h-[24px] w-24 bg-[#EFEDE6] rounded-[4px]" />
+          <div className="h-[28px] xl:h-[24px] w-32 bg-[#EFEDE6] rounded-[4px]" />
+        </div>
+        <div className="flex gap-2 overflow-hidden">
+          <div className="h-[28px] xl:h-[24px] w-28 bg-[#EFEDE6] rounded-[4px]" />
+          <div className="h-[28px] xl:h-[24px] w-20 bg-[#EFEDE6] rounded-[4px]" />
+        </div>
+      </div>
+
+      <div className="shrink-0 flex items-stretch xl:pl-[24px] xl:pr-[32px] border-t xl:border-t-0 xl:border-l border-[#E5E5E0] mt-auto xl:mt-0 pt-4 xl:pt-0 w-full xl:w-auto">
+        <div className="flex flex-row xl:flex-col justify-around xl:justify-around items-center w-full xl:w-[64px] xl:py-2 gap-2 xl:gap-0">
+          <div className="h-8 w-12 bg-[#EFEDE6] rounded" />
+          <div className="h-8 w-12 bg-[#EFEDE6] rounded" />
+          <div className="h-8 w-12 bg-[#EFEDE6] rounded" />
+        </div>
+      </div>
+    </div>
+  );
+});
+PaperCardSkeleton.displayName = "PaperCardSkeleton";
+
+const LoadingSkeletons = memo(() => {
+  return (
+    <>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <PaperCardSkeleton key={index} />
+      ))}
+    </>
+  );
+});
+LoadingSkeletons.displayName = "LoadingSkeletons";
+
 /* ─── List ───────────────────────────────────────────────────────────────── */
 export default function PaperList({
   selectedTag,
+  initialPapers,
+  initialError,
 }: {
   selectedTag?: string;
+  initialPapers: GetPapersResult | null;
+  initialError?: string;
 }) {
-  const [papers, setPapers] = useState<Paper[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
+  const [papers, setPapers] = useState<Paper[]>(() => initialPapers?.papers ?? []);
+  const [page, setPage] = useState(() => initialPapers?.page ?? 1);
+  const [loadingPage, setLoadingPage] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(initialError ?? null);
+  const [hasMore, setHasMore] = useState(() => initialPapers?.hasMore ?? false);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const cacheRef = useRef<Map<string, GetPapersResult>>(new Map());
+  const inFlightRef = useRef<Map<string, Promise<GetPapersResult>>>(new Map());
+  const loadingPageRef = useRef<number | null>(null);
 
-  // Track page load performance
-  useEffect(() => {
-    console.log(`[PaperList] Page ${page} selectedTag="${selectedTag}" start loading papers count:`, papers.length);
-    const startTime = performance.now();
-    const endLoad = () => {
-      const duration = performance.now() - startTime;
-      console.log(`[PaperList] Load complete in ${duration.toFixed(2)}ms`);
-    };
-    endLoad();
-  }, [page, selectedTag, papers.length]);
-
-  // Handle scroll logic
-  const handleScroll = useCallback(() => {
-    const scrollContainer = document.getElementById("scroll-container") as HTMLElement;
-    if (!scrollContainer) return;
-
-    const nearBottom =
-      scrollContainer.scrollTop + scrollContainer.clientHeight >=
-      scrollContainer.scrollHeight - 500;
-
-    if (nearBottom && !loading && hasMore) {
-      console.log(`[PaperList] Near bottom, loading page ${page + 1}`);
-      setPage((prev) => prev + 1);
-    }
-  }, [loading, hasMore, page]);
-
-  // Setup scroll listener with requestAnimationFrame throttling
-  useEffect(() => {
-    const scrollContainer = document.getElementById("scroll-container") as HTMLElement;
-    if (!scrollContainer) return;
-
-    let ticking = false;
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    scrollContainer.addEventListener("scroll", onScroll);
-
-    return () => {
-      scrollContainer.removeEventListener("scroll", onScroll);
-    };
-  }, [handleScroll]);
-
-  useEffect(() => {
-    setPapers([]);
-    setPage(1);
-    setHasMore(true);
+  const task = useMemo(() => {
+    return selectedTag && selectedTag !== "All Topics"
+      ? selectedTag.toLowerCase().replace(/\s+/g, "-")
+      : undefined;
   }, [selectedTag]);
 
-  useEffect(() => {
-    async function loadPapers() {
-      try {
-        setLoading(true);
-        const task =
-          selectedTag && selectedTag !== "All Topics"
-            ? selectedTag.toLowerCase().replace(/\s+/g, "-")
-            : undefined;
+  const getCacheKey = useCallback((pageNumber: number) => {
+    return `${task || "all"}:${pageNumber}`;
+  }, [task]);
 
-        const apiStartTime = performance.now();
-        const result = await getPapers({ page, task });
-        const apiDuration = performance.now() - apiStartTime;
-        console.log(`[PaperList] API call completed in ${apiDuration.toFixed(2)}ms`);
+  const fetchPage = useCallback((pageNumber: number) => {
+    const key = getCacheKey(pageNumber);
+    const cached = cacheRef.current.get(key);
+    if (cached) return Promise.resolve(cached);
 
-        setHasMore(result.hasMore);
-        
-        setPapers((prev) => {
-          const existingSlugs = new Set(prev.map(p => p.slug));
-          const newPapers = result.papers.filter(p => !existingSlugs.has(p.slug));
-          console.log(`[PaperList] Adding ${newPapers.length} new papers, total now ${prev.length + newPapers.length}`);
-          return [...prev, ...newPapers];
-        });
-        setError(null);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to load papers. Please try again later.');
-      } finally {
-        setLoading(false);
+    const inFlight = inFlightRef.current.get(key);
+    if (inFlight) return inFlight;
+
+    const request = getPapers({ page: pageNumber, task })
+      .then((result) => {
+        cacheRef.current.set(key, result);
+        return result;
+      })
+      .finally(() => {
+        inFlightRef.current.delete(key);
+      });
+
+    inFlightRef.current.set(key, request);
+    return request;
+  }, [getCacheKey, task]);
+
+  const appendPapers = useCallback((newPapers: Paper[]) => {
+    setPapers((prev) => {
+      const existingSlugs = new Set(prev.map((paper) => paper.slug));
+      const uniquePapers = newPapers.filter((paper) => !existingSlugs.has(paper.slug));
+      return uniquePapers.length ? [...prev, ...uniquePapers] : prev;
+    });
+  }, []);
+
+  const loadPage = useCallback(async (pageNumber: number, replace = false) => {
+    if (loadingPageRef.current !== null) return;
+
+    try {
+      loadingPageRef.current = pageNumber;
+      setLoadingPage(pageNumber);
+      setError(null);
+      const result = await fetchPage(pageNumber);
+      setPage(result.page);
+      setHasMore(result.hasMore);
+
+      if (replace) {
+        setPapers(result.papers);
+      } else {
+        appendPapers(result.papers);
       }
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load papers. Please try again later.");
+    } finally {
+      loadingPageRef.current = null;
+      setLoadingPage(null);
     }
-    loadPapers();
-  }, [page, selectedTag]);
+  }, [appendPapers, fetchPage]);
 
-  if (error) {
+  const prefetchPage = useCallback((pageNumber: number) => {
+    void fetchPage(pageNumber).catch((err) => {
+      console.warn("Failed to prefetch papers:", err);
+    });
+  }, [fetchPage]);
+
+  useEffect(() => {
+    if (!task && initialPapers) {
+      cacheRef.current.set(getCacheKey(initialPapers.page), initialPapers);
+      setPapers(initialPapers.papers);
+      setPage(initialPapers.page);
+      setHasMore(initialPapers.hasMore);
+      setError(initialError ?? null);
+      if (initialPapers.hasMore) prefetchPage(initialPapers.page + 1);
+      return;
+    }
+
+    setPapers([]);
+    setPage(1);
+    setHasMore(false);
+    void loadPage(1, true);
+  }, [getCacheKey, initialError, initialPapers, loadPage, prefetchPage, task]);
+
+  useEffect(() => {
+    if (!hasMore || loadingPage !== null || papers.length === 0) return;
+
+    const scrollContainer = document.getElementById("scroll-container") as HTMLElement | null;
+    const sentinel = sentinelRef.current;
+    if (!scrollContainer || !sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          void loadPage(page + 1);
+        }
+      },
+      {
+        root: scrollContainer,
+        rootMargin: "900px 0px",
+        threshold: 0,
+      }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, loadPage, loadingPage, page, papers.length]);
+
+  useEffect(() => {
+    if (hasMore && loadingPage === null && papers.length > 0) {
+      prefetchPage(page + 1);
+    }
+  }, [hasMore, loadingPage, page, papers.length, prefetchPage]);
+
+  if (error && papers.length === 0) {
     return (
       <div className="pb-12 pt-8 flex justify-center items-center text-[#F55036]">
         <p className="text-[14px]">{error}</p>
@@ -343,20 +411,34 @@ export default function PaperList({
   }
 
   return (
-    <Profiler id="PaperList" onRender={logRender}>
-      <div className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0">
-        {papers.map((paper) => (
-          <Profiler key={paper.slug} id={`PaperCard-${paper.slug}`} onRender={logRender}>
-            <PaperCard key={paper.slug} paper={paper} />
-          </Profiler>
-        ))}
+    <div className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0">
+      {papers.map((paper) => (
+        <PaperCard key={paper.slug} paper={paper} />
+      ))}
 
-        {loading && (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E40AF]" />
-          </div>
-        )}
-      </div>
-    </Profiler>
+      {papers.length === 0 && loadingPage !== null && <LoadingSkeletons />}
+
+      {papers.length === 0 && loadingPage === null && !error && (
+        <div className="pb-12 pt-8 flex justify-center items-center text-[#737373]">
+          <p className="text-[14px]">No papers found.</p>
+        </div>
+      )}
+
+      {papers.length > 0 && error && (
+        <div className="py-6 flex justify-center items-center text-[#F55036]">
+          <p className="text-[14px]">{error}</p>
+        </div>
+      )}
+
+      {papers.length > 0 && loadingPage !== null && <LoadingSkeletons />}
+
+      <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
+
+      {!hasMore && papers.length > 0 && (
+        <div className="py-6 flex justify-center items-center text-[#737373]">
+          <p className="text-[12px]">No more papers to load.</p>
+        </div>
+      )}
+    </div>
   );
 }
