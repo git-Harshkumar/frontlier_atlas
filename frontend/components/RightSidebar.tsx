@@ -6,8 +6,6 @@ import {
   Sparkles,
   Star,
   GitFork,
-  Heart,
-  MessageCircle,
   Loader2,
 } from "lucide-react";
 import { getDiscussions, type Discussion } from "@/lib/discussionApi"
