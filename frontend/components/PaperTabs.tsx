@@ -24,17 +24,17 @@ export default function PaperTabs({
   };
 
   return (
-    <div className="border-b border-[#E5E5E0] mb-3">
+    <div className="border-b border-[#E5E5E0] mb-4">
       <div className="flex gap-1 overflow-x-auto hide-scroll">
         {TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={`px-1 py-3 mr-8 text-[13px] font-normal border-b transition-all duration-150 cursor-pointer whitespace-nowrap
+            className={`px-1 py-3 mr-8 text-[13px] border-b-2 transition-all duration-200 cursor-pointer whitespace-nowrap
               ${
                 activeTab === tab
-                  ? "text-[#111111] border-[#F55036] font-bold"
-                  : "text-[#8B8B8B] border-transparent hover:text-[#111111] hover:border-transparent"
+                  ? "text-[#111111] border-[#F55036] font-semibold"
+                  : "text-[#8B8B8B] border-transparent hover:text-[#555555] hover:border-[#E5E5E0] font-normal"
               }`}
           >
             {tab}

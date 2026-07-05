@@ -5,9 +5,10 @@ export interface Discussion {
   source: string;
   time: string;
   title: string;
+  description: string;
   likes: string;
   comments: string;
-   url: string;  
+  url: string;
 }
 
 export async function getDiscussions(): Promise<Discussion[]> {

@@ -1,7 +1,5 @@
 "use client";
 
-export const runtime = "edge";
-
 import { ArrowLeft, AlertCircle, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -9,92 +7,80 @@ import { useState, useEffect } from "react";
 import { getPaperBySlug } from "@/lib/papers";
 import type { PaperDetail as PaperDetailType } from "@/lib/papers";
 import PaperDetail from "@/components/PaperDetail";
+import Navbar from "@/components/Navbar";
 
 function Skeleton() {
   return (
-    <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
-      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 xl:px-12 py-5 animate-pulse">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 mb-2">
-          <div className="h-2.5 bg-[#E5E5E0] rounded w-10" />
-          <span className="text-[#E5E5E0]">/</span>
-          <div className="h-2.5 bg-[#E5E5E0] rounded w-48" />
-        </div>
+    <div className="w-full max-w-7xl mx-auto px-5 lg:px-6 py-6 lg:py-8 animate-pulse">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 mb-6">
+        <div className="h-3 bg-gray-200 rounded w-10" />
+        <span className="text-gray-300">›</span>
+        <div className="h-3 bg-gray-200 rounded w-48" />
+      </div>
 
-        {/* Hero skeleton: content + inline preview */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-5 mb-4 items-start">
+      {/* Hero skeleton: content + inline preview */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-8 mb-8 items-start">
+        <div>
+          <div className="h-12 bg-gray-200 rounded w-40 mb-4" />
+          <div className="h-10 bg-gray-200 rounded w-[88%] mb-3" />
+          <div className="h-10 bg-gray-200 rounded w-[72%] mb-6" />
+          <div className="h-4 bg-gray-200 rounded w-64 mb-4" />
+          <div className="flex gap-3 mb-6">
+            <div className="h-4 bg-gray-200 rounded w-20" />
+            <div className="h-4 bg-gray-200 rounded w-24" />
+            <div className="h-4 bg-gray-200 rounded w-28" />
+          </div>
+          <div className="flex flex-wrap gap-2 mb-6">
+            <div className="h-10 bg-gray-200 rounded-full w-20" />
+            <div className="h-10 bg-gray-200 rounded-full w-24" />
+            <div className="h-10 bg-gray-200 rounded-full w-20" />
+            <div className="h-10 bg-gray-200 rounded-full w-24" />
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-6 border-t border-gray-100">
+            <div className="h-20 bg-gray-100 rounded-xl" />
+            <div className="h-20 bg-gray-100 rounded-xl" />
+            <div className="h-20 bg-gray-100 rounded-xl" />
+            <div className="h-20 bg-gray-100 rounded-xl" />
+            <div className="h-20 bg-gray-100 rounded-xl" />
+          </div>
+        </div>
+        <div className="hidden lg:block">
+          <div className="h-3 bg-gray-200 rounded w-24 mb-3" />
+          <div className="aspect-[3/4] bg-gray-100 rounded-2xl border border-gray-200" />
+        </div>
+      </div>
+
+      {/* Main content skeleton */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 lg:gap-8">
+        <div className="space-y-4">
           <div>
-            <div className="h-10 bg-[#E5E5E0] rounded w-40 mb-4" />
-            <div className="h-10 bg-[#E5E5E0] rounded w-[88%] mb-3" />
-            <div className="h-10 bg-[#E5E5E0] rounded w-[72%] mb-4" />
-            <div className="h-3 bg-[#E5E5E0] rounded w-64 mb-2" />
-            <div className="flex gap-2 mb-4">
-              <div className="h-3 bg-[#E5E5E0] rounded w-20" />
-              <div className="h-3 bg-[#E5E5E0] rounded w-24" />
-              <div className="h-3 bg-[#E5E5E0] rounded w-28" />
-            </div>
-            <div className="flex flex-wrap gap-2 mb-4">
-              <div className="h-9 bg-[#E5E5E0] rounded-full w-16" />
-              <div className="h-9 bg-[#E5E5E0] rounded-full w-20" />
-              <div className="h-9 bg-[#E5E5E0] rounded-full w-16" />
-              <div className="h-9 bg-[#E5E5E0] rounded-full w-20" />
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-4 border-t border-[#E5E5E0]">
-              <div className="h-16 bg-[#E5E5E0] rounded-lg" />
-              <div className="h-16 bg-[#E5E5E0] rounded-lg" />
-              <div className="h-16 bg-[#E5E5E0] rounded-lg" />
-              <div className="h-16 bg-[#E5E5E0] rounded-lg" />
-              <div className="h-16 bg-[#E5E5E0] rounded-lg" />
+            <div className="h-4 bg-gray-200 rounded w-32 mb-3" />
+            <div className="bg-white border border-gray-100 rounded-xl p-4 space-y-3">
+              <div className="h-3 bg-gray-100 rounded w-full" />
+              <div className="h-3 bg-gray-100 rounded w-3/4" />
             </div>
           </div>
-          <div className="hidden lg:block">
-            <div className="h-3 bg-[#E5E5E0] rounded w-20 mb-2" />
-            <div className="aspect-[3/4] bg-[#E5E5E0] rounded-[22px]" />
+          <div>
+            <div className="h-4 bg-gray-200 rounded w-24 mb-3" />
+            <div className="bg-white border border-gray-100 rounded-xl p-4 space-y-3">
+              <div className="h-3 bg-gray-100 rounded w-full" />
+              <div className="h-3 bg-gray-100 rounded w-full" />
+              <div className="h-3 bg-gray-100 rounded w-full" />
+              <div className="h-3 bg-gray-100 rounded w-5/6" />
+            </div>
           </div>
         </div>
-
-        {/* Main content skeleton: 70/30 */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 lg:gap-5">
-          <div className="space-y-3">
-            <div>
-              <div className="h-3 bg-[#E5E5E0] rounded w-24 mb-2" />
-              <div className="bg-white border border-[#E5E5E0] rounded-lg p-3 space-y-2">
-                <div className="h-2.5 bg-[#E5E5E0] rounded w-full" />
-                <div className="h-2.5 bg-[#E5E5E0] rounded w-3/4" />
-              </div>
-            </div>
-            <div>
-              <div className="h-3 bg-[#E5E5E0] rounded w-20 mb-2" />
-              <div className="bg-white border border-[#E5E5E0] rounded-lg p-3 space-y-2">
-                <div className="h-2.5 bg-[#E5E5E0] rounded w-full" />
-                <div className="h-2.5 bg-[#E5E5E0] rounded w-full" />
-                <div className="h-2.5 bg-[#E5E5E0] rounded w-full" />
-                <div className="h-2.5 bg-[#E5E5E0] rounded w-5/6" />
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-1">
-              <div className="h-5 bg-[#E5E5E0] rounded-md w-16" />
-              <div className="h-5 bg-[#E5E5E0] rounded-md w-20" />
-              <div className="h-5 bg-[#E5E5E0] rounded-md w-14" />
-              <div className="h-5 bg-[#E5E5E0] rounded-md w-18" />
-            </div>
+        <div className="space-y-4">
+          <div className="bg-white border border-gray-100 rounded-xl p-4 space-y-3">
+            <div className="h-3 bg-gray-200 rounded w-16" />
+            <div className="h-4 bg-gray-100 rounded w-full" />
+            <div className="h-4 bg-gray-100 rounded w-2/3" />
           </div>
-          <div className="space-y-2">
-            <div className="bg-white border border-[#E5E5E0] rounded-lg p-3 space-y-2">
-              <div className="h-2.5 bg-[#E5E5E0] rounded w-14" />
-              <div className="h-3 bg-[#E5E5E0] rounded w-full" />
-              <div className="h-3 bg-[#E5E5E0] rounded w-2/3" />
-            </div>
-            <div className="bg-white border border-[#E5E5E0] rounded-lg p-3 space-y-2">
-              <div className="h-2.5 bg-[#E5E5E0] rounded w-12" />
-              <div className="h-3 bg-[#E5E5E0] rounded w-3/4" />
-              <div className="h-3 bg-[#E5E5E0] rounded w-1/2" />
-            </div>
-            <div className="bg-white border border-[#E5E5E0] rounded-lg p-3 space-y-2">
-              <div className="h-2.5 bg-[#E5E5E0] rounded w-16" />
-              <div className="h-3 bg-[#E5E5E0] rounded w-full" />
-              <div className="h-3 bg-[#E5E5E0] rounded w-5/6" />
-            </div>
+          <div className="bg-white border border-gray-100 rounded-xl p-4 space-y-3">
+            <div className="h-3 bg-gray-200 rounded w-14" />
+            <div className="h-4 bg-gray-100 rounded w-3/4" />
+            <div className="h-4 bg-gray-100 rounded w-1/2" />
           </div>
         </div>
       </div>
@@ -134,68 +120,71 @@ export default function PaperPage() {
     loadPaper();
   }, [slug]);
 
+  let content = null;
+
   if (loading) {
-    return <Skeleton />;
-  }
+    content = <Skeleton />;
+  } else if (notFound) {
+    content = (
+      <div className="w-full max-w-7xl mx-auto px-5 lg:px-6 py-6 lg:py-8">
+        <nav className="flex items-center gap-2 text-sm text-gray-500 mb-8">
+          <Link href="/" className="hover:text-gray-800 transition-colors no-underline">Home</Link>
+          <span>›</span>
+          <span className="text-gray-900 font-medium">{slug}</span>
+        </nav>
 
-  if (notFound) {
-    return (
-      <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
-        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 xl:px-12 py-8">
-          <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
-            <Link href="/" className="hover:text-[#F55036] transition-colors no-underline">Home</Link>
-            <span>/</span>
-            <span className="text-[#555555] font-medium">{slug}</span>
-          </nav>
-
-          <div className="max-w-[500px] mx-auto flex flex-col items-center justify-center py-20 gap-4">
-            <BookOpen size={40} className="text-[#DCDCD7]" />
-            <h2 className="text-[18px] font-bold text-[#555555]">Paper not found</h2>
-            <p className="text-[13px] text-[#8B8B8B] text-center">
-              The paper you are looking for does not exist or may have been removed.
-            </p>
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 ds-button text-[12px] px-4 py-2 no-underline mt-2"
-            >
-              <ArrowLeft size={14} />
-              Back to Home
-            </Link>
+        <div className="max-w-md mx-auto flex flex-col items-center justify-center py-24 gap-5 text-center">
+          <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-2">
+            <BookOpen size={32} className="text-gray-400" />
           </div>
+          <h2 className="text-2xl font-bold text-slate-800">Paper not found</h2>
+          <p className="text-sm text-gray-500">
+            The paper you are looking for does not exist or may have been removed.
+          </p>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-full text-sm font-semibold transition-colors mt-4"
+          >
+            <ArrowLeft size={16} />
+            Back to Home
+          </Link>
         </div>
       </div>
     );
-  }
+  } else if (error) {
+    content = (
+      <div className="w-full max-w-7xl mx-auto px-5 lg:px-6 py-6 lg:py-8">
+        <nav className="flex items-center gap-2 text-sm text-gray-500 mb-8">
+          <Link href="/" className="hover:text-gray-800 transition-colors no-underline">Home</Link>
+          <span>›</span>
+          <span className="text-gray-900 font-medium">{slug}</span>
+        </nav>
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
-        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 xl:px-12 py-8">
-          <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
-            <Link href="/" className="hover:text-[#F55036] transition-colors no-underline">Home</Link>
-            <span>/</span>
-            <span className="text-[#555555] font-medium">{slug}</span>
-          </nav>
-
-          <div className="max-w-[500px] mx-auto flex flex-col items-center justify-center py-20 gap-4">
-            <AlertCircle size={40} className="text-[#FF5A1F]" />
-            <h2 className="text-[18px] font-bold text-[#FF5A1F]">Something went wrong</h2>
-            <p className="text-[13px] text-[#8B8B8B] text-center">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="ds-button text-[12px] px-4 py-2 mt-2"
-            >
-              Retry
-            </button>
+        <div className="max-w-md mx-auto flex flex-col items-center justify-center py-24 gap-5 text-center">
+          <div className="w-20 h-20 rounded-full bg-red-50 flex items-center justify-center mb-2">
+            <AlertCircle size={32} className="text-red-500" />
           </div>
+          <h2 className="text-2xl font-bold text-red-600">Something went wrong</h2>
+          <p className="text-sm text-gray-500">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-full text-sm font-semibold transition-colors mt-4"
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
+  } else if (paper) {
+    content = <PaperDetail paper={paper} />;
   }
 
-  if (!paper) {
-    return null;
-  }
-
-  return <PaperDetail paper={paper} />;
+  return (
+    <div className="min-h-screen bg-[#fafafa] text-slate-900 antialiased" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <Navbar />
+      {content}
+    </div>
+  );
 }
+
+

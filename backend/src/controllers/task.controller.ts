@@ -14,6 +14,17 @@ export const getTasks = async (c: Context) => {
   }
 };
 
+export const getTaskPaperCounts = async (c: Context) => {
+  const prisma = c.var.prisma;
+
+  try {
+    const counts = await taskService.getTaskPaperCounts(prisma);
+    return c.json(counts, 200);
+  } catch (error: any) {
+    return c.json({ status: "error", detail: error.message }, 500);
+  }
+};
+
 export const getTaskBySlug = async (c: Context) => {
   const prisma = c.var.prisma;
   const slug = c.req.param('slug') as string;

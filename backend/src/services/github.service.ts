@@ -27,6 +27,9 @@ export const getGithubTrending = async () => {
   addSuffix: true,
 }),
   title: `${repo.name} has recent development activity`,
+  description:
+  repo.description ??
+  "Open-source project currently trending on GitHub.",
   likes: repo.stargazers_count.toLocaleString(),
   comments: repo.forks_count.toLocaleString(),
     url: repo.html_url,

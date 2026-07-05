@@ -3,13 +3,16 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Search, X, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { searchSuggestions, type SearchResult } from "@/lib/search";
+import { motion } from "framer-motion";
 
 interface SearchBarProps {
   placeholder?: string;
   autoFocus?: boolean;
   variant?: "default" | "compact";
   initialQuery?: string;
+  layoutIdPrefix?: string;
 }
 
 export default function SearchBar({
@@ -17,6 +20,7 @@ export default function SearchBar({
   autoFocus = false,
   variant = "default",
   initialQuery = "",
+  layoutIdPrefix,
 }: SearchBarProps) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
@@ -45,6 +49,7 @@ export default function SearchBar({
     }
   }, []);
 
+  // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
       if (query.trim()) {
@@ -57,12 +62,14 @@ export default function SearchBar({
     return () => clearTimeout(timer);
   }, [query, fetchSuggestions]);
 
+  // Auto-focus
   useEffect(() => {
     if (autoFocus && inputRef.current) {
       inputRef.current.focus();
     }
   }, [autoFocus]);
 
+  // Click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -104,8 +111,10 @@ export default function SearchBar({
         e.preventDefault();
         if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
           const suggestion = suggestions[selectedIndex];
-          router.push(`/${suggestion.type === 'papers' ? 'papers' : suggestion.type}/${suggestion.slug}`);
+          const href = `/${suggestion.type === 'papers' ? 'papers' : suggestion.type}/${suggestion.slug}`;
+          router.push(href);
           setShowSuggestions(false);
+          setSelectedIndex(-1);
         } else {
           handleSubmit(e);
         }
@@ -138,17 +147,35 @@ export default function SearchBar({
       models: "Model",
       datasets: "Dataset",
     };
-    return labels[type];
+    return labels[type] || "Result";
   };
 
+  // Determine if we should show suggestions
+  const shouldShowSuggestions = showSuggestions && suggestions.length > 0;
+
   return (
-    <div ref={containerRef} className="relative w-full max-w-full">
-      <form onSubmit={handleSubmit} className="relative">
-        <Search
-          size={variant === "compact" ? 16 : 18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B8B8B] shrink-0"
-        />
-        <input
+    <div ref={containerRef} className="relative w-full">
+      <motion.form
+        layoutId={layoutIdPrefix ? `${layoutIdPrefix}-container` : undefined}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        onSubmit={handleSubmit}
+        className={`relative flex items-center bg-white border border-[#E5E5E0] focus-within:border-[#F55036] focus-within:ring-2 focus-within:ring-[#F55036]/20 transition-all ${
+          variant === "compact" ? "rounded-[20px]" : "rounded-[24px]"
+        }`}
+      >
+        {/* Search Icon */}
+        <motion.div 
+          layoutId={layoutIdPrefix ? `${layoutIdPrefix}-icon` : undefined}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          className="flex items-center text-[#737373] ml-3 shrink-0"
+        >
+          <Search size={variant === "compact" ? 16 : 18} />
+        </motion.div>
+
+        {/* Input */}
+        <motion.input
+          layoutId={layoutIdPrefix ? `${layoutIdPrefix}-input` : undefined}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
           ref={inputRef}
           type="text"
           value={query}
@@ -156,28 +183,27 @@ export default function SearchBar({
           onFocus={() => setShowSuggestions(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className={`
-            w-full 
-            bg-white 
-            border border-[#E5E5E0] 
-            rounded-lg 
-            text-[#111111]
-            placeholder:text-[#8B8B8B]
-            transition-all 
-            duration-200
-            focus:outline-none 
-            focus:border-[#F55036]
-            focus:ring-2 
-            focus:ring-[#F55036]/20
-            ${variant === "compact" 
-              ? "h-9 text-[13px] pl-8 pr-8" 
-              : "h-10 lg:h-11 text-[13px] lg:text-[14px] pl-9 pr-9"
-            }
-          `}
+          className={`bg-transparent outline-none flex-1 text-[#111111] placeholder:text-[#737373] min-w-0 px-2 ${
+            variant === "compact" 
+              ? "h-9 text-[12px]" 
+              : "h-10 lg:h-11 text-[13px] lg:text-[14px]"
+          }`}
           aria-label="Search"
           aria-autocomplete="list"
           aria-controls="search-suggestions"
+          aria-expanded={shouldShowSuggestions}
+          aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
         />
+
+        {/* Loading Spinner */}
+        {loading && (
+          <Loader2
+            size={variant === "compact" ? 16 : 18}
+            className="absolute right-10 top-1/2 -translate-y-1/2 text-[#F55036] animate-spin"
+          />
+        )}
+
+        {/* Clear Button */}
         {query && (
           <button
             type="button"
@@ -188,16 +214,15 @@ export default function SearchBar({
             <X size={variant === "compact" ? 16 : 18} />
           </button>
         )}
-        {loading && (
-          <Loader2
-            size={variant === "compact" ? 16 : 18}
-            className="absolute right-10 top-1/2 -translate-y-1/2 text-[#F55036] animate-spin"
-          />
-        )}
-      </form>
+      </motion.form>
 
-      {showSuggestions && suggestions.length > 0 && (
-        <ul
+      {/* Suggestions Dropdown */}
+      {shouldShowSuggestions && (
+        <motion.ul
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -5 }}
+          transition={{ duration: 0.15 }}
           id="search-suggestions"
           role="listbox"
           className="
@@ -214,54 +239,54 @@ export default function SearchBar({
             max-h-[300px] lg:max-h-[400px] 
             overflow-y-auto
             overflow-x-hidden
+            py-1
           "
         >
-          {suggestions.map((suggestion, index) => (
-            <li
-              key={`${suggestion.type}-${suggestion.id}`}
-              role="option"
-              aria-selected={index === selectedIndex}
-              onClick={() => {
-                router.push(`/${suggestion.type === 'papers' ? 'papers' : suggestion.type}/${suggestion.slug}`);
-                setShowSuggestions(false);
-              }}
-              className={`
-                px-3 lg:px-4 
-                py-2.5 lg:py-3 
-                cursor-pointer 
-                transition-colors 
-                duration-150
-                border-b border-[#EBEBE6] 
-                last:border-b-0
-                ${index === selectedIndex
-                  ? "bg-[#F8F7F2]"
-                  : "hover:bg-[#F8F7F2]"
-                }
-              `}
-            >
-              <div className="flex items-start gap-2.5 lg:gap-3">
-                <span className="text-base lg:text-lg shrink-0 mt-0.5">
-                  {getSuggestionIcon(suggestion.type)}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-1.5 lg:gap-2">
-                    <span className="text-[13px] lg:text-[14px] font-medium text-[#111111] truncate">
-                      {suggestion.title}
-                    </span>
-                    <span className="text-[9px] lg:text-[10px] font-medium text-[#8B8B8B] uppercase tracking-wide shrink-0 bg-[#F5F5F0] px-1.5 py-0.5 rounded">
-                      {getSuggestionTypeLabel(suggestion.type)}
-                    </span>
+          {suggestions.map((suggestion, index) => {
+            const href = `/${suggestion.type === 'papers' ? 'papers' : suggestion.type}/${suggestion.slug}`;
+            const isSelected = index === selectedIndex;
+            
+            return (
+              <li
+                key={`${suggestion.type}-${suggestion.id}`}
+                id={`suggestion-${index}`}
+                role="option"
+                aria-selected={isSelected}
+                className={`border-b border-[#EBEBE6] last:border-b-0 ${
+                  isSelected ? "bg-[#F8F7F2]" : "hover:bg-[#F8F7F2]"
+                }`}
+              >
+                <Link
+                  href={href}
+                  onClick={() => {
+                    setShowSuggestions(false);
+                    setSelectedIndex(-1);
+                  }}
+                  className="flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors block w-full h-full"
+                >
+                  <span className="text-lg shrink-0 mt-0.5">
+                    {getSuggestionIcon(suggestion.type)}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5 lg:gap-2">
+                      <span className="text-[13px] lg:text-[14px] font-medium text-[#111111] truncate">
+                        {suggestion.title}
+                      </span>
+                      <span className="text-[9px] lg:text-[10px] font-medium text-[#8B8B8B] uppercase tracking-wide shrink-0 bg-[#F5F5F0] px-1.5 py-0.5 rounded">
+                        {getSuggestionTypeLabel(suggestion.type)}
+                      </span>
+                    </div>
+                    {suggestion.subtitle && (
+                      <p className="text-[11px] lg:text-[12px] text-[#555555] mt-0.5 truncate">
+                        {suggestion.subtitle}
+                      </p>
+                    )}
                   </div>
-                  {suggestion.subtitle && (
-                    <p className="text-[11px] lg:text-[12px] text-[#555555] mt-0.5 truncate">
-                      {suggestion.subtitle}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+                </Link>
+              </li>
+            );
+          })}
+        </motion.ul>
       )}
     </div>
   );

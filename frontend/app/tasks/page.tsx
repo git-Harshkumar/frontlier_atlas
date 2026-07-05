@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Activity,
   ArrowRight,
@@ -56,6 +56,7 @@ import Navbar from "@/components/Navbar";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import bgImage from "@/public/bg-image.png";
+import { getTaskPaperCounts, type TaskPaperCounts } from "@/lib/tasks";
 
 interface CapabilityItem {
   icon: React.ComponentType<{
@@ -65,7 +66,7 @@ interface CapabilityItem {
   }>;
   title: string;
   desc: string;
-  count: string;
+  count: string; // This will be populated from backend
   slug: string;
 }
 
@@ -181,10 +182,32 @@ const getDomainIcon = (
   return domainIconMap[item] || Sparkles;
 };
 
+// Skeleton loader component for paper count
+const PaperCountSkeleton: React.FC = () => (
+  <div className="flex items-center gap-1.5">
+    <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
+    <div className="h-3 w-12 bg-gray-200 rounded animate-pulse" />
+  </div>
+);
+
 const FrontierAtlas: React.FC = () => {
   const router = useRouter();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [activeFilter, setActiveFilter] = useState<string>("All Domains");
+  const [paperCounts, setPaperCounts] = useState<TaskPaperCounts>({});
+  const [isLoadingCounts, setIsLoadingCounts] = useState<boolean>(true);
+
+  useEffect(() => {
+    getTaskPaperCounts()
+      .then((counts) => {
+        setPaperCounts(counts);
+        setIsLoadingCounts(false);
+      })
+      .catch((error) => {
+        console.error("Failed to load task counts:", error);
+        setIsLoadingCounts(false);
+      });
+  }, []);
 
   const sections: SectionsType = useMemo(
     () => ({
@@ -197,112 +220,112 @@ const FrontierAtlas: React.FC = () => {
             icon: Bot,
             title: "Agents",
             desc: "Autonomous systems that perceive, reason, and act.",
-            count: "1.5k papers",
+            count: "", // Will be populated from backend
             slug: "agents",
           },
           {
             icon: Zap,
             title: "Anomaly Detection",
             desc: "Identifying unusual patterns in data.",
-            count: "3.6k papers",
+            count: "",
             slug: "anomaly-detection",
           },
           {
             icon: Car,
             title: "Autonomous Driving",
             desc: "AI for self-driving and intelligent vehicles.",
-            count: "5.6k papers",
+            count: "",
             slug: "autonomous-driving",
           },
           {
             icon: Code,
             title: "Coding Agents",
             desc: "AI agents for code generation and assistance.",
-            count: "3.8k papers",
+            count: "",
             slug: "coding-agents",
           },
           {
             icon: Monitor,
             title: "Computer Use Agents",
             desc: "Agents that interact with computers.",
-            count: "2.2k papers",
+            count: "",
             slug: "computer-use-agents",
           },
           {
             icon: Shield,
             title: "Deepfake & Forensics",
             desc: "Synthesizing detection and media forensics.",
-            count: "2.1k papers",
+            count: "",
             slug: "deepfake-forensics",
           },
           {
             icon: FileText,
             title: "Document Understanding",
             desc: "Extracting insights from documents.",
-            count: "8.6k papers",
+            count: "",
             slug: "document-understanding",
           },
           {
             icon: Layers,
             title: "Embedding Models",
             desc: "Representation learning and embeddings.",
-            count: "3.6k papers",
+            count: "",
             slug: "embedding-models",
           },
           {
             icon: MessageSquare,
             title: "Language Modeling",
             desc: "Models for understanding and generating text.",
-            count: "62.4k papers",
+            count: "",
             slug: "language-modeling",
           },
           {
             icon: Scan,
             title: "OCR",
             desc: "Optical character recognition.",
-            count: "4.8k papers",
+            count: "",
             slug: "ocr",
           },
           {
             icon: Puzzle,
             title: "Omni Models",
             desc: "Unified models for vision, text, and audio.",
-            count: "2.6k papers",
+            count: "",
             slug: "omni-models",
           },
           {
             icon: Brain,
             title: "Reasoning",
             desc: "Logical reasoning and problem solving.",
-            count: "5.7k papers",
+            count: "",
             slug: "reasoning",
           },
           {
             icon: BarChart3,
             title: "Reinforcement Learning",
             desc: "Learning through rewards and feedback.",
-            count: "17.9k papers",
+            count: "",
             slug: "reinforcement-learning",
           },
           {
             icon: Satellite,
             title: "Remote Sensing",
             desc: "Earth observation and satellite imagery.",
-            count: "4.6k papers",
+            count: "",
             slug: "remote-sensing",
           },
           {
             icon: Bot,
             title: "Robotics",
             desc: "Robotic perception, control, and manipulation.",
-            count: "7.7k papers",
+            count: "",
             slug: "robotics",
           },
           {
             icon: ScanEye,
             title: "Scene Text Recognition",
             desc: "Reading text in natural scenes.",
-            count: "3.6k papers",
+            count: "",
             slug: "scene-text-recognition",
           },
         ],
@@ -397,6 +420,17 @@ const FrontierAtlas: React.FC = () => {
     router.push(`/tasks/${slug}`);
   };
 
+  const formatPaperCount = (slug: string) => {
+    const count = paperCounts[slug];
+    if (count === undefined) return "0 papers";
+    if (count === 0) return "0 papers";
+    const value =
+      count >= 1000
+        ? `${(count / 1000).toFixed(1).replace(/\.0$/, "")}k`
+        : count.toString();
+    return `${value} papers`;
+  };
+
   const renderGridItem = (
     item: CapabilityItem | DomainItem,
     index: number,
@@ -432,9 +466,15 @@ const FrontierAtlas: React.FC = () => {
             <p className="text-xs text-gray-500 mt-1 leading-tight line-clamp-2">
               {(item as CapabilityItem).desc}
             </p>
-            <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-400">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-300" />
-              {(item as CapabilityItem).count}
+            <div className="mt-3">
+              {isLoadingCounts ? (
+                <PaperCountSkeleton />
+              ) : (
+                <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                  <div className="w-1.5 h-1.5 rounded-full bg-gray-300" />
+                  {formatPaperCount(slug)}
+                </div>
+              )}
             </div>
           </>
         ) : (
@@ -488,9 +528,13 @@ const FrontierAtlas: React.FC = () => {
         </div>
         <div className="flex items-center gap-4">
           {isItem && (
-            <span className="text-xs text-gray-400">
-              {(item as CapabilityItem).count}
-            </span>
+            isLoadingCounts ? (
+              <PaperCountSkeleton />
+            ) : (
+              <span className="text-xs text-gray-400">
+                {formatPaperCount(slug)}
+              </span>
+            )
           )}
           <ChevronRight size={16} className="text-gray-300" />
         </div>
@@ -588,7 +632,7 @@ const FrontierAtlas: React.FC = () => {
                 </div>
               ))}
 
-              <div className="flex items-center gap-2 border-2 border-gray-200 rounded-full px-4 py-1.5 bg-white/50 backdrop-blur-sm ml-2">
+              <div className="flex items-center gap-2 border-2 border-gray-200 rounded-full px-4 py-1.5 bg-white/50 backdrop-blur-sm ml-2 cursor-pointer hover:shadow-sm">
                 <TrendingUp size={14} className="text-emerald-500" />
                 <span className="text-gray-600 font-medium text-xs md:text-sm">
                   Daily updates
@@ -647,7 +691,7 @@ const FrontierAtlas: React.FC = () => {
           </div>
         </div>
 
-        {/* Render Sections */}
+        {/* Render Sections - No main loading state */}
         {Object.entries(getFilteredData).map(([title, section]) =>
           renderSection(title, section),
         )}

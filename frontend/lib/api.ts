@@ -1,5 +1,6 @@
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8787').replace(/\/$/, '');
-
+const isDev = process.env.NODE_ENV === "development";
+const defaultApiUrl = isDev ? "http://127.0.0.1:8787" : ""; // In production, call sites already include /api/... in the endpoint
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || defaultApiUrl).replace(/\/$/, "");
 export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
   const url = `${API_BASE}${path}`;
@@ -15,5 +16,14 @@ export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): 
     throw new Error(`API error: ${response.status} ${response.statusText}`);
   }
 
-  return response.json();
+  const text = await response.text();
+  try {
+    return JSON.parse(text) as T;
+  } catch (error) {
+    const preview = text.length > 500 ? `${text.slice(0, 500)}…` : text;
+    if (process.env.NODE_ENV === "development") {
+      console.error(`[fetchApi] JSON parse error on ${url}. Status: ${response.status}. Body preview: "${preview}"`);
+    }
+    throw new Error(`Invalid JSON response from API: ${url}`, { cause: error });
+  }
 }

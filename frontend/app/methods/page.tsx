@@ -1,236 +1,65 @@
-"use client";
-
-import { useState, useEffect, useCallback } from "react";
-import { Search, ArrowUpDown, AlertCircle, Inbox } from "lucide-react";
-import { getMethods, type MethodItem } from "@/lib/methods";
-import MethodCard from "@/components/MethodCard";
+import * as React from "react";
 import Link from "next/link";
+import { MethodsHero } from "@/components/MethodsHero";
+import { CategoryRow } from "@/components/CategoryRow";
+import Navbar from "@/components/Navbar";
+import { atlasUiFont } from "@/lib/fonts";
+import { fetchApi } from "@/lib/api";
 
-const LIMIT = 12;
-
-function SkeletonCard() {
-  return (
-    <div className="ds-card p-5 flex flex-col gap-3 animate-pulse">
-      <div className="flex items-start justify-between gap-3">
-        <div className="h-5 bg-[#E5E5E0] rounded w-2/3" />
-        <div className="h-4 bg-[#E5E5E0] rounded w-16" />
-      </div>
-      <div className="h-4 bg-[#E5E5E0] rounded w-1/3" />
-    </div>
-  );
-}
-
-function SkeletonGrid() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {Array.from({ length: LIMIT }).map((_, i) => (
-        <SkeletonCard key={i} />
-      ))}
-    </div>
-  );
-}
-
-export default function MethodsPage() {
-  const [methods, setMethods] = useState<MethodItem[]>([]);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<"name" | "papers">("name");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(search);
-      setPage(1);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [search]);
-
-  const fetchMethods = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getMethods({
-        sort,
-        search: debouncedSearch || undefined,
-        page,
-        limit: LIMIT,
-      });
-      setMethods(data.methods);
-      setTotal(data.total);
-      setHasMore(data.hasMore);
-    } catch (err) {
-      console.error("Failed to fetch methods:", err);
-      setError("Failed to load methods. Please try again later.");
-    } finally {
-      setLoading(false);
+async function getTaxonomy() {
+  try {
+    const json = await fetchApi<any>("/api/v1/methods/taxonomy", { cache: "no-store" });
+    return json.data || [];
+  } catch (error: any) {
+    if (error.digest === 'DYNAMIC_SERVER_USAGE') {
+      throw error;
     }
-  }, [sort, debouncedSearch, page]);
+    console.error("Failed to fetch taxonomy:", error);
+    return [];
+  }
+}
 
-  useEffect(() => {
-    fetchMethods();
-  }, [fetchMethods]);
-
-  const totalPages = Math.ceil(total / LIMIT);
+export default async function MethodsPage() {
+  const taxonomy = await getTaxonomy();
 
   return (
-    <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
-      <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 xl:px-12 py-8">
-        <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
-          <Link href="/" className="hover:text-[#F55036] transition-colors no-underline">
-            Home
-          </Link>
-          <span>/</span>
-          <span className="text-[#555555] font-medium">Methods</span>
-        </nav>
+    <div className={`${atlasUiFont.className} flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111] tracking-normal`}>
+      <Navbar />
+      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar flex flex-col">
+        <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 xl:px-12 py-8 pb-20">
+          
+          <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
+            <Link href="/" className="hover:text-[#FF5A1F] transition-colors no-underline">
+              Home
+            </Link>
+            <span>/</span>
+            <span className="text-[#555555] font-medium">Methods</span>
+          </nav>
 
-        <div className="mb-8">
-          <h1 className="text-[28px] md:text-[32px] font-bold tracking-tight mb-2">
-            Methods
-          </h1>
-          <p className="text-[#555555] text-[14px] md:text-[15px]">
-            Browse and discover research methods used across AI papers.
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
-          <div className="relative flex-1 w-full sm:max-w-[360px]">
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8B8B8B]" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search methods..."
-              className="ds-input w-full pl-10 pr-4 h-10 text-[13px]"
-            />
-          </div>
-
-          <div className="flex items-center gap-2">
-            <ArrowUpDown size={14} className="text-[#8B8B8B]" />
-            <button
-              onClick={() => setSort("name")}
-              className={`px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors ${
-                sort === "name"
-                  ? "bg-[#FF5A1F] text-white border-[#FF5A1F]"
-                  : "bg-white text-[#555555] border-[#E5E5E0] hover:border-[#FF5A1F]"
-              }`}
-            >
-              Name
-            </button>
-            <button
-              onClick={() => setSort("papers")}
-              className={`px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors ${
-                sort === "papers"
-                  ? "bg-[#FF5A1F] text-white border-[#FF5A1F]"
-                  : "bg-white text-[#555555] border-[#E5E5E0] hover:border-[#FF5A1F]"
-              }`}
-            >
-              Paper Count
-            </button>
-          </div>
-        </div>
-
-        {loading && <SkeletonGrid />}
-
-        {error && !loading && (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <AlertCircle size={32} className="text-[#FF5A1F]" />
-            <p className="text-[14px] text-[#FF5A1F]">{error}</p>
-            <button
-              onClick={fetchMethods}
-              className="ds-button text-[12px]"
-            >
-              Retry
-            </button>
-          </div>
-        )}
-
-        {!loading && !error && methods.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Inbox size={32} className="text-[#8B8B8B]" />
-            <p className="text-[14px] text-[#555555]">
-              {debouncedSearch
-                ? `No methods match "${debouncedSearch}"`
-                : "No methods found."}
-            </p>
-            {debouncedSearch && (
-              <button
-                onClick={() => {
-                  setSearch("");
-                  setDebouncedSearch("");
-                }}
-                className="ds-button-ghost text-[12px]"
-              >
-                Clear search
-              </button>
-            )}
-          </div>
-        )}
-
-        {!loading && !error && methods.length > 0 && (
-          <>
-            <div className="text-[13px] text-[#8B8B8B] mb-4">
-              Showing {methods.length} of {total} method{total !== 1 ? "s" : ""}
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {methods.map((method) => (
-                <MethodCard key={method.id} method={method} />
-              ))}
-            </div>
-
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-10">
-                <button
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  disabled={page === 1}
-                  className="ds-button-ghost text-[12px] disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Previous
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1)
-                  .filter((p) => {
-                    if (totalPages <= 7) return true;
-                    if (p === 1 || p === totalPages) return true;
-                    if (Math.abs(p - page) <= 1) return true;
-                    return false;
-                  })
-                  .map((p, idx, arr) => {
-                    const showEllipsis = idx > 0 && p - arr[idx - 1] > 1;
-                    return (
-                      <span key={p} className="flex items-center">
-                        {showEllipsis && (
-                          <span className="px-1 text-[#8B8B8B] text-[13px]">...</span>
-                        )}
-                        <button
-                          onClick={() => setPage(p)}
-                          className={`w-8 h-8 rounded-full text-[12px] font-medium transition-colors ${
-                            page === p
-                              ? "bg-[#FF5A1F] text-white"
-                              : "text-[#555555] hover:bg-[#EBEBE6]"
-                          }`}
-                        >
-                          {p}
-                        </button>
-                      </span>
-                    );
-                  })}
-
-                <button
-                  onClick={() => setPage((p) => p + 1)}
-                  disabled={!hasMore}
-                  className="ds-button-ghost text-[12px] disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Next
-                </button>
+          <MethodsHero />
+          
+          <main className="flex flex-col mt-4 bg-white rounded-3xl border border-[#E5E5E0] shadow-soft p-6 md:p-10">
+            <h2 className="sr-only">Browse Methods by Category</h2>
+            {taxonomy.length > 0 ? taxonomy.map((category: any) => (
+              <CategoryRow key={category.id} category={category} />
+            )) : (
+              <div className="flex flex-col items-center justify-center py-24 px-4 text-center animate-fade-in">
+                <div className="w-20 h-20 bg-[#F8F7F2] rounded-full flex items-center justify-center mb-6 border border-[#E5E5E0] shadow-sm">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B8B8B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                  </svg>
+                </div>
+                <h3 className="text-[18px] font-bold text-[#111111] mb-2 tracking-tight">No methods found</h3>
+                <p className="text-[14px] text-[#666666] max-w-[300px] leading-relaxed">
+                  We couldn't find any methods matching your criteria. Please adjust your filters and try again.
+                </p>
               </div>
             )}
-          </>
-        )}
+          </main>
+        </div>
       </div>
     </div>
   );

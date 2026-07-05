@@ -8,6 +8,11 @@ const inter = Inter({
   display: 'swap',
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "Frontier Atlas - Discover AI Research",
   description: "Discover and track the latest breakthroughs in AI and machine learning research. Trending papers, SOTA benchmarks, GitHub stars, and more.",
@@ -29,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`} suppressHydrationWarning>{children}</body>
     </html>
   );
 }
