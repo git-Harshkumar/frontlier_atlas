@@ -45,7 +45,8 @@ export default function Navbar() {
             </svg>
           </button>
           <div className="flex items-center cursor-pointer relative w-[140px] lg:w-[160px] h-8 lg:h-9">
-            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="(max-width: 1024px) 140px, 160px" />
+            {/* priority tells Next.js to inject <link rel="preload"> in <head> — FCP win */}
+            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="(max-width: 1024px) 140px, 160px" priority />
           </div>
         </div>
 
@@ -90,7 +91,7 @@ export default function Navbar() {
       >
         <div className="h-[52px] border-b border-[#E5E5E0] flex items-center justify-between px-4 shrink-0">
           <div className="relative w-[120px] h-6">
-            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="120px" />
+            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="120px" priority />
           </div>
           <button 
              onClick={closeMenu}

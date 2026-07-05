@@ -1,27 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback, memo, Profiler } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { Github, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { getPapers, type GetPapersParams, type Paper } from "@/lib/paperApi";
 import Image from "next/image";
-
-// --- Performance Logger ---
-const logRender = (
-  id: string,
-  phase: 'mount' | 'update' | 'nested-update',
-  actualDuration: number,
-  baseDuration: number,
-  startTime: number,
-  commitTime: number
-) => {
-  console.group(`[Profiler] ${id} (${phase})`);
-  console.log(`- Actual duration: ${actualDuration.toFixed(2)}ms`);
-  console.log(`- Base duration: ${baseDuration.toFixed(2)}ms`);
-  console.log(`- Start time: ${startTime.toFixed(2)}ms`);
-  console.log(`- Commit time: ${commitTime.toFixed(2)}ms`);
-  console.groupEnd();
-};
 
 /* ─── Tag color map ──────────────────────────────────────────────────────── */
 const TAG_COLORS: Record<string, { bg: string; text: string; dot: string; border?: string }> = {
@@ -32,25 +15,66 @@ const TAG_COLORS: Record<string, { bg: string; text: string; dot: string; border
   gray: { bg: "bg-white", text: "text-[#111111]", dot: "", border: "border border-[#E5E5E0]" },
 };
 
-const getTagColor = (label: string): string => {
-  const map: Record<string, string> = {
-    "Reinforcement Learning": "blue",
-    "Image Understanding": "blue",
-    Agents: "green",
-    "Long Context": "purple",
-    "Robotics": "cyan",
-    "World Models": "purple",
-  };
-  if (map[label]) return map[label];
+const TAG_COLOR_MAP: Record<string, string> = {
+  "Reinforcement Learning": "blue",
+  "Image Understanding": "blue",
+  Agents: "green",
+  "Long Context": "purple",
+  Robotics: "cyan",
+  "World Models": "purple",
+};
 
-  const colors = ["purple", "blue", "green", "cyan"];
+const COLOR_CYCLE = ["purple", "blue", "green", "cyan"] as const;
+
+const getTagColor = (label: string): string => {
+  if (TAG_COLOR_MAP[label]) return TAG_COLOR_MAP[label];
   let hash = 0;
   for (let i = 0; i < label.length; i++) {
     hash = label.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return colors[Math.abs(hash) % colors.length];
+  return COLOR_CYCLE[Math.abs(hash) % COLOR_CYCLE.length];
 };
 
+
+/* ─── Skeleton shimmer ───────────────────────────────────────────────────── */
+// Shows immediately while waiting for API, matching PaperCard dimensions exactly.
+// Gives users instant visual feedback (FCP / perceived performance win).
+const PaperCardSkeleton = memo(() => (
+  <div className="flex flex-col xl:flex-row gap-4 xl:gap-6 p-4 xl:py-6 xl:px-6 border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] bg-white xl:bg-transparent rounded-xl xl:rounded-none animate-pulse">
+    {/* Thumbnail placeholder */}
+    <div className="w-full xl:w-[170px] h-[180px] sm:h-[220px] xl:h-[240px] shrink-0 rounded-md xl:rounded-none bg-[#EBEBEB]" />
+
+    {/* Content placeholder */}
+    <div className="flex-1 min-w-0 flex flex-col xl:pr-8">
+      {/* Title */}
+      <div className="h-5 bg-[#EBEBEB] rounded w-3/4 mb-2" />
+      <div className="h-4 bg-[#EBEBEB] rounded w-1/2 mb-3" />
+      {/* Description lines */}
+      <div className="h-3.5 bg-[#EBEBEB] rounded w-full mb-1.5" />
+      <div className="h-3.5 bg-[#EBEBEB] rounded w-full mb-1.5" />
+      <div className="h-3.5 bg-[#EBEBEB] rounded w-2/3 mb-4" />
+      {/* Tags */}
+      <div className="flex gap-2 mb-2">
+        <div className="h-7 bg-[#EBEBEB] rounded w-20" />
+        <div className="h-7 bg-[#EBEBEB] rounded w-24" />
+      </div>
+      <div className="flex gap-2">
+        <div className="h-7 bg-[#EBEBEB] rounded w-16" />
+        <div className="h-7 bg-[#EBEBEB] rounded w-20" />
+      </div>
+    </div>
+
+    {/* Metrics placeholder */}
+    <div className="shrink-0 flex items-stretch xl:pl-[24px] xl:pr-[32px] border-t xl:border-t-0 xl:border-l border-[#E5E5E0] mt-auto xl:mt-0 pt-4 xl:pt-0 w-full xl:w-auto">
+      <div className="flex flex-row xl:flex-col justify-around xl:justify-around items-center w-full xl:w-[64px] xl:py-2 gap-2 xl:gap-0">
+        <div className="h-8 w-12 bg-[#EBEBEB] rounded" />
+        <div className="h-8 w-12 bg-[#EBEBEB] rounded" />
+        <div className="h-8 w-12 bg-[#EBEBEB] rounded" />
+      </div>
+    </div>
+  </div>
+));
+PaperCardSkeleton.displayName = "PaperCardSkeleton";
 
 /* ─── Pill tag ───────────────────────────────────────────────────────────── */
 const Pill = memo(({ label, colorKey }: { label: string; colorKey: string }) => {
@@ -122,7 +146,9 @@ const SotaDisplay = memo(({ sota }: { sota: string }) => {
 SotaDisplay.displayName = "SotaDisplay";
 
 /* ─── Thumbnail ──────────────────────────────────────────────────────────── */
-const PaperThumbnail = memo(({ title, thumbnail }: { title: string; thumbnail: string }) => {
+// `priority` is true for the first few cards so Next.js injects a <link rel="preload">
+// for those images in the document head — this is the single biggest LCP win.
+const PaperThumbnail = memo(({ title, thumbnail, priority }: { title: string; thumbnail: string; priority?: boolean }) => {
   return (
     <div className="w-full xl:w-[170px] h-[180px] sm:h-[220px] xl:h-[240px] shrink-0 border border-[#E5E5E0] rounded-md xl:rounded-none bg-[#F8F7F2] overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.07)] relative flex items-center justify-center">
       {thumbnail ? (
@@ -132,6 +158,8 @@ const PaperThumbnail = memo(({ title, thumbnail }: { title: string; thumbnail: s
           fill
           className="object-cover object-top"
           sizes="(max-width: 1280px) 100vw, 170px"
+          priority={priority}
+          loading={priority ? undefined : "lazy"}
         />
       ) : (
         <div className="text-[#8B8B8B] text-[10px] px-4 text-center">No Cover</div>
@@ -182,11 +210,13 @@ const Metric = memo(({
 Metric.displayName = "Metric";
 
 /* ─── Paper Card ─────────────────────────────────────────────────────────── */
-const PaperCard = memo(({ paper }: { paper: Paper }) => {
-  // Parse upvotes string to float for stars/hr, e.g. "11.2K" -> "11.2"
+// `index` is used to decide whether to preload the thumbnail image.
+// Cards 0-2 (above the fold) get priority=true so Next.js adds a <link rel="preload">
+// for those images in the <head>, dramatically improving LCP.
+const PaperCard = memo(({ paper, index }: { paper: Paper; index: number }) => {
   const upvotesNum = parseFloat(paper.upvotes) || 0;
+  const isPriority = index < 3;
 
-  // Format authors to avoid long lines
   let displayAuthors = paper.authors;
   if (paper.authors) {
     const authorList = paper.authors.split(",").map(a => a.trim());
@@ -200,7 +230,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
       <div className="group flex flex-col xl:flex-row gap-4 xl:gap-6 p-4 xl:py-6 xl:px-6 border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] bg-white xl:bg-transparent min-w-0 cursor-pointer hover:shadow-md xl:hover:bg-white xl:hover:shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all duration-200 rounded-xl xl:rounded-none h-full">
         {/* LEFT — PDF thumbnail */}
         <div className="flex flex-col justify-center shrink-0 w-full xl:w-auto">
-          <PaperThumbnail title={paper.title} thumbnail={paper.thumbnail} />
+          <PaperThumbnail title={paper.title} thumbnail={paper.thumbnail} priority={isPriority} />
         </div>
 
         {/* RIGHT — Content */}
@@ -238,7 +268,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
           {/* Methods (Row 3) */}
           <div className="flex flex-nowrap items-center gap-2 w-full overflow-hidden">
             {paper.additionalTags?.map((t) => {
-              return <Pill key={t} label={t} colorKey="gray" /> ;
+              return <Pill key={t} label={t} colorKey="gray" />;
             })}
           </div>
         </div>
@@ -252,7 +282,6 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
               onClick={paper.githubUrl ? () => window.open(paper.githubUrl, '_blank', 'noopener,noreferrer') : undefined}
               interactive={!!paper.githubUrl}
             >
-              {/* Minimal optional icon if needed */}
             </Metric>
 
             <Metric
@@ -286,6 +315,8 @@ interface PaperListProps {
   period?: GetPapersParams["period"];
 }
 
+const SKELETON_COUNT = 5;
+
 export default function PaperList({
   selectedTag,
   filterParams,
@@ -293,22 +324,19 @@ export default function PaperList({
 }: PaperListProps) {
   const [papers, setPapers] = useState<Paper[]>([]);
   const [page, setPage] = useState(1);
+  // Start with true so skeletons are shown immediately on mount.
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
 
-  // Track page load performance
+  // Reset list when filters change.
   useEffect(() => {
-    console.log(`[PaperList] Page ${page} selectedTag="${selectedTag}" start loading papers count:`, papers.length);
-    const startTime = performance.now();
-    const endLoad = () => {
-      const duration = performance.now() - startTime;
-      console.log(`[PaperList] Load complete in ${duration.toFixed(2)}ms`);
-    };
-    endLoad();
-  }, [page, selectedTag, filterParams, period, papers.length]);
+    setPapers([]);
+    setPage(1);
+    setHasMore(true);
+  }, [selectedTag, filterParams, period]);
 
-  // Handle scroll logic
+  // Handle scroll logic for infinite loading.
   const handleScroll = useCallback(() => {
     const scrollContainer = document.getElementById("scroll-container") as HTMLElement;
     if (!scrollContainer) return;
@@ -318,12 +346,11 @@ export default function PaperList({
       scrollContainer.scrollHeight - 500;
 
     if (nearBottom && !loading && hasMore) {
-      console.log(`[PaperList] Near bottom, loading page ${page + 1}`);
       setPage((prev) => prev + 1);
     }
-  }, [loading, hasMore, page]);
+  }, [loading, hasMore]);
 
-  // Setup scroll listener with requestAnimationFrame throttling
+  // Setup scroll listener with requestAnimationFrame throttling.
   useEffect(() => {
     const scrollContainer = document.getElementById("scroll-container") as HTMLElement;
     if (!scrollContainer) return;
@@ -340,19 +367,15 @@ export default function PaperList({
     };
 
     scrollContainer.addEventListener("scroll", onScroll);
-
-    return () => {
-      scrollContainer.removeEventListener("scroll", onScroll);
-    };
+    return () => scrollContainer.removeEventListener("scroll", onScroll);
   }, [handleScroll]);
 
+  // Main data-fetch effect.
+  // The `cancelled` flag discards results from stale in-flight requests when
+  // filters or page changes before the previous fetch resolves.
   useEffect(() => {
-    setPapers([]);
-    setPage(1);
-    setHasMore(true);
-  }, [selectedTag, filterParams, period]);
+    let cancelled = false;
 
-  useEffect(() => {
     async function loadPapers() {
       try {
         setLoading(true);
@@ -361,33 +384,35 @@ export default function PaperList({
             ? selectedTag.toLowerCase().replace(/\s+/g, "-")
             : undefined;
 
-        const apiStartTime = performance.now();
         const result = await getPapers({
           page,
           ...filterParams,
           task: selectedTask ?? filterParams?.task,
           period,
         });
-        const apiDuration = performance.now() - apiStartTime;
-        console.log(`[PaperList] API call completed in ${apiDuration.toFixed(2)}ms`);
+
+        if (cancelled) return;
 
         setHasMore(result.hasMore);
-
         setPapers((prev) => {
           const existingSlugs = new Set(prev.map(p => p.slug));
           const newPapers = result.papers.filter(p => !existingSlugs.has(p.slug));
-          console.log(`[PaperList] Adding ${newPapers.length} new papers, total now ${prev.length + newPapers.length}`);
           return [...prev, ...newPapers];
         });
         setError(null);
       } catch (err) {
-        console.error(err);
-        setError('Failed to load papers. Please try again later.');
+        if (!cancelled) {
+          console.error(err);
+          setError('Failed to load papers. Please try again later.');
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
+
     loadPapers();
+
+    return () => { cancelled = true; };
   }, [page, selectedTag, filterParams, period]);
 
   if (error) {
@@ -398,21 +423,30 @@ export default function PaperList({
     );
   }
 
-  return (
-    <Profiler id="PaperList" onRender={logRender}>
-      <div className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0">
-        {papers.map((paper) => (
-          <Profiler key={paper.slug} id={`PaperCard-${paper.slug}`} onRender={logRender}>
-            <PaperCard key={paper.slug} paper={paper} />
-          </Profiler>
-        ))}
+  const showSkeletons = loading && papers.length === 0;
 
-        {loading && (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E40AF]" />
-          </div>
-        )}
-      </div>
-    </Profiler>
+  return (
+    <div className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0">
+      {/* Real paper cards — rendered immediately as data arrives */}
+      {papers.map((paper, index) => (
+        <PaperCard key={paper.slug} paper={paper} index={index} />
+      ))}
+
+      {/* Skeleton cards — shown immediately on initial load so the feed is
+          never blank. They disappear the moment the first page of papers lands.
+          This is the primary FCP / perceived-performance improvement. */}
+      {showSkeletons &&
+        Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+          <PaperCardSkeleton key={`skeleton-${i}`} />
+        ))
+      }
+
+      {/* Pagination spinner — only after first page has loaded */}
+      {loading && papers.length > 0 && (
+        <div className="flex justify-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E40AF]" />
+        </div>
+      )}
+    </div>
   );
 }
