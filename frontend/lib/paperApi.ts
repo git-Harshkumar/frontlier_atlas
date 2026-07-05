@@ -95,7 +95,7 @@ function mapBackendPaper(raw: Record<string, unknown>): Paper {
 
   return {
     id: Number(raw.id) || String(raw.id),
-    slug: String(raw.slug || ""),
+    slug: String(raw.slug || raw.id || ""),
     title: String(raw.title || "Untitled Paper"),
     thumbnail: String(raw.thumbnail_url || raw.thumbnailUrl || raw.thumbnail || ""),
     authors: displayAuthors,
@@ -115,7 +115,7 @@ function mapBackendPaper(raw: Record<string, unknown>): Paper {
 export async function getPapers(params: GetPapersParams = {}): Promise<GetPapersResult> {
   try {
     const start = performance.now();
-    console.log(`[paperApi] getPapers called with params:`, params);
+    if (process.env.NODE_ENV === "development") console.log(`[paperApi] getPapers called with params:`, params);
     
     const query = new URLSearchParams();
     
@@ -135,7 +135,7 @@ export async function getPapers(params: GetPapersParams = {}): Promise<GetPapers
     const mapDuration = performance.now() - mapStart;
     const totalDuration = performance.now() - start;
     
-    console.log(`[paperApi] getPapers complete in ${totalDuration.toFixed(2)}ms (mapping took ${mapDuration.toFixed(2)}ms)`);
+    if (process.env.NODE_ENV === "development") console.log(`[paperApi] getPapers complete in ${totalDuration.toFixed(2)}ms (mapping took ${mapDuration.toFixed(2)}ms)`);
 
     return {
       papers: mappedPapers,

@@ -1,11 +1,13 @@
 "use client";
-import { useState, memo } from "react";
+import { useState, useMemo, memo } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import PaperList from "@/components/PaperFeed";
 import PaperTabs from "@/components/PaperTabs";
 import HeroSection from "@/components/HeroSection";
+import BackToTop from "@/components/BackToTop";
+import { atlasUiFont } from "@/lib/fonts";
 
 // ─── Lazy-loaded non-critical sections ────────────────────────────────────
 // RightSidebar fires a getDiscussions() API call on mount. If it rendered
@@ -36,18 +38,28 @@ RightSidebarSlot.displayName = "RightSidebarSlot";
 // ─── Homepage ─────────────────────────────────────────────────────────────
 export default function Home() {
   const [selectedTag, setSelectedTag] = useState<string | undefined>(undefined);
-
-  // selectedPeriod is wired through PaperTabs → PaperList so tab clicks
-  // actually trigger a filtered fetch. Previously PaperTabs managed its own
-  // internal state with no way to propagate the value upward.
+  const [activeSort, setActiveSort] = useState<string>("Trending Papers");
   const [selectedPeriod, setSelectedPeriod] = useState<string>("Today");
+  
+  const filterParams = useMemo(() => {
+    const isTask = ["Agents", "Reasoning", "Language Modeling", "Coding Agents", "Computer Use", "World Models", "Robotics"].includes(activeSort);
+    const isDiscover = ["Trending Papers", "Latest Papers", "Most GitHub Stars"].includes(activeSort);
+    // If it's not a known task or discover tab, it might be a dynamic method name.
+    
+    const toSlug = (str: string) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    return {
+      sort: activeSort === "Latest Papers" ? "latest" 
+          : activeSort === "Most GitHub Stars" ? "stars" 
+          : "trending",
+      task: isTask ? toSlug(activeSort) : undefined,
+      method: (!isTask && !isDiscover) ? toSlug(activeSort) : undefined,
+    };
+  }, [activeSort]);
 
   return (
-    // atlasUiFont className removed — Inter is already applied at the <body>
-    // level in layout.tsx. Having it here created a second Inter CSS variable
-    // scope and an unnecessary class re-application on every render.
-    <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111] tracking-normal">
-      <Navbar />
+    <div className={`${atlasUiFont.className} flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111] tracking-normal`}>
+      <Navbar activeSort={activeSort} onItemSelect={setActiveSort} />
       <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll flex flex-col">
 
         {/* Hero Section */}
@@ -62,26 +74,22 @@ export default function Home() {
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-4 pb-12 flex items-start gap-6 xl:gap-8">
 
           <div className="hidden lg:block w-[200px] shrink-0 sticky top-4">
-            <Sidebar />
+            <Sidebar initialActive={activeSort} onItemSelect={setActiveSort} />
           </div>
 
-          <main className="flex-1 min-w-0 max-w-full">
-            {/* PaperTabs now passes selectedPeriod and onPeriodSelect so tab
-                clicks propagate to PaperList and trigger a real filtered fetch. */}
-            <PaperTabs
-              selectedPeriod={selectedPeriod}
-              onPeriodSelect={setSelectedPeriod}
-            />
-            <PaperList
-              selectedTag={selectedTag}
-              period={
-                // "Today" sends no period param — matches the original behaviour.
-                // The backend returns the default trending feed when period is omitted.
-                selectedPeriod === "This Week" ? "week"
-                : selectedPeriod === "This Month" ? "month"
-                : selectedPeriod === "All time" ? "all"
-                : undefined
-              }
+          <main className="flex-1 min-w-0 max-w-full flex flex-col">
+            <div className="block xl:hidden w-full mb-8 border-b border-[#E5E5E0] pb-4">
+              <RightSidebar />
+            </div>
+            
+            <PaperTabs selectedPeriod={selectedPeriod} onPeriodSelect={setSelectedPeriod} />
+            <PaperList 
+              selectedTag={selectedTag} 
+              filterParams={filterParams} 
+              period={selectedPeriod === "Today" ? "today"
+                    : selectedPeriod === "This Week" ? "week"
+                    : selectedPeriod === "This Month" ? "month"
+                    : "all"} 
             />
           </main>
 
@@ -90,6 +98,7 @@ export default function Home() {
 
         </div>
       </div>
+      <BackToTop />
     </div>
   );
 }

@@ -1,94 +1,39 @@
 "use client";
 
-import { useEffect, useState, memo } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   Flame, Clock, Star, Bot, Brain, MessageSquare, Code2,
-  Monitor, Globe, Cpu, Zap, Link, RefreshCw, Layers,
-  BarChart2, Target, Plug, FileText, ImageIcon, Video, Volume2
+  Monitor, Globe, Cpu, Zap, Link as LinkIcon, RefreshCw, Layers,
+  FileText, ImageIcon, Video, Volume2,
+  ChevronDown, ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
-// ─── Module-level constants ────────────────────────────────────────────────
-// Defined here (outside the component) so they are created once per module
-// load, not on every render. Previously these were allocated inside the
-// component body, creating new JSX elements and arrays on every state change
-// (e.g. every click that updated `activeItem`).
 
-const DISCOVER_ITEMS = [
-  { label: "Trending Papers" },
-  { label: "Latest Papers" },
-  { label: "Most GitHub Stars" },
-] as const;
 
-const TASKS_ITEMS = [
-  { label: "Agents" },
-  { label: "Reasoning" },
-  { label: "Language Modeling" },
-  { label: "Coding Agents" },
-  { label: "Computer Use" },
-  { label: "World Models" },
-  { label: "Robotics" },
-] as const;
-
-const METHODS_ITEMS = [
-  { label: "Transformer" },
-  { label: "Chain of Thought" },
-  { label: "ReAct" },
-  { label: "LoRA" },
-  { label: "RLHF" },
-  { label: "DPO" },
-  { label: "MCP" },
-] as const;
-
-const GENERATION_ITEMS = [
-  { label: "Text Generation" },
-  { label: "Image Generation" },
-  { label: "Video Generation" },
-  { label: "Audio Generation" },
-] as const;
-
-// Icon map — avoids re-creating icon JSX inside the render loop.
-// Icons are pure presentational components so we can reference them directly.
-const ICON_MAP: Record<string, React.ReactElement> = {
-  "Trending Papers": <Flame size={14} />,
-  "Latest Papers": <Clock size={14} />,
-  "Most GitHub Stars": <Star size={14} />,
-  "Agents": <Bot size={14} />,
-  "Reasoning": <Brain size={14} />,
-  "Language Modeling": <MessageSquare size={14} />,
-  "Coding Agents": <Code2 size={14} />,
-  "Computer Use": <Monitor size={14} />,
-  "World Models": <Globe size={14} />,
-  "Robotics": <Cpu size={14} />,
-  "Transformer": <Zap size={14} />,
-  "Chain of Thought": <Link size={14} />,
-  "ReAct": <RefreshCw size={14} />,
-  "LoRA": <Layers size={14} />,
-  "RLHF": <BarChart2 size={14} />,
-  "DPO": <Target size={14} />,
-  "MCP": <Plug size={14} />,
-  "Text Generation": <FileText size={14} />,
-  "Image Generation": <ImageIcon size={14} />,
-  "Video Generation": <Video size={14} />,
-  "Audio Generation": <Volume2 size={14} />,
-};
-
-// ─── Sub-components (memoized) ─────────────────────────────────────────────
-
-const SectionLabel = memo(function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ title, isOpen, onToggle }: { title: string, isOpen: boolean, onToggle: () => void }) {
   return (
-    <p className="text-[11px] font-semibold text-[#8B8B8B] uppercase tracking-[0.08em] px-3 mb-[2px] mt-[4px] first:mt-0">
-      {children}
-    </p>
+    <div 
+      onClick={onToggle}
+      className="flex items-center justify-between cursor-pointer group px-3 mb-[2px] mt-[4px] first:mt-0 py-1"
+    >
+      <p className="text-[11px] font-semibold text-[#8B8B8B] group-hover:text-[#555555] transition-colors uppercase tracking-[0.08em]">
+        {title}
+      </p>
+      <div className="text-[#8B8B8B] group-hover:text-[#555555] transition-colors">
+        {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+      </div>
+    </div>
   );
-});
-SectionLabel.displayName = "SectionLabel";
+}
 
-const NavItem = memo(function NavItem({
+function NavItem({
   icon,
   label,
   isActive = false,
-  onClick,
+  onClick
 }: {
   icon: React.ReactNode;
   label: string;
@@ -99,22 +44,23 @@ const NavItem = memo(function NavItem({
     <div
       onClick={onClick}
       className={cn(
-        "flex items-center gap-2 px-3 py-[3.5px] mx-2 cursor-pointer transition-colors text-[14px] font-medium leading-tight",
+        "relative flex items-center gap-2 px-3 py-[6px] mx-2 cursor-pointer transition-all duration-200 rounded-md text-[13px] font-medium leading-tight",
         isActive
-          ? "text-[#F55036]"
-          : "text-[#555555] hover:text-[#F55036]"
+          ? "bg-[#F8EFEB] text-[#F55036]"
+          : "text-[#555555] hover:bg-[#F8F7F2] hover:text-[#111111]"
       )}
     >
+      {/* Left accent bar for active state */}
+      {isActive && (
+        <span className="absolute left-0 top-1 bottom-1 w-[3px] bg-[#F55036] rounded-r-full" />
+      )}
       <span className="w-4 h-4 flex items-center justify-center text-[16px] shrink-0">
         {icon}
       </span>
       <span className="truncate">{label}</span>
     </div>
   );
-});
-NavItem.displayName = "NavItem";
-
-// ─── Sidebar ───────────────────────────────────────────────────────────────
+}
 
 interface SidebarProps {
   onItemClick?: () => void;
@@ -128,6 +74,15 @@ export default function Sidebar({
   initialActive = "Trending Papers",
 }: SidebarProps) {
   const [activeItem, setActiveItem] = useState(initialActive);
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    tasks: true,
+    methods: true,
+    generation: true,
+  });
+
+  const toggleSection = (section: string) => {
+    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
 
   useEffect(() => {
     setActiveItem(initialActive);
@@ -139,42 +94,195 @@ export default function Sidebar({
     onItemClick?.();
   };
 
-  const renderSection = (
-    label: string,
-    items: ReadonlyArray<{ label: string }>
-  ) => (
-    <div className="flex flex-col">
-      <SectionLabel>{label}</SectionLabel>
-      {items.map((item) => (
-        <NavItem
-          key={item.label}
-          icon={
-            // The Trending Papers icon needs active-state fill styling.
-            // All other icons are static from the module-level map.
-            item.label === "Trending Papers" ? (
-              <Flame
-                size={14}
-                className={activeItem === "Trending Papers" ? "text-[#F55036] fill-[#F55036]" : ""}
-              />
-            ) : (
-              ICON_MAP[item.label]
-            )
+  // Static Navigation Sections
+  const discover = [
+    { label: "Trending Papers", icon: <Flame size={14} className={activeItem === "Trending Papers" ? "text-[#F55036] fill-[#F55036]" : ""} /> },
+    { label: "Latest Papers", icon: <Clock size={14} /> },
+    { label: "Most GitHub Stars", icon: <Star size={14} /> },
+  ];
+
+  const tasks = [
+    { label: "Agents", icon: <Bot size={14} /> },
+    { label: "Reasoning", icon: <Brain size={14} /> },
+    { label: "Language Modeling", icon: <MessageSquare size={14} /> },
+    { label: "Coding Agents", icon: <Code2 size={14} /> },
+    { label: "Computer Use", icon: <Monitor size={14} /> },
+    { label: "World Models", icon: <Globe size={14} /> },
+    { label: "Robotics", icon: <Cpu size={14} /> },
+  ];
+
+  const initialMethods = [
+    { label: "Transformer", icon: <Zap size={14} />, slug: "transformer" },
+    { label: "Chain of Thought", icon: <LinkIcon size={14} />, slug: "chain-of-thought" },
+    { label: "ReAct", icon: <RefreshCw size={14} />, slug: "react" },
+    { label: "LoRA", icon: <Layers size={14} />, slug: "lora" }
+  ];
+
+  const [topMethods, setTopMethods] = useState(initialMethods);
+  const [totalMethods, setTotalMethods] = useState(142);
+
+  useEffect(() => {
+    async function loadMethods() {
+      try {
+        const { getMethods } = await import('@/lib/methods');
+        const res = await getMethods({ sort: 'papers', limit: 4 });
+        if (res?.methods) {
+          const dynamicMethods = res.methods.map((m: {name: string, slug: string}, index: number) => {
+            const icons = [<Zap key="1" size={14} />, <LinkIcon key="2" size={14} />, <RefreshCw key="3" size={14} />, <Layers key="4" size={14} />];
+            return {
+              label: m.name,
+              slug: m.slug,
+              icon: icons[index % icons.length]
+            };
+          });
+          setTopMethods(dynamicMethods);
+          if (res.total) {
+            setTotalMethods(res.total);
           }
-          label={item.label}
-          isActive={activeItem === item.label}
-          onClick={() => handleItemClick(item.label)}
-        />
-      ))}
-    </div>
-  );
+        }
+      } catch (err) {
+        if (process.env.NODE_ENV === "development") {
+          console.error("Failed to load methods", err);
+        }
+      }
+    }
+    loadMethods();
+  }, []);
+
+  const generation = [
+    { label: "Text Generation", icon: <FileText size={14} /> },
+    { label: "Image Generation", icon: <ImageIcon size={14} /> },
+    { label: "Video Generation", icon: <Video size={14} /> },
+    { label: "Audio Generation", icon: <Volume2 size={14} /> },
+  ];
 
   return (
-    <aside className="flex flex-col w-full bg-transparent overflow-hidden">
+    <aside className="flex flex-col w-full bg-transparent overflow-y-auto max-h-[calc(100vh-100px)] pb-12 custom-scrollbar">
+
+      {/* Non-scrollable Nav Area */}
       <div className="flex flex-col gap-2">
-        {renderSection("DISCOVER", DISCOVER_ITEMS)}
-        {renderSection("TASKS", TASKS_ITEMS)}
-        {renderSection("METHODS", METHODS_ITEMS)}
-        {renderSection("GENERATION", GENERATION_ITEMS)}
+
+      {/* DISCOVER */}
+      <div className="mb-4">
+        <div className="px-3 mb-[2px] mt-[4px] py-1">
+          <p className="text-[11px] font-semibold text-[#8B8B8B] uppercase tracking-[0.08em]">DISCOVER</p>
+        </div>
+        <div className="flex flex-col gap-[2px]">
+          {discover.map((item) => (
+            <NavItem
+              key={item.label}
+              icon={item.icon}
+              label={item.label}
+              isActive={activeItem === item.label}
+              onClick={() => handleItemClick(item.label)}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <SectionLabel 
+          title="Tasks" 
+          isOpen={openSections.tasks} 
+          onToggle={() => toggleSection('tasks')} 
+        />
+        <AnimatePresence initial={false}>
+          {openSections.tasks && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="flex flex-col gap-[2px]">
+                {tasks.map((item) => (
+                  <NavItem
+                    key={item.label}
+                    icon={item.icon}
+                    label={item.label}
+                    isActive={activeItem === item.label}
+                    onClick={() => handleItemClick(item.label)}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* METHODS */}
+      <div className="mb-6">
+        <SectionLabel 
+          title="Methods" 
+          isOpen={openSections.methods} 
+          onToggle={() => toggleSection('methods')} 
+        />
+        <AnimatePresence initial={false}>
+          {openSections.methods && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="flex flex-col gap-[2px]">
+                {topMethods.map((item) => (
+                  <Link href={`/methods/${item.slug}`} key={item.label}>
+                    <NavItem
+                      icon={item.icon}
+                      label={item.label}
+                      isActive={activeItem === item.label}
+                      onClick={() => handleItemClick(item.label)}
+                    />
+                  </Link>
+                ))}
+                
+                {/* Embedded Show More Button */}
+                <Link href="/methods" className="flex items-center gap-2 px-3 py-[3.5px] mx-2 mt-1 rounded-md cursor-pointer transition-colors text-[13px] font-medium leading-tight text-[#8B8B8B] hover:text-[#555555] hover:bg-[#F8F7F2]">
+                  <span className="w-4 h-4 flex items-center justify-center shrink-0">
+                    <Layers size={14} />
+                  </span>
+                  <span>View all {totalMethods} methods</span>
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* GENERATION */}
+      <div className="mb-6">
+        <SectionLabel 
+          title="Generation" 
+          isOpen={openSections.generation} 
+          onToggle={() => toggleSection('generation')} 
+        />
+        <AnimatePresence initial={false}>
+          {openSections.generation && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="flex flex-col gap-[2px]">
+                {generation.map((item) => (
+                  <NavItem
+                    key={item.label}
+                    icon={item.icon}
+                    label={item.label}
+                    isActive={activeItem === item.label}
+                    onClick={() => handleItemClick(item.label)}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
       </div>
     </aside>
   );

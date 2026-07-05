@@ -3,13 +3,16 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Search, X, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { searchSuggestions, type SearchResult } from "@/lib/search";
+import { motion } from "framer-motion";
 
 interface SearchBarProps {
   placeholder?: string;
   autoFocus?: boolean;
   variant?: "default" | "compact";
   initialQuery?: string;
+  layoutIdPrefix?: string;
 }
 
 export default function SearchBar({
@@ -17,6 +20,7 @@ export default function SearchBar({
   autoFocus = false,
   variant = "default",
   initialQuery = "",
+  layoutIdPrefix,
 }: SearchBarProps) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
@@ -142,21 +146,33 @@ export default function SearchBar({
   };
 
   return (
-    <div ref={containerRef} className="relative w-full">
-      <form onSubmit={handleSubmit} className="relative">
-        <Search
-          size={variant === "compact" ? 16 : 18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B8B8B]"
-        />
-        <input
-          ref={inputRef}
+    <div ref={containerRef} className={`relative ${variant === "compact" ? "w-full max-w-[400px]" : "w-full max-w-[600px] mx-auto"}`}>
+      <motion.form
+        layoutId={layoutIdPrefix ? `${layoutIdPrefix}-container` : undefined}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        onSubmit={handleSubmit}
+        className={`relative flex items-center px-3 md:px-4 bg-white border border-[#E5E5E0] focus-within:border-[#DCDCD7] focus-within:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all ${
+          variant === "compact" ? "rounded-[20px]" : "rounded-[24px]"
+        }`}
+      >
+        <motion.div 
+          layoutId={layoutIdPrefix ? `${layoutIdPrefix}-icon` : undefined}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          className="flex items-center text-[#737373] mr-2 shrink-0"
+        >
+          <Search size={variant === "compact" ? 16 : 18} />
+        </motion.div>
+        <motion.input
+          layoutId={layoutIdPrefix ? `${layoutIdPrefix}-input` : undefined}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          ref={inputRef as any}
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setShowSuggestions(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className={`ds-input w-full pl-10 pr-10 ${
+          className={`bg-transparent outline-none flex-1 text-[#111111] placeholder:text-[#737373] min-w-0 pr-10 ${
             variant === "compact" ? "h-9 text-[12px]" : "h-10 text-[13px]"
           }`}
           aria-label="Search"
@@ -179,7 +195,7 @@ export default function SearchBar({
             className="absolute right-10 top-1/2 -translate-y-1/2 text-[#8B8B8B] animate-spin"
           />
         )}
-      </form>
+      </motion.form>
 
       {showSuggestions && suggestions.length > 0 && (
         <ul
@@ -187,22 +203,24 @@ export default function SearchBar({
           role="listbox"
           className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#E5E5E0] rounded-lg shadow-lg z-50 max-h-[400px] overflow-y-auto"
         >
-          {suggestions.map((suggestion, index) => (
+          {suggestions.map((suggestion, index) => {
+            const href = `/${suggestion.type === 'papers' ? 'papers' : suggestion.type}/${suggestion.slug}`;
+            return (
             <li
               key={`${suggestion.type}-${suggestion.id}`}
               role="option"
               aria-selected={index === selectedIndex}
-              onClick={() => {
-                router.push(`/${suggestion.type === 'papers' ? 'papers' : suggestion.type}/${suggestion.slug}`);
-                setShowSuggestions(false);
-              }}
-              className={`px-4 py-3 cursor-pointer transition-colors border-b border-[#EBEBE6] last:border-b-0 ${
+              className={`border-b border-[#EBEBE6] last:border-b-0 ${
                 index === selectedIndex
                   ? "bg-[#F8F7F2]"
                   : "hover:bg-[#F8F7F2]"
               }`}
             >
-              <div className="flex items-start gap-3">
+              <Link 
+                href={href}
+                onClick={() => setShowSuggestions(false)}
+                className="flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors block w-full h-full"
+              >
                 <span className="text-lg shrink-0">{getSuggestionIcon(suggestion.type)}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
@@ -217,9 +235,10 @@ export default function SearchBar({
                     <p className="text-[12px] text-[#555555] mt-0.5">{suggestion.subtitle}</p>
                   )}
                 </div>
-              </div>
+              </Link>
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </div>

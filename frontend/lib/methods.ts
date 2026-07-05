@@ -37,6 +37,9 @@ export interface MethodPaper {
   publicationDate: string;
   githubStars: number;
   authors: MethodPaperAuthor[];
+  abstract?: string;
+  pdfUrl?: string;
+  githubUrl?: string;
 }
 
 export interface MethodDetail {
@@ -45,6 +48,16 @@ export interface MethodDetail {
   slug: string;
   paperCount: number;
   papers: MethodPaper[];
+  categoryName?: string;
+  categoryMethods?: { name: string; slug?: string }[];
+  tasksJson?: { name: string; description?: string }[];
+  implementations?: { name: string; url: string; type?: string }[];
+  metricsJson?: { components?: number; repos?: number; papersUsing?: number; [key: string]: any };
+  sotaResults?: { task: string; dataset: string; metric: string; score: string; model: string; year: number }[];
+  usageTrend?: { year: number; count: number }[];
+  description?: string;
+  architectureUrl?: string;
+  sourceUrl?: string;
 }
 
 export interface GetMethodBySlugResponse {

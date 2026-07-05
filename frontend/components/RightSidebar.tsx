@@ -57,10 +57,8 @@ export default function RightSidebar() {
   useEffect(() => {
     async function loadDiscussions() {
       try {
-         console.log("➡️ Loading discussions...");
         setLoading(true);
         const data = await getDiscussions();
-           console.log("✅ Discussions loaded", data);
         setDiscussions(data);
         setError(null);
       } catch (err) {
@@ -85,7 +83,7 @@ const filteredTopics =
     
 
   return (
-    <aside className="flex flex-col w-full shrink-0 justify-start pb-12">
+    <aside className="flex flex-col w-full shrink-0 justify-start pb-12 overflow-y-auto max-h-[calc(100vh-100px)] custom-scrollbar">
       <div className="p-0 xl:p-2 flex flex-col">
         
         {/* Header */}
@@ -107,15 +105,15 @@ const filteredTopics =
             All
           </button>
           <button
-  onClick={() => setActiveTab("hackernews")}
-  className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${
-    activeTab === "hackernews"
-      ? "bg-[#EBEBE6] text-[#F55036]"
-      : "text-[#8B8B8B] hover:bg-[#EBEBE6] hover:text-[#111111]"
-  }`}
->
-  Hacker News
-</button>
+            onClick={() => setActiveTab("hackernews")}
+            className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${
+              activeTab === "hackernews"
+                ? "bg-[#EBEBE6] text-[#F55036]"
+                : "text-[#8B8B8B] hover:bg-[#EBEBE6] hover:text-[#111111]"
+            }`}
+          >
+            Hacker News
+          </button>
           
           <button 
             onClick={() => setActiveTab("github")}
@@ -144,16 +142,15 @@ const filteredTopics =
           ) : (
             filteredTopics.map((topic, idx) => (
             <a
-  key={idx}
-  href={topic.url}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="flex gap-4 py-4 border-b border-[#E5E5E0] last:border-b-0 group cursor-pointer hover:bg-[#F8F7F2] rounded-lg transition-colors"
->
+              key={idx}
+              href={topic.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex gap-4 py-4 border-b border-[#E5E5E0] last:border-b-0 group cursor-pointer hover:bg-[#F8F7F2] rounded-lg transition-colors"
+            >
               {/* Raw Icon */}
               <div className="shrink-0 pt-0.5">
                 {topic.platform === "hackernews" && <HackerNewsIcon  size={22} className="text-[#111111]" />}
-                
                 {topic.platform === "github" && <GithubIcon size={22} className="text-[#111111]" />}
               </div>
 
@@ -167,22 +164,22 @@ const filteredTopics =
   <span className="text-[#8B8B8B]">{topic.time}</span>
 </div>
                 
-               <h4 className="text-[13px] font-bold text-[#111111] leading-[1.5] mb-3 group-hover:text-[#F55036] transition-colors">
-  {topic.title}
-</h4>
+                <h4 className="text-[13px] font-bold text-[#111111] leading-[1.5] mb-3 group-hover:text-[#F55036] transition-colors">
+                  {topic.title}
+                </h4>
 
                 {/* Stats */}
-<div className="flex items-center gap-4 text-[11px] font-semibold text-[#8B8B8B]">
-  <div className="flex items-center gap-1.5">
-    <Star size={14} />
-    <span>{topic.likes}</span>
-  </div>
+                <div className="flex items-center gap-4 text-[11px] font-semibold text-[#8B8B8B]">
+                  <div className="flex items-center gap-1.5">
+                    <Star size={14} />
+                    <span>{topic.likes}</span>
+                  </div>
 
-  <div className="flex items-center gap-1.5">
-    <GitFork size={14} />
-    <span>{topic.comments}</span>
-  </div>
-</div>
+                  <div className="flex items-center gap-1.5">
+                    <GitFork size={14} />
+                    <span>{topic.comments}</span>
+                  </div>
+                </div>
               </div>
 
                </a>
@@ -192,12 +189,12 @@ const filteredTopics =
 
         {/* Footer Button */}
         <Link
-  href="/discussions"
-  className="w-full border border-[#E5E5E0] text-[#F55036] bg-white hover:border-[#F55036] hover:bg-[#F8F7F2] hover:text-[#E0462D] rounded-[8px] py-[10px] flex items-center justify-center gap-1.5 font-bold text-[12px] mt-2 transition-colors cursor-pointer"
->
-  View all discussions
-  <ArrowRight size={14} strokeWidth={2.5} />
-</Link>
+          href="/discussions"
+          className="w-full border border-[#E5E5E0] text-[#F55036] bg-white hover:border-[#F55036] hover:bg-[#F8F7F2] hover:text-[#E0462D] rounded-[8px] py-[10px] flex items-center justify-center gap-1.5 font-bold text-[12px] mt-2 transition-colors cursor-pointer"
+        >
+          View all discussions
+          <ArrowRight size={14} strokeWidth={2.5} />
+        </Link>
 
       </div>
     </aside>

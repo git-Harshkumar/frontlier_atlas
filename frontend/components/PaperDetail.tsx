@@ -20,6 +20,7 @@ import {
   GitBranch,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useCallback, useEffect, type ReactNode } from "react";
 import type { PaperDetail as PaperDetailType, PaperRanking, PaperSotaClaim } from "@/lib/papers";
 import { getPapers, type Paper } from "@/lib/paperApi";
@@ -715,9 +716,12 @@ function HeroPreview({ paper, previewHref }: { paper: PaperDetailType; previewHr
         className={`block overflow-hidden rounded-[24px] border border-[#E5E5E0] bg-white shadow-card transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl ${!previewHref ? 'pointer-events-none' : ''}`}
       >
         {showThumbnail ? (
-          <img
+          <Image
             src={paper.thumbnailUrl!}
             alt={`Preview of ${paper.title}`}
+            width={300}
+            height={400}
+            unoptimized
             className="aspect-[3/4] h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
             onError={() => setImageFailed(true)}
           />
@@ -754,9 +758,12 @@ function RelatedPaperCard({ paper }: { paper: Paper }) {
       {/* Thumbnail */}
       {showThumbnail ? (
         <div className="relative overflow-hidden border-b border-[#F0EBE3] bg-[#FAFAF8]">
-          <img
+          <Image
             src={paper.thumbnail}
             alt={`Preview of ${paper.title}`}
+            width={300}
+            height={169}
+            unoptimized
             className="aspect-[16/9] h-auto w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
             onError={() => setThumbnailFailed(true)}
           />
