@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,7 +6,6 @@ import PaperList from "@/components/PaperFeed";
 import PaperTabs from "@/components/PaperTabs";
 import { getPapers, type GetPapersResult } from "@/lib/paperApi";
 
-export const dynamic = "force-dynamic";
 
 type TaskPageProps = {
   params: Promise<{ slug: string }>;
