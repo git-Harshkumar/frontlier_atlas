@@ -4,6 +4,7 @@ type GetPapersQuery = {
   sort?: 'latest' | 'stars' | 'trending' | string;
   task?: string;
   method?: string;
+  model?: string;
   period?: 'today' | 'week' | 'month' | 'all' | string;
   page?: number | string;
   limit?: number | string;
@@ -71,6 +72,16 @@ export const getPapers = async (
       some: {
         method: {
           slug: query.method,
+        },
+      },
+    };
+  }
+
+  if (query.model) {
+    where.models = {
+      some: {
+        model: {
+          slug: query.model,
         },
       },
     };

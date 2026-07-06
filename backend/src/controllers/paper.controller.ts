@@ -23,6 +23,7 @@ export const getPapers = async (c: Context) => {
   const sort = c.req.query('sort') || 'trending';
   const task = c.req.query('task');
   const method = c.req.query('method');
+  const model = c.req.query('model');
   const period = c.req.query('period') || 'all';
   const page = Number(c.req.query('page')) || 1;
   const limit = Number(c.req.query('limit')) || 20;
@@ -32,6 +33,7 @@ export const getPapers = async (c: Context) => {
       sort,
       task,
       method,
+      model,
       period,
       page,
       limit
