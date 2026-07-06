@@ -10,7 +10,16 @@
 # Database (required)
 # ---------------------------
 # Neon/PostgreSQL connection string. Must be a valid connection URL.
-DATABASE_URL="postgresql://user:password@host/dbname?sslmode=require"
+
+SHARD_1_DATABASE_URL="postgresql://neondb_owner:npg_nX6E8qZiDTPB@ep-floral-cherry-aorpwovy-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+SHARD_2_DATABASE_URL="postgresql://neondb_owner:npg_nX6E8qZiDTPB@ep-jolly-dust-ao1w94qg-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+SHARD_3_DATABASE_URL="postgresql://neondb_owner:npg_nX6E8qZiDTPB@ep-damp-bar-aofs3cnt-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+SHARD_4_DATABASE_URL="postgresql://neondb_owner:npg_le9RfJEbAa7I@ep-odd-night-atgpapcg-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+SHARD_5_DATABASE_URL="postgresql://neondb_owner:npg_f3iNsgdFSb8V@ep-little-breeze-atfb005n-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 # ---------------------------
 # Authentication (required if auth endpoints are used)
