@@ -1,5 +1,6 @@
 import { Context } from 'hono';
 import * as paperService from '../services/paper.service.js';
+import { redisManager } from "../lib/redis.js";
 
 export const ingestPaper = async (c: Context) => {
   const prisma = c.var.prisma;
@@ -29,6 +30,26 @@ export const getPapers = async (c: Context) => {
   const limit = Number(c.req.query('limit')) || 20;
 
   try {
+    const redis = redisManager.getClient();
+
+  const cacheKey = `papers:${JSON.stringify({
+    sort,
+    task,
+    method,
+    model,
+    period,
+    page,
+    limit,
+  })}`;
+
+  const cached = await redis.get(cacheKey);
+
+  if (cached) {
+    console.log("✅ CACHE HIT");
+    return c.json(cached as any, 200);
+  }
+
+  console.log("❌ CACHE MISS");
     const result = await paperService.getPapers(prisma, {
       sort,
       task,
@@ -39,11 +60,19 @@ export const getPapers = async (c: Context) => {
       limit
     });
 
-    return c.json({
-      status: "success",
-      count: result.papers.length,
-      data: result
-    }, 200);
+    const response = {
+  status: "success",
+  count: result.papers.length,
+  data: result,
+};
+
+await redis.set(cacheKey, response, {
+  ex: 300, // 5 minutes
+});
+
+return c.json(response, 200);
+
+    
   } catch (error: any) {
     return c.json({ 
       status: "error", 

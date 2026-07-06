@@ -4,6 +4,7 @@ import { env } from "hono/adapter";
 import { PrismaClient } from "./generated/prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
+import { redisManager } from "./lib/redis";
 
 import authRoutes from "./routes/auth.routes.js";
 import paperRoutes from "./routes/paper.routes.js";
@@ -19,6 +20,8 @@ import methodRoutes from "./routes/method.routes.js";
 type Env = {
   Bindings: {
     DATABASE_URL: string;
+    UPSTASH_REDIS_REST_URL: string;
+    UPSTASH_REDIS_REST_TOKEN: string;
   };
   Variables: {
     prisma: PrismaClient;
@@ -45,6 +48,13 @@ app.use(
 // 2. Per-Request Prisma Client Lifecycle Middleware
 app.use("*", async (c, next) => {
   const DATABASE_URL = c.env.DATABASE_URL as string;
+
+  const REDIS_URL = c.env.UPSTASH_REDIS_REST_URL;
+  const REDIS_TOKEN = c.env.UPSTASH_REDIS_REST_TOKEN;
+
+redisManager.connect(REDIS_URL, REDIS_TOKEN);
+
+
 
   // Strip quotes if they were included in the .dev.vars file
   const cleanUrl = DATABASE_URL ? DATABASE_URL.replace(/^"|"$/g, "") : "";
