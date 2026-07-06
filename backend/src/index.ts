@@ -6,6 +6,8 @@ import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
 import { DatabaseManager } from "./database/DatabaseManager.js";
 import { QueryRouter } from "./routing/index.js";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
 import authRoutes from "./routes/auth.routes.js";
 import paperRoutes from "./routes/paper.routes.js";
@@ -15,6 +17,7 @@ import datasetRoutes from "./routes/dataset.routes.js";
 import taskRoutes from "./routes/task.routes.js";
 import discussionRoutes from "./routes/discussion.routes.js";
 import methodRoutes from "./routes/method.routes.js";
+import benchmarkRoutes from "./routes/benchmark.routes.js";
 
 
 // 1. Define BOTH Environment Bindings and Context Variables
@@ -68,12 +71,23 @@ app.use("*", async (c, next) => {
   const cleanShard4Url = SHARD_4_DATABASE_URL ? SHARD_4_DATABASE_URL.replace(/^"|"$/g, "") : "";
   const cleanShard5Url = SHARD_5_DATABASE_URL ? SHARD_5_DATABASE_URL.replace(/^"|"$/g, "") : "";
 
-  // Configure WebSocket for Cloudflare Workers environment
-  neonConfig.webSocketConstructor = WebSocket;
+  const isNeon = cleanUrl.includes("neon.tech");
+  let prisma: PrismaClient;
+  let pool: Pool | null = null;
 
-  // Original Prisma client (for backward compatibility with other services)
-  const adapter = new PrismaNeon({ connectionString: cleanUrl });
-  const prisma = new PrismaClient({ adapter });
+  if (isNeon) {
+    // Configure WebSocket for Cloudflare Workers environment
+    neonConfig.webSocketConstructor = WebSocket;
+
+    // PrismaNeon v7.8 takes a PoolConfig object — it creates the Pool internally
+    const adapter = new PrismaNeon({ connectionString: cleanUrl });
+    prisma = new PrismaClient({ adapter });
+  } else {
+    // Use standard pg Pool for local PostgreSQL connection
+    pool = new Pool({ connectionString: cleanUrl });
+    const adapter = new PrismaPg(pool);
+    prisma = new PrismaClient({ adapter });
+  }
 
   // DatabaseManager and QueryRouter
   const databaseManager = new DatabaseManager({
@@ -89,7 +103,15 @@ app.use("*", async (c, next) => {
   c.set("databaseManager", databaseManager);
   c.set("queryRouter", queryRouter);
 
-  await next();
+  try {
+    await next();
+  } finally {
+    // Clean up Prisma connections and close local pools to avoid leaks
+    await prisma.$disconnect();
+    if (pool) {
+      await pool.end();
+    }
+  }
 });
 
 // Register Routes
@@ -109,5 +131,6 @@ app.route("/api/v1/datasets", datasetRoutes);
 app.route("/api/v1/tasks", taskRoutes);
 app.route("/api/v1/discussions", discussionRoutes);
 app.route("/api/v1/methods", methodRoutes);
+app.route("/api/v1/benchmarks", benchmarkRoutes);
 
 export default app;

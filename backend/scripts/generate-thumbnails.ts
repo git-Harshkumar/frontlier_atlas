@@ -1,8 +1,7 @@
 import "dotenv/config";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { createCanvas } from "@napi-rs/canvas";
-import { PrismaClient } from "@prisma/client";
-import { PrismaNeon } from "@prisma/adapter-neon";
+import { prisma } from "../src/lib/prisma.js";
 import * as fs from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
@@ -12,9 +11,6 @@ const STANDARD_FONT_DIR = path.resolve(
   __dirname,
   "../node_modules/pdfjs-dist/standard_fonts"
 );
-
-const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
-const prisma = new PrismaClient({ adapter });
 
 const THUMB_DIR = path.resolve(__dirname, "../../frontend/public/thumbnails");
 const THUMB_WIDTH = 400;

@@ -23,8 +23,14 @@ export default function Navbar({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isScrolled = useScrollThreshold(50);
   const pathname = usePathname();
+  const isMethodsActive = pathname.startsWith("/methods");
+  const isTasksActive = pathname.startsWith("/tasks");
+  const isBenchmarksActive = pathname.startsWith("/benchmarks");
+  const isModelsActive = pathname.startsWith("/models");
+  const isDatasetsActive = pathname.startsWith("/datasets");
+  const isAuthorsActive = pathname.startsWith("/authors");
 
-
+  const shouldShowSearch = pathname !== "/" || isScrolled;
 
   // Close menu on escape key
   useEffect(() => {
@@ -49,8 +55,6 @@ export default function Navbar({
   }, [isMenuOpen]);
 
   const closeMenu = () => setIsMenuOpen(false);
-  
-  const shouldShowSearch = pathname !== "/" || isScrolled;
 
   return (
     <>
@@ -83,53 +87,87 @@ export default function Navbar({
 
         </div>
 
-        {/* Center — Search (Desktop) */}
-        <div className="hidden xl:flex flex-1 max-w-md focus-within:max-w-xl mx-8 relative items-center justify-center h-[40px] z-50">
+        {/* Center — Search Bar (Desktop) */}
+        <div className="hidden lg:flex flex-1 items-center justify-center max-w-[400px]">
           {shouldShowSearch && (
-            <SearchBar variant="compact" placeholder="Search papers, methods..." layoutIdPrefix="global" />
+            <SearchBar variant="compact" placeholder="Search..." initialQuery="" />
           )}
         </div>
 
+        {/* Center — Nav Links (Desktop) */}
+        <div className="hidden lg:flex items-center gap-6">
+          <Link
+            href="/tasks"
+            className={`text-[13px] font-medium transition-colors no-underline ${
+              isTasksActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            }`}
+          >
+            Tasks
+          </Link>
+          <Link
+            href="/methods"
+            className={`text-[13px] font-medium transition-colors no-underline ${
+              isMethodsActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            }`}
+          >
+            Methods
+          </Link>
+          <Link
+            href="/benchmarks"
+            className={`text-[13px] font-medium transition-colors no-underline ${
+              isBenchmarksActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            }`}
+          >
+            Benchmarks
+          </Link>
+          <Link
+            href="/models"
+            className={`text-[13px] font-medium transition-colors no-underline ${
+              isModelsActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            }`}
+          >
+            Models
+          </Link>
+          <Link
+            href="/datasets"
+            className={`text-[13px] font-medium transition-colors no-underline ${
+              isDatasetsActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            }`}
+          >
+            Datasets
+          </Link>
+          <Link
+            href="/authors"
+            className={`text-[13px] font-medium transition-colors no-underline ${
+              isAuthorsActive
+                ? "text-[#F55036] font-bold"
+                : "text-[#555555] hover:text-[#F55036]"
+            }`}
+          >
+            Authors
+          </Link>
+        </div>
+
         {/* Right (Desktop) */}
-        <div className="hidden xl:flex items-center gap-6 shrink-0">
-          <ul role="list" className="flex items-center gap-6 text-[14px] font-medium text-[#111111] m-0 p-0 list-none">
-            {[
-              { label: "Explore",  href: "#" },
-              { label: "Rankings", href: "#" },
-              { label: "Tasks",    href: "/tasks" },
-              { label: "Methods",  href: "/methods" },
-              { label: "About",    href: "#" },
-            ].map(({ label, href }) => {
-              const isActive = href !== "#" && pathname.startsWith(href);
-              return (
-                <li key={label} className="relative flex flex-col items-center gap-0.5">
-                  <Link
-                    href={href}
-                    className={`transition-colors duration-200 ${
-                      isActive
-                        ? "text-[#F55036] font-semibold"
-                        : "hover:text-[#F55036]"
-                    }`}
-                  >
-                    {label}
-                  </Link>
-                  {isActive && (
-                    <span className="absolute -bottom-[14px] w-1 h-1 rounded-full bg-[#F55036]" />
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-          <div className="flex items-center gap-4 border-l border-[#E5E5E0] pl-4">
-            <button className="bg-[#F55036] hover:bg-[#E0462D] text-white text-[12px] font-semibold px-4 py-1.5 rounded-md transition-all duration-200 cursor-pointer border-none tracking-wide uppercase hover:shadow-[0_0_0_3px_rgba(245,80,54,0.20)] hover:-translate-y-px active:scale-95">
-              Submit
-            </button>
-            <div className="w-8 h-8 rounded-full bg-[#EBEBE6] flex items-center justify-center cursor-pointer hover:bg-[#DCDCD7] transition-colors">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#737373" strokeWidth="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-            </div>
+        <div className="hidden xl:flex items-center gap-4 border-l border-[#E5E5E0] pl-4 shrink-0">
+          <button className="bg-[#F55036] hover:bg-[#E0462D] text-white text-[12px] font-semibold px-4 py-1.5 rounded-md transition-all duration-200 cursor-pointer border-none tracking-wide uppercase hover:shadow-[0_0_0_3px_rgba(245,80,54,0.20)] hover:-translate-y-px active:scale-95">
+            Submit
+          </button>
+          <div className="w-8 h-8 rounded-full bg-[#EBEBE6] flex items-center justify-center cursor-pointer hover:bg-[#DCDCD7] transition-colors">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#737373" strokeWidth="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
           </div>
         </div>
 
