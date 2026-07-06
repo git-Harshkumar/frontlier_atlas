@@ -44,17 +44,13 @@ function NavItem({
     <div
       onClick={onClick}
       className={cn(
-        "relative flex items-center gap-2 px-3 py-[6px] mx-2 cursor-pointer transition-all duration-200 rounded-md text-[13px] font-medium leading-tight",
+        "group flex items-center gap-2 px-3 py-[6px] cursor-pointer transition-all duration-200 text-[13px] font-medium leading-tight",
         isActive
-          ? "bg-[#F8EFEB] text-[#F55036]"
-          : "text-[#555555] hover:bg-[#F8F7F2] hover:text-[#111111]"
+          ? "text-[#F55036]"
+          : "text-[#8B8B8B] hover:text-[#111111]"
       )}
     >
-      {/* Left accent bar for active state */}
-      {isActive && (
-        <span className="absolute left-0 top-1 bottom-1 w-[3px] bg-[#F55036] rounded-r-full" />
-      )}
-      <span className="w-4 h-4 flex items-center justify-center text-[16px] shrink-0">
+      <span className={cn("w-4 h-4 flex items-center justify-center text-[16px] shrink-0 transition-transform duration-200 group-hover:scale-110", isActive && "text-[#F55036]")}>
         {icon}
       </span>
       <span className="truncate">{label}</span>
@@ -157,7 +153,7 @@ export default function Sidebar({
   ];
 
   return (
-    <aside className="flex flex-col w-full bg-transparent overflow-y-auto max-h-[calc(100vh-100px)] pb-12 custom-scrollbar">
+    <aside className="flex flex-col w-full bg-transparent pb-12">
 
       {/* Non-scrollable Nav Area */}
       <div className="flex flex-col gap-2">

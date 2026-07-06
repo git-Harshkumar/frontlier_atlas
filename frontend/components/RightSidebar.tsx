@@ -83,7 +83,7 @@ const filteredTopics =
     
 
   return (
-    <aside className="flex flex-col w-full shrink-0 justify-start pb-12 overflow-y-auto max-h-[calc(100vh-100px)] custom-scrollbar">
+    <aside className="flex flex-col w-full shrink-0 justify-start pb-12">
       <div className="p-0 xl:p-2 flex flex-col">
         
         {/* Header */}
