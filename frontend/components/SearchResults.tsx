@@ -168,15 +168,15 @@ export default function SearchResults({ query }: SearchResultsProps) {
 
   return (
     <div>
-      {/* Tabs */}
-      <div className="flex gap-2 border-b border-[#E5E5E0] mb-6 overflow-x-auto">
+      {/* Tabs - Responsive wrapped layout */}
+      <div className="flex flex-wrap gap-2 border-b border-[#E5E5E0] mb-6 pb-2">
         {TABS.map((tab) => {
           const count = results[tab.type!].length;
           return (
             <button
               key={tab.type}
               onClick={() => setActiveTab(tab.type!)}
-              className={`flex items-center gap-2 px-4 py-2 text-[13px] font-medium border-b-2 transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2 text-[13px] font-medium border-b-2 transition-colors ${
                 activeTab === tab.type
                   ? "text-[#F55036] border-[#F55036]"
                   : "text-[#555555] border-transparent hover:text-[#F55036]"

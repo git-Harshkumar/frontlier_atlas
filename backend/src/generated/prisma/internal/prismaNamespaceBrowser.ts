@@ -182,7 +182,9 @@ export type PaperTaskScalarFieldEnum = (typeof PaperTaskScalarFieldEnum)[keyof t
 export const MethodScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  slug: 'slug'
+  slug: 'slug',
+  category: 'category',
+  description: 'description'
 } as const
 
 export type MethodScalarFieldEnum = (typeof MethodScalarFieldEnum)[keyof typeof MethodScalarFieldEnum]

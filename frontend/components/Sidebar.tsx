@@ -1,132 +1,243 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
-  Flame, Clock, Star, Bot, Zap, Trophy,
-  FileText, ImageIcon, Video, Volume2,
-  Beaker, ListChecks, Cpu, Database, Users,
+  Flame,
+  Clock,
+  Star,
+  Bot,
+  Brain,
+  MessageSquare,
+  Code2,
+  Monitor,
+  Globe,
+  Cpu,
+  Zap,
+  Link as LinkIcon,
+  RefreshCw,
+  Layers,
+  FileText,
+  ImageIcon,
+  Video,
+  Volume2,
+  ChevronDown,
+  ChevronRight,
+  Sparkles,
+  TrendingUp,
+  Award,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getMethods, type MethodItem } from "@/lib/methods";
-import { getTasks, type TaskItem } from "@/lib/tasks";
-import { getBenchmarks, type BenchmarkItem } from "@/lib/benchmarks";
-import { getModels, type ModelItem } from "@/lib/models";
-import { getDatasets, type DatasetItem } from "@/lib/datasets";
-import { getAuthors, type AuthorItem } from "@/lib/authors";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-[9px] font-semibold text-[#8B8B8B] uppercase tracking-[0.08em] px-3 mb-0.5 mt-2 first:mt-1">
-      {children}
-    </p>
-  );
+interface SidebarProps {
+  onItemClick?: () => void;
+  onItemSelect?: (item: string) => void;
+  initialActive?: string;
 }
 
-function NavItem({
+// ============ Sub-Components ============
+const SectionLabel = ({
+  title,
+  isOpen,
+  onToggle,
+  icon,
+}: {
+  title: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  icon?: React.ReactNode;
+}) => {
+  return (
+    <div
+      onClick={onToggle}
+      className="flex items-center justify-between cursor-pointer group px-3 py-2 hover:bg-[#F8F7F2] rounded-md transition-all duration-200"
+    >
+      <div className="flex items-center gap-2">
+        {icon && (
+          <span className="text-[#8B8B8B] group-hover:text-[#555555] transition-colors">
+            {icon}
+          </span>
+        )}
+        <p className="text-[11px] font-semibold text-[#8B8B8B] group-hover:text-[#555555] transition-colors uppercase tracking-[0.08em]">
+          {title}
+        </p>
+      </div>
+      <div className="text-[#8B8B8B] group-hover:text-[#555555] transition-colors">
+        {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+      </div>
+    </div>
+  );
+};
+
+const NavItem = ({
   icon,
   label,
   isActive = false,
-  disabled = false,
   onClick,
   href,
+  badge,
 }: {
   icon: React.ReactNode;
   label: string;
   isActive?: boolean;
-  disabled?: boolean;
   onClick: () => void;
   href?: string;
-}) {
+  badge?: string;
+}) => {
   const content = (
     <div
-      onClick={disabled ? undefined : onClick}
+      onClick={onClick}
       className={cn(
-        "flex items-center gap-2 px-3 py-2 xl:py-[4px] mx-2 transition-colors text-[11px] font-medium",
-        disabled
-          ? "text-[#BFBFBA] cursor-default"
-          : "cursor-pointer",
-        !disabled && (isActive
-          ? "text-[#F55036] font-bold"
-          : "text-[#555555] hover:text-[#F55036]")
+        "relative flex items-center gap-2.5 px-3 py-2 mx-1 cursor-pointer transition-all duration-200 rounded-lg text-[13px] font-medium leading-tight",
+        isActive
+          ? "bg-gradient-to-r from-[#F8EFEB] to-[#F8EFEB]/50 text-[#F55036] shadow-sm"
+          : "text-[#555555] hover:bg-[#F8F7F2] hover:text-[#111111] hover:translate-x-0.5",
       )}
     >
-      <span className="w-3.5 h-3.5 flex items-center justify-center text-[13px] shrink-0">
+      {/* Left accent bar for active state */}
+      {isActive && (
+        <motion.span
+          layoutId="activeAccent"
+          className="absolute left-0 top-1 bottom-1 w-[3px] bg-[#F55036] rounded-r-full"
+        />
+      )}
+
+      <span
+        className={cn(
+          "w-4 h-4 flex items-center justify-center text-[16px] shrink-0 transition-colors",
+          isActive
+            ? "text-[#F55036]"
+            : "text-[#777777] group-hover:text-[#555555]",
+        )}
+      >
         {icon}
       </span>
-      <span className="truncate">{label}</span>
+
+      <span className="truncate flex-1">{label}</span>
+
+      {badge && (
+        <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#F55036]/10 text-[#F55036] rounded-full">
+          {badge}
+        </span>
+      )}
     </div>
   );
 
   if (href) {
-    return (
-      <Link href={href} className="no-underline block">
-        {content}
-      </Link>
-    );
+    return <Link href={href}>{content}</Link>;
   }
 
   return content;
-}
+};
 
-export default function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
-  const pathname = usePathname();
-  const [methodItems, setMethodItems] = useState<MethodItem[]>([]);
-  const [taskItems, setTaskItems] = useState<TaskItem[]>([]);
-  const [benchmarkItems, setBenchmarkItems] = useState<BenchmarkItem[]>([]);
-  const [modelItems, setModelItems] = useState<ModelItem[]>([]);
-  const [datasetItems, setDatasetItems] = useState<DatasetItem[]>([]);
-  const [authorItems, setAuthorItems] = useState<AuthorItem[]>([]);
-  const [sidebarLoading, setSidebarLoading] = useState(true);
-  const [tasksLoading, setTasksLoading] = useState(true);
-  const [benchmarksLoading, setBenchmarksLoading] = useState(true);
-  const [modelsLoading, setModelsLoading] = useState(true);
-  const [datasetsLoading, setDatasetsLoading] = useState(true);
-  const [authorsLoading, setAuthorsLoading] = useState(true);
+// ============ Main Component ============
+export default function Sidebar({
+  onItemClick,
+  onItemSelect,
+  initialActive = "Trending Papers",
+}: SidebarProps) {
+  const [activeItem, setActiveItem] = useState(initialActive);
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    discover: true,
+    tasks: true,
+    methods: true,
+    generation: false,
+  });
+  const router = useRouter();
 
   useEffect(() => {
-    async function loadSidebar() {
+    setActiveItem(initialActive);
+  }, [initialActive]);
+
+  const handleItemClick = (label: string) => {
+    setActiveItem(label);
+    onItemSelect?.(label);
+    onItemClick?.();
+  };
+
+  const toggleSection = (section: string) => {
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  // Navigation Items with enhanced icons
+  const discover = [
+    {
+      label: "Trending Papers",
+      icon: (
+        <Flame
+          size={14}
+          className={
+            activeItem === "Trending Papers"
+              ? "text-[#F55036] fill-[#F55036]"
+              : ""
+          }
+        />
+      ),
+      badge: "Hot",
+    },
+    { label: "Latest Papers", icon: <Clock size={14} /> },
+    { label: "Most GitHub Stars", icon: <Star size={14} />, badge: "Popular" },
+  ];
+
+  const tasks = [
+    { label: "Agents", icon: <Bot size={14} /> },
+    { label: "Reasoning", icon: <Brain size={14} /> },
+    { label: "Language Modeling", icon: <MessageSquare size={14} /> },
+    { label: "Coding Agents", icon: <Code2 size={14} /> },
+    { label: "Computer Use", icon: <Monitor size={14} /> },
+    { label: "World Models", icon: <Globe size={14} /> },
+    { label: "Robotics", icon: <Cpu size={14} /> },
+  ];
+
+  const initialMethods = [
+    { label: "Transformer", icon: <Zap size={14} />, slug: "transformer" },
+    {
+      label: "Chain of Thought",
+      icon: <LinkIcon size={14} />,
+      slug: "chain-of-thought",
+    },
+    { label: "ReAct", icon: <RefreshCw size={14} />, slug: "react" },
+    { label: "LoRA", icon: <Layers size={14} />, slug: "lora" },
+  ];
+
+  const [topMethods, setTopMethods] = useState(initialMethods);
+  const [totalMethods, setTotalMethods] = useState(142);
+
+  // Load dynamic methods
+  useEffect(() => {
+    async function loadMethods() {
       try {
-        setSidebarLoading(true);
-        setTasksLoading(true);
-        setBenchmarksLoading(true);
-        setModelsLoading(true);
-        setDatasetsLoading(true);
-        setAuthorsLoading(true);
-        const [methodsData, tasksData, benchmarksData, modelsData, datasetsData, authorsData] = await Promise.all([
-          getMethods({ sort: "name", limit: 50 }),
-          getTasks(),
-          getBenchmarks(),
-          getModels(),
-          getDatasets(),
-          getAuthors(),
-        ]);
-        setMethodItems(methodsData.methods);
-        setTaskItems(tasksData);
-        setBenchmarkItems(benchmarksData.slice(0, 10)); // display top 10
-        setModelItems(modelsData);
-        setDatasetItems(datasetsData);
-        setAuthorItems(authorsData);
-      } catch {
-        // silently fail — sidebar items are non-critical
-      } finally {
-        setSidebarLoading(false);
-        setTasksLoading(false);
-        setBenchmarksLoading(false);
-        setModelsLoading(false);
-        setDatasetsLoading(false);
-        setAuthorsLoading(false);
+        const { getMethods } = await import("@/lib/methods");
+        const res = await getMethods({ sort: "papers", limit: 4 });
+        if (res?.methods) {
+          const icons = [
+            <Zap key="1" size={14} />,
+            <LinkIcon key="2" size={14} />,
+            <RefreshCw key="3" size={14} />,
+            <Layers key="4" size={14} />,
+          ];
+          const dynamicMethods = res.methods.map(
+            (m: { name: string; slug: string }, index: number) => ({
+              label: m.name,
+              slug: m.slug,
+              icon: icons[index % icons.length],
+            }),
+          );
+          setTopMethods(dynamicMethods);
+          if (res.total) {
+            setTotalMethods(res.total);
+          }
+        }
+      } catch (err) {
+        if (process.env.NODE_ENV === "development") {
+          console.error("Failed to load methods", err);
+        }
       }
     }
-    loadSidebar();
+    loadMethods();
   }, []);
-
-  const discover = [
-    { label: "Trending Papers", icon: <Flame size={14} /> },
-    { label: "Latest Papers", icon: <Clock size={14} /> },
-    { label: "Most GitHub Stars", icon: <Star size={14} /> },
-  ];
 
   const generation = [
     { label: "Text Generation", icon: <FileText size={14} /> },
@@ -135,198 +246,182 @@ export default function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
     { label: "Audio Generation", icon: <Volume2 size={14} /> },
   ];
 
-  const handleNavClick = () => {
-    onItemClick?.();
-  };
-
   return (
-    <aside className="flex flex-col w-full bg-transparent overflow-hidden">
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col">
-          <SectionLabel>DISCOVER</SectionLabel>
-          {discover.map((item) => (
-            <NavItem
-              key={item.label}
-              icon={item.icon}
-              label={item.label}
-              onClick={handleNavClick}
-              disabled
-            />
-          ))}
-        </div>
-        <div className="flex flex-col">
-          <SectionLabel>TASKS</SectionLabel>
-          <NavItem
-            icon={<ListChecks size={14} />}
-            label="All Tasks"
-            isActive={pathname === "/tasks"}
-            onClick={handleNavClick}
-            href="/tasks"
+    <aside className="flex flex-col w-full bg-transparent h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div className="flex-1 px-2 py-4 space-y-1">
+        {/* DISCOVER Section - Collapsible */}
+        <div className="mb-2">
+          <SectionLabel
+            title="Discover"
+            isOpen={openSections.discover}
+            onToggle={() => toggleSection("discover")}
+            icon={<Sparkles size={14} />}
           />
-          {tasksLoading ? (
-            <div className="px-3 py-2 mx-2">
-              <div className="h-3 bg-[#E5E5E0] rounded animate-pulse w-3/4" />
-            </div>
-          ) : (
-            taskItems.map((t) => (
-              <NavItem
-                key={t.id}
-                icon={<Bot size={14} />}
-                label={t.name}
-                isActive={pathname === `/tasks/${t.slug}`}
-                onClick={handleNavClick}
-                href={`/tasks/${t.slug}`}
-              />
-            ))
-          )}
+          <AnimatePresence initial={false}>
+            {openSections.discover && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-col gap-0.5 mt-1">
+                  {discover.map((item) => (
+                    <NavItem
+                      key={item.label}
+                      icon={item.icon}
+                      label={item.label}
+                      isActive={activeItem === item.label}
+                      onClick={() => handleItemClick(item.label)}
+                      badge={item.badge}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <div className="flex flex-col">
-          <SectionLabel>BENCHMARKS</SectionLabel>
-          <NavItem
-            icon={<Trophy size={14} />}
-            label="All Benchmarks"
-            isActive={pathname === "/benchmarks"}
-            onClick={handleNavClick}
-            href="/benchmarks"
+        {/* TASKS Section - Collapsible */}
+        <div className="mb-2">
+          <SectionLabel
+            title="Tasks"
+            isOpen={openSections.tasks}
+            onToggle={() => toggleSection("tasks")}
+            icon={<TrendingUp size={14} />}
           />
-          {benchmarksLoading ? (
-            <div className="px-3 py-2 mx-2">
-              <div className="h-3 bg-[#E5E5E0] rounded animate-pulse w-3/4" />
-            </div>
-          ) : (
-            benchmarkItems.map((b) => (
-              <NavItem
-                key={b.id}
-                icon={<Trophy size={14} />}
-                label={b.name}
-                isActive={pathname === `/benchmarks/${b.slug}`}
-                onClick={handleNavClick}
-                href={`/benchmarks/${b.slug}`}
-              />
-            ))
-          )}
-        </div>
-        
-        <div className="flex flex-col">
-          <SectionLabel>METHODS</SectionLabel>
-          <NavItem
-            icon={<Beaker size={14} />}
-            label="All Methods"
-            isActive={pathname === "/methods"}
-            onClick={handleNavClick}
-            href="/methods"
-          />
-          {sidebarLoading ? (
-            <div className="px-3 py-2 mx-2">
-              <div className="h-3 bg-[#E5E5E0] rounded animate-pulse w-3/4" />
-            </div>
-          ) : (
-            methodItems.map((m) => (
-              <NavItem
-                key={m.id}
-                icon={<Zap size={14} />}
-                label={m.name}
-                isActive={pathname === `/methods/${m.slug}`}
-                onClick={handleNavClick}
-                href={`/methods/${m.slug}`}
-              />
-            ))
-          )}
+          <AnimatePresence initial={false}>
+            {openSections.tasks && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-col gap-0.5 mt-1">
+                  {tasks.map((item) => (
+                    <NavItem
+                      key={item.label}
+                      icon={item.icon}
+                      label={item.label}
+                      isActive={activeItem === item.label}
+                      onClick={() => handleItemClick(item.label)}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <div className="flex flex-col">
-          <SectionLabel>MODELS</SectionLabel>
-          <NavItem
-            icon={<Cpu size={14} />}
-            label="All Models"
-            isActive={pathname === "/models"}
-            onClick={handleNavClick}
-            href="/models"
+        {/* METHODS Section - Collapsible with dynamic loading */}
+        <div className="mb-2">
+          <SectionLabel
+            title="Methods"
+            isOpen={openSections.methods}
+            onToggle={() => toggleSection("methods")}
+            icon={<Award size={14} />}
           />
-          {modelsLoading ? (
-            <div className="px-3 py-2 mx-2">
-              <div className="h-3 bg-[#E5E5E0] rounded animate-pulse w-3/4" />
-            </div>
-          ) : (
-            modelItems.map((m) => (
-              <NavItem
-                key={m.id}
-                icon={<Cpu size={14} />}
-                label={m.name}
-                isActive={pathname === `/models/${m.slug}`}
-                onClick={handleNavClick}
-                href={`/models/${m.slug}`}
-              />
-            ))
-          )}
+          <AnimatePresence initial={false}>
+            {openSections.methods && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-col gap-0.5 mt-1">
+                  {topMethods.map((item) => (
+                    <NavItem
+                      key={item.label}
+                      icon={item.icon}
+                      label={item.label}
+                      isActive={activeItem === item.label}
+                      onClick={() => handleItemClick(item.label)}
+                      href={`/methods/${item.slug}`}
+                    />
+                  ))}
+
+                  {/* View All Methods Link */}
+                  <Link
+                    href="/methods"
+                    className="flex items-center gap-2.5 px-3 py-2 mx-1 mt-1 rounded-lg cursor-pointer transition-all duration-200 text-[13px] font-medium leading-tight text-[#8B8B8B] hover:text-[#555555] hover:bg-[#F8F7F2] hover:translate-x-0.5 group"
+                  >
+                    <span className="w-4 h-4 flex items-center justify-center shrink-0 text-[#8B8B8B] group-hover:text-[#555555] transition-colors">
+                      <Layers size={14} />
+                    </span>
+                    <span>View all {totalMethods} methods</span>
+                    <span className="ml-auto text-[10px] text-[#8B8B8B] group-hover:text-[#555555]">
+                      →
+                    </span>
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <div className="flex flex-col">
-          <SectionLabel>DATASETS</SectionLabel>
-          <NavItem
-            icon={<Database size={14} />}
-            label="All Datasets"
-            isActive={pathname === "/datasets"}
-            onClick={handleNavClick}
-            href="/datasets"
+        {/* GENERATION Section - Collapsible */}
+        <div className="mb-2">
+          <SectionLabel
+            title="Generation"
+            isOpen={openSections.generation}
+            onToggle={() => toggleSection("generation")}
           />
-          {datasetsLoading ? (
-            <div className="px-3 py-2 mx-2">
-              <div className="h-3 bg-[#E5E5E0] rounded animate-pulse w-3/4" />
-            </div>
-          ) : (
-            datasetItems.map((d) => (
-              <NavItem
-                key={d.id}
-                icon={<Database size={14} />}
-                label={d.name}
-                isActive={pathname === `/datasets/${d.slug}`}
-                onClick={handleNavClick}
-                href={`/datasets/${d.slug}`}
-              />
-            ))
-          )}
+          <AnimatePresence initial={false}>
+            {openSections.generation && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-col gap-0.5 mt-1">
+                  {generation.map((item) => (
+                    <NavItem
+                      key={item.label}
+                      icon={item.icon}
+                      label={item.label}
+                      isActive={activeItem === item.label}
+                      onClick={() => handleItemClick(item.label)}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
+      </div>
 
-        <div className="flex flex-col">
-          <SectionLabel>AUTHORS</SectionLabel>
+      {/* All Domains - Special Item with Arrow */}
+      <div className="pt-4 mt-2 border-t border-[#E5E5E0]">
+        <div className="group relative">
           <NavItem
-            icon={<Users size={14} />}
-            label="All Authors"
-            isActive={pathname === "/authors"}
-            onClick={handleNavClick}
-            href="/authors"
+            icon={""}
+            label="All Domains"
+            isActive={activeItem === "All Domains"}
+            onClick={() => {
+              handleItemClick("All Domains");
+              router.push("/tasks");
+            }}
           />
-          {authorsLoading ? (
-            <div className="px-3 py-2 mx-2">
-              <div className="h-3 bg-[#E5E5E0] rounded animate-pulse w-3/4" />
-            </div>
-          ) : (
-            authorItems.map((a) => (
-              <NavItem
-                key={a.id}
-                icon={<Users size={14} />}
-                label={a.name}
-                isActive={pathname === `/authors/${a.slug}`}
-                onClick={handleNavClick}
-                href={`/authors/${a.slug}`}
-              />
-            ))
-          )}
+          {/* Arrow that scales and moves right on hover */}
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#777777] transition-all duration-300 group-hover:scale-125 group-hover:translate-x-1 group-hover:text-[#F55036]">
+            →
+          </span>
         </div>
+      </div>
 
-        <div className="flex flex-col">
-          <SectionLabel>GENERATION</SectionLabel>
-          {generation.map((item) => (
-            <NavItem
-              key={item.label}
-              icon={item.icon}
-              label={item.label}
-              onClick={handleNavClick}
-              disabled
-            />
-          ))}
+      {/* Footer Stats */}
+      <div className="pt-6 mt-4 border-t border-[#E5E5E0]">
+        <div className="px-3 py-2">
+          <p className="text-[10px] text-[#8B8B8B] font-medium uppercase tracking-[0.08em]">
+            {totalMethods}+ Methods
+          </p>
         </div>
       </div>
     </aside>

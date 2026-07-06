@@ -42,6 +42,8 @@ export interface GetTaskBySlugResponse {
   data: BackendTaskDetail;
 }
 
+export type TaskPaperCounts = Record<string, number>;
+
 interface BackendTaskDetail {
   id: string;
   name: string;
@@ -59,6 +61,10 @@ export async function getTasks(): Promise<TaskItem[]> {
     slug: t.slug,
     color: t.color,
   }));
+}
+
+export async function getTaskPaperCounts(): Promise<TaskPaperCounts> {
+  return fetchApi<TaskPaperCounts>('/api/v1/tasks/counts');
 }
 
 export async function getTaskBySlug(slug: string): Promise<TaskDetail> {

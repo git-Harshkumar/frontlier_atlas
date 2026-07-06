@@ -7,6 +7,11 @@ workers_dev = true
 # ── Environment Variables (set via `wrangler secret put DATABASE_URL` for secrets) ──
 [vars]
 NODE_VERSION = "22"
+SHARD_1_DATABASE_URL = ""
+SHARD_2_DATABASE_URL = ""
+SHARD_3_DATABASE_URL = ""
+SHARD_4_DATABASE_URL = ""
+SHARD_5_DATABASE_URL = ""
 
 # ── Routes ──
 # Uncomment and customize for custom domain:

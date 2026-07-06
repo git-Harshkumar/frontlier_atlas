@@ -30,7 +30,7 @@ export default function AuthorCard({ author }: { author: AuthorItem }) {
               </span>
             )}
           </div>
-          <span className="text-[11px] font-mono text-[#8B8B8B]">
+          <span className="text-[11px] text-[#8B8B8B]">
             {author.slug}
           </span>
         </div>

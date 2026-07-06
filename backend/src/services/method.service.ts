@@ -64,6 +64,57 @@ export const getMethods = async (
   };
 };
 
+const ICON_MAP: Record<string, string> = {
+  "General": "Settings",
+  "Language": "MessageSquare",
+  "Vision": "Eye",
+  "Audio & Speech": "Mic",
+  "Agents": "Bot",
+  "Reasoning": "Brain",
+  "Training": "Activity",
+  "Optimization": "TrendingUp",
+  "Inference": "Zap",
+  "Retrieval": "Search",
+  "Reinforcement Learning": "Target",
+  "Diffusion & Generation": "Sparkles",
+  "Multimodal": "Layers",
+  "Architectures": "Box",
+  "Evaluation": "CheckSquare",
+  "Embeddings": "Hash"
+};
+
+export const getGroupedMethods = async (prisma: PrismaClient) => {
+  const methods = await prisma.method.findMany({
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      category: true,
+      _count: { select: { papers: true } },
+    },
+    orderBy: { name: 'asc' },
+  });
+
+  const grouped: Record<string, any[]> = {};
+  for (const method of methods) {
+    const category = method.category || 'Uncategorized';
+    if (!grouped[category]) grouped[category] = [];
+    grouped[category].push({
+      id: method.id,
+      name: method.name,
+      slug: method.slug,
+      paperCount: method._count.papers,
+    });
+  }
+
+  return Object.entries(grouped).map(([category, items]) => ({
+    id: category.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    name: category,
+    iconName: ICON_MAP[category] || "Box",
+    methods: items,
+  }));
+};
+
 export const getMethodBySlug = async (prisma: PrismaClient, slug: string) => {
   const method = await prisma.method.findUnique({
     where: { slug },
@@ -72,6 +123,7 @@ export const getMethodBySlug = async (prisma: PrismaClient, slug: string) => {
         select: { papers: true },
       },
       papers: {
+        take: 100,
         include: {
           paper: {
             select: {
@@ -81,6 +133,12 @@ export const getMethodBySlug = async (prisma: PrismaClient, slug: string) => {
               citationCount: true,
               publicationDate: true,
               githubStars: true,
+              thumbnailUrl: true,
+              arxivId: true,
+              isOfficialCode: true,
+              pdfUrl: true,
+              paperUrl: true,
+              githubUrl: true,
               authors: {
                 select: {
                   author: {
@@ -88,9 +146,15 @@ export const getMethodBySlug = async (prisma: PrismaClient, slug: string) => {
                   },
                 },
               },
+              sotaClaims: {
+                select: {
+                  benchmark: { select: { name: true, slug: true } }
+                }
+              }
             },
           },
         },
+        orderBy: { paper: { githubStars: 'desc' } }
       },
     },
   });
@@ -104,6 +168,7 @@ export const getMethodBySlug = async (prisma: PrismaClient, slug: string) => {
     papers: papers.map(({ paper }) => ({
       ...paper,
       authors: paper.authors.map(({ author }) => author),
+      sotaClaims: paper.sotaClaims?.map(c => c.benchmark) || [],
     })),
   };
 };

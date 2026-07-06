@@ -109,10 +109,12 @@ model PaperTask {
 }
 
 model Method {
-  id     String        @id @default(uuid())
-  name   String        @unique
-  slug   String        @unique
-  papers PaperMethod[]
+  id          String        @id @default(uuid())
+  name        String        @unique
+  slug        String        @unique
+  category    String?       
+  description String?       
+  papers      PaperMethod[]
 
   @@map("methods")
 }

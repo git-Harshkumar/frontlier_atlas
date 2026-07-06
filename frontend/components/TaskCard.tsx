@@ -45,7 +45,7 @@ export default function TaskCard({ task }: { task: TaskItem }) {
             {task.name}
           </h3>
         </div>
-        <span className="ds-text-muted text-[11px] font-mono shrink-0 mt-0.5">
+        <span className="ds-text-muted text-[11px] shrink-0 mt-0.5">
           {task.slug}
         </span>
       </div>

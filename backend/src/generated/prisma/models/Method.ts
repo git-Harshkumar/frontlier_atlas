@@ -28,18 +28,24 @@ export type MethodMinAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
+  category: string | null
+  description: string | null
 }
 
 export type MethodMaxAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
+  category: string | null
+  description: string | null
 }
 
 export type MethodCountAggregateOutputType = {
   id: number
   name: number
   slug: number
+  category: number
+  description: number
   _all: number
 }
 
@@ -48,18 +54,24 @@ export type MethodMinAggregateInputType = {
   id?: true
   name?: true
   slug?: true
+  category?: true
+  description?: true
 }
 
 export type MethodMaxAggregateInputType = {
   id?: true
   name?: true
   slug?: true
+  category?: true
+  description?: true
 }
 
 export type MethodCountAggregateInputType = {
   id?: true
   name?: true
   slug?: true
+  category?: true
+  description?: true
   _all?: true
 }
 
@@ -139,6 +151,8 @@ export type MethodGroupByOutputType = {
   id: string
   name: string
   slug: string
+  category: string | null
+  description: string | null
   _count: MethodCountAggregateOutputType | null
   _min: MethodMinAggregateOutputType | null
   _max: MethodMaxAggregateOutputType | null
@@ -166,6 +180,8 @@ export type MethodWhereInput = {
   id?: Prisma.StringFilter<"Method"> | string
   name?: Prisma.StringFilter<"Method"> | string
   slug?: Prisma.StringFilter<"Method"> | string
+  category?: Prisma.StringNullableFilter<"Method"> | string | null
+  description?: Prisma.StringNullableFilter<"Method"> | string | null
   papers?: Prisma.PaperMethodListRelationFilter
 }
 
@@ -173,6 +189,8 @@ export type MethodOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   papers?: Prisma.PaperMethodOrderByRelationAggregateInput
 }
 
@@ -183,6 +201,8 @@ export type MethodWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.MethodWhereInput | Prisma.MethodWhereInput[]
   OR?: Prisma.MethodWhereInput[]
   NOT?: Prisma.MethodWhereInput | Prisma.MethodWhereInput[]
+  category?: Prisma.StringNullableFilter<"Method"> | string | null
+  description?: Prisma.StringNullableFilter<"Method"> | string | null
   papers?: Prisma.PaperMethodListRelationFilter
 }, "id" | "name" | "slug">
 
@@ -190,6 +210,8 @@ export type MethodOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MethodCountOrderByAggregateInput
   _max?: Prisma.MethodMaxOrderByAggregateInput
   _min?: Prisma.MethodMinOrderByAggregateInput
@@ -202,12 +224,16 @@ export type MethodScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Method"> | string
   name?: Prisma.StringWithAggregatesFilter<"Method"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Method"> | string
+  category?: Prisma.StringNullableWithAggregatesFilter<"Method"> | string | null
+  description?: Prisma.StringNullableWithAggregatesFilter<"Method"> | string | null
 }
 
 export type MethodCreateInput = {
   id?: string
   name: string
   slug: string
+  category?: string | null
+  description?: string | null
   papers?: Prisma.PaperMethodCreateNestedManyWithoutMethodInput
 }
 
@@ -215,6 +241,8 @@ export type MethodUncheckedCreateInput = {
   id?: string
   name: string
   slug: string
+  category?: string | null
+  description?: string | null
   papers?: Prisma.PaperMethodUncheckedCreateNestedManyWithoutMethodInput
 }
 
@@ -222,6 +250,8 @@ export type MethodUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   papers?: Prisma.PaperMethodUpdateManyWithoutMethodNestedInput
 }
 
@@ -229,6 +259,8 @@ export type MethodUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   papers?: Prisma.PaperMethodUncheckedUpdateManyWithoutMethodNestedInput
 }
 
@@ -236,36 +268,48 @@ export type MethodCreateManyInput = {
   id?: string
   name: string
   slug: string
+  category?: string | null
+  description?: string | null
 }
 
 export type MethodUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MethodUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MethodCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  description?: Prisma.SortOrder
 }
 
 export type MethodMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  description?: Prisma.SortOrder
 }
 
 export type MethodMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  description?: Prisma.SortOrder
 }
 
 export type MethodScalarRelationFilter = {
@@ -291,12 +335,16 @@ export type MethodCreateWithoutPapersInput = {
   id?: string
   name: string
   slug: string
+  category?: string | null
+  description?: string | null
 }
 
 export type MethodUncheckedCreateWithoutPapersInput = {
   id?: string
   name: string
   slug: string
+  category?: string | null
+  description?: string | null
 }
 
 export type MethodCreateOrConnectWithoutPapersInput = {
@@ -319,12 +367,16 @@ export type MethodUpdateWithoutPapersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MethodUncheckedUpdateWithoutPapersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -362,6 +414,8 @@ export type MethodSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   name?: boolean
   slug?: boolean
+  category?: boolean
+  description?: boolean
   papers?: boolean | Prisma.Method$papersArgs<ExtArgs>
   _count?: boolean | Prisma.MethodCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["method"]>
@@ -370,21 +424,27 @@ export type MethodSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   name?: boolean
   slug?: boolean
+  category?: boolean
+  description?: boolean
 }, ExtArgs["result"]["method"]>
 
 export type MethodSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   slug?: boolean
+  category?: boolean
+  description?: boolean
 }, ExtArgs["result"]["method"]>
 
 export type MethodSelectScalar = {
   id?: boolean
   name?: boolean
   slug?: boolean
+  category?: boolean
+  description?: boolean
 }
 
-export type MethodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug", ExtArgs["result"]["method"]>
+export type MethodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "category" | "description", ExtArgs["result"]["method"]>
 export type MethodInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   papers?: boolean | Prisma.Method$papersArgs<ExtArgs>
   _count?: boolean | Prisma.MethodCountOutputTypeDefaultArgs<ExtArgs>
@@ -401,6 +461,8 @@ export type $MethodPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     name: string
     slug: string
+    category: string | null
+    description: string | null
   }, ExtArgs["result"]["method"]>
   composites: {}
 }
@@ -828,6 +890,8 @@ export interface MethodFieldRefs {
   readonly id: Prisma.FieldRef<"Method", 'String'>
   readonly name: Prisma.FieldRef<"Method", 'String'>
   readonly slug: Prisma.FieldRef<"Method", 'String'>
+  readonly category: Prisma.FieldRef<"Method", 'String'>
+  readonly description: Prisma.FieldRef<"Method", 'String'>
 }
     
 

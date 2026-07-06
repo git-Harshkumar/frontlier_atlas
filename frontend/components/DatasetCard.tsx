@@ -26,7 +26,7 @@ export default function DatasetCard({ dataset }: { dataset: DatasetItem }) {
             </span>
           )}
         </div>
-        <span className="ds-text-muted text-[11px] font-mono shrink-0 mt-0.5">
+        <span className="ds-text-muted text-[11px] shrink-0 mt-0.5">
           {dataset.slug}
         </span>
       </div>

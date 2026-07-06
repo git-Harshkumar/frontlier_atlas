@@ -26,6 +26,56 @@ export const getMethods = async (c: Context) => {
   }
 };
 
+export const getGroupedMethods = async (c: Context) => {
+  const prisma = c.var.prisma;
+  try {
+    const grouped = await methodService.getGroupedMethods(prisma);
+    return c.json({
+      status: "success",
+      data: grouped,
+    }, 200);
+  } catch (error: any) {
+    return c.json({ status: "error", detail: error.message }, 500);
+  }
+};
+
+export const seedCategories = async (c: Context) => {
+  const prisma = c.var.prisma;
+  const CATEGORY_MAP: Record<string, string[]> = {
+    "General": ["llm", "multi-head-attention", "softmax", "layer-normalization", "mac-tuning"],
+    "Language": ["bert", "gpt", "t5", "seq2seq", "attention", "mamba-2", "performer", "bleu", "rouge", "fasttext", "speculative-decoding", "sliding-window-attention", "gated-deltanet"],
+    "Vision": ["clip", "llava", "vision-transformer", "sam", "dino", "resnet", "u-net", "convnext", "mask-r-cnn", "yolo", "nerf", "vit", "r-cnn", "swin-transformer"],
+    "Audio & Speech": ["whisper", "wavenet", "conformer", "soundstream", "rnn-transducer", "wav2vec", "fast-conformer", "neural-audio-codec", "spectrogram", "tdt"],
+    "Agents": ["react", "mcp", "function-calling", "agent-skills", "multi-turn", "tool-use", "autogpt", "agent-frameworks", "planning", "memory"],
+    "Reasoning": ["chain-of-thought", "tree-of-thoughts", "grpo", "reasoning-model", "self-refine", "reflection", "deep-research", "xavier-initialization", "context-rot", "test-time-compute"],
+    "Training": ["pre-training", "fine-tuning", "peft", "qlora", "lora", "prompt-engineering", "data-augmentation", "curriculum-learning", "teacher-forcing", "label-smoothing", "contrastive-learning", "self-supervised-learning", "training"],
+    "Optimization": ["adam", "adamw", "sgd", "adafactor", "weight-decay", "gradient-clipping", "learning-rate-scheduler", "cosine-annealing", "batch-normalization", "dropout", "optimization", "regularization"],
+    "Inference": ["kv-cache", "ttft", "prefill", "quantization", "pruning", "distillation", "knowledge-distillation", "flash-attention", "vllm"],
+    "Retrieval": ["rag", "colbert", "reranker", "bm25", "dense-retrieval", "hybrid-search", "vector-search", "reranking", "embedding-search", "context-retrieval", "retrieval-augmented-generation"],
+    "Reinforcement Learning": ["ppo", "dpo", "rlhf", "rlvr", "online-rl", "muzero", "alphazero", "reinforce", "reward-model", "reinforcement-learning"],
+    "Diffusion & Generation": ["stable-diffusion", "dit", "flow-matching", "diffusion-policy", "vae", "gan", "biggan", "score-based-models", "generative-adversarial-networks", "inpainting", "diffusion"],
+    "Multimodal": ["blip", "flamingo", "kosmos", "imagebind", "video-llava", "audioclip", "text-to-image", "text-to-video"],
+    "Architectures": ["transformer", "transformers", "mamba", "moe", "mixture-of-experts", "state-space-models", "cnn", "rnn", "lstm", "gcn", "big-bird", "graph-neural-networks", "graph-neural-network", "architecture", "sparse-attention"],
+    "Evaluation": ["pass-1", "llm-as-a-judge", "human-eval", "perplexity", "f1-score", "exact-match", "auc", "meteor"],
+    "Embeddings": ["word2vec", "glove", "elmo", "bert-embedding", "sentence-transformer", "openai-embedding", "cohere-embedding", "embedding-models", "dense-embedding", "embedding", "embeddings"]
+  };
+  
+  let updatedCount = 0;
+  for (const [category, slugs] of Object.entries(CATEGORY_MAP)) {
+    for (const slug of slugs) {
+      try {
+        const method = await prisma.method.findUnique({ where: { slug } });
+        if (method) {
+          await prisma.method.update({ where: { slug }, data: { category } });
+          updatedCount++;
+        }
+      } catch (e) {}
+    }
+  }
+  
+  return c.json({ status: "success", updated: updatedCount });
+};
+
 export const getMethodBySlug = async (c: Context) => {
   const prisma = c.var.prisma;
   const slug = c.req.param('slug') as string;

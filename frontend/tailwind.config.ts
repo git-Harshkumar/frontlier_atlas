@@ -77,9 +77,7 @@ module.exports = {
         md: "12px",
         sm: "12px",
       },
-      fontFamily: {
-        sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
-      },
+
       transitionDuration: {
         200: '200ms',
       },

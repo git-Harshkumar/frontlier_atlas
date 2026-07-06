@@ -14,7 +14,7 @@ export default function MethodCard({ method }: { method: MethodItem }) {
         <h3 className="text-[16px] font-semibold text-[#111111] group-hover:text-[#F55036] transition-colors leading-snug">
           {method.name}
         </h3>
-        <span className="ds-text-muted text-[11px] font-mono shrink-0 mt-0.5">
+        <span className="ds-text-muted text-[11px] shrink-0 mt-0.5">
           {method.slug}
         </span>
       </div>

@@ -13,8 +13,10 @@ import authorRoutes from "./routes/author.routes.js";
 import modelRoutes from "./routes/model.routes.js";
 import datasetRoutes from "./routes/dataset.routes.js";
 import taskRoutes from "./routes/task.routes.js";
+import discussionRoutes from "./routes/discussion.routes.js";
 import methodRoutes from "./routes/method.routes.js";
 import benchmarkRoutes from "./routes/benchmark.routes.js";
+
 
 // 1. Define BOTH Environment Bindings and Context Variables
 type Env = {
@@ -96,6 +98,7 @@ app.route("/api/v1/authors", authorRoutes);
 app.route("/api/v1/models", modelRoutes);
 app.route("/api/v1/datasets", datasetRoutes);
 app.route("/api/v1/tasks", taskRoutes);
+app.route("/api/v1/discussions", discussionRoutes);
 app.route("/api/v1/methods", methodRoutes);
 app.route("/api/v1/benchmarks", benchmarkRoutes);
 
