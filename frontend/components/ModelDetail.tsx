@@ -1,59 +1,32 @@
 "use client";
 
 import {
-  FileText,
-  Quote,
-  ExternalLink,
-  Share2,
-  Copy,
-  Check,
-  Calendar,
   ArrowLeft,
+  Calendar,
+  Check,
+  Copy,
+  FileText,
+  Share2,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { ModelDetail as ModelDetailType } from "@/lib/models";
-
-function PaperCard({
-  paper,
-}: {
-  paper: ModelDetailType["papers"][number];
-}) {
-  return (
-    <div className="ds-card p-5 flex flex-col gap-3">
-      <Link
-        href={`/papers/${paper.slug}`}
-        className="text-[16px] font-semibold text-[#111111] hover:text-[#F55036] transition-colors leading-snug no-underline"
-      >
-        {paper.title}
-      </Link>
-
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-[#555555]">
-        <span className="flex items-center gap-1.5">
-          <Quote size={14} className="text-[#8B8B8B]" />
-          {paper.citationCount} citation{paper.citationCount !== 1 ? "s" : ""}
-        </span>
-      </div>
-
-      <div className="pt-1">
-        <Link
-          href={`/papers/${paper.slug}`}
-          className="inline-flex items-center gap-1.5 ds-button-ghost text-[12px] px-3 py-1.5 no-underline"
-        >
-          <ExternalLink size={13} />
-          Open Paper
-        </Link>
-      </div>
-    </div>
-  );
-}
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
+function formatCompact(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    notation: value >= 1000 ? "compact" : "standard",
+    maximumFractionDigits: value >= 1000 ? 1 : 0,
+  }).format(value);
+}
+
 export default function ModelDetail({
   model,
+  children,
 }: {
   model: ModelDetailType;
+  children?: ReactNode;
 }) {
   const [copied, setCopied] = useState(false);
   const createdDate = new Date(model.createdAt);
@@ -108,9 +81,6 @@ export default function ModelDetail({
                 <h1 className="text-[28px] md:text-[32px] font-bold tracking-tight">
                   {model.name}
                 </h1>
-                {isNew && (
-                  <span className="ds-chip text-[11px]">New</span>
-                )}
               </div>
               <span className="inline-block ds-chip text-[11px] mb-3">
                 {model.slug}
@@ -133,6 +103,33 @@ export default function ModelDetail({
                     year: "numeric",
                   })}
                 </span>
+              </div>
+
+              <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="rounded-2xl border border-[#EAE6DE] bg-white px-4 py-3">
+                  <div className="text-[10px] uppercase tracking-[0.28em] text-[#B0ABA0] mb-1">
+                    Linked Papers
+                  </div>
+                  <div className="text-[18px] font-semibold text-[#111111] leading-none">
+                    {formatCompact(model.paperCount)}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-[#EAE6DE] bg-white px-4 py-3">
+                  <div className="text-[10px] uppercase tracking-[0.28em] text-[#B0ABA0] mb-1">
+                    Citations
+                  </div>
+                  <div className="text-[18px] font-semibold text-[#111111] leading-none">
+                    {formatCompact(model.citationCount)}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-[#EAE6DE] bg-white px-4 py-3">
+                  <div className="text-[10px] uppercase tracking-[0.28em] text-[#B0ABA0] mb-1">
+                    GitHub Stars
+                  </div>
+                  <div className="text-[18px] font-semibold text-[#111111] leading-none">
+                    {formatCompact(model.githubStars)}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -157,30 +154,7 @@ export default function ModelDetail({
           </div>
         </div>
 
-        {model.papers.length > 0 && (
-          <section className="mb-10">
-            <h2 className="text-[20px] font-bold tracking-tight mb-4">
-              Papers ({model.paperCount})
-            </h2>
-            <div className="flex flex-col gap-4">
-              {model.papers.map((paper) => (
-                <PaperCard key={paper.id} paper={paper} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {model.papers.length === 0 && (
-          <section className="mb-10">
-            <h2 className="text-[20px] font-bold tracking-tight mb-4">Papers</h2>
-            <div className="flex flex-col items-center justify-center py-16 gap-3 ds-card">
-              <FileText size={28} className="text-[#8B8B8B]" />
-              <p className="text-[14px] text-[#555555]">
-                No papers are associated with this model yet.
-              </p>
-            </div>
-          </section>
-        )}
+        {children}
 
         <div className="flex justify-start">
           <Link

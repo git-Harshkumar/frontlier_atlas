@@ -1,10 +1,24 @@
 import { fetchApi } from './api';
 
+export interface ModelTask {
+  id: string;
+  name: string;
+  slug: string;
+  color: string | null;
+}
+
 export interface BackendModelItem {
   id: string;
   name: string;
   slug: string;
   createdAt: string;
+  paperCount: number;
+  citationCount: number;
+  githubStars: number;
+  latestPaperDate: string | null;
+  latestPaperTitle: string | null;
+  latestPaperSlug: string | null;
+  tasks?: ModelTask[];
 }
 
 export interface ModelItem {
@@ -12,6 +26,13 @@ export interface ModelItem {
   name: string;
   slug: string;
   createdAt: string;
+  paperCount: number;
+  citationCount: number;
+  githubStars: number;
+  latestPaperDate: string | null;
+  latestPaperTitle: string | null;
+  latestPaperSlug: string | null;
+  tasks: ModelTask[];
 }
 
 export interface ModelPaper {
@@ -27,7 +48,10 @@ export interface ModelDetail {
   slug: string;
   createdAt: string;
   paperCount: number;
+  citationCount: number;
+  githubStars: number;
   papers: ModelPaper[];
+  tasks: ModelTask[];
 }
 
 export interface GetModelsResponse {
@@ -46,7 +70,11 @@ interface BackendModelDetail {
   name: string;
   slug: string;
   createdAt: string;
+  paperCount: number;
+  citationCount: number;
+  githubStars: number;
   papers: { paper: ModelPaper }[];
+  tasks: ModelTask[];
 }
 
 export async function getModels(): Promise<ModelItem[]> {
@@ -57,6 +85,13 @@ export async function getModels(): Promise<ModelItem[]> {
     name: m.name,
     slug: m.slug,
     createdAt: m.createdAt,
+    paperCount: m.paperCount,
+    citationCount: m.citationCount,
+    githubStars: m.githubStars,
+    latestPaperDate: m.latestPaperDate,
+    latestPaperTitle: m.latestPaperTitle,
+    latestPaperSlug: m.latestPaperSlug,
+    tasks: m.tasks ?? [],
   }));
 }
 
@@ -68,7 +103,10 @@ export async function getModelBySlug(slug: string): Promise<ModelDetail> {
     name: data.name,
     slug: data.slug,
     createdAt: data.createdAt,
-    paperCount: data.papers?.length ?? 0,
+    paperCount: data.paperCount ?? data.papers?.length ?? 0,
+    citationCount: data.citationCount ?? 0,
+    githubStars: data.githubStars ?? 0,
     papers: (data.papers ?? []).map(({ paper }) => paper),
+    tasks: data.tasks ?? [],
   };
 }

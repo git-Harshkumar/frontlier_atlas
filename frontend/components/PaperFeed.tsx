@@ -384,8 +384,9 @@ PaperCardSkeleton.displayName = "PaperCardSkeleton";
 /* ─── List ───────────────────────────────────────────────────────────────── */
 interface PaperListProps {
   selectedTag?: string;
-  filterParams?: Pick<GetPapersParams, "sort" | "task" | "method">;
+  filterParams?: Pick<GetPapersParams, "sort" | "task" | "method" | "model">;
   period?: GetPapersParams["period"];
+  searchQuery?: string;
   initialPapers?: GetPapersResult | null;
   initialError?: string;
 }
@@ -394,28 +395,42 @@ export default function PaperList({
   selectedTag,
   filterParams,
   period,
+  searchQuery,
   initialPapers = null,
   initialError,
 }: PaperListProps) {
   const [papers, setPapers] = useState<Paper[]>(() => initialPapers?.papers ?? []);
-  const [page, setPage] = useState(() => initialPapers?.page ?? 1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(initialError ?? null);
   const cacheRef = useRef<Map<string, GetPapersResult>>(new Map());
   const inFlightRef = useRef<Map<string, Promise<GetPapersResult>>>(new Map());
   const loadingRef = useRef(false);
+  const normalizedSearchQuery = useMemo(() => searchQuery?.trim().toLowerCase() ?? "", [searchQuery]);
+
+  const matchesSearch = useCallback((paper: Paper) => {
+    if (!normalizedSearchQuery) return true;
+    const haystack = [
+      paper.title,
+      paper.authors,
+      paper.description,
+      ...(paper.tags ?? []),
+      ...(paper.additionalTags ?? []),
+    ].join(" ").toLowerCase();
+    return haystack.includes(normalizedSearchQuery);
+  }, [normalizedSearchQuery]);
 
   // Memoize task from selectedTag
   const task = useMemo(() => {
+    if (filterParams?.task) return filterParams.task;
     return selectedTag && selectedTag !== "All Topics"
       ? selectedTag.toLowerCase().replace(/\s+/g, "-")
       : undefined;
-  }, [selectedTag]);
+  }, [filterParams?.task, selectedTag]);
 
   // Get cache key
   const getCacheKey = useCallback((pageNumber: number) => {
-    return `${task ?? "all"}:${filterParams?.task ?? "none"}:${filterParams?.method ?? "none"}:${filterParams?.sort ?? "none"}:${period ?? "all"}:${pageNumber}`;
-  }, [filterParams?.method, filterParams?.sort, filterParams?.task, period, task]);
+    return `${task ?? "all"}:${filterParams?.model ?? "none"}:${filterParams?.method ?? "none"}:${filterParams?.sort ?? "none"}:${period ?? "all"}:${pageNumber}`;
+  }, [filterParams?.method, filterParams?.model, filterParams?.sort, period, task]);
 
   // Fetch page with caching
   const fetchPage = useCallback((pageNumber: number): Promise<GetPapersResult> => {
@@ -431,6 +446,7 @@ export default function PaperList({
     const request = getPapers({
       page: pageNumber,
       task,
+      model: filterParams?.model,
       method: filterParams?.method,
       sort: filterParams?.sort,
       period,
@@ -445,7 +461,7 @@ export default function PaperList({
 
     inFlightRef.current.set(key, request);
     return request;
-  }, [filterParams?.method, filterParams?.sort, getCacheKey, period, task]);
+  }, [filterParams?.method, filterParams?.model, filterParams?.sort, getCacheKey, period, task]);
 
   // Append papers with duplicate prevention
   const appendPapers = useCallback((newPapers: Paper[]) => {
@@ -464,14 +480,14 @@ export default function PaperList({
       loadingRef.current = true;
       setLoading(true);
       setError(null);
-      
+
       const result = await fetchPage(pageNumber);
-      setPage(result.page);
+      const visiblePapers = normalizedSearchQuery ? result.papers.filter(matchesSearch) : result.papers;
 
       if (replace) {
-        setPapers(result.papers);
+        setPapers(visiblePapers);
       } else {
-        appendPapers(result.papers);
+        appendPapers(visiblePapers);
       }
     } catch (err) {
       console.error(err);
@@ -480,7 +496,7 @@ export default function PaperList({
       loadingRef.current = false;
       setLoading(false);
     }
-  }, [appendPapers, fetchPage]);
+  }, [appendPapers, fetchPage, matchesSearch, normalizedSearchQuery]);
 
   // Prefetch next page
   const prefetchPage = useCallback((pageNumber: number) => {
@@ -491,10 +507,9 @@ export default function PaperList({
 
   // Initialize or reset on filter change
   useEffect(() => {
-    if (initialPapers && !selectedTag && !filterParams?.task && !filterParams?.method && !period) {
+    if (initialPapers && !selectedTag && !filterParams?.task && !filterParams?.method && !period && !normalizedSearchQuery) {
       cacheRef.current.set(getCacheKey(initialPapers.page), initialPapers);
       setPapers(initialPapers.papers);
-      setPage(initialPapers.page);
       setError(initialError ?? null);
       if (initialPapers.hasMore) {
         prefetchPage(initialPapers.page + 1);
@@ -503,9 +518,8 @@ export default function PaperList({
     }
 
     setPapers([]);
-    setPage(1);
     void loadPage(1, true);
-  }, [filterParams?.method, filterParams?.task, getCacheKey, initialError, initialPapers, loadPage, period, prefetchPage, selectedTag]);
+  }, [filterParams?.method, filterParams?.task, getCacheKey, initialError, initialPapers, loadPage, normalizedSearchQuery, period, prefetchPage, selectedTag]);
 
 
 
