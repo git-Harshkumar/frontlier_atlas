@@ -401,8 +401,6 @@ export default function PaperList({
   const [page, setPage] = useState(() => initialPapers?.page ?? 1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(initialError ?? null);
-  const [hasMore, setHasMore] = useState(() => initialPapers?.hasMore ?? false);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
   const cacheRef = useRef<Map<string, GetPapersResult>>(new Map());
   const inFlightRef = useRef<Map<string, Promise<GetPapersResult>>>(new Map());
   const loadingRef = useRef(false);
@@ -469,7 +467,6 @@ export default function PaperList({
       
       const result = await fetchPage(pageNumber);
       setPage(result.page);
-      setHasMore(result.hasMore);
 
       if (replace) {
         setPapers(result.papers);
@@ -498,7 +495,6 @@ export default function PaperList({
       cacheRef.current.set(getCacheKey(initialPapers.page), initialPapers);
       setPapers(initialPapers.papers);
       setPage(initialPapers.page);
-      setHasMore(initialPapers.hasMore);
       setError(initialError ?? null);
       if (initialPapers.hasMore) {
         prefetchPage(initialPapers.page + 1);
@@ -508,47 +504,10 @@ export default function PaperList({
 
     setPapers([]);
     setPage(1);
-    setHasMore(false);
     void loadPage(1, true);
   }, [filterParams?.method, filterParams?.task, getCacheKey, initialError, initialPapers, loadPage, period, prefetchPage, selectedTag]);
 
-  // Infinite scroll with Intersection Observer
-  useEffect(() => {
-    async function loadPapers() {
-      try {
-        setLoading(true);
-        const selectedTask =
-          selectedTag && selectedTag !== "All Topics"
-            ? selectedTag.toLowerCase().replace(/\s+/g, "-")
-            : undefined;
 
-        const apiStartTime = performance.now();
-        const result = await getPapers({
-          page,
-          ...filterParams,
-          task: selectedTask ?? filterParams?.task,
-          period,
-        });
-        const apiDuration = performance.now() - apiStartTime;
-        if (process.env.NODE_ENV === "development") console.log(`[PaperList] API call completed in ${apiDuration.toFixed(2)}ms`);
-
-        setHasMore(result.hasMore);
-
-        setPapers((prev) => {
-          const existingSlugs = new Set(prev.map(p => p.slug));
-          const newPapers = result.papers.filter(p => !existingSlugs.has(p.slug));
-          if (process.env.NODE_ENV === "development") console.log(`[PaperList] Adding ${newPapers.length} new papers, total now ${prev.length + newPapers.length}`);
-          return [...prev, ...newPapers];
-        });
-        setError(null);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to load papers. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    }
-  }, [page, selectedTag, papers.length]);
 
   if (error && papers.length === 0) {
     return (
