@@ -4,6 +4,8 @@ import { env } from "hono/adapter";
 import { PrismaClient } from "./generated/prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
+import { DatabaseManager } from "./database/DatabaseManager.js";
+import { QueryRouter } from "./routing/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
@@ -22,9 +24,16 @@ import benchmarkRoutes from "./routes/benchmark.routes.js";
 type Env = {
   Bindings: {
     DATABASE_URL: string;
+    SHARD_1_DATABASE_URL?: string;
+    SHARD_2_DATABASE_URL?: string;
+    SHARD_3_DATABASE_URL?: string;
+    SHARD_4_DATABASE_URL?: string;
+    SHARD_5_DATABASE_URL?: string;
   };
   Variables: {
     prisma: PrismaClient;
+    databaseManager: DatabaseManager;
+    queryRouter: QueryRouter;
     userId: string;
   };
 };
@@ -45,12 +54,22 @@ app.use(
   }),
 );
 
-// 2. Per-Request Prisma Client Lifecycle Middleware
+// 2. Per-Request Middleware
 app.use("*", async (c, next) => {
   const DATABASE_URL = c.env.DATABASE_URL as string;
+  const SHARD_1_DATABASE_URL = (c.env.SHARD_1_DATABASE_URL || DATABASE_URL) as string;
+  const SHARD_2_DATABASE_URL = (c.env.SHARD_2_DATABASE_URL || DATABASE_URL) as string;
+  const SHARD_3_DATABASE_URL = (c.env.SHARD_3_DATABASE_URL || DATABASE_URL) as string;
+  const SHARD_4_DATABASE_URL = (c.env.SHARD_4_DATABASE_URL || DATABASE_URL) as string;
+  const SHARD_5_DATABASE_URL = (c.env.SHARD_5_DATABASE_URL || DATABASE_URL) as string;
 
   // Strip quotes if they were included in the .dev.vars file
   const cleanUrl = DATABASE_URL ? DATABASE_URL.replace(/^"|"$/g, "") : "";
+  const cleanShard1Url = SHARD_1_DATABASE_URL ? SHARD_1_DATABASE_URL.replace(/^"|"$/g, "") : "";
+  const cleanShard2Url = SHARD_2_DATABASE_URL ? SHARD_2_DATABASE_URL.replace(/^"|"$/g, "") : "";
+  const cleanShard3Url = SHARD_3_DATABASE_URL ? SHARD_3_DATABASE_URL.replace(/^"|"$/g, "") : "";
+  const cleanShard4Url = SHARD_4_DATABASE_URL ? SHARD_4_DATABASE_URL.replace(/^"|"$/g, "") : "";
+  const cleanShard5Url = SHARD_5_DATABASE_URL ? SHARD_5_DATABASE_URL.replace(/^"|"$/g, "") : "";
 
   const isNeon = cleanUrl.includes("neon.tech");
   let prisma: PrismaClient;
@@ -70,7 +89,19 @@ app.use("*", async (c, next) => {
     prisma = new PrismaClient({ adapter });
   }
 
+  // DatabaseManager and QueryRouter
+  const databaseManager = new DatabaseManager({
+    SHARD_1_DATABASE_URL: cleanShard1Url,
+    SHARD_2_DATABASE_URL: cleanShard2Url,
+    SHARD_3_DATABASE_URL: cleanShard3Url,
+    SHARD_4_DATABASE_URL: cleanShard4Url,
+    SHARD_5_DATABASE_URL: cleanShard5Url,
+  });
+  const queryRouter = new QueryRouter(databaseManager);
+
   c.set("prisma", prisma);
+  c.set("databaseManager", databaseManager);
+  c.set("queryRouter", queryRouter);
 
   try {
     await next();
@@ -80,6 +111,7 @@ app.use("*", async (c, next) => {
     if (pool) {
       await pool.end();
     }
+    await databaseManager.disconnectAll();
   }
 });
 
