@@ -1,12 +1,13 @@
 import { Context } from 'hono';
 import * as paperService from '../services/paper.service.js';
+import { QueryRouter } from '../routing/index.js';
 
 export const ingestPaper = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as QueryRouter;
   const body = await c.req.json();
 
   try {
-    const newPaper = await paperService.ingestPaper(prisma, body.content);
+    const newPaper = await paperService.ingestPaper(queryRouter, body.content);
     return c.json({
       status: "success",
       message: "Paper successfully written via Prisma Neon Adapter",
@@ -19,7 +20,7 @@ export const ingestPaper = async (c: Context) => {
 };
 
 export const getPapers = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as QueryRouter;
   const sort = c.req.query('sort') || 'trending';
   const task = c.req.query('task');
   const method = c.req.query('method');
@@ -29,7 +30,7 @@ export const getPapers = async (c: Context) => {
   const limit = Number(c.req.query('limit')) || 20;
 
   try {
-    const result = await paperService.getPapers(prisma, {
+    const result = await paperService.getPapers(queryRouter, {
       sort,
       task,
       method,
@@ -55,11 +56,11 @@ export const getPapers = async (c: Context) => {
 };
 
 export const getPaperBySlug = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as QueryRouter;
   const slug = c.req.param('slug') as string;
 
   try {
-    const paper = await paperService.getPaperBySlug(prisma, slug);
+    const paper = await paperService.getPaperBySlug(queryRouter, slug);
     if (!paper) {
       return c.json({ status: "error", message: "Paper not found" }, 404);
     }
@@ -70,12 +71,12 @@ export const getPaperBySlug = async (c: Context) => {
 };
 
 export const updatePaper = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as QueryRouter;
   const slug = c.req.param('slug') as string;
   const body = await c.req.json();
 
   try {
-    const updatedPaper = await paperService.updatePaper(prisma, slug, body);
+    const updatedPaper = await paperService.updatePaper(queryRouter, slug, body);
     return c.json({ status: "success", data: updatedPaper }, 200);
   } catch (error: any) {
     return c.json({ status: "error", detail: error.message }, 500);
@@ -83,11 +84,11 @@ export const updatePaper = async (c: Context) => {
 };
 
 export const deletePaper = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as QueryRouter;
   const slug = c.req.param('slug') as string;
 
   try {
-    await paperService.deletePaper(prisma, slug);
+    await paperService.deletePaper(queryRouter, slug);
     return c.json({ status: "success", message: "Paper deleted" }, 200);
   } catch (error: any) {
     return c.json({ status: "error", detail: error.message }, 500);
