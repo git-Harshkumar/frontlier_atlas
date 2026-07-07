@@ -401,7 +401,7 @@ export default function Sidebar({
       <div className="pt-4 mt-2 border-t border-[#E5E5E0]">
         <div className="group relative">
           <NavItem
-            icon={""}
+            icon={<Globe size={14} />}
             label="All Domains"
             isActive={activeItem === "All Domains"}
             onClick={() => {

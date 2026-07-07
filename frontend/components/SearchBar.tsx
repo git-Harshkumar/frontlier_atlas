@@ -72,7 +72,10 @@ export default function SearchBar({
   // Click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setShowSuggestions(false);
       }
     };
@@ -101,7 +104,9 @@ export default function SearchBar({
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        setSelectedIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : prev));
+        setSelectedIndex((prev) =>
+          prev < suggestions.length - 1 ? prev + 1 : prev,
+        );
         break;
       case "ArrowUp":
         e.preventDefault();
@@ -111,7 +116,7 @@ export default function SearchBar({
         e.preventDefault();
         if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
           const suggestion = suggestions[selectedIndex];
-          const href = `/${suggestion.type === 'papers' ? 'papers' : suggestion.type}/${suggestion.slug}`;
+          const href = `/${suggestion.type === "papers" ? "papers" : suggestion.type}/${suggestion.slug}`;
           router.push(href);
           setShowSuggestions(false);
           setSelectedIndex(-1);
@@ -154,7 +159,10 @@ export default function SearchBar({
   const shouldShowSuggestions = showSuggestions && suggestions.length > 0;
 
   return (
-    <div ref={containerRef} className={`relative ${variant === "compact" ? "w-full max-w-[400px]" : "w-full max-w-[600px] mx-auto"}`}>
+    <div
+      ref={containerRef}
+      className={`relative ${variant === "compact" ? "w-full max-w-[400px]" : "w-full max-w-[600px] mx-auto"}`}
+    >
       <motion.form
         layoutId={layoutIdPrefix ? `${layoutIdPrefix}-container` : undefined}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -163,7 +171,7 @@ export default function SearchBar({
           variant === "compact" ? "rounded-[20px]" : "rounded-[24px]"
         }`}
       >
-        <motion.div 
+        <motion.div
           layoutId={layoutIdPrefix ? `${layoutIdPrefix}-icon` : undefined}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
           className="flex items-center text-[#737373] mr-2 shrink-0"
@@ -187,7 +195,9 @@ export default function SearchBar({
           aria-autocomplete="list"
           aria-controls="search-suggestions"
           aria-expanded={shouldShowSuggestions}
-          aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
+          aria-activedescendant={
+            selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined
+          }
         />
 
         {/* Loading Spinner */}
@@ -244,39 +254,43 @@ export default function SearchBar({
           "
         >
           {suggestions.map((suggestion, index) => {
-            const href = `/${suggestion.type === 'papers' ? 'papers' : suggestion.type}/${suggestion.slug}`;
+            const href = `/${suggestion.type === "papers" ? "papers" : suggestion.type}/${suggestion.slug}`;
             return (
-            <li
-              key={`${suggestion.type}-${suggestion.id}`}
-              role="option"
-              aria-selected={index === selectedIndex}
-              className={`border-b border-[#EBEBE6] last:border-b-0 ${
-                index === selectedIndex
-                  ? "bg-[#F8F7F2]"
-                  : "hover:bg-[#F8F7F2]"
-              }`}
-            >
-              <Link 
-                href={href}
-                onClick={() => setShowSuggestions(false)}
-                className="flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors block w-full h-full"
+              <li
+                key={`${suggestion.type}-${suggestion.id}`}
+                role="option"
+                aria-selected={index === selectedIndex}
+                className={`border-b border-[#EBEBE6] last:border-b-0 ${
+                  index === selectedIndex
+                    ? "bg-[#F8F7F2]"
+                    : "hover:bg-[#F8F7F2]"
+                }`}
               >
-                <span className="text-lg shrink-0">{getSuggestionIcon(suggestion.type)}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[14px] font-medium text-[#111111] truncate">
-                      {suggestion.title}
-                    </span>
-                    <span className="text-[10px] font-medium text-[#8B8B8B] uppercase tracking-wide shrink-0">
-                      {getSuggestionTypeLabel(suggestion.type)}
-                    </span>
+                <Link
+                  href={href}
+                  onClick={() => setShowSuggestions(false)}
+                  className="flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors block w-full h-full"
+                >
+                  <span className="text-lg shrink-0">
+                    {getSuggestionIcon(suggestion.type)}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[14px] font-medium text-[#111111] truncate">
+                        {suggestion.title}
+                      </span>
+                      <span className="text-[10px] font-medium text-[#8B8B8B] uppercase tracking-wide shrink-0">
+                        {getSuggestionTypeLabel(suggestion.type)}
+                      </span>
+                    </div>
+                    {suggestion.subtitle && (
+                      <p className="text-[12px] text-[#555555] mt-0.5">
+                        {suggestion.subtitle}
+                      </p>
+                    )}
                   </div>
-                  {suggestion.subtitle && (
-                    <p className="text-[12px] text-[#555555] mt-0.5">{suggestion.subtitle}</p>
-                  )}
-                </div>
-              </Link>
-            </li>
+                </Link>
+              </li>
             );
           })}
         </motion.ul>

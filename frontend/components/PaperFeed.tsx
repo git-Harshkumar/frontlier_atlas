@@ -1,19 +1,32 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo, useRef, memo, Profiler } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+  memo,
+  Profiler,
+} from "react";
 import { Github, MessageCircle, Star } from "lucide-react";
 import Link from "next/link";
-import { getPapers, type GetPapersParams, type GetPapersResult, type Paper } from "@/lib/paperApi";
+import {
+  getPapers,
+  type GetPapersParams,
+  type GetPapersResult,
+  type Paper,
+} from "@/lib/paperApi";
 import Image from "next/image";
 
 // --- Performance Logger ---
 const logRender = (
   id: string,
-  phase: 'mount' | 'update' | 'nested-update',
+  phase: "mount" | "update" | "nested-update",
   actualDuration: number,
   baseDuration: number,
   startTime: number,
-  commitTime: number
+  commitTime: number,
 ) => {
   if (process.env.NODE_ENV !== "development") return;
   console.group(`[Profiler] ${id} (${phase})`);
@@ -25,12 +38,40 @@ const logRender = (
 };
 
 /* ─── Tag color map ──────────────────────────────────────────────────────── */
-const TAG_COLORS: Record<string, { bg: string; text: string; dot: string; border?: string }> = {
-  purple: { bg: "bg-[#F3E8FF]", text: "text-[#6B21A8]", dot: "bg-[#9333EA]", border: "border border-[#D8B4FE]" },
-  blue: { bg: "bg-[#E0F2FE]", text: "text-[#0369A1]", dot: "bg-[#0284C7]", border: "border border-[#BAE6FD]" },
-  green: { bg: "bg-[#ECFDF5]", text: "text-[#047857]", dot: "bg-[#10B981]", border: "border border-[#A7F3D0]" },
-  cyan: { bg: "bg-[#CFFAFE]", text: "text-[#0E7490]", dot: "bg-[#06B6D4]", border: "border border-[#CFFAFE]" },
-  gray: { bg: "bg-white", text: "text-[#111111]", dot: "", border: "border border-[#E5E5E0]" },
+const TAG_COLORS: Record<
+  string,
+  { bg: string; text: string; dot: string; border?: string }
+> = {
+  purple: {
+    bg: "bg-[#F3E8FF]",
+    text: "text-[#6B21A8]",
+    dot: "bg-[#9333EA]",
+    border: "border border-[#D8B4FE]",
+  },
+  blue: {
+    bg: "bg-[#E0F2FE]",
+    text: "text-[#0369A1]",
+    dot: "bg-[#0284C7]",
+    border: "border border-[#BAE6FD]",
+  },
+  green: {
+    bg: "bg-[#ECFDF5]",
+    text: "text-[#047857]",
+    dot: "bg-[#10B981]",
+    border: "border border-[#A7F3D0]",
+  },
+  cyan: {
+    bg: "bg-[#CFFAFE]",
+    text: "text-[#0E7490]",
+    dot: "bg-[#06B6D4]",
+    border: "border border-[#CFFAFE]",
+  },
+  gray: {
+    bg: "bg-white",
+    text: "text-[#111111]",
+    dot: "",
+    border: "border border-[#E5E5E0]",
+  },
 };
 
 const getTagColor = (label: string): string => {
@@ -39,7 +80,7 @@ const getTagColor = (label: string): string => {
     "Image Understanding": "blue",
     Agents: "green",
     "Long Context": "purple",
-    "Robotics": "cyan",
+    Robotics: "cyan",
     "World Models": "purple",
   };
   if (map[label]) return map[label];
@@ -53,21 +94,25 @@ const getTagColor = (label: string): string => {
 };
 
 /* ─── Pill tag ───────────────────────────────────────────────────────────── */
-const Pill = memo(({ label, colorKey }: { label: string; colorKey: string }) => {
-  const c = TAG_COLORS[colorKey] || TAG_COLORS.gray;
-  const isGray = colorKey === "gray";
+const Pill = memo(
+  ({ label, colorKey }: { label: string; colorKey: string }) => {
+    const c = TAG_COLORS[colorKey] || TAG_COLORS.gray;
+    const isGray = colorKey === "gray";
 
-  return (
-    <span
-      className={`group h-[28px] xl:h-[24px] inline-flex items-center px-3 xl:px-2 rounded-[4px] text-[11px] cursor-pointer transition-all duration-200 hover:-translate-y-px hover:brightness-[0.96] hover:shadow-sm active:scale-95 select-none ${c.bg} ${c.text} ${c.border || ""} whitespace-nowrap`}
-    >
-      {!isGray && (
-        <span className={`w-1.5 h-1.5 rounded-full mr-2 shrink-0 transition-transform duration-200 group-hover:scale-110 ${c.dot}`} />
-      )}
-      {label}
-    </span>
-  );
-});
+    return (
+      <span
+        className={`group h-[28px] xl:h-[24px] inline-flex items-center px-3 xl:px-2 rounded-[4px] text-[11px] cursor-pointer transition-all duration-200 hover:-translate-y-px hover:brightness-[0.96] hover:shadow-sm active:scale-95 select-none ${c.bg} ${c.text} ${c.border || ""} whitespace-nowrap`}
+      >
+        {!isGray && (
+          <span
+            className={`w-1.5 h-1.5 rounded-full mr-2 shrink-0 transition-transform duration-200 group-hover:scale-110 ${c.dot}`}
+          />
+        )}
+        {label}
+      </span>
+    );
+  },
+);
 Pill.displayName = "Pill";
 
 /* ─── SOTA Display ───────────────────────────────────────────────────────── */
@@ -94,23 +139,35 @@ const SotaDisplay = memo(({ sota }: { sota: string }) => {
 
         return (
           <span key={idx} className="inline-flex items-center">
-            {idx > 0 && <span className="text-[#9CA3AF] mx-1.5 font-normal">•</span>}
+            {idx > 0 && (
+              <span className="text-[#9CA3AF] mx-1.5 font-normal">•</span>
+            )}
 
             {isSota ? (
               <>
-                <span className="text-[#B48C52] font-semibold mr-1 tracking-wide">SOTA</span>
+                <span className="text-[#B48C52] font-semibold mr-1 tracking-wide">
+                  SOTA
+                </span>
                 <span className="mr-1 text-[10px]">🏆</span>
                 <span className="text-[#8B8B8B] mr-1 font-normal">on</span>
-                <span className="text-[#1E40AF] text-[11.5px] tracking-tighter">{benchmarks}</span>
+                <span className="text-[#1E40AF] text-[11.5px] tracking-tighter">
+                  {benchmarks}
+                </span>
               </>
             ) : isOn ? (
               <>
-                <span className="text-[#8B8B8B] font-normal mr-1">{prefix}</span>
+                <span className="text-[#8B8B8B] font-normal mr-1">
+                  {prefix}
+                </span>
                 <span className="text-[#8B8B8B] mr-1 font-normal">on</span>
-                <span className="text-[#1E40AF] text-[11.5px] tracking-tighter">{benchmarks}</span>
+                <span className="text-[#1E40AF] text-[11.5px] tracking-tighter">
+                  {benchmarks}
+                </span>
               </>
             ) : (
-              <span className="text-[#8B8B8B] font-normal tracking-tight">{segment}</span>
+              <span className="text-[#8B8B8B] font-normal tracking-tight">
+                {segment}
+              </span>
             )}
           </span>
         );
@@ -122,7 +179,11 @@ SotaDisplay.displayName = "SotaDisplay";
 
 /* ─── Thumbnail ──────────────────────────────────────────────────────────── */
 // Deterministic color palette from title string
-function getTitleColors(title: string): { bg1: string; bg2: string; accent: string } {
+function getTitleColors(title: string): {
+  bg1: string;
+  bg2: string;
+  accent: string;
+} {
   const palettes = [
     { bg1: "#1a1a2e", bg2: "#16213e", accent: "#e94560" },
     { bg1: "#0f3460", bg2: "#533483", accent: "#e94560" },
@@ -134,7 +195,8 @@ function getTitleColors(title: string): { bg1: string; bg2: string; accent: stri
     { bg1: "#2c003e", bg2: "#1a0533", accent: "#870160" },
   ];
   let hash = 0;
-  for (let i = 0; i < title.length; i++) hash = title.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < title.length; i++)
+    hash = title.charCodeAt(i) + ((hash << 5) - hash);
   return palettes[Math.abs(hash) % palettes.length];
 }
 
@@ -145,8 +207,10 @@ function GeneratedCover({ title }: { title: string }) {
   const lines: string[] = [];
   let cur = "";
   for (const w of words) {
-    if ((cur + " " + w).trim().length > 20 && cur) { lines.push(cur.trim()); cur = w; }
-    else cur = (cur + " " + w).trim();
+    if ((cur + " " + w).trim().length > 20 && cur) {
+      lines.push(cur.trim());
+      cur = w;
+    } else cur = (cur + " " + w).trim();
     if (lines.length === 3) break;
   }
   if (cur && lines.length < 3) lines.push(cur.trim());
@@ -170,7 +234,7 @@ function GeneratedCover({ title }: { title: string }) {
       <rect x="12" y="16" width="42" height="14" rx="3" fill="${accent}" fill-opacity="0.9"/>
       <text x="33" y="27" font-family="monospace" font-size="8" fill="white" text-anchor="middle">arXiv</text>
       <!-- title lines -->
-      ${displayLines.map((line, i) => `<text x="12" y="${105 + i * 18}" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="white" fill-opacity="0.95">${line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}</text>`).join("")}
+      ${displayLines.map((line, i) => `<text x="12" y="${105 + i * 18}" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="white" fill-opacity="0.95">${line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")}</text>`).join("")}
       <!-- bottom accent bar -->
       <rect x="12" y="210" width="30" height="3" rx="1.5" fill="${accent}"/>
     </svg>
@@ -181,71 +245,81 @@ function GeneratedCover({ title }: { title: string }) {
   return (
     <div
       className="w-full h-full"
-      style={{ backgroundImage: `url("${dataUrl}")`, backgroundSize: 'cover', backgroundPosition: 'top' }}
+      style={{
+        backgroundImage: `url("${dataUrl}")`,
+        backgroundSize: "cover",
+        backgroundPosition: "top",
+      }}
     />
   );
 }
 
-const PaperThumbnail = memo(({ title, thumbnail }: { title: string; thumbnail: string }) => {
-  return (
-    <div className="w-full xl:w-[170px] h-[180px] sm:h-[220px] xl:h-[240px] shrink-0 border border-[#E5E5E0] rounded-md xl:rounded-none overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.07)] relative flex items-center justify-center">
-      {thumbnail ? (
-        <Image
-          src={thumbnail}
-          alt={title || "Paper thumbnail"}
-          fill
-          className="object-cover object-top"
-          sizes="(max-width: 1280px) 100vw, 170px"
-        />
-      ) : (
-        <GeneratedCover title={title} />
-      )}
-    </div>
-  );
-});
+const PaperThumbnail = memo(
+  ({ title, thumbnail }: { title: string; thumbnail: string }) => {
+    return (
+      <div className="w-full xl:w-[170px] h-[180px] sm:h-[220px] xl:h-[240px] shrink-0 border border-[#E5E5E0] rounded-md xl:rounded-none overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.07)] relative flex items-center justify-center">
+        {thumbnail ? (
+          <Image
+            src={thumbnail}
+            alt={title || "Paper thumbnail"}
+            fill
+            className="object-cover object-top"
+            sizes="(max-width: 1280px) 100vw, 170px"
+          />
+        ) : (
+          <GeneratedCover title={title} />
+        )}
+      </div>
+    );
+  },
+);
 PaperThumbnail.displayName = "PaperThumbnail";
 
 /* ─── Metric block ───────────────────────────────────────────────────────── */
-const Metric = memo(({
-  value,
-  label,
-  children,
-  onClick,
-  interactive = false,
-}: {
-  value: string;
-  label: string;
-  children?: React.ReactNode;
-  onClick?: (e: React.MouseEvent) => void;
-  interactive?: boolean;
-}) => {
-  const isInteractive = interactive || !!onClick;
-  return (
-    <div
-      className={`flex flex-col items-center gap-1 group/metric ${isInteractive ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
-      onClick={(e) => {
-        if (onClick) {
-          e.preventDefault();
-          e.stopPropagation();
-          onClick(e);
-        }
-      }}
-    >
-      <div className="flex items-center gap-1.5">
-        {children}
-        <span className={`text-[14.5px] font-bold text-[#111111] leading-none tabular-nums ${isInteractive ? 'group-hover/metric:text-[#F55036] transition-colors' : ''}`}>
-          {value}
+const Metric = memo(
+  ({
+    value,
+    label,
+    children,
+    onClick,
+    interactive = false,
+  }: {
+    value: string;
+    label: string;
+    children?: React.ReactNode;
+    onClick?: (e: React.MouseEvent) => void;
+    interactive?: boolean;
+  }) => {
+    const isInteractive = interactive || !!onClick;
+    return (
+      <div
+        className={`flex flex-col items-center gap-1 group/metric ${isInteractive ? "cursor-pointer hover:opacity-80 transition-opacity" : ""}`}
+        onClick={(e) => {
+          if (onClick) {
+            e.preventDefault();
+            e.stopPropagation();
+            onClick(e);
+          }
+        }}
+      >
+        <div className="flex items-center gap-1.5">
+          {children}
+          <span
+            className={`text-[14.5px] font-bold text-[#111111] leading-none tabular-nums ${isInteractive ? "group-hover/metric:text-[#F55036] transition-colors" : ""}`}
+          >
+            {value}
+          </span>
+        </div>
+        <span
+          className={`text-[8px] font-semibold text-[#8B8B8B] uppercase tracking-[0.08em] leading-none ${isInteractive ? "group-hover/metric:text-[#F55036] transition-colors" : ""}`}
+        >
+          {label}
         </span>
       </div>
-      <span className={`text-[8px] font-semibold text-[#8B8B8B] uppercase tracking-[0.08em] leading-none ${isInteractive ? 'group-hover/metric:text-[#F55036] transition-colors' : ''}`}>
-        {label}
-      </span>
-    </div>
-  );
-});
+    );
+  },
+);
 Metric.displayName = "Metric";
-
-
 
 /* ─── Paper Card ─────────────────────────────────────────────────────────── */
 const PaperCard = memo(({ paper }: { paper: Paper }) => {
@@ -253,7 +327,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
 
   let displayAuthors = paper.authors;
   if (paper.authors) {
-    const authorList = paper.authors.split(",").map(a => a.trim());
+    const authorList = paper.authors.split(",").map((a) => a.trim());
     if (authorList.length > 3) {
       displayAuthors = `${authorList.slice(0, 3).join(", ")} et al.`;
     }
@@ -302,7 +376,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
           {/* Methods (Row 3) */}
           <div className="flex flex-nowrap items-center gap-2 w-full overflow-hidden">
             {paper.additionalTags?.map((t) => {
-              return <Pill key={t} label={t} colorKey="gray" /> ;
+              return <Pill key={t} label={t} colorKey="gray" />;
             })}
           </div>
         </div>
@@ -313,16 +387,37 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
             <Metric
               value={`${upvotesNum}`}
               label="Stars / Hr"
-              onClick={paper.githubUrl ? () => window.open(paper.githubUrl, '_blank', 'noopener,noreferrer') : undefined}
+              onClick={
+                paper.githubUrl
+                  ? () =>
+                      window.open(
+                        paper.githubUrl,
+                        "_blank",
+                        "noopener,noreferrer",
+                      )
+                  : undefined
+              }
               interactive={!!paper.githubUrl}
             >
-              <Star size={12} className="text-[#8B8B8B] shrink-0 fill-current" />
+              <Star
+                size={12}
+                className="text-[#8B8B8B] shrink-0 fill-current"
+              />
             </Metric>
 
             <Metric
               value={paper.repo}
               label="Repo"
-              onClick={paper.githubUrl ? () => window.open(paper.githubUrl, '_blank', 'noopener,noreferrer') : undefined}
+              onClick={
+                paper.githubUrl
+                  ? () =>
+                      window.open(
+                        paper.githubUrl,
+                        "_blank",
+                        "noopener,noreferrer",
+                      )
+                  : undefined
+              }
               interactive={!!paper.githubUrl}
             >
               <Github size={13} className="text-[#8B8B8B] shrink-0" />
@@ -397,7 +492,9 @@ export default function PaperList({
   initialPapers = null,
   initialError,
 }: PaperListProps) {
-  const [papers, setPapers] = useState<Paper[]>(() => initialPapers?.papers ?? []);
+  const [papers, setPapers] = useState<Paper[]>(
+    () => initialPapers?.papers ?? [],
+  );
   const [page, setPage] = useState(() => initialPapers?.page ?? 1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(initialError ?? null);
@@ -413,85 +510,111 @@ export default function PaperList({
   }, [selectedTag]);
 
   // Get cache key
-  const getCacheKey = useCallback((pageNumber: number) => {
-    return `${task ?? "all"}:${filterParams?.task ?? "none"}:${filterParams?.method ?? "none"}:${filterParams?.sort ?? "none"}:${period ?? "all"}:${pageNumber}`;
-  }, [filterParams?.method, filterParams?.sort, filterParams?.task, period, task]);
+  const getCacheKey = useCallback(
+    (pageNumber: number) => {
+      return `${task ?? "all"}:${filterParams?.task ?? "none"}:${filterParams?.method ?? "none"}:${filterParams?.sort ?? "none"}:${period ?? "all"}:${pageNumber}`;
+    },
+    [
+      filterParams?.method,
+      filterParams?.sort,
+      filterParams?.task,
+      period,
+      task,
+    ],
+  );
 
   // Fetch page with caching
-  const fetchPage = useCallback((pageNumber: number): Promise<GetPapersResult> => {
-    const key = getCacheKey(pageNumber);
-    const cached = cacheRef.current.get(key);
-    if (cached) {
-      return Promise.resolve(cached);
-    }
-    if (inFlightRef.current.has(key)) {
-      return inFlightRef.current.get(key)!;
-    }
+  const fetchPage = useCallback(
+    (pageNumber: number): Promise<GetPapersResult> => {
+      const key = getCacheKey(pageNumber);
+      const cached = cacheRef.current.get(key);
+      if (cached) {
+        return Promise.resolve(cached);
+      }
+      if (inFlightRef.current.has(key)) {
+        return inFlightRef.current.get(key)!;
+      }
 
-    const request = getPapers({
-      page: pageNumber,
-      task,
-      method: filterParams?.method,
-      sort: filterParams?.sort,
-      period,
-    })
-      .then((result) => {
-        cacheRef.current.set(key, result);
-        return result;
+      const request = getPapers({
+        page: pageNumber,
+        task,
+        method: filterParams?.method,
+        sort: filterParams?.sort,
+        period,
       })
-      .finally(() => {
-        inFlightRef.current.delete(key);
-      });
+        .then((result) => {
+          cacheRef.current.set(key, result);
+          return result;
+        })
+        .finally(() => {
+          inFlightRef.current.delete(key);
+        });
 
-    inFlightRef.current.set(key, request);
-    return request;
-  }, [filterParams?.method, filterParams?.sort, getCacheKey, period, task]);
+      inFlightRef.current.set(key, request);
+      return request;
+    },
+    [filterParams?.method, filterParams?.sort, getCacheKey, period, task],
+  );
 
   // Append papers with duplicate prevention
   const appendPapers = useCallback((newPapers: Paper[]) => {
     setPapers((prev) => {
       const existingSlugs = new Set(prev.map((paper) => paper.slug));
-      const uniquePapers = newPapers.filter((paper) => !existingSlugs.has(paper.slug));
+      const uniquePapers = newPapers.filter(
+        (paper) => !existingSlugs.has(paper.slug),
+      );
       return uniquePapers.length ? [...prev, ...uniquePapers] : prev;
     });
   }, []);
 
   // Load page
-  const loadPage = useCallback(async (pageNumber: number, replace = false) => {
-    if (loadingRef.current) return;
+  const loadPage = useCallback(
+    async (pageNumber: number, replace = false) => {
+      if (loadingRef.current) return;
 
-    try {
-      loadingRef.current = true;
-      setLoading(true);
-      setError(null);
-      
-      const result = await fetchPage(pageNumber);
-      setPage(result.page);
+      try {
+        loadingRef.current = true;
+        setLoading(true);
+        setError(null);
 
-      if (replace) {
-        setPapers(result.papers);
-      } else {
-        appendPapers(result.papers);
+        const result = await fetchPage(pageNumber);
+        setPage(result.page);
+
+        if (replace) {
+          setPapers(result.papers);
+        } else {
+          appendPapers(result.papers);
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load papers. Please try again later.");
+      } finally {
+        loadingRef.current = false;
+        setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      setError("Failed to load papers. Please try again later.");
-    } finally {
-      loadingRef.current = false;
-      setLoading(false);
-    }
-  }, [appendPapers, fetchPage]);
+    },
+    [appendPapers, fetchPage],
+  );
 
   // Prefetch next page
-  const prefetchPage = useCallback((pageNumber: number) => {
-    void fetchPage(pageNumber).catch((err) => {
-      console.warn("Failed to prefetch papers:", err);
-    });
-  }, [fetchPage]);
+  const prefetchPage = useCallback(
+    (pageNumber: number) => {
+      void fetchPage(pageNumber).catch((err) => {
+        console.warn("Failed to prefetch papers:", err);
+      });
+    },
+    [fetchPage],
+  );
 
   // Initialize or reset on filter change
   useEffect(() => {
-    if (initialPapers && !selectedTag && !filterParams?.task && !filterParams?.method && !period) {
+    if (
+      initialPapers &&
+      !selectedTag &&
+      !filterParams?.task &&
+      !filterParams?.method &&
+      !period
+    ) {
       cacheRef.current.set(getCacheKey(initialPapers.page), initialPapers);
       setPapers(initialPapers.papers);
       setPage(initialPapers.page);
@@ -505,9 +628,17 @@ export default function PaperList({
     setPapers([]);
     setPage(1);
     void loadPage(1, true);
-  }, [filterParams?.method, filterParams?.task, getCacheKey, initialError, initialPapers, loadPage, period, prefetchPage, selectedTag]);
-
-
+  }, [
+    filterParams?.method,
+    filterParams?.task,
+    getCacheKey,
+    initialError,
+    initialPapers,
+    loadPage,
+    period,
+    prefetchPage,
+    selectedTag,
+  ]);
 
   if (error && papers.length === 0) {
     return (
@@ -543,15 +674,27 @@ export default function PaperList({
         {!loading && papers.length === 0 && (
           <div className="flex flex-col items-center justify-center py-24 px-4 text-center animate-fade-in w-full col-span-full">
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 border border-[#E5E5E0] shadow-sm">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B8B8B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8B8B8B"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
                 <line x1="9" y1="15" x2="15" y2="15"></line>
               </svg>
             </div>
-            <h3 className="text-[18px] font-bold text-[#111111] mb-2 tracking-tight">No Papers Found</h3>
+            <h3 className="text-[18px] font-bold text-[#111111] mb-2 tracking-tight">
+              No Papers Found
+            </h3>
             <p className="text-[14px] text-[#666666] max-w-[320px] leading-relaxed">
-              We couldn't find any papers matching your selected time period or category. Try clearing your filters or selecting "All time".
+              We couldn't find any papers matching your selected time period or
+              category. Try clearing your filters or selecting "All time".
             </p>
           </div>
         )}
