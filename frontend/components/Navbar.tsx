@@ -30,7 +30,11 @@ export default function Navbar({
   const isDatasetsActive = pathname.startsWith("/datasets");
   const isAuthorsActive = pathname.startsWith("/authors");
 
-  const shouldShowSearch = pathname !== "/" || isScrolled;
+  const isHomePage = pathname === "/";
+  const isCategoryPage = pathname.startsWith("/category/");
+  const hasHeroSection = isHomePage || isCategoryPage;
+  
+  const shouldShowSearch = !hasHeroSection || isScrolled;
 
   // Close menu on escape key
   useEffect(() => {
@@ -58,7 +62,7 @@ export default function Navbar({
 
   return (
     <>
-      <nav className="sticky top-0 h-[56px] xl:h-[52px] w-full bg-[#F8F7F2]/80 backdrop-blur-md border-b border-[#E5E5E0] flex items-center justify-between px-4 md:px-8 xl:px-12 gap-3 xl:gap-4 shrink-0 z-50 transition-all duration-300">
+      <nav className="font-sans sticky top-0 h-[56px] xl:h-[52px] w-full bg-[#F8F7F2]/80 backdrop-blur-md border-b border-[#E5E5E0] flex items-center justify-between px-4 md:px-8 xl:px-12 gap-3 xl:gap-4 shrink-0 z-50 transition-all duration-300">
         {/* Mobile Left (Hamburger + Logo) */}
         <div className="flex items-center gap-1 xl:gap-0 xl:w-[240px] shrink-0">
           <button 
@@ -88,9 +92,9 @@ export default function Navbar({
         </div>
 
         {/* Center — Search Bar (Desktop) */}
-        <div className="hidden lg:flex flex-1 items-center justify-center max-w-[400px]">
+        <div className="hidden lg:flex flex-1 items-center justify-center max-w-[240px] xl:max-w-[400px]">
           {shouldShowSearch && (
-            <SearchBar variant="compact" placeholder="Search..." initialQuery="" />
+            <SearchBar variant="compact" placeholder="Search..." initialQuery="" layoutIdPrefix="global" />
           )}
         </div>
 
@@ -98,60 +102,66 @@ export default function Navbar({
         <div className="hidden lg:flex items-center gap-6">
           <Link
             href="/tasks"
-            className={`text-[13px] font-medium transition-colors no-underline ${
+            data-text="Tasks"
+            className={`text-[13px] transition-colors no-underline before:content-[attr(data-text)] before:block before:font-bold before:h-0 before:overflow-hidden before:invisible before:select-none text-center flex flex-col justify-center ${
               isTasksActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] hover:text-[#F55036]"
+                : "text-[#555555] font-medium hover:text-[#F55036]"
             }`}
           >
             Tasks
           </Link>
           <Link
             href="/methods"
-            className={`text-[13px] font-medium transition-colors no-underline ${
+            data-text="Methods"
+            className={`text-[13px] transition-colors no-underline before:content-[attr(data-text)] before:block before:font-bold before:h-0 before:overflow-hidden before:invisible before:select-none text-center flex flex-col justify-center ${
               isMethodsActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] hover:text-[#F55036]"
+                : "text-[#555555] font-medium hover:text-[#F55036]"
             }`}
           >
             Methods
           </Link>
           <Link
             href="/benchmarks"
-            className={`text-[13px] font-medium transition-colors no-underline ${
+            data-text="Benchmarks"
+            className={`text-[13px] transition-colors no-underline before:content-[attr(data-text)] before:block before:font-bold before:h-0 before:overflow-hidden before:invisible before:select-none text-center flex flex-col justify-center ${
               isBenchmarksActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] hover:text-[#F55036]"
+                : "text-[#555555] font-medium hover:text-[#F55036]"
             }`}
           >
             Benchmarks
           </Link>
           <Link
             href="/models"
-            className={`text-[13px] font-medium transition-colors no-underline ${
+            data-text="Models"
+            className={`text-[13px] transition-colors no-underline before:content-[attr(data-text)] before:block before:font-bold before:h-0 before:overflow-hidden before:invisible before:select-none text-center flex flex-col justify-center ${
               isModelsActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] hover:text-[#F55036]"
+                : "text-[#555555] font-medium hover:text-[#F55036]"
             }`}
           >
             Models
           </Link>
           <Link
             href="/datasets"
-            className={`text-[13px] font-medium transition-colors no-underline ${
+            data-text="Datasets"
+            className={`text-[13px] transition-colors no-underline before:content-[attr(data-text)] before:block before:font-bold before:h-0 before:overflow-hidden before:invisible before:select-none text-center flex flex-col justify-center ${
               isDatasetsActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] hover:text-[#F55036]"
+                : "text-[#555555] font-medium hover:text-[#F55036]"
             }`}
           >
             Datasets
           </Link>
           <Link
             href="/authors"
-            className={`text-[13px] font-medium transition-colors no-underline ${
+            data-text="Authors"
+            className={`text-[13px] transition-colors no-underline before:content-[attr(data-text)] before:block before:font-bold before:h-0 before:overflow-hidden before:invisible before:select-none text-center flex flex-col justify-center ${
               isAuthorsActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] hover:text-[#F55036]"
+                : "text-[#555555] font-medium hover:text-[#F55036]"
             }`}
           >
             Authors
@@ -187,7 +197,7 @@ export default function Navbar({
       />
 
       <div 
-        className={`fixed inset-y-0 left-0 w-[80vw] max-w-[300px] bg-[#F8F7F2]/90 backdrop-blur-xl z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out xl:hidden flex flex-col ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`font-sans fixed inset-y-0 left-0 w-[80vw] max-w-[300px] bg-[#F8F7F2]/90 backdrop-blur-xl z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out xl:hidden flex flex-col ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"

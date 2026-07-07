@@ -11,6 +11,7 @@ import {
 import ModelDetailComponent from "@/components/ModelDetail";
 import PaperFeed from "@/components/PaperFeed";
 import ModelSearchInput from "@/components/ModelSearchInput";
+import Navbar from "@/components/Navbar";
 import { getModelBySlug, type ModelDetail } from "@/lib/models";
 
 const SORT_OPTIONS = [
@@ -100,9 +101,13 @@ export default function ModelDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
-        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 xl:px-12 py-8">
-          <SkeletonSection />
+      <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
+        <style>{`body { overflow: hidden !important; }`}</style>
+        <Navbar />
+        <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 xl:px-12 py-8 pb-14">
+            <SkeletonSection />
+          </div>
         </div>
       </div>
     );
@@ -110,20 +115,24 @@ export default function ModelDetailPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
-        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 xl:px-12 py-8">
-          <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
-            <Link href="/" className="hover:text-[#F55036] transition-colors no-underline">Home</Link>
-            <span>/</span>
-            <Link href="/models" className="hover:text-[#F55036] transition-colors no-underline">Models</Link>
-            <span>/</span>
-            <span className="text-[#555555] font-medium">{slug}</span>
-          </nav>
+      <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
+        <style>{`body { overflow: hidden !important; }`}</style>
+        <Navbar />
+        <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 xl:px-12 py-8">
+            <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
+              <Link href="/" className="hover:text-[#F55036] transition-colors no-underline">Home</Link>
+              <span>/</span>
+              <Link href="/models" className="hover:text-[#F55036] transition-colors no-underline">Models</Link>
+              <span>/</span>
+              <span className="text-[#555555] font-medium">{slug}</span>
+            </nav>
 
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <AlertCircle size={32} className="text-[#FF5A1F]" />
-            <p className="text-[14px] text-[#FF5A1F]">{error}</p>
-            <button onClick={fetchModel} className="ds-button text-[12px]">Retry</button>
+            <div className="flex flex-col items-center justify-center py-20 gap-3">
+              <AlertCircle size={32} className="text-[#FF5A1F]" />
+              <p className="text-[14px] text-[#FF5A1F]">{error}</p>
+              <button onClick={fetchModel} className="ds-button text-[12px]">Retry</button>
+            </div>
           </div>
         </div>
       </div>
@@ -139,9 +148,12 @@ export default function ModelDetailPage() {
   const selectedSortLabel = SORT_OPTIONS.find((option) => option.key === sortBy)?.label ?? "Sort";
 
   return (
-    <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
-      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 xl:px-12 py-8 pb-14">
-        <ModelDetailComponent model={model}>
+    <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
+      <style>{`body { overflow: hidden !important; }`}</style>
+      <Navbar />
+      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 xl:px-12 py-8 pb-14">
+          <ModelDetailComponent model={model}>
           <section className="border-t border-[#EAE6DE] pt-6 mb-5">
             <div className="text-[11px] uppercase tracking-[0.36em] text-[#B0ABA0] mb-4">Tasks</div>
             <div className="flex flex-wrap items-center gap-2">
@@ -241,6 +253,7 @@ export default function ModelDetailPage() {
             />
           </section>
         </ModelDetailComponent>
+        </div>
       </div>
     </div>
   );

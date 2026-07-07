@@ -13,6 +13,7 @@ import {
 import PaperFeed from "@/components/PaperFeed";
 import ModelCard from "@/components/ModelCard";
 import ModelSearchInput from "@/components/ModelSearchInput";
+import Navbar from "@/components/Navbar";
 import { getModels, type ModelItem } from "@/lib/models";
 import { getTasks, type TaskItem } from "@/lib/tasks";
 
@@ -111,8 +112,9 @@ export default function ModelsPage() {
         getModels(),
         getTasks(),
       ]);
+      const uniqueTasks = Array.from(new Map(tasksData.map(t => [t.slug, t])).values());
       setAllModels(models);
-      setTasks(tasksData);
+      setTasks(uniqueTasks);
 
     } catch (err) {
       console.error("Failed to fetch models:", err);
@@ -175,9 +177,12 @@ export default function ModelsPage() {
   const selectedSortLabel = SORT_OPTIONS.find((option) => option.key === sortBy)?.label ?? "Sort";
 
   return (
-    <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
-      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 py-8 pb-14">
-        <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
+    <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
+      <style>{`body { overflow: hidden !important; }`}</style>
+      <Navbar />
+      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 py-8 pb-14">
+          <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
           <Link href="/" className="hover:text-[#F55036] transition-colors no-underline">
             Home
           </Link>
@@ -417,6 +422,7 @@ export default function ModelsPage() {
             filterParams={{ task: activeTask === "all" ? undefined : activeTask, model: modelSlug }}
           />
         </section>
+      </div>
       </div>
     </div>
   );

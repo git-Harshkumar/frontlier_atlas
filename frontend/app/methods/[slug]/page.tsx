@@ -429,9 +429,12 @@ export default async function MethodDetailPage({
 
   if (!methodDetail) {
     return (
-      <div className="min-h-screen bg-[#fafafa] font-inter">
+      <div className="flex flex-col h-screen overflow-hidden bg-[#fafafa] text-slate-900 antialiased" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <style>{`body { overflow: hidden !important; }`}</style>
         <Navbar />
-        <div className="p-12 text-center text-slate-900 mt-20">Method not found. Please try another one.</div>
+        <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="p-12 text-center text-slate-900 mt-20">Method not found. Please try another one.</div>
+        </div>
       </div>
     );
   }
@@ -443,10 +446,12 @@ export default async function MethodDetailPage({
   const DynamicIcon = LucideIcons[iconName as keyof typeof LucideIcons] as React.ElementType || FileText;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-slate-900 antialiased" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex flex-col h-screen overflow-hidden bg-[#fafafa] text-slate-900 antialiased" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <style>{`body { overflow: hidden !important; }`}</style>
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-5 lg:px-6 py-6 lg:py-8">
+      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <main className="max-w-7xl mx-auto px-5 lg:px-6 py-6 lg:py-8 w-full">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs lg:text-sm text-gray-500 mb-6 lg:mb-8">
           <Link href="/" className="hover:text-gray-800">Home</Link>
@@ -513,6 +518,7 @@ export default async function MethodDetailPage({
           methodName={methodDetail.name}
         />
       </main>
+      </div>
     </div>
   );
 }

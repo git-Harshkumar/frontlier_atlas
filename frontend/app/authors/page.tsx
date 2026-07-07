@@ -5,6 +5,7 @@ import { Search, ArrowUpDown, AlertCircle, Inbox } from "lucide-react";
 import { getAuthors, type AuthorItem } from "@/lib/authors";
 import AuthorCard from "@/components/AuthorCard";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
 
 const LIMIT = 12;
 
@@ -85,7 +86,10 @@ export default function AuthorsPage() {
   const displayed = filtered.slice((page - 1) * LIMIT, page * LIMIT);
 
   return (
-    <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
+    <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
+      <style>{`body { overflow: hidden !important; }`}</style>
+      <Navbar />
+      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 xl:px-12 py-8">
         <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
           <Link href="/" className="hover:text-[#F55036] transition-colors no-underline">
@@ -229,6 +233,7 @@ export default function AuthorsPage() {
             )}
           </>
         )}
+      </div>
       </div>
     </div>
   );

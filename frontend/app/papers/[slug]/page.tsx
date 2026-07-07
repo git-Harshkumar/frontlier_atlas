@@ -180,9 +180,12 @@ export default function PaperPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-slate-900 antialiased" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
+      <style>{`body { overflow: hidden !important; }`}</style>
       <Navbar />
-      {content}
+      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        {content}
+      </div>
     </div>
   );
 }

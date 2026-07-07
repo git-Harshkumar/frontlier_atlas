@@ -36,8 +36,10 @@ export default function DiscussionsPage() {
   }, [activeTab, discussions]);
 
   return (
-    <div className="min-h-screen bg-[#F8F7F2] text-[#111111]">
+    <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
+      <style>{`body { overflow: hidden !important; }`}</style>
       <Navbar />
+      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
 
       <main className="max-w-[1100px] mx-auto px-6 py-6">
 
@@ -190,9 +192,8 @@ export default function DiscussionsPage() {
           </div>
 
         )}
-
       </main>
-
+      </div>
     </div>
   );
 }

@@ -165,6 +165,7 @@ export default function Sidebar({
   const discover = [
     {
       label: "Trending Papers",
+      slug: "trending",
       icon: (
         <Flame
           size={14}
@@ -177,18 +178,18 @@ export default function Sidebar({
       ),
       badge: "Hot",
     },
-    { label: "Latest Papers", icon: <Clock size={14} /> },
-    { label: "Most GitHub Stars", icon: <Star size={14} />, badge: "Popular" },
+    { label: "Latest Papers", icon: <Clock size={14} />, slug: "latest" },
+    { label: "Most GitHub Stars", icon: <Star size={14} />, badge: "Popular", slug: "github-stars" },
   ];
 
   const tasks = [
-    { label: "Agents", icon: <Bot size={14} /> },
-    { label: "Reasoning", icon: <Brain size={14} /> },
-    { label: "Language Modeling", icon: <MessageSquare size={14} /> },
-    { label: "Coding Agents", icon: <Code2 size={14} /> },
-    { label: "Computer Use", icon: <Monitor size={14} /> },
-    { label: "World Models", icon: <Globe size={14} /> },
-    { label: "Robotics", icon: <Cpu size={14} /> },
+    { label: "Agents", icon: <Bot size={14} />, slug: "agents" },
+    { label: "Reasoning", icon: <Brain size={14} />, slug: "reasoning" },
+    { label: "Language Modeling", icon: <MessageSquare size={14} />, slug: "language-modeling" },
+    { label: "Coding Agents", icon: <Code2 size={14} />, slug: "coding-agents" },
+    { label: "Computer Use", icon: <Monitor size={14} />, slug: "computer-use-agents" },
+    { label: "World Models", icon: <Globe size={14} />, slug: "world-models" },
+    { label: "Robotics", icon: <Cpu size={14} />, slug: "robotics" },
   ];
 
   const initialMethods = [
@@ -240,10 +241,10 @@ export default function Sidebar({
   }, []);
 
   const generation = [
-    { label: "Text Generation", icon: <FileText size={14} /> },
-    { label: "Image Generation", icon: <ImageIcon size={14} /> },
-    { label: "Video Generation", icon: <Video size={14} /> },
-    { label: "Audio Generation", icon: <Volume2 size={14} /> },
+    { label: "Text Generation", icon: <FileText size={14} />, slug: "text-generation" },
+    { label: "Image Generation", icon: <ImageIcon size={14} />, slug: "image-generation" },
+    { label: "Video Generation", icon: <Video size={14} />, slug: "video-generation" },
+    { label: "Audio Generation", icon: <Volume2 size={14} />, slug: "audio-generation" },
   ];
 
   return (
@@ -275,6 +276,7 @@ export default function Sidebar({
                       isActive={activeItem === item.label}
                       onClick={() => handleItemClick(item.label)}
                       badge={item.badge}
+                      href={item.slug === "trending" ? "/" : `/category/${item.slug}`}
                     />
                   ))}
                 </div>
@@ -308,6 +310,7 @@ export default function Sidebar({
                       label={item.label}
                       isActive={activeItem === item.label}
                       onClick={() => handleItemClick(item.label)}
+                      href={`/tasks/${item.slug}`}
                     />
                   ))}
                 </div>
@@ -388,6 +391,7 @@ export default function Sidebar({
                       label={item.label}
                       isActive={activeItem === item.label}
                       onClick={() => handleItemClick(item.label)}
+                      href={`/category/${item.slug}`}
                     />
                   ))}
                 </div>

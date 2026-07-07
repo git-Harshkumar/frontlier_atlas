@@ -104,7 +104,7 @@ export default function BenchmarkDetailPage() {
       <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll flex flex-col">
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-8 pb-16 flex items-start gap-6 xl:gap-8">
           {/* Left Sidebar */}
-          <div className="hidden lg:block w-[240px] shrink-0 sticky top-4">
+          <div className="hidden xl:block w-[240px] shrink-0">
             <Sidebar />
           </div>
 

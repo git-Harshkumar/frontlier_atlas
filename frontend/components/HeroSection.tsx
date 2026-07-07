@@ -95,15 +95,15 @@ export default function HeroSection({
           <motion.div 
             layoutId="global-container"
             ref={searchRef} 
-            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            transition={{ type: "spring", stiffness: 250, damping: 25 }}
             className="w-full max-w-[640px] relative shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-[24px] bg-white border border-[#E5E5E0] flex items-center px-4 md:px-5 h-12 mb-3 md:mb-4 hover:shadow-[0_12px_32px_rgb(0,0,0,0.10)] focus-within:border-[#FF5A1F]/40 focus-within:shadow-[0_0_0_3px_rgba(255,90,31,0.08)] transition-all duration-200 mx-auto origin-top z-50"
           >
-            <motion.div layoutId="global-icon" transition={{ type: "spring", stiffness: 400, damping: 30 }} className="flex items-center text-[#737373] mr-2 md:mr-3 shrink-0">
+            <motion.div layoutId="global-icon" transition={{ type: "spring", stiffness: 250, damping: 25 }} className="flex items-center text-[#737373] mr-2 md:mr-3 shrink-0">
               <Search size={18} className="md:w-[20px] md:h-[20px]" />
             </motion.div>
             <motion.input
               layoutId="global-input"
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              transition={{ type: "spring", stiffness: 250, damping: 25 }}
               type="text"
               value={query}
               onChange={(e) => {
