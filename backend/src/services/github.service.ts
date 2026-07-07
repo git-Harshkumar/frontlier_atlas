@@ -1,4 +1,13 @@
-import { formatDistanceToNow } from "date-fns";
+function formatDistanceToNow(date: Date): string {
+  const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  if (seconds < 60) return rtf.format(-seconds, "second");
+  if (seconds < 3600) return rtf.format(-Math.floor(seconds / 60), "minute");
+  if (seconds < 86400) return rtf.format(-Math.floor(seconds / 3600), "hour");
+  if (seconds < 2592000) return rtf.format(-Math.floor(seconds / 86400), "day");
+  if (seconds < 31536000) return rtf.format(-Math.floor(seconds / 2592000), "month");
+  return rtf.format(-Math.floor(seconds / 31536000), "year");
+}
 export const getGithubTrending = async () => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
@@ -23,9 +32,7 @@ export const getGithubTrending = async () => {
   return data.items.map((repo: any) => ({
   platform: "github",
   source: repo.owner.login,
-  time: formatDistanceToNow(new Date(repo.updated_at), {
-  addSuffix: true,
-}),
+  time: formatDistanceToNow(new Date(repo.updated_at)),
   title: `${repo.name} has recent development activity`,
   description:
   repo.description ??

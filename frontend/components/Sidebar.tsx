@@ -249,7 +249,7 @@ export default function Sidebar({
   return (
     <aside className="flex flex-col w-full bg-transparent h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <div className="flex-1 px-2 py-4 space-y-1">
-        {/* DISCOVER Section - Now collapsible */}
+        {/* DISCOVER Section - Collapsible */}
         <div className="mb-2">
           <SectionLabel
             title="Discover"
@@ -397,33 +397,33 @@ export default function Sidebar({
         </div>
       </div>
 
-        {/* All Domains - Special Item with Arrow */}
-        <div className="pt-4 mt-2 border-t border-[#E5E5E0]">
-          <div className="group relative">
-            <NavItem
-              icon={""}
-              label="All Domains"
-              isActive={activeItem === "All Domains"}
-              onClick={() => {
-                handleItemClick("All Domains");
-                router.push("/tasks");
-              }}
-            />
-            {/* Arrow that scales and moves right on hover */}
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#777777] transition-all duration-300 group-hover:scale-125 group-hover:translate-x-1 group-hover:text-[#F55036]">
-              →
-            </span>
-          </div>
+      {/* All Domains - Special Item with Arrow */}
+      <div className="pt-4 mt-2 border-t border-[#E5E5E0]">
+        <div className="group relative">
+          <NavItem
+            icon={""}
+            label="All Domains"
+            isActive={activeItem === "All Domains"}
+            onClick={() => {
+              handleItemClick("All Domains");
+              router.push("/tasks");
+            }}
+          />
+          {/* Arrow that scales and moves right on hover */}
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#777777] transition-all duration-300 group-hover:scale-125 group-hover:translate-x-1 group-hover:text-[#F55036]">
+            →
+          </span>
         </div>
+      </div>
 
-        {/* Footer Stats */}
-        <div className="pt-6 mt-4 border-t border-[#E5E5E0]">
-          <div className="px-3 py-2">
-            <p className="text-[10px] text-[#8B8B8B] font-medium uppercase tracking-[0.08em]">
-              {totalMethods}+ Methods
-            </p>
-          </div>
+      {/* Footer Stats */}
+      <div className="pt-6 mt-4 border-t border-[#E5E5E0]">
+        <div className="px-3 py-2">
+          <p className="text-[10px] text-[#8B8B8B] font-medium uppercase tracking-[0.08em]">
+            {totalMethods}+ Methods
+          </p>
         </div>
+      </div>
     </aside>
   );
 }

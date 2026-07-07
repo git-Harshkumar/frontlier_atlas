@@ -1,4 +1,6 @@
 import { PrismaClient } from '../generated/prisma/client';
+import { QueryRouter } from '../routing/index.js';
+import { QueryIntent, QueryType } from '../routing/types.js';
 
 type GetMethodsQuery = {
   sort?: 'name' | 'papers' | string;
@@ -9,7 +11,7 @@ type GetMethodsQuery = {
 };
 
 export const getMethods = async (
-  prisma: PrismaClient,
+  queryRouter: QueryRouter,
   queryOrLimit: GetMethodsQuery | number = {},
   legacySkip: number = 0
 ) => {
@@ -25,7 +27,6 @@ export const getMethods = async (
   const search = query.search || '';
 
   const where: any = {};
-
   if (search) {
     where.name = { contains: search, mode: 'insensitive' };
   }
@@ -35,32 +36,67 @@ export const getMethods = async (
       ? { papers: { _count: 'desc' as const } }
       : { name: 'asc' as const };
 
-  const [methods, total] = await Promise.all([
-    prisma.method.findMany({
-      where,
-      orderBy,
-      take: limit,
-      skip,
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        _count: {
-          select: { papers: true },
+  const intent: QueryIntent = {
+    type: QueryType.READ,
+    entity: 'method',
+    operation: 'findMany',
+    filters: { search, sort }
+  };
+
+  const routingResult = await queryRouter.routeQuery(intent, async (prisma) => {
+    return Promise.all([
+      prisma.method.findMany({
+        where,
+        orderBy,
+        take: limit,
+        skip,
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          _count: {
+            select: { papers: true },
+          },
         },
-      },
-    }),
-    prisma.method.count({ where }),
-  ]);
+      }),
+      prisma.method.count({ where }),
+    ]);
+  });
+
+  const allMethods: any[] = [];
+  const seenIds = new Set<string>();
+  let total = 0;
+
+  for (const result of routingResult.results) {
+    for (const method of result[0]) {
+      if (!seenIds.has(method.id)) {
+        seenIds.add(method.id);
+        allMethods.push(method);
+      } else {
+        // If the method already exists, add the paper count
+        const existing = allMethods.find(m => m.id === method.id);
+        if (existing) {
+          existing._count.papers += method._count.papers;
+        }
+      }
+    }
+    total += result[1]; // Note: Total count won't be perfectly deduplicated without complex merging
+  }
+
+  if (sort === 'papers') {
+    allMethods.sort((a, b) => b._count.papers - a._count.papers);
+  } else {
+    allMethods.sort((a, b) => a.name.localeCompare(b.name));
+  }
 
   return {
-    methods: methods.map(({ _count, ...rest }) => ({
+    methods: allMethods.slice(0, limit).map(({ _count, ...rest }) => ({
       ...rest,
       paperCount: _count.papers,
     })),
     total,
     page,
-    hasMore: skip + methods.length < total,
+    hasMore: skip + allMethods.length < total,
   };
 };
 
@@ -83,20 +119,48 @@ const ICON_MAP: Record<string, string> = {
   "Embeddings": "Hash"
 };
 
-export const getGroupedMethods = async (prisma: PrismaClient) => {
-  const methods = await prisma.method.findMany({
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      category: true,
-      _count: { select: { papers: true } },
-    },
-    orderBy: { name: 'asc' },
+export const getGroupedMethods = async (queryRouter: QueryRouter) => {
+  const intent: QueryIntent = {
+    type: QueryType.READ,
+    entity: 'method',
+    operation: 'findMany',
+  };
+
+  const routingResult = await queryRouter.routeQuery(intent, async (prisma) => {
+    return prisma.method.findMany({
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        category: true,
+        _count: { select: { papers: true } },
+      },
+      orderBy: { name: 'asc' },
+    });
   });
 
+  const allMethods: any[] = [];
+  const seenIds = new Set<string>();
+
+  for (const result of routingResult.results) {
+    for (const method of result) {
+      if (!seenIds.has(method.id)) {
+        seenIds.add(method.id);
+        allMethods.push({ ...method });
+      } else {
+        // sum paper counts from different shards
+        const existing = allMethods.find(m => m.id === method.id);
+        if (existing) {
+          existing._count.papers += method._count.papers;
+        }
+      }
+    }
+  }
+
+  allMethods.sort((a, b) => a.name.localeCompare(b.name));
+
   const grouped: Record<string, any[]> = {};
-  for (const method of methods) {
+  for (const method of allMethods) {
     const category = method.category || 'Uncategorized';
     if (!grouped[category]) grouped[category] = [];
     grouped[category].push({
@@ -115,91 +179,136 @@ export const getGroupedMethods = async (prisma: PrismaClient) => {
   }));
 };
 
-export const getMethodBySlug = async (prisma: PrismaClient, slug: string) => {
-  const method = await prisma.method.findUnique({
-    where: { slug },
-    include: {
-      _count: {
-        select: { papers: true },
-      },
-      papers: {
-        take: 100,
-        include: {
-          paper: {
-            select: {
-              id: true,
-              title: true,
-              slug: true,
-              citationCount: true,
-              publicationDate: true,
-              githubStars: true,
-              thumbnailUrl: true,
-              arxivId: true,
-              isOfficialCode: true,
-              pdfUrl: true,
-              paperUrl: true,
-              githubUrl: true,
-              authors: {
-                select: {
-                  author: {
-                    select: { name: true },
+export const getMethodBySlug = async (queryRouter: QueryRouter, slug: string) => {
+  const intent: QueryIntent = {
+    type: QueryType.READ,
+    entity: 'method',
+    operation: 'findUnique',
+    filters: { slug }
+  };
+
+  const routingResult = await queryRouter.routeQuery(intent, async (prisma) => {
+    return prisma.method.findUnique({
+      where: { slug },
+      include: {
+        _count: {
+          select: { papers: true },
+        },
+        papers: {
+          take: 100,
+          include: {
+            paper: {
+              select: {
+                id: true,
+                title: true,
+                slug: true,
+                citationCount: true,
+                publicationDate: true,
+                githubStars: true,
+                thumbnailUrl: true,
+                arxivId: true,
+                isOfficialCode: true,
+                pdfUrl: true,
+                paperUrl: true,
+                githubUrl: true,
+                authors: {
+                  select: {
+                    author: {
+                      select: { name: true },
+                    },
                   },
                 },
-              },
-              sotaClaims: {
-                select: {
-                  benchmark: { select: { name: true, slug: true } }
+                sotaClaims: {
+                  select: {
+                    benchmark: { select: { name: true, slug: true } }
+                  }
                 }
-              }
+              },
             },
           },
+          orderBy: { paper: { githubStars: 'desc' } }
         },
-        orderBy: { paper: { githubStars: 'desc' } }
       },
-    },
+    });
   });
 
-  if (!method) return null;
+  let baseMethod: any = null;
+  const allPapers: any[] = [];
+  let totalPaperCount = 0;
 
-  const { _count, papers, ...rest } = method;
+  for (const result of routingResult.results) {
+    if (result) {
+      if (!baseMethod) {
+        const { _count, papers, ...rest } = result;
+        baseMethod = { ...rest };
+      }
+      totalPaperCount += result._count.papers;
+      allPapers.push(...result.papers);
+    }
+  }
+
+  if (!baseMethod) return null;
+
+  // Deduplicate papers across shards
+  const seenPaperIds = new Set<string>();
+  const dedupPapers = [];
+  for (const p of allPapers) {
+    if (!seenPaperIds.has(p.paper.id)) {
+      seenPaperIds.add(p.paper.id);
+      dedupPapers.push(p);
+    }
+  }
+
+  // Sort by githubStars and take 100
+  dedupPapers.sort((a, b) => (b.paper.githubStars || 0) - (a.paper.githubStars || 0));
+  const topPapers = dedupPapers.slice(0, 100);
+
   return {
-    ...rest,
-    paperCount: _count.papers,
-    papers: papers.map(({ paper }) => ({
+    ...baseMethod,
+    paperCount: totalPaperCount,
+    papers: topPapers.map(({ paper }) => ({
       ...paper,
-      authors: paper.authors.map(({ author }) => author),
-      sotaClaims: paper.sotaClaims?.map(c => c.benchmark) || [],
+      authors: paper.authors.map((a: any) => a.author),
+      sotaClaims: paper.sotaClaims?.map((c: any) => c.benchmark) || [],
     })),
   };
 };
 
-export const createMethod = async (prisma: PrismaClient, data: { name: string }) => {
+export const createMethod = async (queryRouter: QueryRouter, data: { name: string }) => {
   const slug = data.name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '')
     .substring(0, 100);
 
-  return prisma.method.create({
-    data: {
-      name: data.name,
-      slug,
-    },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      _count: {
-        select: { papers: true },
+  const intent: QueryIntent = {
+    type: QueryType.WRITE,
+    entity: 'method',
+    operation: 'create',
+  };
+
+  const routingResult = await queryRouter.routeQuery(intent, async (prisma) => {
+    return prisma.method.create({
+      data: {
+        name: data.name,
+        slug,
       },
-    },
-  }).then(({ _count, ...rest }) => ({
-    ...rest,
-    paperCount: _count.papers,
-  }));
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        _count: {
+          select: { papers: true },
+        },
+      },
+    });
+  });
+
+  const { _count, ...rest } = routingResult.results[0];
+  return { ...rest, paperCount: _count.papers };
 };
 
-export const updateMethod = async (prisma: PrismaClient, slug: string, data: { name?: string }) => {
+export const updateMethod = async (queryRouter: QueryRouter, slug: string, data: { name?: string }) => {
   const updateData: any = {};
 
   if (data.name) {
@@ -211,25 +320,45 @@ export const updateMethod = async (prisma: PrismaClient, slug: string, data: { n
       .substring(0, 100);
   }
 
-  const method = await prisma.method.update({
-    where: { slug },
-    data: updateData,
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      _count: {
-        select: { papers: true },
+  const intent: QueryIntent = {
+    type: QueryType.UPDATE,
+    entity: 'method',
+    operation: 'update',
+    filters: { slug }
+  };
+
+  const routingResult = await queryRouter.routeQuery(intent, async (prisma) => {
+    return prisma.method.update({
+      where: { slug },
+      data: updateData,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        _count: {
+          select: { papers: true },
+        },
       },
-    },
+    });
   });
 
-  const { _count, ...rest } = method;
+  const { _count, ...rest } = routingResult.results[0];
   return { ...rest, paperCount: _count.papers };
 };
 
-export const deleteMethod = async (prisma: PrismaClient, slug: string) => {
-  return prisma.method.delete({
-    where: { slug },
+export const deleteMethod = async (queryRouter: QueryRouter, slug: string) => {
+  const intent: QueryIntent = {
+    type: QueryType.DELETE,
+    entity: 'method',
+    operation: 'delete',
+    filters: { slug }
+  };
+
+  const routingResult = await queryRouter.routeQuery(intent, async (prisma) => {
+    return prisma.method.delete({
+      where: { slug },
+    });
   });
+
+  return routingResult.results[0];
 };

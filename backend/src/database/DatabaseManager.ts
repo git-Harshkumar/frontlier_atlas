@@ -1,5 +1,7 @@
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 import { neonConfig } from "@neondatabase/serverless";
 
 export enum ShardId {
@@ -20,6 +22,7 @@ export interface DatabaseUrls {
 
 export class DatabaseManager {
   private readonly urls: DatabaseUrls;
+  private readonly pools = new Map<ShardId, Pool>();
 
   constructor(urls: DatabaseUrls) {
     this.urls = urls;
@@ -54,13 +57,21 @@ export class DatabaseManager {
   }
 
   public getClient(shard: ShardId): PrismaClient {
-    const adapter = new PrismaNeon({
-      connectionString: this.getConnectionString(shard),
-    });
+    const connectionString = this.getConnectionString(shard);
+    const isNeon = connectionString.includes("neon.tech");
 
-    return new PrismaClient({
-      adapter,
-    });
+    if (isNeon) {
+      const adapter = new PrismaNeon({ connectionString });
+      return new PrismaClient({ adapter });
+    } else {
+      let pool = this.pools.get(shard);
+      if (!pool) {
+        pool = new Pool({ connectionString });
+        this.pools.set(shard, pool);
+      }
+      const adapter = new PrismaPg(pool);
+      return new PrismaClient({ adapter });
+    }
   }
 
   public async checkShard(shard: ShardId): Promise<boolean> {
@@ -88,5 +99,12 @@ export class DatabaseManager {
 
   public async disconnect(client: PrismaClient): Promise<void> {
     await client.$disconnect();
+  }
+
+  public async disconnectAll(): Promise<void> {
+    for (const pool of this.pools.values()) {
+      await pool.end();
+    }
+    this.pools.clear();
   }
 }

@@ -13,7 +13,17 @@ export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): 
   });
 
   if (!response.ok) {
-    throw new Error(`API error: ${response.status} ${response.statusText}`);
+    let errorDetail = '';
+    try {
+      const errJson = await response.json();
+      errorDetail = errJson?.detail || errJson?.message || JSON.stringify(errJson);
+    } catch {
+      try {
+        errorDetail = await response.text();
+      } catch {}
+    }
+    const message = `API error: ${response.status} ${response.statusText}${errorDetail ? ` - ${errorDetail}` : ''}`;
+    throw new Error(message);
   }
 
   const text = await response.text();

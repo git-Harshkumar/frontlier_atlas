@@ -2,14 +2,14 @@ import { Context } from 'hono';
 import * as methodService from '../services/method.service.js';
 
 export const getMethods = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as any;
   const sort = c.req.query('sort') || 'name';
   const search = c.req.query('search');
   const page = Number(c.req.query('page')) || 1;
   const limit = Number(c.req.query('limit')) || 20;
 
   try {
-    const result = await methodService.getMethods(prisma, {
+    const result = await methodService.getMethods(queryRouter, {
       sort,
       search,
       page,
@@ -27,9 +27,9 @@ export const getMethods = async (c: Context) => {
 };
 
 export const getGroupedMethods = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as any;
   try {
-    const grouped = await methodService.getGroupedMethods(prisma);
+    const grouped = await methodService.getGroupedMethods(queryRouter);
     return c.json({
       status: "success",
       data: grouped,
@@ -77,11 +77,11 @@ export const seedCategories = async (c: Context) => {
 };
 
 export const getMethodBySlug = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as any;
   const slug = c.req.param('slug') as string;
 
   try {
-    const method = await methodService.getMethodBySlug(prisma, slug);
+    const method = await methodService.getMethodBySlug(queryRouter, slug);
     if (!method) return c.json({ status: "error", message: "Method not found" }, 404);
     return c.json({ status: "success", data: method }, 200);
   } catch (error: any) {
@@ -90,7 +90,7 @@ export const getMethodBySlug = async (c: Context) => {
 };
 
 export const createMethod = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as any;
   const body = await c.req.json();
 
   if (!body.name || typeof body.name !== 'string' || body.name.trim().length === 0) {
@@ -98,7 +98,7 @@ export const createMethod = async (c: Context) => {
   }
 
   try {
-    const method = await methodService.createMethod(prisma, { name: body.name.trim() });
+    const method = await methodService.createMethod(queryRouter, { name: body.name.trim() });
     return c.json({ status: "success", data: method }, 201);
   } catch (error: any) {
     if (error.code === 'P2002') {
@@ -109,7 +109,7 @@ export const createMethod = async (c: Context) => {
 };
 
 export const updateMethod = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as any;
   const slug = c.req.param('slug') as string;
   const body = await c.req.json();
 
@@ -118,7 +118,7 @@ export const updateMethod = async (c: Context) => {
   }
 
   try {
-    const method = await methodService.updateMethod(prisma, slug, {
+    const method = await methodService.updateMethod(queryRouter, slug, {
       name: body.name ? body.name.trim() : undefined,
     });
     return c.json({ status: "success", data: method }, 200);
@@ -134,11 +134,11 @@ export const updateMethod = async (c: Context) => {
 };
 
 export const deleteMethod = async (c: Context) => {
-  const prisma = c.var.prisma;
+  const queryRouter = c.var.queryRouter as any;
   const slug = c.req.param('slug') as string;
 
   try {
-    await methodService.deleteMethod(prisma, slug);
+    await methodService.deleteMethod(queryRouter, slug);
     return c.json({ status: "success", message: "Method deleted" }, 200);
   } catch (error: any) {
     if (error.code === 'P2025') {
