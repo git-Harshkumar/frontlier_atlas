@@ -8,7 +8,11 @@ import { usePathname } from "next/navigation";
 import { useScrollThreshold } from "@/lib/useScroll";
 import Sidebar from "@/components/Sidebar";
 
-
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Tasks", href: "/tasks" },
+  { label: "Methods", href: "/methods" },
+];
 export default function Navbar({
   activeSort,
   onItemSelect,
@@ -54,14 +58,14 @@ export default function Navbar({
 
   return (
     <>
-      <nav className="sticky top-0 h-[56px] xl:h-[52px] w-full bg-[#F8F7F2]/80 backdrop-blur-md border-b border-[#E5E5E0] flex items-center justify-between px-4 md:px-8 xl:px-12 gap-3 shrink-0 z-50 transition-all duration-300">
+      <nav className="sticky top-0 h-[56px] xl:h-[52px] w-full bg-[#F8F7F2]/80 backdrop-blur-md border-b border-[#E5E5E0] flex items-center justify-between px-4 md:px-8 xl:px-12 gap-3 xl:gap-4 shrink-0 z-50 transition-all duration-300">
         {/* Mobile Left (Hamburger + Logo) */}
-        <div className="flex items-center gap-2 lg:gap-0 lg:w-[240px] shrink-0">
+        <div className="flex items-center gap-1 xl:gap-0 xl:w-[240px] shrink-0">
           <button 
             onClick={() => setIsMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={isMenuOpen}
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-md hover:bg-[#EBEBE6] transition-colors"
+            className="xl:hidden w-10 h-10 flex items-center justify-center rounded-md hover:bg-[#EBEBE6] transition-colors"
           >
             <svg
               width="20"
@@ -77,83 +81,77 @@ export default function Navbar({
               <line x1="4" y1="18" x2="20" y2="18" />
             </svg>
           </button>
-          <div className="flex items-center cursor-pointer relative w-[130px] xl:w-[160px] h-8 xl:h-9">
-            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="(max-width: 1280px) 130px, 160px" />
+          <div className="flex items-center cursor-pointer relative w-[140px] xl:w-[160px] h-8 xl:h-9">
+            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="(max-width: 1280px) 140px, 160px" />
           </div>
 
         </div>
 
         {/* Center — Search Bar (Desktop) */}
-        <div className="hidden lg:flex flex-1 items-center justify-center max-w-[240px] xl:max-w-[400px]">
+        <div className="hidden lg:flex flex-1 items-center justify-center max-w-[400px]">
           {shouldShowSearch && (
             <SearchBar variant="compact" placeholder="Search..." initialQuery="" />
           )}
         </div>
 
         {/* Center — Nav Links (Desktop) */}
-        <div className="hidden lg:flex items-center gap-3 xl:gap-6">
+        <div className="hidden lg:flex items-center gap-6">
           <Link
             href="/tasks"
-            data-text="Tasks"
-            className={`inline-flex flex-col items-center justify-center text-[13px] transition-colors no-underline after:content-[attr(data-text)] after:font-bold after:h-0 after:invisible after:overflow-hidden ${
+            className={`text-[13px] font-medium transition-colors no-underline ${
               isTasksActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] font-medium hover:text-[#F55036]"
+                : "text-[#555555] hover:text-[#F55036]"
             }`}
           >
             Tasks
           </Link>
           <Link
             href="/methods"
-            data-text="Methods"
-            className={`inline-flex flex-col items-center justify-center text-[13px] transition-colors no-underline after:content-[attr(data-text)] after:font-bold after:h-0 after:invisible after:overflow-hidden ${
+            className={`text-[13px] font-medium transition-colors no-underline ${
               isMethodsActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] font-medium hover:text-[#F55036]"
+                : "text-[#555555] hover:text-[#F55036]"
             }`}
           >
             Methods
           </Link>
           <Link
             href="/benchmarks"
-            data-text="Benchmarks"
-            className={`inline-flex flex-col items-center justify-center text-[13px] transition-colors no-underline after:content-[attr(data-text)] after:font-bold after:h-0 after:invisible after:overflow-hidden ${
+            className={`text-[13px] font-medium transition-colors no-underline ${
               isBenchmarksActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] font-medium hover:text-[#F55036]"
+                : "text-[#555555] hover:text-[#F55036]"
             }`}
           >
             Benchmarks
           </Link>
           <Link
             href="/models"
-            data-text="Models"
-            className={`inline-flex flex-col items-center justify-center text-[13px] transition-colors no-underline after:content-[attr(data-text)] after:font-bold after:h-0 after:invisible after:overflow-hidden ${
+            className={`text-[13px] font-medium transition-colors no-underline ${
               isModelsActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] font-medium hover:text-[#F55036]"
+                : "text-[#555555] hover:text-[#F55036]"
             }`}
           >
             Models
           </Link>
           <Link
             href="/datasets"
-            data-text="Datasets"
-            className={`inline-flex flex-col items-center justify-center text-[13px] transition-colors no-underline after:content-[attr(data-text)] after:font-bold after:h-0 after:invisible after:overflow-hidden ${
+            className={`text-[13px] font-medium transition-colors no-underline ${
               isDatasetsActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] font-medium hover:text-[#F55036]"
+                : "text-[#555555] hover:text-[#F55036]"
             }`}
           >
             Datasets
           </Link>
           <Link
             href="/authors"
-            data-text="Authors"
-            className={`inline-flex flex-col items-center justify-center text-[13px] transition-colors no-underline after:content-[attr(data-text)] after:font-bold after:h-0 after:invisible after:overflow-hidden ${
+            className={`text-[13px] font-medium transition-colors no-underline ${
               isAuthorsActive
                 ? "text-[#F55036] font-bold"
-                : "text-[#555555] font-medium hover:text-[#F55036]"
+                : "text-[#555555] hover:text-[#F55036]"
             }`}
           >
             Authors
@@ -183,13 +181,13 @@ export default function Navbar({
 
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 bg-black/40 z-[60] lg:hidden transition-opacity duration-300 ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        className={`fixed inset-0 bg-black/40 z-[60] xl:hidden transition-opacity duration-300 ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
         onClick={closeMenu}
         aria-hidden="true"
       />
 
       <div 
-        className={`fixed inset-y-0 left-0 w-[80vw] max-w-[300px] bg-[#F8F7F2]/90 backdrop-blur-xl z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 w-[80vw] max-w-[300px] bg-[#F8F7F2]/90 backdrop-blur-xl z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out xl:hidden flex flex-col ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"

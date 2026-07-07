@@ -217,6 +217,11 @@ export const getMethodBySlug = async (queryRouter: QueryRouter, slug: string) =>
                       select: { name: true },
                     },
                   },
+                },
+                sotaClaims: {
+                  select: {
+                    benchmark: { select: { name: true, slug: true } }
+                  }
                 }
               },
             },

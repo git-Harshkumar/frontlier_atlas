@@ -117,13 +117,10 @@ function PaperThumbnail({ paper }: { paper: Paper }) {
     ? new Date(paper.publicationDate).getFullYear()
     : "";
 
-  const validThumbnailUrl = paper.thumbnailUrl?.startsWith("http") ? paper.thumbnailUrl : null;
-  const finalImageSrc = validThumbnailUrl ?? arxivThumb;
-
-  if (finalImageSrc && !imgFailed) {
+  if ((paper.thumbnailUrl || arxivThumb) && !imgFailed) {
     return (
       <Image
-        src={finalImageSrc}
+        src={paper.thumbnailUrl ?? arxivThumb!}
         alt={paper.title}
         width={96}
         height={128}

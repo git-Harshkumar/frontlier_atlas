@@ -56,20 +56,13 @@ export class DatabaseManager {
     return this.getConnectionString(shard);
   }
 
-  private readonly clients = new Map<ShardId, PrismaClient>();
-
   public getClient(shard: ShardId): PrismaClient {
-    if (this.clients.has(shard)) {
-      return this.clients.get(shard)!;
-    }
-
     const connectionString = this.getConnectionString(shard);
     const isNeon = connectionString.includes("neon.tech");
-    let client: PrismaClient;
 
     if (isNeon) {
       const adapter = new PrismaNeon({ connectionString });
-      client = new PrismaClient({ adapter });
+      return new PrismaClient({ adapter });
     } else {
       let pool = this.pools.get(shard);
       if (!pool) {
@@ -77,11 +70,8 @@ export class DatabaseManager {
         this.pools.set(shard, pool);
       }
       const adapter = new PrismaPg(pool);
-      client = new PrismaClient({ adapter });
+      return new PrismaClient({ adapter });
     }
-
-    this.clients.set(shard, client);
-    return client;
   }
 
   public async checkShard(shard: ShardId): Promise<boolean> {

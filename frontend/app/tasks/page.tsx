@@ -592,12 +592,11 @@ const FrontierAtlas: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
+    <div className="min-h-screen bg-[#F8F7F2] font-sans text-slate-800">
       <Navbar />
-      <div className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          {/* Hero Section with Background Image */}
-          <div className="relative overflow-hidden mb-12 hidden md:flex min-h-[500px]">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Hero Section with Background Image */}
+        <div className="relative overflow-hidden mb-12 hidden md:flex min-h-[500px]">
           {/* Left Content - 65% */}
           <div className="relative z-10 w-[35%] px-6 md:px-10 py-12 md:py-16">
             <div className="inline-block px-3 py-1 rounded-full text-[#0ea5e9] text-xs font-semibold uppercase tracking-wider mb-4">
@@ -717,7 +716,6 @@ const FrontierAtlas: React.FC = () => {
             <Plus size={16} /> Suggest a Domain
           </button>
         </div>
-      </div>
       </div>
     </div>
   );

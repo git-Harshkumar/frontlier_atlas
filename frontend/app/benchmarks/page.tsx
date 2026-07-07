@@ -64,6 +64,14 @@ function getMeta(name: string) {
 }
 
 /* ─── sub-components ─────────────────────────────────────── */
+function SectionNumber({ n }: { n: string }) {
+  return (
+    <span className="text-[80px] md:text-[100px] font-black text-[#111111]/[0.04] leading-none select-none absolute -top-4 -left-2 pointer-events-none">
+      {n}
+    </span>
+  );
+}
+
 function BenchmarkCard({ b, meta }: { b: BenchmarkItem; meta: ReturnType<typeof getMeta> }) {
   const cfg = STATUS_CFG[meta.status] ?? STATUS_CFG["Unmapped"];
   return (
@@ -146,7 +154,7 @@ export default function BenchmarksPage() {
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-4 pb-10 flex items-start gap-4 xl:gap-8">
 
           {/* Sidebar */}
-          <div className="hidden lg:block w-[240px] shrink-0"><Sidebar /></div>
+          <div className="hidden lg:block w-[240px] shrink-0 sticky top-4"><Sidebar /></div>
 
           {/* Main */}
           <main className="flex-1 min-w-0 max-w-full">

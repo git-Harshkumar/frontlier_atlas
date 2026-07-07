@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { Trophy, ArrowLeft, ArrowUp, ArrowDown, Minus, Star, ExternalLink, Calendar } from "lucide-react";
+import { Trophy, ArrowLeft, ArrowUp, ArrowDown, Minus, Star, ExternalLink, Calendar, MessageSquare } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import Link from "next/link";

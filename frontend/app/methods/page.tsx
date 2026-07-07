@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MethodsHero } from "@/components/MethodsHero";
 import { CategoryRow } from "@/components/CategoryRow";
 import Navbar from "@/components/Navbar";
-
+import { atlasUiFont } from "@/lib/fonts";
 import { fetchApi } from "@/lib/api";
 
 async function getTaxonomy() {
@@ -24,9 +24,9 @@ export default async function MethodsPage() {
   const taxonomy = await getTaxonomy();
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111]">
+    <div className={`${atlasUiFont.className} flex flex-col h-screen overflow-hidden bg-[#F8F7F2] text-[#111111] tracking-normal`}>
       <Navbar />
-      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll flex flex-col">
+      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar flex flex-col">
         <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 xl:px-12 py-8 pb-20">
           
           <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">

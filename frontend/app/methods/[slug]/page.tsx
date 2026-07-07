@@ -443,10 +443,10 @@ export default async function MethodDetailPage({
   const DynamicIcon = LucideIcons[iconName as keyof typeof LucideIcons] as React.ElementType || FileText;
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#fafafa] text-slate-900 antialiased">
+    <div className="min-h-screen bg-[#fafafa] text-slate-900 antialiased" style={{ fontFamily: "'Inter', sans-serif" }}>
       <Navbar />
-      <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll flex flex-col">
-        <main className="max-w-7xl mx-auto px-5 lg:px-6 py-6 lg:py-8 w-full">
+
+      <main className="max-w-7xl mx-auto px-5 lg:px-6 py-6 lg:py-8">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs lg:text-sm text-gray-500 mb-6 lg:mb-8">
           <Link href="/" className="hover:text-gray-800">Home</Link>
@@ -513,7 +513,6 @@ export default async function MethodDetailPage({
           methodName={methodDetail.name}
         />
       </main>
-      </div>
     </div>
   );
 }

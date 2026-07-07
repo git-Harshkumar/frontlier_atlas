@@ -58,13 +58,6 @@ app.use(
   }),
 );
 
-// Global connection caches for Cloudflare Workers isolate reuse
-let globalPrisma: PrismaClient | null = null;
-let globalPool: Pool | null = null;
-let globalDatabaseManager: DatabaseManager | null = null;
-let globalQueryRouter: QueryRouter | null = null;
-let redisConnected = false;
-
 // 2. Per-Request Middleware
 app.use("*", async (c, next) => {
   const DATABASE_URL = c.env.DATABASE_URL as string;
@@ -78,10 +71,9 @@ app.use("*", async (c, next) => {
   const REDIS_URL = c.env.UPSTASH_REDIS_REST_URL;
   const REDIS_TOKEN = c.env.UPSTASH_REDIS_REST_TOKEN;
 
-  if (!redisConnected) {
-    redisManager.connect(REDIS_URL, REDIS_TOKEN);
-    redisConnected = true;
-  }
+redisManager.connect(REDIS_URL, REDIS_TOKEN);
+
+
 
   // Strip quotes if they were included in the .dev.vars file
   const cleanUrl = DATABASE_URL ? DATABASE_URL.replace(/^"|"$/g, "") : "";
@@ -91,39 +83,48 @@ app.use("*", async (c, next) => {
   const cleanShard4Url = SHARD_4_DATABASE_URL ? SHARD_4_DATABASE_URL.replace(/^"|"$/g, "") : "";
   const cleanShard5Url = SHARD_5_DATABASE_URL ? SHARD_5_DATABASE_URL.replace(/^"|"$/g, "") : "";
 
-  if (!globalPrisma) {
-    const isNeon = cleanUrl.includes("neon.tech");
-    if (isNeon) {
-      // Configure WebSocket for Cloudflare Workers environment
-      neonConfig.webSocketConstructor = WebSocket;
+  const isNeon = cleanUrl.includes("neon.tech");
+  let prisma: PrismaClient;
+  let pool: Pool | null = null;
 
-      // PrismaNeon v7.8 takes a PoolConfig object — it creates the Pool internally
-      const adapter = new PrismaNeon({ connectionString: cleanUrl });
-      globalPrisma = new PrismaClient({ adapter });
-    } else {
-      // Use standard pg Pool for local PostgreSQL connection
-      globalPool = new Pool({ connectionString: cleanUrl });
-      const adapter = new PrismaPg(globalPool);
-      globalPrisma = new PrismaClient({ adapter });
+  if (isNeon) {
+    // Configure WebSocket for Cloudflare Workers environment
+    neonConfig.webSocketConstructor = WebSocket;
+
+    // PrismaNeon v7.8 takes a PoolConfig object — it creates the Pool internally
+    const adapter = new PrismaNeon({ connectionString: cleanUrl });
+    prisma = new PrismaClient({ adapter });
+  } else {
+    // Use standard pg Pool for local PostgreSQL connection
+    pool = new Pool({ connectionString: cleanUrl });
+    const adapter = new PrismaPg(pool);
+    prisma = new PrismaClient({ adapter });
+  }
+
+  // DatabaseManager and QueryRouter
+  const databaseManager = new DatabaseManager({
+    SHARD_1_DATABASE_URL: cleanShard1Url,
+    SHARD_2_DATABASE_URL: cleanShard2Url,
+    SHARD_3_DATABASE_URL: cleanShard3Url,
+    SHARD_4_DATABASE_URL: cleanShard4Url,
+    SHARD_5_DATABASE_URL: cleanShard5Url,
+  });
+  const queryRouter = new QueryRouter(databaseManager, QUERY_TIMEOUT_MS);
+
+  c.set("prisma", prisma);
+  c.set("databaseManager", databaseManager);
+  c.set("queryRouter", queryRouter);
+
+  try {
+    await next();
+  } finally {
+    // Clean up Prisma connections and close local pools to avoid leaks
+    await prisma.$disconnect();
+    if (pool) {
+      await pool.end();
     }
+    await databaseManager.disconnectAll();
   }
-
-  if (!globalDatabaseManager) {
-    globalDatabaseManager = new DatabaseManager({
-      SHARD_1_DATABASE_URL: cleanShard1Url,
-      SHARD_2_DATABASE_URL: cleanShard2Url,
-      SHARD_3_DATABASE_URL: cleanShard3Url,
-      SHARD_4_DATABASE_URL: cleanShard4Url,
-      SHARD_5_DATABASE_URL: cleanShard5Url,
-    });
-    globalQueryRouter = new QueryRouter(globalDatabaseManager, QUERY_TIMEOUT_MS);
-  }
-
-  c.set("prisma", globalPrisma);
-  c.set("databaseManager", globalDatabaseManager);
-  c.set("queryRouter", globalQueryRouter!);
-
-  await next();
 });
 
 // Register Routes
