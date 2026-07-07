@@ -498,9 +498,12 @@ export default function PaperList({
   const [page, setPage] = useState(() => initialPapers?.page ?? 1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(initialError ?? null);
+  const [hasMore, setHasMore] = useState(() => initialPapers?.hasMore ?? true);
   const cacheRef = useRef<Map<string, GetPapersResult>>(new Map());
   const inFlightRef = useRef<Map<string, Promise<GetPapersResult>>>(new Map());
   const loadingRef = useRef(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const nextPageRef = useRef<number>(initialPapers?.hasMore ? initialPapers.page + 1 : 0);
 
   // Memoize task from selectedTag
   const task = useMemo(() => {
@@ -567,6 +570,16 @@ export default function PaperList({
     });
   }, []);
 
+  // Prefetch next page
+  const prefetchPage = useCallback(
+    (pageNumber: number) => {
+      void fetchPage(pageNumber).catch((err) => {
+        console.warn("Failed to prefetch papers:", err);
+      });
+    },
+    [fetchPage],
+  );
+
   // Load page
   const loadPage = useCallback(
     async (pageNumber: number, replace = false) => {
@@ -579,11 +592,19 @@ export default function PaperList({
 
         const result = await fetchPage(pageNumber);
         setPage(result.page);
+        setHasMore(result.hasMore);
 
         if (replace) {
           setPapers(result.papers);
         } else {
           appendPapers(result.papers);
+        }
+
+        if (result.hasMore) {
+          nextPageRef.current = result.page + 1;
+          prefetchPage(result.page + 1);
+        } else {
+          nextPageRef.current = 0;
         }
       } catch (err) {
         console.error(err);
@@ -593,17 +614,7 @@ export default function PaperList({
         setLoading(false);
       }
     },
-    [appendPapers, fetchPage],
-  );
-
-  // Prefetch next page
-  const prefetchPage = useCallback(
-    (pageNumber: number) => {
-      void fetchPage(pageNumber).catch((err) => {
-        console.warn("Failed to prefetch papers:", err);
-      });
-    },
-    [fetchPage],
+    [appendPapers, fetchPage, prefetchPage],
   );
 
   // Initialize or reset on filter change
@@ -640,6 +651,27 @@ export default function PaperList({
     selectedTag,
   ]);
 
+  // Infinite scroll: IntersectionObserver triggers next page load
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && !loadingRef.current && hasMore) {
+          const nextPage = nextPageRef.current;
+          if (nextPage > 0) {
+            void loadPage(nextPage, false);
+          }
+        }
+      },
+      { rootMargin: "600px" },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, loadPage]);
+
   if (error && papers.length === 0) {
     return (
       <div className="pb-12 pt-8 flex justify-center items-center text-[#F55036]">
@@ -663,6 +695,9 @@ export default function PaperList({
             <PaperCardSkeleton />
           </>
         )}
+
+        {/* Sentinel for infinite scroll trigger */}
+        <div ref={sentinelRef} className="h-px" />
 
         {/* Pagination load: show small spinner at bottom */}
         {loading && papers.length > 0 && (
