@@ -9,7 +9,7 @@ import {
   memo,
   Profiler,
 } from "react";
-import { Github, MessageCircle, Star } from "lucide-react";
+import { Github, MessageCircle, Star, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import {
   getPapers,
@@ -101,11 +101,11 @@ const Pill = memo(
 
     return (
       <span
-        className={`group h-[28px] xl:h-[24px] inline-flex items-center px-3 xl:px-2 rounded-[4px] text-[11px] cursor-pointer transition-all duration-200 hover:-translate-y-px hover:brightness-[0.96] hover:shadow-sm active:scale-95 select-none ${c.bg} ${c.text} ${c.border || ""} whitespace-nowrap`}
+        className={`group h-[24px] inline-flex items-center px-2.5 rounded-[4px] text-[11px] cursor-pointer transition-all duration-200 hover:-translate-y-px hover:brightness-[0.96] hover:shadow-sm active:scale-95 select-none ${c.bg} ${c.text} ${c.border || ""} whitespace-nowrap`}
       >
         {!isGray && (
           <span
-            className={`w-1.5 h-1.5 rounded-full mr-2 shrink-0 transition-transform duration-200 group-hover:scale-110 ${c.dot}`}
+            className={`w-1.5 h-1.5 rounded-full mr-1.5 shrink-0 transition-transform duration-200 group-hover:scale-110 ${c.dot}`}
           />
         )}
         {label}
@@ -121,7 +121,7 @@ const SotaDisplay = memo(({ sota }: { sota: string }) => {
   const segments = sota.split(" • ");
 
   return (
-    <div className="mb-[12px] text-[11.5px] tracking-tight flex flex-nowrap items-center gap-x-2 gap-y-1 overflow-hidden whitespace-nowrap w-full">
+    <div className="mb-[10px] text-[11px] tracking-tight flex flex-wrap items-center gap-x-2 gap-y-1 w-full">
       {segments.map((segment, idx) => {
         const isSota = segment.startsWith("SOTA on ");
         const isOn = segment.includes(" on ");
@@ -217,16 +217,16 @@ function GeneratedCover({ title }: { title: string }) {
   const displayLines = lines.slice(0, 3);
 
   const svgContent = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="170" height="240" viewBox="0 0 170 240">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 170 240" preserveAspectRatio="none">
       <defs>
         <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="${bg1}"/>
           <stop offset="100%" stop-color="${bg2}"/>
         </linearGradient>
       </defs>
-      <rect width="170" height="240" fill="url(#bg)"/>
+      <rect width="100%" height="100%" fill="url(#bg)"/>
       <!-- accent bar top -->
-      <rect x="0" y="0" width="170" height="4" fill="${accent}"/>
+      <rect x="0" y="0" width="100%" height="4" fill="${accent}"/>
       <!-- decorative circles -->
       <circle cx="140" cy="50" r="55" fill="${accent}" fill-opacity="0.07"/>
       <circle cx="30" cy="200" r="40" fill="${accent}" fill-opacity="0.06"/>
@@ -234,9 +234,9 @@ function GeneratedCover({ title }: { title: string }) {
       <rect x="12" y="16" width="42" height="14" rx="3" fill="${accent}" fill-opacity="0.9"/>
       <text x="33" y="27" font-family="monospace" font-size="8" fill="white" text-anchor="middle">arXiv</text>
       <!-- title lines -->
-      ${displayLines.map((line, i) => `<text x="12" y="${105 + i * 18}" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="white" fill-opacity="0.95">${line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")}</text>`).join("")}
+      ${displayLines.map((line, i) => `<text x="12" y="${115 + i * 20}" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="white" fill-opacity="0.95">${line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")}</text>`).join("")}
       <!-- bottom accent bar -->
-      <rect x="12" y="210" width="30" height="3" rx="1.5" fill="${accent}"/>
+      <rect x="12" y="237" width="30" height="3" rx="1.5" fill="${accent}"/>
     </svg>
   `;
 
@@ -248,7 +248,7 @@ function GeneratedCover({ title }: { title: string }) {
       style={{
         backgroundImage: `url("${dataUrl}")`,
         backgroundSize: "cover",
-        backgroundPosition: "top",
+        backgroundPosition: "center",
       }}
     />
   );
@@ -271,18 +271,20 @@ const PaperThumbnail = memo(
     const [hasError, setHasError] = useState(false);
 
     return (
-      <div className="w-full xl:w-[170px] h-[180px] sm:h-[220px] xl:h-[240px] shrink-0 border border-[#E5E5E0] rounded-md xl:rounded-none overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.07)] relative flex items-center justify-center">
+      <div className="w-full xl:w-[160px] h-[180px] sm:h-[226px] xl:h-full shrink-0 border border-[#E5E5E0] bg-white rounded-md xl:rounded-none overflow-hidden shadow-sm relative flex items-center justify-center">
         {isValidImageSrc(thumbnail) && !hasError ? (
           <Image
             src={thumbnail}
             alt={title || "Paper thumbnail"}
             fill
-            className="object-cover object-top"
-            sizes="(max-width: 1280px) 100vw, 170px"
+            className="object-contain"
+            sizes="(max-width: 1280px) 100vw, 220px"
             onError={() => setHasError(true)}
           />
         ) : (
-          <GeneratedCover title={title} />
+          <div className="w-full h-full">
+             <GeneratedCover title={title} />
+          </div>
         )}
       </div>
     );
@@ -308,7 +310,7 @@ const Metric = memo(
     const isInteractive = interactive || !!onClick;
     return (
       <div
-        className={`flex flex-col items-center gap-1 group/metric ${isInteractive ? "cursor-pointer hover:opacity-80 transition-opacity" : ""}`}
+        className={`flex items-center gap-2.5 group/metric px-3 py-1.5 rounded-lg ${isInteractive ? "cursor-pointer hover:bg-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.05)] transition-all duration-300 ease-out" : ""}`}
         onClick={(e) => {
           if (onClick) {
             e.preventDefault();
@@ -317,19 +319,21 @@ const Metric = memo(
           }
         }}
       >
-        <div className="flex items-center gap-1.5">
-          {children}
+        <div className={`flex items-center justify-center w-7 h-7 rounded-full bg-white/60 border border-[#E5E5E0]/60 ${isInteractive ? "group-hover/metric:border-[#F55036]/20 group-hover/metric:bg-[#F55036]/5 transition-colors" : ""}`}>
+           {children}
+        </div>
+        <div className="flex flex-col items-start justify-center">
           <span
-            className={`text-[14.5px] font-bold text-[#111111] leading-none tabular-nums ${isInteractive ? "group-hover/metric:text-[#F55036] transition-colors" : ""}`}
+            className={`text-[14px] font-bold text-[#111111] leading-none tabular-nums tracking-tight ${isInteractive ? "group-hover/metric:text-[#F55036] transition-colors" : ""}`}
           >
             {value}
           </span>
+          <span
+            className={`text-[9px] font-semibold text-[#8B8B8B] uppercase tracking-[0.06em] leading-none mt-1 ${isInteractive ? "group-hover/metric:text-[#F55036]/80 transition-colors" : ""}`}
+          >
+            {label}
+          </span>
         </div>
-        <span
-          className={`text-[8px] font-semibold text-[#8B8B8B] uppercase tracking-[0.08em] leading-none ${isInteractive ? "group-hover/metric:text-[#F55036] transition-colors" : ""}`}
-        >
-          {label}
-        </span>
       </div>
     );
   },
@@ -341,7 +345,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
   const upvotesNum = parseFloat(paper.upvotes) || 0;
 
   let displayAuthors = paper.authors;
-  if (paper.authors) {
+  if (paper.authors && !paper.authors.includes("+")) {
     const authorList = paper.authors.split(",").map((a) => a.trim());
     if (authorList.length > 3) {
       displayAuthors = `${authorList.slice(0, 3).join(", ")} et al.`;
@@ -349,39 +353,41 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
   }
 
   return (
-    <Link href={`/papers/${paper.slug}`} className="no-underline">
-      <div className="group flex flex-col xl:flex-row gap-4 xl:gap-6 p-4 xl:py-6 xl:px-6 border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] bg-white xl:bg-transparent min-w-0 cursor-pointer hover:shadow-lg xl:hover:bg-white xl:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out rounded-xl xl:rounded-none h-full hover:-translate-y-[2px] xl:hover:-translate-y-1 relative hover:z-10 active:scale-[0.99]">
+    <Link href={`/papers/${paper.slug}`} className="no-underline block">
+      <div className="group flex flex-col xl:flex-row gap-5 p-4 xl:py-5 bg-white xl:bg-transparent border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] rounded-xl xl:rounded-none cursor-pointer hover:shadow-lg xl:hover:bg-white xl:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 relative hover:z-10 active:scale-[0.99]">
         {/* LEFT — PDF thumbnail */}
-        <div className="flex flex-col justify-center shrink-0 w-full xl:w-auto">
+        <div className="shrink-0 w-full xl:w-auto self-stretch">
           <PaperThumbnail title={paper.title} thumbnail={paper.thumbnail} />
         </div>
 
         {/* RIGHT — Content */}
-        <div className="flex-1 min-w-0 flex flex-col xl:pr-8">
+        <div className="flex-1 min-w-0 flex flex-col">
           {/* Title */}
-          <h3 className="text-[18px] xl:text-[20px] font-semibold text-[#2D2D2D] leading-[1.3] mb-2 group-hover:text-[#F55036] transition-colors line-clamp-3 xl:line-clamp-2">
+          <h3 className="text-[18px] xl:text-[20px] font-serif font-medium text-[#111111] leading-[1.3] mb-2 group-hover:text-[#F55036] transition-colors">
             {paper.title}
           </h3>
 
-          {/* Authors + date */}
-          <div className="flex items-center text-[13px] font-normal text-[#555555] mb-3 min-w-0 w-full">
-            <span className="truncate">{displayAuthors}</span>
-            <span className="mx-2 text-[#DCDCD7] shrink-0">·</span>
+          {/* Authors + date + citations */}
+          <div className="flex items-center text-[13.5px] text-[#666666] mb-3 min-w-0 w-full flex-wrap gap-y-1">
+            <span className="truncate max-w-[60%]">{displayAuthors}</span>
+            <span className="mx-2">·</span>
             <span className="shrink-0">{paper.date}</span>
+            <span className="mx-2">·</span>
+            <span className="shrink-0">{paper.citations || 0} citations</span>
           </div>
 
           {/* Description */}
-          <p className="text-[14px] font-normal text-[#555555] leading-[1.6] mb-4 line-clamp-3 xl:line-clamp-2">
+          <p className="text-[13.5px] font-normal text-[#444444] leading-[1.5] mb-3 line-clamp-3">
             {paper.description}
           </p>
 
           {/* Benchmark / SOTA (Row 1) */}
-          <div className="w-full overflow-hidden">
+          <div className="w-full">
             <SotaDisplay sota={paper.sota} />
           </div>
 
           {/* Tasks (Row 2) */}
-          <div className="flex flex-nowrap items-center gap-2 mb-2 w-full overflow-hidden">
+          <div className="flex flex-wrap items-center gap-1.5 mb-1.5 w-full">
             {paper.tags?.map((t) => {
               const colorKey = getTagColor(t);
               return <Pill key={t} label={t} colorKey={colorKey} />;
@@ -389,62 +395,53 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
           </div>
 
           {/* Methods (Row 3) */}
-          <div className="flex flex-nowrap items-center gap-2 w-full overflow-hidden">
+          <div className="flex flex-wrap items-center gap-1.5 w-full">
             {paper.additionalTags?.map((t) => {
               return <Pill key={t} label={t} colorKey="gray" />;
             })}
           </div>
-        </div>
 
-        {/* RIGHT — Metrics */}
-        <div className="shrink-0 flex items-stretch xl:pl-[24px] xl:pr-[32px] border-t xl:border-t-0 xl:border-l border-[#E5E5E0] mt-auto xl:mt-0 pt-4 xl:pt-0 w-full xl:w-auto">
-          <div className="flex flex-row xl:flex-col justify-around xl:justify-around items-center w-full xl:w-[64px] xl:py-2 gap-2 xl:gap-0">
-            <Metric
-              value={`${upvotesNum}`}
-              label="Stars / Hr"
-              onClick={
-                paper.githubUrl
-                  ? () =>
-                      window.open(
-                        paper.githubUrl,
-                        "_blank",
-                        "noopener,noreferrer",
-                      )
-                  : undefined
-              }
-              interactive={!!paper.githubUrl}
+          {/* Action Buttons */}
+          <div className="flex flex-row flex-wrap items-center w-full mt-auto pt-3 gap-3">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open((paper as any).arxivUrl || "https://arxiv.org", "_blank");
+              }}
+              className="flex items-center justify-between px-3 sm:px-3.5 h-[34px] bg-[#FFF8F4] text-[#E0663B] border border-[#FDE3D6] rounded-[6px] hover:bg-[#FDE3D6]/50 transition-colors w-[130px] sm:w-[155px] xl:w-[165px]"
             >
-              <Star
-                size={12}
-                className="text-[#8B8B8B] shrink-0 fill-current"
-              />
-            </Metric>
+              <span className="font-medium text-[13px]">arXiv</span>
+              <ArrowUpRight size={15} strokeWidth={1.5} />
+            </button>
+            
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open((paper as any).pdfUrl || "https://arxiv.org/pdf", "_blank");
+              }}
+              className="flex items-center justify-between px-3 sm:px-3.5 h-[34px] bg-[#FFF4F6] text-[#E54D59] border border-[#FDD4DC] rounded-[6px] hover:bg-[#FDD4DC]/50 transition-colors w-[130px] sm:w-[155px] xl:w-[165px]"
+            >
+              <span className="font-medium text-[13px]">PDF</span>
+              <ArrowUpRight size={15} strokeWidth={1.5} />
+            </button>
 
-            <Metric
-              value={paper.repo}
-              label="Repo"
-              onClick={
-                paper.githubUrl
-                  ? () =>
-                      window.open(
-                        paper.githubUrl,
-                        "_blank",
-                        "noopener,noreferrer",
-                      )
-                  : undefined
-              }
-              interactive={!!paper.githubUrl}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(paper.githubUrl || "https://github.com", "_blank");
+              }}
+              className="flex items-center justify-between px-3 sm:px-3.5 h-[34px] bg-[#F7F8F9] text-[#111111] border border-[#E5E7EB] rounded-[6px] hover:bg-[#E5E7EB]/70 transition-colors w-[130px] sm:w-[155px] xl:w-[165px]"
             >
-              <Github size={13} className="text-[#8B8B8B] shrink-0" />
-            </Metric>
-
-            <Metric
-              value={(paper.citations || 0).toString()}
-              label="Citations"
-              interactive={true}
-            >
-              <MessageCircle size={13} className="text-[#8B8B8B] shrink-0" />
-            </Metric>
+              <div className="flex items-center gap-2">
+                <Github size={15} strokeWidth={1.5} />
+                <span className="font-medium text-[13px]">GitHub</span>
+                {upvotesNum > 0 && <span className="text-[#9CA3AF] text-[12.5px] font-normal">{upvotesNum}k</span>}
+              </div>
+              <ArrowUpRight size={15} strokeWidth={1.5} className="text-[#9CA3AF]" />
+            </button>
           </div>
         </div>
       </div>
@@ -744,6 +741,7 @@ export default function PaperList({
       </div>
     );
   }
+
 
   return (
     <Profiler id="PaperList" onRender={logRender}>
