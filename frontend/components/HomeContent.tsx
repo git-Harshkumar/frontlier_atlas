@@ -28,7 +28,7 @@ export default function HomeContent({
     const savedPeriod = sessionStorage.getItem("atlas_selectedPeriod");
     if (savedSort && savedSort !== "undefined" && savedSort !== "null") setActiveSort(savedSort);
     if (savedPeriod && savedPeriod !== "undefined" && savedPeriod !== "null") setSelectedPeriod(savedPeriod);
-    
+
     // Mark as mounted after we've read the saved values
     setTimeout(() => {
       isMounted.current = true;
@@ -49,11 +49,11 @@ export default function HomeContent({
   }, [selectedPeriod]);
 
   // Map the UI tab to API parameters
-  const apiPeriod = 
+  const apiPeriod =
     selectedPeriod === "Today" ? "today" :
-    selectedPeriod === "This Week" ? "week" :
-    selectedPeriod === "This Month" ? "month" : "all";
-  
+      selectedPeriod === "This Week" ? "week" :
+        selectedPeriod === "This Month" ? "month" : "all";
+
   const apiSort = activeSort === "Trending Papers" ? "trending" : "latest";
 
   return (
@@ -73,7 +73,7 @@ export default function HomeContent({
 
         {/* 3-Column Layout */}
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-4 pb-12 flex items-start gap-6 xl:gap-8">
-          <div className="hidden lg:block w-[200px] shrink-0">
+          <div className="hidden lg:block w-[200px] shrink-0 sticky top-6 h-fit max-h-[calc(100vh-80px)]">
             <Sidebar initialActive={activeSort} onItemSelect={setActiveSort} />
           </div>
 
@@ -88,7 +88,7 @@ export default function HomeContent({
             />
           </main>
 
-          <div className="hidden xl:block w-[280px] shrink-0">
+          <div className="hidden xl:block w-[280px] shrink-0 sticky top-6 h-fit max-h-[calc(100vh-80px)]">
             <RightSidebar />
           </div>
         </div>

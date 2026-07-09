@@ -148,7 +148,7 @@ export default function BenchmarksPage() {
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-4 pb-10 flex items-start gap-4 xl:gap-8">
 
           {/* Sidebar */}
-          <div className="hidden xl:block w-[240px] shrink-0"><Sidebar /></div>
+          <div className="hidden xl:block w-[240px] shrink-0 sticky top-6 h-fit max-h-[calc(100vh-80px)]"><Sidebar /></div>
 
           {/* Main */}
           <main className="flex-1 min-w-0 max-w-full">
