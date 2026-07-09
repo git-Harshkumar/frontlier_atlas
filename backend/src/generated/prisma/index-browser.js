@@ -189,7 +189,9 @@ exports.Prisma.PaperTaskScalarFieldEnum = {
 exports.Prisma.MethodScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  slug: 'slug'
+  slug: 'slug',
+  category: 'category',
+  description: 'description'
 };
 
 exports.Prisma.PaperMethodScalarFieldEnum = {

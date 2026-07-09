@@ -9973,18 +9973,24 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    category: string | null
+    description: string | null
   }
 
   export type MethodMaxAggregateOutputType = {
     id: string | null
     name: string | null
     slug: string | null
+    category: string | null
+    description: string | null
   }
 
   export type MethodCountAggregateOutputType = {
     id: number
     name: number
     slug: number
+    category: number
+    description: number
     _all: number
   }
 
@@ -9993,18 +9999,24 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    category?: true
+    description?: true
   }
 
   export type MethodMaxAggregateInputType = {
     id?: true
     name?: true
     slug?: true
+    category?: true
+    description?: true
   }
 
   export type MethodCountAggregateInputType = {
     id?: true
     name?: true
     slug?: true
+    category?: true
+    description?: true
     _all?: true
   }
 
@@ -10084,6 +10096,8 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    category: string | null
+    description: string | null
     _count: MethodCountAggregateOutputType | null
     _min: MethodMinAggregateOutputType | null
     _max: MethodMaxAggregateOutputType | null
@@ -10107,6 +10121,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    category?: boolean
+    description?: boolean
     papers?: boolean | Method$papersArgs<ExtArgs>
     _count?: boolean | MethodCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["method"]>
@@ -10115,21 +10131,27 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    category?: boolean
+    description?: boolean
   }, ExtArgs["result"]["method"]>
 
   export type MethodSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     slug?: boolean
+    category?: boolean
+    description?: boolean
   }, ExtArgs["result"]["method"]>
 
   export type MethodSelectScalar = {
     id?: boolean
     name?: boolean
     slug?: boolean
+    category?: boolean
+    description?: boolean
   }
 
-  export type MethodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug", ExtArgs["result"]["method"]>
+  export type MethodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "category" | "description", ExtArgs["result"]["method"]>
   export type MethodInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     papers?: boolean | Method$papersArgs<ExtArgs>
     _count?: boolean | MethodCountOutputTypeDefaultArgs<ExtArgs>
@@ -10146,6 +10168,8 @@ export namespace Prisma {
       id: string
       name: string
       slug: string
+      category: string | null
+      description: string | null
     }, ExtArgs["result"]["method"]>
     composites: {}
   }
@@ -10573,6 +10597,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Method", 'String'>
     readonly name: FieldRef<"Method", 'String'>
     readonly slug: FieldRef<"Method", 'String'>
+    readonly category: FieldRef<"Method", 'String'>
+    readonly description: FieldRef<"Method", 'String'>
   }
     
 
@@ -35652,7 +35678,9 @@ export namespace Prisma {
   export const MethodScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    slug: 'slug'
+    slug: 'slug',
+    category: 'category',
+    description: 'description'
   };
 
   export type MethodScalarFieldEnum = (typeof MethodScalarFieldEnum)[keyof typeof MethodScalarFieldEnum]
@@ -36471,6 +36499,8 @@ export namespace Prisma {
     id?: StringFilter<"Method"> | string
     name?: StringFilter<"Method"> | string
     slug?: StringFilter<"Method"> | string
+    category?: StringNullableFilter<"Method"> | string | null
+    description?: StringNullableFilter<"Method"> | string | null
     papers?: PaperMethodListRelationFilter
   }
 
@@ -36478,6 +36508,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    category?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
     papers?: PaperMethodOrderByRelationAggregateInput
   }
 
@@ -36488,6 +36520,8 @@ export namespace Prisma {
     AND?: MethodWhereInput | MethodWhereInput[]
     OR?: MethodWhereInput[]
     NOT?: MethodWhereInput | MethodWhereInput[]
+    category?: StringNullableFilter<"Method"> | string | null
+    description?: StringNullableFilter<"Method"> | string | null
     papers?: PaperMethodListRelationFilter
   }, "id" | "name" | "slug">
 
@@ -36495,6 +36529,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    category?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
     _count?: MethodCountOrderByAggregateInput
     _max?: MethodMaxOrderByAggregateInput
     _min?: MethodMinOrderByAggregateInput
@@ -36507,6 +36543,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Method"> | string
     name?: StringWithAggregatesFilter<"Method"> | string
     slug?: StringWithAggregatesFilter<"Method"> | string
+    category?: StringNullableWithAggregatesFilter<"Method"> | string | null
+    description?: StringNullableWithAggregatesFilter<"Method"> | string | null
   }
 
   export type PaperMethodWhereInput = {
@@ -38257,6 +38295,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    category?: string | null
+    description?: string | null
     papers?: PaperMethodCreateNestedManyWithoutMethodInput
   }
 
@@ -38264,6 +38304,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    category?: string | null
+    description?: string | null
     papers?: PaperMethodUncheckedCreateNestedManyWithoutMethodInput
   }
 
@@ -38271,6 +38313,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     papers?: PaperMethodUpdateManyWithoutMethodNestedInput
   }
 
@@ -38278,6 +38322,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     papers?: PaperMethodUncheckedUpdateManyWithoutMethodNestedInput
   }
 
@@ -38285,18 +38331,24 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    category?: string | null
+    description?: string | null
   }
 
   export type MethodUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MethodUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaperMethodCreateInput = {
@@ -40164,18 +40216,24 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    category?: SortOrder
+    description?: SortOrder
   }
 
   export type MethodMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    category?: SortOrder
+    description?: SortOrder
   }
 
   export type MethodMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    category?: SortOrder
+    description?: SortOrder
   }
 
   export type MethodScalarRelationFilter = {
@@ -43520,12 +43578,16 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    category?: string | null
+    description?: string | null
   }
 
   export type MethodUncheckedCreateWithoutPapersInput = {
     id?: string
     name: string
     slug: string
+    category?: string | null
+    description?: string | null
   }
 
   export type MethodCreateOrConnectWithoutPapersInput = {
@@ -43645,12 +43707,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MethodUncheckedUpdateWithoutPapersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaperUpsertWithoutMethodsInput = {
