@@ -81,8 +81,8 @@ export default function Navbar({
               <line x1="4" y1="18" x2="20" y2="18" />
             </svg>
           </button>
-          <div className="flex items-center cursor-pointer relative w-[170px] xl:w-[200px] h-10 xl:h-11">
-            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="(max-width: 1280px) 170px, 200px" />
+          <div className="flex items-center cursor-pointer relative w-[200px] xl:w-[240px] h-12 xl:h-14">
+            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="(max-width: 1280px) 200px, 240px" />
           </div>
 
         </div>
@@ -200,13 +200,13 @@ export default function Navbar({
       >
         {/* Drawer Header */}
         <div className="h-[52px] border-b border-[#E5E5E0] flex items-center justify-between px-4 shrink-0">
-          <div className="relative w-[150px] h-8">
+          <div className="relative w-[170px] h-10">
             <Image
               src="/logo.png"
               alt="Frontier Atlas"
               fill
               className="object-contain object-left"
-              sizes="150px"
+              sizes="170px"
             />
           </div>
           <button
