@@ -742,6 +742,64 @@ export default function PaperList({
     );
   }
 
+  // DUMMY PAPERS INJECTION START
+  const sotaVariants = [
+    "SOTA on OmniDocBench v1.0, VideoHolmes • #2 on DailyOmni, WorldSense • #3 on MMAU, MMT-Bench",
+    "SOTA on ImageNet v2, COCO • #1 on VQA v2, GQA",
+    "SOTA on MATH, GSM8K • #1 on HumanEval, MBPP • #2 on MMLU",
+    "SOTA on LibriSpeech, AudioSet • #2 on ESC-50"
+  ];
+  
+  const tagsVariants = [
+    ["Image Understanding", "Language Modeling", "Omni Models"],
+    ["Computer Vision", "Multimodal", "Zero-shot Learning"],
+    ["Reinforcement Learning", "Code Generation", "Math Reasoning"],
+    ["Speech Recognition", "Audio Generation", "Transformers"]
+  ];
+  
+  const methodsVariants = [
+    ["Gemini 2.5", "GRPO", "Qwen3", "Whisper", "MoE"],
+    ["ViT", "CLIP", "Stable Diffusion", "LoRA", "ControlNet"],
+    ["PPO", "DPO", "Llama 3", "DeepSeek", "MCTS"],
+    ["HuBERT", "Wav2Vec", "EnCodec", "Vocoder", "Flow Matching"]
+  ];
+
+  const titleVariants = [
+    "MiniCPM-o 4.5: Towards Real-Time Full-Duplex Omni-Modal Interaction",
+    "Attention Is All You Need: The Transformer Revolution",
+    "Scaling Laws for Neural Language Models: Empirical Findings",
+    "Qwen-VL: A Versatile Vision-Language Model for Understanding",
+    "DeepSeekMath: Pushing the Limits of Mathematical Reasoning",
+    "Stable Diffusion XL: High-Resolution Image Synthesis with Latent Diffusion"
+  ];
+
+  const authorVariants = [
+    "Junbo Cui, Bokai Xu, Chongyi Wang, +33 authors",
+    "Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit",
+    "Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B. Brown",
+    "Jinze Bai, Shuai Bai, Shusheng Yang, Shijie Wang",
+    "Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu",
+    "Dustin Podell, Zion English, Kyle Lacey, Andreas Blattmann"
+  ];
+
+  const dummyPapers: Paper[] = Array.from({ length: 6 }).map((_, i) => ({
+    id: `dummy-${i}`,
+    slug: `dummy-paper-${i}`,
+    title: titleVariants[i % titleVariants.length],
+    thumbnail: "",
+    authors: authorVariants[i % authorVariants.length],
+    date: "Apr 30, 2026",
+    description: "Recent progress in multimodal large language models (MLLMs) has brought AI capabilities from static offline data processing to real-time streaming interaction, yet they still remain far from human-level multimodal interaction. The key bottlenecks are no longer modality coverage or latency alone, but the interaction paradigm itself. First, perception and cognition are inherently decoupled in mainstream architectures, leading to slow processing times. Second, evaluating these models requires entirely new benchmarking strategies that current leaderboards simply do not support.",
+    sota: sotaVariants[i % sotaVariants.length],
+    tags: tagsVariants[i % tagsVariants.length],
+    additionalTags: methodsVariants[i % methodsVariants.length],
+    upvotes: `${12.4 + i}`,
+    repo: "dummy/repo",
+    citations: 8,
+    githubUrl: "https://github.com/dummy",
+  }));
+  const displayPapers = papers.length > 0 ? papers : dummyPapers;
+  // DUMMY PAPERS INJECTION END
 
   return (
     <Profiler id="PaperList" onRender={logRender}>
@@ -749,12 +807,12 @@ export default function PaperList({
         className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0"
         data-page={page}
       >
-        {papers.map((paper) => (
+        {displayPapers.map((paper) => (
           <PaperCard key={paper.slug} paper={paper} />
         ))}
 
         {/* Initial load: show skeleton cards instead of spinner */}
-        {loading && papers.length === 0 && (
+        {loading && displayPapers.length === 0 && (
           <>
             <PaperCardSkeleton />
             <PaperCardSkeleton />
@@ -766,13 +824,13 @@ export default function PaperList({
         <div ref={sentinelRef} className="h-px" />
 
         {/* Pagination load: show small spinner at bottom */}
-        {loading && papers.length > 0 && (
+        {loading && displayPapers.length > 0 && (
           <div className="flex justify-center py-8">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#E5E5E0]" />
           </div>
         )}
 
-        {!loading && papers.length === 0 && (
+        {!loading && displayPapers.length === 0 && (
           <div className="flex flex-col items-center justify-center py-24 px-4 text-center animate-fade-in w-full col-span-full">
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 border border-[#E5E5E0] shadow-sm">
               <svg
