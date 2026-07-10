@@ -69,8 +69,6 @@ export class QueryRouter {
           console.error(`🚨 Query failed or timed out on shard ${targetShard.id}:`, error);
           failedShards.push(targetShard.id);
           return null;
-        } finally {
-          await this.databaseManager.disconnect(prisma);
         }
       });
 
