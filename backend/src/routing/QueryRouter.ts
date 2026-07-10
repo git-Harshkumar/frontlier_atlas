@@ -58,7 +58,7 @@ export class QueryRouter {
 
       // Execute queries on all target shards using scatter-gather
       const queryPromises = plan.targetShards.map(async (targetShard) => {
-        const prisma = this.databaseManager.getClient(targetShard.id);
+        const prisma = this.databaseManager.getClient();
 
         try {
           // Mitigation: Strict configurable timeout wrapper applied to all database executions
