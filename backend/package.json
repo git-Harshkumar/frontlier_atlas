@@ -1,11 +1,12 @@
 {
-  "name": "graphone-hono-backend",
+  "name": "frontieratlas-backend",
   "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
+    "build": "tsc --noEmit",
     "daily-sync": "npx prisma generate --schema=src/generated/prisma/schema.prisma && tsx scripts/daily-sync.ts",
     "import-papers-github": "tsx scripts/importPapersWithGithub.ts",
     "import-sota": "tsx scripts/importSota.ts",
@@ -35,8 +36,6 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^26.0.1",
     "@types/pg": "^8.11.10",
-    "csv-parser": "^3.2.1",
-    "dotenv": "^17.4.2",
     "pdfjs-dist": "^6.1.200",
     "prisma": "^7.8.0",
     "slugify": "^1.6.9",

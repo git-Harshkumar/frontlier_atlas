@@ -2,7 +2,6 @@ import { Context } from "hono";
 import * as paperService from "../services/paper.service.js";
 import { redisManager } from "../lib/redis.js";
 import { QueryRouter } from "../routing/index.js";
-import { IdResolver } from "../routing/IdResolver.js";
 
 // ---------------------------------------------------------------------------
 // Version-counter helpers
@@ -124,8 +123,6 @@ export const getPapers = async (c: Context) => {
       {
         status: "error",
         detail: message,
-        dbUrl: (c.env as any).DATABASE_URL,
-        bindings: Object.keys(c.env || {}),
       },
       status,
     );
@@ -181,15 +178,13 @@ export const getPaperBySlug = async (c: Context) => {
 
 export const getPaperById = async (c: Context) => {
   const queryRouter = c.var.queryRouter as QueryRouter;
-  const idResolver = c.var.idResolver as IdResolver | undefined;
   const id = c.req.param("id");
 
   if (!id) {
     return c.json({ status: "error", message: "ID is required" }, 400);
   }
 
-  // Cache the full paper response — not just the shard location (IdResolver
-  // already caches shard location separately under paper:shard:<id>).
+  // Cache the full paper response.
   const cacheKey = `paper:id:${id}`;
 
   try {
@@ -209,7 +204,7 @@ export const getPaperById = async (c: Context) => {
       return c.json(cached as any, 200);
     }
 
-    const paper = await paperService.getPaperById(queryRouter, id, idResolver);
+    const paper = await paperService.getPaperById(queryRouter, id);
     if (!paper) {
       const response404 = { status: "error", message: "Paper not found", is404: true };
       try {

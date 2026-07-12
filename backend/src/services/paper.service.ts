@@ -1,11 +1,10 @@
 import { PrismaClient, Prisma } from "../generated/prisma/client";
 import { QueryRouter } from "../routing/index.js";
-import { QueryIntent, QueryType } from "../routing/types.js";
-import { ShardId } from "../database/shard-config.js";
-import { IdResolver } from "../routing/IdResolver";
+
 import { redisManager } from "../lib/redis.js";
 import { CursorManager } from "../pagination/CursorManager.js";
 import { SortingEngine } from "../pagination/SortingEngine.js";
+import { buildDeterministicSlug, normalizeArxivId, hashDisambiguator } from "../utils/slug.js";
 
 type GetPapersQuery = {
   sort?:
@@ -182,36 +181,77 @@ const deduplicatePapers = (papers: PaperQueryItem[]): PaperFindManyResult => {
 };
 
 export const ingestPaper = async (queryRouter: QueryRouter, data: any) => {
-  const safeTitle = data.title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-  const slug = `${safeTitle.substring(0, 50)}-${Math.random().toString(36).substring(2, 10)}`;
+  const arxivId = normalizeArxivId(data.arxiv_id || data.arxivId);
+  const baseSlug = buildDeterministicSlug(data.title);
+  const incomingUrl = data.paper_url || data.paperUrl;
 
-  const intent: QueryIntent = {
-    type: QueryType.WRITE,
-    entity: "paper",
-    operation: "create",
-    data: { ...data, slug },
-  };
+  let initialSlug = baseSlug;
 
-  const routingResult = await queryRouter.routeQuery(
-    intent,
-    async (prisma, _shardId) => {
-      return prisma.paper.create({
-        data: {
-          slug,
-          title: data.title,
-          paperUrl: data.paper_url,
-          thumbnailUrl: data.thumbnail_url,
-          projectUrl: data.github_url,
-          citationCount: data.github_stars || 0,
-        },
-      });
+  // If no arxivId, we must guarantee uniqueness against different papers with the same title.
+  // We avoid a findUnique read-before-write (which has race conditions) by ALWAYS
+  // appending a deterministic hash of the paperUrl to the slug.
+  if (!arxivId) {
+    const disambiguator = hashDisambiguator(data.title, incomingUrl);
+    initialSlug = `${baseSlug}-${disambiguator}`;
+  }
+
+  return queryRouter.routeQuery(
+    async (prisma: PrismaClient) => {
+      const attemptUpsert = async (slugToUse: string) => {
+        const where = arxivId ? { arxivId } : { slug: slugToUse };
+        return prisma.paper.upsert({
+          where,
+          create: {
+            slug: slugToUse,
+            arxivId,
+            title: data.title,
+            abstract: data.abstract,
+            paperUrl: incomingUrl,
+            thumbnailUrl: data.thumbnail_url || data.thumbnailUrl,
+            projectUrl: data.github_url || data.githubUrl,
+            citationCount: data.github_stars || data.citationCount || 0,
+          },
+          update: {
+            title: data.title,
+            abstract: data.abstract,
+            paperUrl: incomingUrl,
+            thumbnailUrl: data.thumbnail_url || data.thumbnailUrl,
+            projectUrl: data.github_url || data.githubUrl,
+            citationCount: data.github_stars || data.citationCount || 0,
+          },
+        });
+      };
+
+      try {
+        return await attemptUpsert(initialSlug);
+      } catch (error: any) {
+        // P2002 is Prisma's Unique Constraint Violation
+        // This is a defensive fallback only (e.g. arxivId is present but baseSlug collides)
+        const isSlugCollision =
+          error.code === "P2002" &&
+          error.meta?.target &&
+          (Array.isArray(error.meta.target)
+            ? error.meta.target.includes("slug")
+            : error.meta.target === "slug" || error.meta.target.includes("slug"));
+
+        if (isSlugCollision) {
+          let disambiguator = "";
+          if (arxivId) {
+            // Append last 6 chars of arxivId
+            disambiguator = arxivId.slice(-6).replace(/[^a-z0-9]/gi, "");
+          } else {
+            // Defensive fallback if the title+paperUrl hash STILL magically collides
+            disambiguator = hashDisambiguator(data.title, incomingUrl, "1");
+          }
+
+          const fallbackSlug = `${baseSlug}-${disambiguator}`;
+          return await attemptUpsert(fallbackSlug); // 2nd attempt, will throw if it fails
+        }
+
+        throw error; // Re-throw if it's not a slug collision
+      }
     },
   );
-
-  return routingResult.results[0];
 };
 
 export const getPapers = async (
@@ -231,8 +271,7 @@ export const getPapers = async (
   const limit = Math.max(Number(query.limit) || 20, 1);
   const page = Math.max(Number(query.page) || 1, 1);
   const skip = Number(query.skip) || (page - 1) * limit;
-  const perShardTake = Math.max(skip + limit + 1, limit + 1);
-  const sort = SortingEngine.normalizeSort(query.sort || "trending");
+  const sort = query.sort || "trending";
   const period = query.period || "all";
 
   const where: any = {};
@@ -280,82 +319,32 @@ export const getPapers = async (
               { slug: "asc" as const },
             ];
 
-  const intent: QueryIntent = {
-    type: QueryType.READ,
-    entity: "paper",
-    operation: "findMany",
-    filters: {
-      sort,
-      task: query.task,
-      method: query.method,
-      model: query.model,
-      period,
-    },
-  };
-
-  const routingResult = await queryRouter.routeQuery<PaperQueryResult>(
-    intent,
-    async (prisma, _shardId) => {
+  const papers = await queryRouter.routeQuery<any>(
+    async (prisma: PrismaClient) => {
       return prisma.paper.findMany({
         where,
         orderBy,
-        take: perShardTake,
+        take: limit + 1, // Fetch one extra to determine hasMore
+        skip,
         select: paperSelect,
       });
     },
   );
 
-  const mergedPapers = SortingEngine.nWayMerge<PaperQueryItem>(
-    routingResult.results,
-    sort,
-  );
-  const deduplicatedPapers = deduplicatePapers(mergedPapers);
-  const globallySortedPapers = SortingEngine.sort<PaperQueryItem>(
-    deduplicatedPapers,
-    sort,
-  );
-  const total = globallySortedPapers.length;
-
-  const decodedCursor = query.cursor
-    ? CursorManager.decodeCursor(query.cursor)
-    : null;
-  if (decodedCursor) {
-    CursorManager.validateCursorSort(decodedCursor, sort);
-  }
-
-  const cursorIndex = decodedCursor
-    ? SortingEngine.findCursorIndex(globallySortedPapers, decodedCursor)
-    : -1;
-  if (decodedCursor && cursorIndex === -1) {
-    throw new Error("Invalid cursor: cursor position was not found");
-  }
-
-  const startIndex = decodedCursor ? cursorIndex + 1 : skip;
-  const safeStartIndex = Math.max(startIndex, 0);
-  const pagePapers = globallySortedPapers.slice(
-    safeStartIndex,
-    safeStartIndex + limit,
-  );
-  const hasMore = safeStartIndex + pagePapers.length < total;
-  const lastPaper = pagePapers[pagePapers.length - 1];
-  const nextCursor =
-    hasMore && lastPaper
-      ? CursorManager.encodeCursor(
-          SortingEngine.getCursorPayload(lastPaper, sort),
-        )
-      : null;
+  const hasMore = papers.length > limit;
+  const pagePapers = hasMore ? papers.slice(0, limit) : papers;
 
   return {
-    papers: pagePapers.map((paper) => ({
+    papers: pagePapers.map((paper: any) => ({
       ...exposeThumbnailUrl(paper),
-      authors: paper.authors.map(({ author }) => author),
-      tasks: paper.tasks.map(({ task }) => task),
-      methods: paper.methods.map(({ method }) => method),
+      authors: paper.authors.map(({ author }: any) => author),
+      tasks: paper.tasks.map(({ task }: any) => task),
+      methods: paper.methods.map(({ method }: any) => method),
     })),
-    total,
+    total: pagePapers.length, // Let the frontend use hasMore rather than a fake total
     page,
     hasMore,
-    nextCursor,
+    nextCursor: null, // Legacy cursor unused now
   };
 };
 
@@ -363,16 +352,8 @@ export const getPaperBySlug = async (
   queryRouter: QueryRouter,
   slug: string,
 ) => {
-  const intent: QueryIntent = {
-    type: QueryType.READ,
-    entity: "paper",
-    operation: "findUnique",
-    filters: { slug },
-  };
-
-  const routingResult = await queryRouter.routeQuery(
-    intent,
-    async (prisma, _shardId) => {
+  const paper = await queryRouter.routeQuery(
+    async (prisma: PrismaClient) => {
       return prisma.paper.findUnique({
         where: { slug },
         select: {
@@ -522,18 +503,20 @@ export const getPaperBySlug = async (
     },
   );
 
-  // Find the first non-null result
-  const paper = routingResult.results.find((p) => p !== null);
   return paper ? exposeThumbnailUrl(paper) : null;
 };
 
 export const getPaperById = async (
   queryRouter: QueryRouter,
   id: string,
-  idResolver?: IdResolver,
 ) => {
-  const resolver = idResolver ?? new IdResolver(redisManager, queryRouter);
-  return resolver.resolvePaper(id);
+  const paper = await queryRouter.routeQuery(async (prisma: PrismaClient) => {
+    return prisma.paper.findUnique({
+      where: { id },
+      select: paperSelect,
+    });
+  });
+  return paper ? exposeThumbnailUrl(paper) : null;
 };
 
 export const updatePaper = async (
@@ -541,17 +524,8 @@ export const updatePaper = async (
   slug: string,
   data: any,
 ) => {
-  const intent: QueryIntent = {
-    type: QueryType.UPDATE,
-    entity: "paper",
-    operation: "update",
-    filters: { slug },
-    data,
-  };
-
-  const routingResult = await queryRouter.routeQuery(
-    intent,
-    async (prisma, _shardId) => {
+  const paper = await queryRouter.routeQuery(
+    async (prisma: PrismaClient) => {
       const { thumbnail_url, ...rest } = data;
       return prisma.paper.update({
         where: { slug },
@@ -565,28 +539,17 @@ export const updatePaper = async (
     },
   );
 
-  const paper = routingResult.results[0];
   return paper ? exposeThumbnailUrl(paper) : null;
 };
 
 export const deletePaper = async (queryRouter: QueryRouter, slug: string) => {
-  const intent: QueryIntent = {
-    type: QueryType.DELETE,
-    entity: "paper",
-    operation: "delete",
-    filters: { slug },
-  };
-
-  const routingResult = await queryRouter.routeQuery(
-    intent,
-    async (prisma, _shardId) => {
+  return queryRouter.routeQuery(
+    async (prisma: PrismaClient) => {
       return prisma.paper.delete({
         where: { slug },
       });
     },
   );
-
-  return routingResult.results[0];
 };
 
 export const searchPapers = async (
@@ -603,16 +566,8 @@ export const searchPapers = async (
   const skip = (page - 1) * limit;
   const sort = query.sort || "relevance";
 
-  const intent: QueryIntent = {
-    type: QueryType.READ,
-    entity: "paper",
-    operation: "findMany",
-    filters: { q: searchTerm, sort },
-  };
-
-  const routingResult = await queryRouter.routeQuery(
-    intent,
-    async (prisma, _shardId) => {
+  const papers = await queryRouter.routeQuery(
+    async (prisma: PrismaClient) => {
       return prisma.paper.findMany({
         where: {
           OR: [
@@ -631,25 +586,14 @@ export const searchPapers = async (
     },
   );
 
-  const seenSlugs = new Set<string>();
-  const papers: PaperFindManyResult = [];
 
-  for (const shardResults of routingResult.results) {
-    if (!shardResults) continue;
-    for (const paper of shardResults) {
-      if (!seenSlugs.has(paper.slug)) {
-        seenSlugs.add(paper.slug);
-        papers.push(paper);
-      }
-    }
-  }
 
   return {
-    papers: papers.map((paper) => ({
+    papers: papers.map((paper: any) => ({
       ...exposeThumbnailUrl(paper),
-      authors: paper.authors.map(({ author }) => author),
-      tasks: paper.tasks.map(({ task }) => task),
-      methods: paper.methods.map(({ method }) => method),
+      authors: paper.authors.map(({ author }: any) => author),
+      tasks: paper.tasks.map(({ task }: any) => task),
+      methods: paper.methods.map(({ method }: any) => method),
     })),
     total: papers.length,
     page,

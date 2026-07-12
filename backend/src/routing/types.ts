@@ -1,5 +1,4 @@
 import { PrismaClient } from "../generated/prisma/client.js";
-import { ShardId } from "../database/shard-config.js";
 
 export enum QueryType {
   READ = "READ",
@@ -16,7 +15,7 @@ export interface QueryIntent {
   category?: string;
   filters?: Record<string, unknown>;
   data?: Record<string, unknown>;
-  shardHint?: ShardId;
+  shardHint?: number;
 }
 
 export enum RoutingStrategy {
@@ -28,7 +27,7 @@ export enum RoutingStrategy {
 }
 
 export type TargetShard = {
-  id: ShardId;
+  id: number;
   type: "primary" | "replica";
   connectionString?: string;
 };
@@ -45,5 +44,5 @@ export interface RoutingResult<T> {
   success: boolean;
   message?: string;
   results: T[];
-  failedShards: ShardId[];
+  failedShards: number[];
 }

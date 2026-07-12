@@ -1,4 +1,5 @@
-const defaultApiUrl = typeof window !== "undefined" ? "" : "http://127.0.0.1:8787";
+const isDev = process.env.NODE_ENV === "development";
+const defaultApiUrl = isDev ? "http://127.0.0.1:8787" : "https://frontieratlas-backend.morningsignal-india.workers.dev";
 const API_BASE = (process.env.NEXT_PUBLIC_API_URL || defaultApiUrl).replace(/\/$/, "");
 export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
