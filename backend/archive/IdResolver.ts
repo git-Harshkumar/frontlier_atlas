@@ -86,7 +86,7 @@ export class IdResolver {
           },
         });
 
-        if (paper) {
+        if (paper && shardId !== undefined) {
           await this.cachePaperLocation(id, shardId);
         }
 

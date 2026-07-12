@@ -1,14 +1,9 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { env } from "hono/adapter";
-import { PrismaClient } from "./generated/prisma/client";
-import { PrismaNeon } from "@prisma/adapter-neon";
-import { neonConfig } from "@neondatabase/serverless";
-import { redisManager } from "./lib/redis";
+import { PrismaClient } from "./generated/prisma/client.js";
 import { DatabaseManager } from "./database/DatabaseManager.js";
 import { QueryRouter } from "./routing/index.js";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { Pool } from "pg";
+import { redisManager } from "./lib/redis";
 
 import authRoutes from "./routes/auth.routes.js";
 import paperRoutes from "./routes/paper.routes.js";
@@ -20,18 +15,12 @@ import discussionRoutes from "./routes/discussion.routes.js";
 import methodRoutes from "./routes/method.routes.js";
 import benchmarkRoutes from "./routes/benchmark.routes.js";
 
-
-// 1. Define BOTH Environment Bindings and Context Variables
+// Environment Bindings and Context Variables
 type Env = {
   Bindings: {
     DATABASE_URL: string;
     UPSTASH_REDIS_REST_URL: string;
     UPSTASH_REDIS_REST_TOKEN: string;
-    SHARD_1_DATABASE_URL?: string;
-    SHARD_2_DATABASE_URL?: string;
-    SHARD_3_DATABASE_URL?: string;
-    SHARD_4_DATABASE_URL?: string;
-    SHARD_5_DATABASE_URL?: string;
     QUERY_TIMEOUT_MS?: string;
   };
   Variables: {
@@ -42,7 +31,6 @@ type Env = {
   };
 };
 
-// Pass the full Env type to Hono
 const app = new Hono<Env>();
 
 // Configure CORS
@@ -58,71 +46,32 @@ app.use(
   }),
 );
 
-// 2. Per-Request Middleware
+// Per-Request Middleware
 app.use("*", async (c, next) => {
   const DATABASE_URL = c.env.DATABASE_URL as string;
-  const SHARD_1_DATABASE_URL = (c.env.SHARD_1_DATABASE_URL || DATABASE_URL) as string;
-  const SHARD_2_DATABASE_URL = (c.env.SHARD_2_DATABASE_URL || DATABASE_URL) as string;
-  const SHARD_3_DATABASE_URL = (c.env.SHARD_3_DATABASE_URL || DATABASE_URL) as string;
-  const SHARD_4_DATABASE_URL = (c.env.SHARD_4_DATABASE_URL || DATABASE_URL) as string;
-  const SHARD_5_DATABASE_URL = (c.env.SHARD_5_DATABASE_URL || DATABASE_URL) as string;
   const QUERY_TIMEOUT_MS = c.env.QUERY_TIMEOUT_MS;
 
   const REDIS_URL = c.env.UPSTASH_REDIS_REST_URL;
   const REDIS_TOKEN = c.env.UPSTASH_REDIS_REST_TOKEN;
 
-redisManager.connect(REDIS_URL, REDIS_TOKEN);
-
-
+  redisManager.connect(REDIS_URL, REDIS_TOKEN);
 
   // Strip quotes if they were included in the .dev.vars file
   const cleanUrl = DATABASE_URL ? DATABASE_URL.replace(/^"|"$/g, "") : "";
-  const cleanShard1Url = SHARD_1_DATABASE_URL ? SHARD_1_DATABASE_URL.replace(/^"|"$/g, "") : "";
-  const cleanShard2Url = SHARD_2_DATABASE_URL ? SHARD_2_DATABASE_URL.replace(/^"|"$/g, "") : "";
-  const cleanShard3Url = SHARD_3_DATABASE_URL ? SHARD_3_DATABASE_URL.replace(/^"|"$/g, "") : "";
-  const cleanShard4Url = SHARD_4_DATABASE_URL ? SHARD_4_DATABASE_URL.replace(/^"|"$/g, "") : "";
-  const cleanShard5Url = SHARD_5_DATABASE_URL ? SHARD_5_DATABASE_URL.replace(/^"|"$/g, "") : "";
-
-  const isNeon = cleanUrl.includes("neon.tech");
-  let prisma: PrismaClient;
-  let pool: Pool | null = null;
-
-  if (isNeon) {
-    // Configure WebSocket for Cloudflare Workers environment
-    neonConfig.webSocketConstructor = WebSocket;
-
-    // PrismaNeon v7.8 takes a PoolConfig object — it creates the Pool internally
-    const adapter = new PrismaNeon({ connectionString: cleanUrl });
-    prisma = new PrismaClient({ adapter });
-  } else {
-    // Use standard pg Pool for local PostgreSQL connection
-    pool = new Pool({ connectionString: cleanUrl });
-    const adapter = new PrismaPg(pool);
-    prisma = new PrismaClient({ adapter });
-  }
 
   // DatabaseManager and QueryRouter
   const databaseManager = new DatabaseManager({
-    SHARD_1_DATABASE_URL: cleanShard1Url,
-    SHARD_2_DATABASE_URL: cleanShard2Url,
-    SHARD_3_DATABASE_URL: cleanShard3Url,
-    SHARD_4_DATABASE_URL: cleanShard4Url,
-    SHARD_5_DATABASE_URL: cleanShard5Url,
+    DATABASE_URL: cleanUrl,
   });
   const queryRouter = new QueryRouter(databaseManager, QUERY_TIMEOUT_MS);
 
-  c.set("prisma", prisma);
+  c.set("prisma", databaseManager.getClient());
   c.set("databaseManager", databaseManager);
   c.set("queryRouter", queryRouter);
 
   try {
     await next();
   } finally {
-    // Clean up Prisma connections and close local pools to avoid leaks
-    await prisma.$disconnect();
-    if (pool) {
-      await pool.end();
-    }
     await databaseManager.disconnectAll();
   }
 });
@@ -132,8 +81,6 @@ app.get("/health", (c) =>
   c.json({
     status: "ok",
     message: "FrontierAtlas V1 API is running perfectly! 🚀",
-    bindings: Object.keys(c.env),
-    dbUrl: c.env.DATABASE_URL,
   }),
 );
 app.route("/api/v1/auth", authRoutes);
@@ -146,4 +93,22 @@ app.route("/api/v1/discussions", discussionRoutes);
 app.route("/api/v1/methods", methodRoutes);
 app.route("/api/v1/benchmarks", benchmarkRoutes);
 
-export default app;
+export default {
+  fetch: app.fetch,
+  async scheduled(event: any, env: any, ctx: any) {
+    const cleanUrl = env.DATABASE_URL ? env.DATABASE_URL.replace(/^"|"$/g, "") : "";
+    if (!cleanUrl) return;
+
+    const dbManager = new DatabaseManager({ DATABASE_URL: cleanUrl });
+    const prisma = dbManager.getClient();
+    
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      console.log("Cron keep-alive successful");
+    } catch (err) {
+      console.error("Cron keep-alive failed", err);
+    } finally {
+      await dbManager.disconnectAll();
+    }
+  }
+};

@@ -4,14 +4,9 @@ compatibility_date = "2026-06-23"
 compatibility_flags = [ "nodejs_compat" ]
 workers_dev = true
 
-# ── Environment Variables (set via `wrangler secret put DATABASE_URL` for secrets) ──
+# ── Environment Variables (secrets are set via `wrangler secret put`) ──
 [vars]
 NODE_VERSION = "22"
-SHARD_1_DATABASE_URL = ""
-SHARD_2_DATABASE_URL = ""
-SHARD_3_DATABASE_URL = ""
-SHARD_4_DATABASE_URL = ""
-SHARD_5_DATABASE_URL = ""
 
 # ── Routes ──
 # Uncomment and customize for custom domain:
@@ -23,3 +18,6 @@ SHARD_5_DATABASE_URL = ""
 [observability]
 enabled = true
 head_sampling_rate = 0.1
+  
+[triggers]
+crons = ["*/4 * * * *"]
