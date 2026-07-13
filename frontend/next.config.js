@@ -21,6 +21,9 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
   async rewrites() {
     if (process.env.NODE_ENV !== "development") {
       return [];

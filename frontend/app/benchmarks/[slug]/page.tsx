@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Trophy, ArrowLeft, ArrowUp, ArrowDown, Minus, Star, ExternalLink, Calendar } from "lucide-react";

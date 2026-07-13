@@ -39,8 +39,13 @@ export default function SearchBar({
 
     setLoading(true);
     try {
-      const results = await searchSuggestions(q, 5);
-      setSuggestions(results);
+      // Fetch a larger pool of results to ensure we capture the research fields
+      const results = await searchSuggestions(q, 20);
+      // Filter the dropdown to ONLY show research fields (tasks and methods)
+      const fieldSuggestions = results.filter(
+        (r) => r.type === "tasks" || r.type === "methods"
+      );
+      setSuggestions(fieldSuggestions.slice(0, 5));
     } catch (error) {
       console.error("Failed to fetch suggestions:", error);
       setSuggestions([]);

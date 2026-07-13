@@ -73,7 +73,7 @@ export default function HomeContent({
 
         {/* 3-Column Layout */}
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-4 pb-12 flex items-start gap-6 xl:gap-8">
-          <div className="hidden lg:block w-[200px] shrink-0 sticky top-6 h-fit max-h-[calc(100vh-80px)]">
+          <div className="hidden lg:block w-[200px] shrink-0 sticky top-6 h-fit max-h-[calc(100vh-80px)] overflow-y-auto overscroll-contain hide-scroll">
             <Sidebar initialActive={activeSort} onItemSelect={setActiveSort} />
           </div>
 
@@ -88,7 +88,7 @@ export default function HomeContent({
             />
           </main>
 
-          <div className="hidden xl:block w-[280px] shrink-0 sticky top-6 h-fit max-h-[calc(100vh-80px)]">
+          <div className="hidden xl:block w-[280px] shrink-0 sticky top-6 h-fit max-h-[calc(100vh-80px)] overflow-y-auto overscroll-contain hide-scroll">
             <RightSidebar />
           </div>
         </div>

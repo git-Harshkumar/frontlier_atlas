@@ -9,7 +9,7 @@ import {
   memo,
   Profiler,
 } from "react";
-import { Github, MessageCircle, Star, ArrowUpRight } from "lucide-react";
+import { Github, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import {
   getPapers,
@@ -271,7 +271,7 @@ const PaperThumbnail = memo(
     const [hasError, setHasError] = useState(false);
 
     return (
-      <div className="w-full xl:w-[160px] h-[180px] sm:h-[226px] xl:h-full shrink-0 border border-[#E5E5E0] bg-white rounded-md xl:rounded-none overflow-hidden shadow-sm relative flex items-center justify-center">
+      <div className="w-full xl:w-[160px] h-[100px] sm:h-[125px] xl:h-full shrink-0 border border-[#E5E5E0] bg-white rounded-md xl:rounded-none overflow-hidden shadow-sm relative flex items-center justify-center">
         {isValidImageSrc(thumbnail) && !hasError ? (
           <Image
             src={thumbnail}
@@ -354,30 +354,30 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
 
   return (
     <Link href={`/papers/${paper.slug}`} className="no-underline block">
-      <div className="group flex flex-col xl:flex-row gap-5 p-4 xl:py-5 bg-white xl:bg-transparent border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] rounded-xl xl:rounded-none cursor-pointer hover:shadow-lg xl:hover:bg-white xl:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 relative hover:z-10 active:scale-[0.99]">
+      <div className="group flex flex-row gap-3 sm:gap-4 xl:gap-5 p-3 sm:p-4 xl:py-5 bg-white xl:bg-transparent border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] rounded-xl xl:rounded-none cursor-pointer hover:shadow-lg xl:hover:bg-white xl:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 relative hover:z-10 active:scale-[0.99]">
         {/* LEFT — PDF thumbnail */}
-        <div className="shrink-0 w-full xl:w-auto self-stretch">
+        <div className="shrink-0 w-[72px] sm:w-[90px] xl:w-auto self-start xl:self-stretch">
           <PaperThumbnail title={paper.title} thumbnail={paper.thumbnail} />
         </div>
 
         {/* RIGHT — Content */}
         <div className="flex-1 min-w-0 flex flex-col">
           {/* Title */}
-          <h3 className="text-[18px] xl:text-[20px] font-serif font-medium text-[#111111] leading-[1.3] mb-2 group-hover:text-[#F55036] transition-colors">
+          <h3 className="text-[15px] sm:text-[17px] xl:text-[20px] font-serif font-medium text-[#111111] leading-snug xl:leading-[1.3] mb-1.5 xl:mb-2 group-hover:text-[#F55036] transition-colors line-clamp-3 xl:line-clamp-none">
             {paper.title}
           </h3>
 
           {/* Authors + date + citations */}
-          <div className="flex items-center text-[13.5px] text-[#666666] mb-3 min-w-0 w-full flex-wrap gap-y-1">
-            <span className="truncate max-w-[60%]">{displayAuthors}</span>
-            <span className="mx-2">·</span>
+          <div className="flex items-center text-[12px] sm:text-[13px] xl:text-[13.5px] text-[#666666] mb-2 xl:mb-3 min-w-0 w-full flex-wrap gap-y-1">
+            <span className="truncate max-w-[60%] sm:max-w-[70%]">{displayAuthors}</span>
+            <span className="mx-1.5 xl:mx-2">·</span>
             <span className="shrink-0">{paper.date}</span>
-            <span className="mx-2">·</span>
-            <span className="shrink-0">{paper.citations || 0} citations</span>
+            <span className="mx-1.5 xl:mx-2 hidden sm:inline">·</span>
+            <span className="shrink-0 hidden sm:inline">{paper.citations || 0} citations</span>
           </div>
 
           {/* Description */}
-          <p className="text-[13.5px] font-normal text-[#444444] leading-[1.5] mb-3 line-clamp-3">
+          <p className="text-[13px] sm:text-[13.5px] xl:text-[14px] text-[#444444] leading-[1.6] mb-3 line-clamp-2 xl:line-clamp-3 hidden sm:block">
             {paper.description}
           </p>
 
@@ -402,17 +402,17 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-row flex-wrap items-center w-full mt-auto pt-3 gap-3">
+          <div className="flex flex-row flex-nowrap overflow-x-auto hide-scroll snap-x snap-mandatory items-center w-full mt-auto pt-2 xl:pt-3 gap-2 xl:gap-3 pb-1 xl:pb-0">
             <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 window.open((paper as any).arxivUrl || "https://arxiv.org", "_blank");
               }}
-              className="flex items-center justify-between px-3 sm:px-3.5 h-[34px] bg-[#FFF8F4] text-[#E0663B] border border-[#FDE3D6] rounded-[6px] hover:bg-[#FDE3D6]/50 transition-colors w-[130px] sm:w-[155px] xl:w-[165px]"
+              className="flex shrink-0 snap-start items-center justify-between px-3 sm:px-3.5 h-[32px] xl:h-[34px] bg-[#FFF8F4] text-[#E0663B] border border-[#FDE3D6] rounded-[6px] hover:bg-[#FDE3D6]/50 transition-colors w-[115px] sm:w-[130px] xl:w-[165px]"
             >
-              <span className="font-medium text-[13px]">arXiv</span>
-              <ArrowUpRight size={15} strokeWidth={1.5} />
+              <span className="font-medium text-[12px] xl:text-[13px]">arXiv</span>
+              <ArrowUpRight size={14} strokeWidth={1.5} className="xl:w-[15px] xl:h-[15px]" />
             </button>
             
             <button
@@ -421,10 +421,10 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
                 e.stopPropagation();
                 window.open((paper as any).pdfUrl || "https://arxiv.org/pdf", "_blank");
               }}
-              className="flex items-center justify-between px-3 sm:px-3.5 h-[34px] bg-[#FFF4F6] text-[#E54D59] border border-[#FDD4DC] rounded-[6px] hover:bg-[#FDD4DC]/50 transition-colors w-[130px] sm:w-[155px] xl:w-[165px]"
+              className="flex shrink-0 snap-start items-center justify-between px-3 sm:px-3.5 h-[32px] xl:h-[34px] bg-[#FFF4F6] text-[#E54D59] border border-[#FDD4DC] rounded-[6px] hover:bg-[#FDD4DC]/50 transition-colors w-[115px] sm:w-[130px] xl:w-[165px]"
             >
-              <span className="font-medium text-[13px]">PDF</span>
-              <ArrowUpRight size={15} strokeWidth={1.5} />
+              <span className="font-medium text-[12px] xl:text-[13px]">PDF</span>
+              <ArrowUpRight size={14} strokeWidth={1.5} className="xl:w-[15px] xl:h-[15px]" />
             </button>
 
             <button
@@ -433,14 +433,14 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
                 e.stopPropagation();
                 window.open(paper.githubUrl || "https://github.com", "_blank");
               }}
-              className="flex items-center justify-between px-3 sm:px-3.5 h-[34px] bg-[#F7F8F9] text-[#111111] border border-[#E5E7EB] rounded-[6px] hover:bg-[#E5E7EB]/70 transition-colors w-[130px] sm:w-[155px] xl:w-[165px]"
+              className="flex shrink-0 snap-start items-center justify-between px-3 sm:px-3.5 h-[32px] xl:h-[34px] bg-[#F7F8F9] text-[#111111] border border-[#E5E7EB] rounded-[6px] hover:bg-[#E5E7EB]/70 transition-colors w-[125px] sm:w-[140px] xl:w-[165px]"
             >
-              <div className="flex items-center gap-2">
-                <Github size={15} strokeWidth={1.5} />
-                <span className="font-medium text-[13px]">GitHub</span>
-                {upvotesNum > 0 && <span className="text-[#9CA3AF] text-[12.5px] font-normal">{upvotesNum}k</span>}
+              <div className="flex items-center gap-1.5 xl:gap-2">
+                <Github size={14} strokeWidth={1.5} className="xl:w-[15px] xl:h-[15px]" />
+                <span className="font-medium text-[12px] xl:text-[13px]">GitHub</span>
+                {upvotesNum > 0 && <span className="text-[#9CA3AF] text-[11px] xl:text-[12.5px] font-normal">{upvotesNum}k</span>}
               </div>
-              <ArrowUpRight size={15} strokeWidth={1.5} className="text-[#9CA3AF]" />
+              <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#9CA3AF] xl:w-[15px] xl:h-[15px]" />
             </button>
           </div>
         </div>

@@ -1,8 +1,7 @@
-// export const runtime = "edge";
 import HomeContent from "@/components/HomeContent";
 import { getPapers } from "@/lib/paperApi";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60; // ISR instead of edge serverless
 
 export default async function Home() {
   try {

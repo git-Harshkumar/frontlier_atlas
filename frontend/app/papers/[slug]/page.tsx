@@ -1,5 +1,4 @@
 "use client";
-export const runtime = "edge";
 import { ArrowLeft, AlertCircle, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";

@@ -25,12 +25,12 @@ export default function PaperTabs({
 
   return (
     <div className="border-b border-[#E5E5E0] mb-4">
-      <div className="flex gap-1 overflow-x-auto hide-scroll">
+      <div className="flex gap-4 sm:gap-8 overflow-x-auto hide-scroll snap-x snap-mandatory">
         {TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={`px-1 py-3 mr-8 text-[13px] border-b-2 transition-all duration-200 cursor-pointer whitespace-nowrap
+            className={`py-3.5 sm:py-3 text-[14px] sm:text-[13px] border-b-2 transition-all duration-200 cursor-pointer whitespace-nowrap snap-start sm:snap-none
               ${
                 activeTab === tab
                   ? "text-[#111111] border-[#F55036] font-semibold"
