@@ -271,7 +271,7 @@ const PaperThumbnail = memo(
     const [hasError, setHasError] = useState(false);
 
     return (
-      <div className="w-full xl:w-[160px] h-[100px] sm:h-[125px] xl:h-full shrink-0 border border-[#E5E5E0] bg-white rounded-md xl:rounded-none overflow-hidden shadow-sm relative flex items-center justify-center">
+      <div className="w-full xl:w-[160px] h-[100px] sm:h-[125px] xl:h-[180px] shrink-0 border border-[#E5E5E0] bg-white rounded-none overflow-hidden shadow-sm relative flex items-center justify-center">
         {isValidImageSrc(thumbnail) && !hasError ? (
           <Image
             src={thumbnail}
@@ -403,17 +403,17 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-row flex-nowrap overflow-x-auto hide-scroll snap-x snap-mandatory items-center w-full mt-auto pt-2 xl:pt-3 gap-2 xl:gap-3 pb-1 xl:pb-0">
+          <div className="flex flex-row items-center w-full mt-auto pt-3 gap-1.5 sm:gap-3">
             <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 window.open((paper as any).arxivUrl || "https://arxiv.org", "_blank");
               }}
-              className="flex shrink-0 snap-start items-center justify-between px-3 sm:px-3.5 h-[32px] xl:h-[34px] bg-[#FFF8F4] text-[#E0663B] border border-[#FDE3D6] rounded-[6px] hover:bg-[#FDE3D6]/50 transition-colors w-[115px] sm:w-[130px] xl:w-[165px]"
+              className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#FFF8F4] text-[#E0663B] border border-[#FDE3D6] rounded-[6px] hover:bg-[#FDE3D6]/50 transition-colors"
             >
-              <span className="font-medium text-[12px] xl:text-[13px]">arXiv</span>
-              <ArrowUpRight size={14} strokeWidth={1.5} className="xl:w-[15px] xl:h-[15px]" />
+              <span className="font-medium text-[11px] sm:text-[13px]">arXiv</span>
+              <ArrowUpRight size={14} strokeWidth={1.5} className="hidden sm:block" />
             </button>
             
             <button
@@ -422,10 +422,10 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
                 e.stopPropagation();
                 window.open((paper as any).pdfUrl || "https://arxiv.org/pdf", "_blank");
               }}
-              className="flex shrink-0 snap-start items-center justify-between px-3 sm:px-3.5 h-[32px] xl:h-[34px] bg-[#FFF4F6] text-[#E54D59] border border-[#FDD4DC] rounded-[6px] hover:bg-[#FDD4DC]/50 transition-colors w-[115px] sm:w-[130px] xl:w-[165px]"
+              className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#FFF4F6] text-[#E54D59] border border-[#FDD4DC] rounded-[6px] hover:bg-[#FDD4DC]/50 transition-colors"
             >
-              <span className="font-medium text-[12px] xl:text-[13px]">PDF</span>
-              <ArrowUpRight size={14} strokeWidth={1.5} className="xl:w-[15px] xl:h-[15px]" />
+              <span className="font-medium text-[11px] sm:text-[13px]">PDF</span>
+              <ArrowUpRight size={14} strokeWidth={1.5} className="hidden sm:block" />
             </button>
 
             <button
@@ -434,14 +434,14 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
                 e.stopPropagation();
                 window.open(paper.githubUrl || "https://github.com", "_blank");
               }}
-              className="flex shrink-0 snap-start items-center justify-between px-3 sm:px-3.5 h-[32px] xl:h-[34px] bg-[#F7F8F9] text-[#111111] border border-[#E5E7EB] rounded-[6px] hover:bg-[#E5E7EB]/70 transition-colors w-[125px] sm:w-[140px] xl:w-[165px]"
+              className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#F7F8F9] text-[#111111] border border-[#E5E7EB] rounded-[6px] hover:bg-[#E5E7EB]/70 transition-colors"
             >
-              <div className="flex items-center gap-1.5 xl:gap-2">
-                <Github size={14} strokeWidth={1.5} className="xl:w-[15px] xl:h-[15px]" />
-                <span className="font-medium text-[12px] xl:text-[13px]">GitHub</span>
-                {upvotesNum > 0 && <span className="text-[#9CA3AF] text-[11px] xl:text-[12.5px] font-normal">{upvotesNum}k</span>}
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Github size={13} strokeWidth={1.5} className="hidden sm:block" />
+                <span className="font-medium text-[11px] sm:text-[13px]">GitHub</span>
+                {upvotesNum > 0 && <span className="hidden sm:inline text-[#9CA3AF] text-[12.5px] font-normal">{upvotesNum}k</span>}
               </div>
-              <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#9CA3AF] xl:w-[15px] xl:h-[15px]" />
+              <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#9CA3AF] hidden sm:block" />
             </button>
           </div>
         </div>

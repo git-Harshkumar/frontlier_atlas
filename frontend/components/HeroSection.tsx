@@ -81,7 +81,7 @@ export default function HeroSection({
   const [showAllTags, setShowAllTags] = useState(false);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center pt-4 md:pt-6 pb-6 md:pb-10 relative shrink-0 text-center">
+    <div className="w-full flex flex-col items-center justify-center pt-2 md:pt-6 pb-3 md:pb-10 relative shrink-0 text-center">
       <div className="w-full flex flex-col items-center z-10">
         <h1 className="text-[17px] min-[375px]:text-[19px] sm:text-[24px] md:text-[32px] lg:text-[36px] font-extrabold leading-[1.2] md:leading-[1.05] tracking-tight text-[#111111] mb-2 md:mb-1.5 whitespace-nowrap">
           Discover what&apos;s next in <span className="text-[#F55036]">AI research.</span>
@@ -195,57 +195,38 @@ export default function HeroSection({
             ))}
           </div>
 
-          {/* Mobile: Show 4 tags (or selected), rest in expand/collapse */}
-          <div className="flex md:hidden flex-col items-center gap-2">
-            <div className="flex flex-wrap items-center justify-center gap-1.5">
-              {tags.filter((tag, idx) => showAllTags || idx < 4 || selectedTag === tag.label).map((tag) => (
-                <button
-                  key={tag.label}
-                  onClick={() =>
-                    setSelectedTag(
-                      selectedTag === tag.label ? undefined : tag.label
-                    )
-                  }
-                  className={`flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 min-h-[28px] transition-all duration-200 ease-out cursor-pointer select-none
-                    ${
-                      selectedTag === tag.label
-                        ? "bg-[#F55036] text-white border border-[#F55036] scale-[1.04] shadow-[0_2px_8px_rgba(245,80,54,0.30)]"
-                        : "bg-white border border-[#E5E5E0] hover:border-[#FF5A1F]/50 hover:bg-[#FFF7F3] hover:scale-[1.03] hover:shadow-sm active:scale-95"
-                    }`}
-                >
-                  <tag.icon
-                    className={`w-3 h-3 transition-transform duration-200 ${
-                      selectedTag === tag.label ? "text-white" : "text-[#F55036]"
-                    }`}
-                  />
-                  <span
-                    className={`text-[10px] font-semibold ${
-                      selectedTag === tag.label ? "text-white" : "text-[#111111]"
-                    }`}
-                  >
-                    {tag.label}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Show More / Show Less toggle on mobile */}
-            {tags.length > 4 && (
+          {/* Mobile: Squeeze all tags into one single non-scrollable line */}
+          <div className="flex md:hidden w-full items-center justify-between gap-0.5 min-[375px]:gap-1 mt-1">
+            {tags.map((tag) => (
               <button
-                onClick={() => setShowAllTags(!showAllTags)}
-                className="flex items-center gap-1 text-[11px] font-medium text-[#8B8B8B] hover:text-[#F55036] transition-colors duration-200 mt-1"
+                key={tag.label}
+                onClick={() =>
+                  setSelectedTag(
+                    selectedTag === tag.label ? undefined : tag.label
+                  )
+                }
+                className={`flex shrink items-center justify-center gap-1 rounded-full px-1.5 py-1 transition-all duration-200 ease-out cursor-pointer select-none
+                  ${
+                    selectedTag === tag.label
+                      ? "bg-[#F55036] text-white border border-[#F55036] shadow-sm"
+                      : "bg-white border border-[#E5E5E0]"
+                  }`}
               >
-                {showAllTags ? (
-                  <>
-                    Show less <ChevronUp size={14} />
-                  </>
-                ) : (
-                  <>
-                    Show more <ChevronDown size={14} />
-                  </>
-                )}
+                <tag.icon
+                  className={`w-2.5 h-2.5 shrink-0 transition-transform duration-200 ${
+                    selectedTag === tag.label ? "text-white" : "text-[#F55036]"
+                  }`}
+                />
+                <span
+                  className={`text-[8px] min-[375px]:text-[9px] font-bold tracking-tighter whitespace-nowrap ${
+                    selectedTag === tag.label ? "text-white" : "text-[#111111]"
+                  }`}
+                  style={{ lineHeight: 1 }}
+                >
+                  {tag.label === "All Topics" ? "All" : tag.label}
+                </span>
               </button>
-            )}
+            ))}
           </div>
         </div>
       </div>

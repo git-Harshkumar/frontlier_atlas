@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { useScrollThreshold } from "@/lib/useScroll";
 import Sidebar from "@/components/Sidebar";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { LogIn } from "lucide-react";
 
 export default function Navbar({
   activeSort,
@@ -80,8 +80,8 @@ export default function Navbar({
               <line x1="4" y1="18" x2="20" y2="18" />
             </svg>
           </button>
-          <Link href="/" className="flex items-center cursor-pointer relative w-[200px] xl:w-[240px] h-12 xl:h-14">
-            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-left" sizes="(max-width: 1280px) 200px, 240px" />
+          <Link href="/" className="flex items-center justify-center xl:justify-start cursor-pointer absolute left-1/2 -translate-x-1/2 xl:relative xl:left-auto xl:-translate-x-0 w-[160px] sm:w-[200px] xl:w-[240px] h-12 xl:h-14">
+            <Image src="/logo.png" alt="Frontier Atlas" fill className="object-contain object-center xl:object-left" sizes="(max-width: 1280px) 200px, 240px" />
           </Link>
 
         </div>
@@ -153,11 +153,8 @@ export default function Navbar({
 
         {/* Right (Desktop) */}
         <div className="hidden xl:flex items-center gap-4 border-l border-[#E5E5E0] pl-4 shrink-0">
-          <button className="bg-[#F55036] hover:bg-[#E0462D] text-white text-[12px] font-semibold px-4 py-1.5 rounded-md transition-all duration-200 cursor-pointer border-none tracking-wide uppercase hover:shadow-[0_0_0_3px_rgba(245,80,54,0.20)] hover:-translate-y-px active:scale-95">
-            Submit
-          </button>
-          <div className="w-8 h-8 rounded-full bg-[#EBEBE6] flex items-center justify-center cursor-pointer hover:bg-[#DCDCD7] transition-colors">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#737373" strokeWidth="2">
+          <div className="w-8 h-8 rounded-full bg-[#F55036] flex items-center justify-center cursor-pointer hover:bg-[#E0462D] transition-colors shadow-sm hover:shadow-[0_0_0_3px_rgba(245,80,54,0.20)] hover:-translate-y-px active:scale-95">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
@@ -166,9 +163,12 @@ export default function Navbar({
 
         {/* Mobile Right (CTA) */}
         <div className="flex xl:hidden items-center shrink-0">
-          <button className="bg-[#F55036] hover:bg-[#E0462D] text-white text-[12px] font-semibold px-4 py-2 rounded-md transition-all duration-200 cursor-pointer border-none tracking-wide uppercase min-h-[40px] hover:shadow-[0_0_0_3px_rgba(245,80,54,0.20)] active:scale-95">
-            Submit
-          </button>
+          <div className="w-8 h-8 rounded-full bg-[#F55036] flex items-center justify-center cursor-pointer hover:bg-[#E0462D] transition-colors shadow-sm hover:shadow-[0_0_0_3px_rgba(245,80,54,0.20)] hover:-translate-y-px active:scale-95">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
         </div>
       </nav>
 
