@@ -151,14 +151,20 @@ model SotaClaim {
 }
 
 model Ranking {
-  id            String    @id @default(uuid())
+  id            String   @id @default(uuid())
   paper_id      String
   benchmark_id  String
   rank          Int
   previous_rank Int?
-  updated_at    DateTime  @updatedAt
-  benchmark     Benchmark @relation(fields: [benchmark_id], references: [id])
-  paper         Paper     @relation(fields: [paper_id], references: [id])
+  metric        String?
+  score         Float?
+  resultDate    DateTime?
+  sourceUrl     String?
+  verified      Boolean  @default(false)
+  updated_at    DateTime @updatedAt
+
+  benchmark Benchmark @relation(fields: [benchmark_id], references: [id])
+  paper     Paper     @relation(fields: [paper_id], references: [id])
 
   @@unique([paper_id, benchmark_id])
   @@index([benchmark_id, rank])
@@ -187,12 +193,21 @@ model PaperAuthor {
 }
 
 model Model {
-  id        String       @id @default(uuid())
-  name      String
-  slug      String       @unique
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  papers    PaperModel[]
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  vendor          String?
+  releaseDate     DateTime?
+  parameterCount  String?
+  modality        String?
+  accessType      String?
+  opennessType    String?
+  description     String?
+  benchmark_score Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  papers PaperModel[]
 
   @@map("models")
 }
