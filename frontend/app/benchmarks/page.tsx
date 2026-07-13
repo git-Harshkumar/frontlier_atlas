@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import {
   Search, ArrowUpRight, ChevronRight, TrendingUp,
   Flame, Clock, Grid, List, SlidersHorizontal, X,
-  BarChart2, Database, Zap, CheckSquare, Trophy,
+  BarChart2, Database, Zap, CheckSquare, Trophy, FolderOpen,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
@@ -67,12 +67,12 @@ const POPULAR = [
    STATUS + META
 ══════════════════════════════════════════════════════════════ */
 
-const STATUS_CFG: Record<string, { color: string; text: string; bg: string }> = {
-  Active:     { color: "#10B981", text: "text-emerald-700", bg: "bg-emerald-50"  },
-  Saturating: { color: "#F59E0B", text: "text-amber-700",   bg: "bg-amber-50"    },
-  Saturated:  { color: "#F87171", text: "text-rose-700",    bg: "bg-rose-50"     },
-  Superseded: { color: "#A78BFA", text: "text-purple-700",  bg: "bg-purple-50"   },
-  Unmapped:   { color: "#9CA3AF", text: "text-gray-500",    bg: "bg-gray-50"     },
+const STATUS_CFG: Record<string, { color: string; text: string; bg: string; border: string }> = {
+  Active:     { color: "#10B981", text: "text-emerald-700", bg: "bg-emerald-50",  border: "border-emerald-100"  },
+  Saturating: { color: "#F59E0B", text: "text-amber-700",   bg: "bg-amber-50",    border: "border-amber-100"    },
+  Saturated:  { color: "#F87171", text: "text-rose-700",    bg: "bg-rose-50",     border: "border-rose-100"     },
+  Superseded: { color: "#A78BFA", text: "text-purple-700",  bg: "bg-purple-50",   border: "border-purple-100"   },
+  Unmapped:   { color: "#9CA3AF", text: "text-gray-500",    bg: "bg-gray-50",     border: "border-gray-100"     },
 };
 
 function getMeta(name: string) {
@@ -99,13 +99,17 @@ function getMeta(name: string) {
 ══════════════════════════════════════════════════════════════ */
 function SectionHeading({ label, action, href }: { label: string; action?: string; href?: string }) {
   return (
-    <div className="flex items-center justify-between mb-4">
-      <h2 className="text-[15px] font-black text-[#111111]">{label}</h2>
+    <div className="flex items-center justify-between mb-5 border-b border-[#EBEBE5] pb-2">
+      <h2 className="text-[16px] font-black text-[#111111] uppercase tracking-wider relative">
+        {label}
+        <span className="absolute bottom-[-9px] left-0 w-12 h-[2px] bg-[#FF5A1F]" />
+      </h2>
       {action && href && (
         <Link href={href}
-          className="flex items-center gap-1 text-[11px] font-semibold text-[#FF5A1F]
-            no-underline hover:text-[#E04E1A] transition-colors">
-          {action} <ChevronRight size={12} />
+          className="flex items-center gap-1 text-[12px] font-bold text-[#FF5A1F]
+            no-underline hover:text-[#E04E1A] transition-colors group">
+          {action}
+          <ChevronRight size={13} className="transform group-hover:translate-x-0.5 transition-transform" />
         </Link>
       )}
     </div>
@@ -119,31 +123,31 @@ function DirectoryRow({ b }: { b: BenchmarkItem }) {
   const meta = getMeta(b.name);
   const cfg  = STATUS_CFG[meta.status] ?? STATUS_CFG["Unmapped"];
   return (
-    <tr className="group border-b border-[#F4F4F0] hover:bg-[#FAFAF8] transition-colors">
-      <td className="py-3 px-4">
+    <tr className="group border-b border-[#F0EFEA] hover:bg-[#FFF8F5]/30 transition-colors">
+      <td className="py-4 px-5">
         <Link href={`/benchmarks/${b.slug}`} className="no-underline">
-          <p className="text-[13px] font-semibold text-[#111111] group-hover:text-[#FF5A1F]
+          <p className="text-[13px] font-bold text-[#111111] group-hover:text-[#FF5A1F]
             transition-colors leading-snug">
             {b.name}
           </p>
-          <p className="text-[10px] font-mono text-[#9CA3AF] mt-0.5">{b.slug}</p>
+          <p className="text-[10px] font-mono text-[#9CA3AF] mt-0.5 tracking-tight">{b.slug}</p>
         </Link>
       </td>
-      <td className="py-3 px-4 text-[12px] text-[#555555]">{meta.task}</td>
-      <td className="py-3 px-4 text-[12px] text-[#555555]">{meta.category}</td>
-      <td className="py-3 px-4 text-[12px] font-mono text-[#777777]">{meta.metric}</td>
-      <td className="py-3 px-4">
-        <span className="flex items-center gap-1.5 text-[11px] font-semibold text-[#555555]">
+      <td className="py-4 px-4 text-[12px] font-medium text-[#4A4A4A]">{meta.task}</td>
+      <td className="py-4 px-4 text-[12px] font-medium text-[#6A6A6A]">{meta.category}</td>
+      <td className="py-4 px-4 text-[11px] font-mono text-[#777777] bg-[#FAFAF8]/50">{meta.metric}</td>
+      <td className="py-4 px-4">
+        <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-0.5 rounded ${cfg.bg} ${cfg.text} border ${cfg.border}`}>
           <span className="w-1.5 h-1.5 rounded-full shrink-0"
             style={{ background: cfg.color }} />
           {meta.status}
         </span>
       </td>
-      <td className="py-3 px-4 text-[12px] font-mono text-[#777777] text-center">{meta.year}</td>
-      <td className="py-3 px-4 text-[12px] font-bold text-[#FF5A1F] font-mono text-center tabular-nums">
+      <td className="py-4 px-4 text-[11px] font-mono text-[#777777] text-center">{meta.year}</td>
+      <td className="py-4 px-4 text-[12px] font-black text-[#FF5A1F] font-mono text-center tabular-nums">
         {b._count?.rankings ?? 0}
       </td>
-      <td className="py-3 px-4 text-[12px] font-mono text-[#777777] text-center tabular-nums">
+      <td className="py-4 px-5 text-[11px] font-mono text-[#777777] text-center tabular-nums">
         {b._count?.claims ?? 0}
       </td>
     </tr>
@@ -160,11 +164,10 @@ export default function BenchmarksPage() {
   // directory state
   const [search, setSearch]         = useState("");
   const [viewMode, setViewMode]     = useState<"grid" | "table">("table");
-  const [filterDomain, setFilterDomain] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [showFilters, setShowFilters]   = useState(false);
 
-  // active domain / task pill
+  // active domain / task pills to refine search
   const [activeDomain, setActiveDomain] = useState<string | null>(null);
   const [activeTask,   setActiveTask]   = useState<string | null>(null);
 
@@ -185,11 +188,17 @@ export default function BenchmarksPage() {
     if (filterStatus) {
       list = list.filter(b => getMeta(b.name).status === filterStatus);
     }
+    if (activeDomain) {
+      list = list.filter(b => getMeta(b.name).category.toLowerCase() === activeDomain.toLowerCase() || getMeta(b.name).category.toLowerCase().includes(activeDomain.toLowerCase()));
+    }
+    if (activeTask) {
+      list = list.filter(b => getMeta(b.name).task.toLowerCase() === activeTask.toLowerCase() || getMeta(b.name).task.toLowerCase().includes(activeTask.toLowerCase()));
+    }
     return list;
-  }, [benchmarks, search, filterStatus]);
+  }, [benchmarks, search, filterStatus, activeDomain, activeTask]);
 
   // Recently added — last 5
-  const recent   = useMemo(() => [...benchmarks].slice(-5).reverse(), [benchmarks]);
+  const recent = useMemo(() => [...benchmarks].slice(-5).reverse(), [benchmarks]);
   // Trending — sort by ranking count desc, top 6
   const trending = useMemo(() =>
     [...benchmarks].sort((a, b) => (b._count?.rankings ?? 0) - (a._count?.rankings ?? 0)).slice(0, 6),
@@ -200,7 +209,7 @@ export default function BenchmarksPage() {
       <Navbar />
 
       <div className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll">
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-5 pb-20
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-6 pb-20
           flex items-start gap-6 xl:gap-8">
 
           {/* Sidebar */}
@@ -209,87 +218,87 @@ export default function BenchmarksPage() {
           </div>
 
           {/* ─── MAIN COLUMN ─── */}
-          <main className="flex-1 min-w-0 space-y-10">
+          <main className="flex-1 min-w-0 space-y-12">
 
             {/* ══════════════════════════════════════════
-                § HERO
+                § HERO (Matching Reference UI exactly, premium styled)
             ══════════════════════════════════════════ */}
-            <section className="bg-white border border-[#E8E8E2] overflow-hidden">
+            <section className="bg-white border border-[#E8E8E2] rounded-[24px] overflow-hidden shadow-card hover:shadow-soft transition-all duration-300">
               {/* orange top stripe */}
-              <div className="h-[3px] w-full"
+              <div className="h-[4px] w-full"
                 style={{ background: "linear-gradient(90deg,#FF5A1F 0%,#FFB347 60%,#FF5A1F 100%)" }} />
 
-              <div className="p-5 md:p-8">
+              <div className="p-6 md:p-10">
                 {/* breadcrumb */}
-                <nav className="flex items-center gap-1.5 text-[12px] text-[#9CA3AF] mb-5">
-                  <Link href="/" className="hover:text-[#FF5A1F] transition-colors no-underline">Home</Link>
+                <nav className="flex items-center gap-1.5 text-[12px] text-[#9CA3AF] mb-6">
+                  <Link href="/" className="hover:text-[#FF5A1F] transition-colors no-underline font-medium">Home</Link>
                   <span className="text-[#C8C8C2]">/</span>
-                  <span className="text-[#555555] font-medium">Benchmarks</span>
+                  <span className="text-[#555555] font-semibold">Benchmarks</span>
                 </nav>
 
                 {/* two-column layout */}
-                <div className="flex flex-col lg:flex-row lg:items-start gap-8 xl:gap-16">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-12 xl:gap-20">
 
                   {/* LEFT — text content */}
                   <div className="flex-1 min-w-0">
                     {/* registry tag */}
                     <div className="inline-flex items-center gap-1.5 bg-[#FFF3EE] text-[#FF5A1F]
-                      text-[11px] font-bold px-3 py-1.5 rounded-full mb-4">
-                      <Trophy size={11} /> Benchmark Registry
+                      text-[11px] font-black px-3.5 py-1.5 rounded-full mb-5 uppercase tracking-wider border border-[#FFE4D9]">
+                      <Trophy size={11} className="animate-bounce" /> Benchmark Registry
                     </div>
 
-                    <h1 className="text-[26px] sm:text-[30px] md:text-[34px] font-black
-                      text-[#111111] leading-[1.15] mb-3">
+                    <h1 className="text-[28px] sm:text-[34px] md:text-[40px] font-extrabold
+                      text-[#111111] leading-[1.12] mb-4 tracking-tight">
                       Which benchmark<br />should you trust?
                     </h1>
 
-                    <p className="text-[13px] text-[#555555] leading-relaxed max-w-lg mb-6">
+                    <p className="text-[14px] text-[#555555] leading-relaxed max-w-xl mb-8">
                       Tasks answer what problem you are solving. Benchmarks answer whether the
                       evidence is still useful. This page separates active evaluations from
                       saturated leaderboards so old scores do not masquerade as current capability.
                     </p>
 
-                    <div className="flex items-center gap-3 flex-wrap">
+                    <div className="flex items-center gap-4 flex-wrap">
                       <Link href="/tasks"
-                        className="ds-button no-underline inline-flex items-center gap-1.5
-                          text-[13px] py-2.5 px-5">
+                        className="ds-button no-underline inline-flex items-center gap-2
+                          text-[13px] py-2.5 px-6 shadow-soft hover:shadow-card hover:-translate-y-0.5 transition-all">
                         Browse tasks <ArrowUpRight size={14} />
                       </Link>
-                      <button className="text-[13px] font-semibold text-[#111111]
+                      <button className="text-[13px] font-bold text-[#111111]
                         hover:text-[#FF5A1F] transition-colors bg-transparent border-none
-                        cursor-pointer px-1 py-2.5">
-                        Submit result
+                        cursor-pointer px-2 py-2.5 flex items-center gap-1 group">
+                        Submit result <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                       </button>
                       <button
                         onClick={() =>
                           document.getElementById("directory")?.scrollIntoView({ behavior: "smooth" })}
-                        className="text-[13px] font-semibold text-[#111111]
+                        className="text-[13px] font-bold text-[#111111]
                           hover:text-[#FF5A1F] transition-colors bg-transparent border-none
-                          cursor-pointer px-1 py-2.5">
-                        Benchmark lineages
+                          cursor-pointer px-2 py-2.5 flex items-center gap-1 group">
+                        Benchmark lineages <span className="group-hover:translate-y-0.5 transition-transform">↓</span>
                       </button>
                     </div>
                   </div>
 
-                  {/* RIGHT — stat pills */}
-                  <div className="flex flex-row lg:flex-col gap-3 flex-wrap lg:flex-nowrap shrink-0">
+                  {/* RIGHT — stat pills (beautiful rounded cards) */}
+                  <div className="grid grid-cols-2 lg:flex lg:flex-col gap-3.5 shrink-0 w-full lg:w-auto">
                     {[
-                      { icon: <BarChart2 size={16} />,   val: loading ? "—" : String(benchmarks.length),                                                            label: "BENCHMARKS"    },
-                      { icon: <Database size={16} />,    val: loading ? "—" : String(benchmarks.filter(b => (b._count?.rankings ?? 0) > 0).length),                label: "WITH RESULTS"  },
-                      { icon: <Zap size={16} />,         val: loading ? "—" : String(benchmarks.reduce((s, b) => s + (b._count?.rankings ?? 0), 0)),               label: "RESULT ROWS"   },
-                      { icon: <CheckSquare size={16} />, val: loading ? "—" : String(Math.round(benchmarks.reduce((s, b) => s + (b._count?.rankings ?? 0), 0) * 0.48)), label: "VERIFIED ROWS" },
+                      { icon: <BarChart2 size={18} />,   val: loading ? "—" : String(benchmarks.length),                                                            label: "BENCHMARKS"    },
+                      { icon: <Database size={18} />,    val: loading ? "—" : String(benchmarks.filter(b => (b._count?.rankings ?? 0) > 0).length),                label: "WITH RESULTS"  },
+                      { icon: <Zap size={18} />,         val: loading ? "—" : String(benchmarks.reduce((s, b) => s + (b._count?.rankings ?? 0), 0)),               label: "RESULT ROWS"   },
+                      { icon: <CheckSquare size={18} />, val: loading ? "—" : String(Math.round(benchmarks.reduce((s, b) => s + (b._count?.rankings ?? 0), 0) * 0.48)), label: "VERIFIED ROWS" },
                     ].map(s => (
                       <div key={s.label}
-                        className="flex items-center gap-3 bg-[#F2F1EC] rounded-2xl
-                          px-5 py-3.5 min-w-[150px] lg:min-w-[170px]">
-                        <span className="text-[#FF5A1F] shrink-0">{s.icon}</span>
+                        className="flex items-center gap-4 bg-[#F8F7F2] border border-[#E8E8E2] rounded-2xl
+                          px-5 py-4 min-w-[140px] md:min-w-[180px] hover:border-[#FF5A1F]/30 hover:bg-[#FFF8F5]/30 transition-all duration-200">
+                        <span className="text-[#FF5A1F] bg-white border border-[#FFE4D9] p-2 rounded-xl shrink-0 shadow-sm">{s.icon}</span>
                         <div>
-                          <p className={`text-[22px] font-black leading-none text-[#111111]
+                          <p className={`text-[24px] font-extrabold leading-none text-[#111111] tracking-tight
                             ${loading ? "opacity-30" : ""}`}>
                             {s.val}
                           </p>
                           <p className="text-[9px] font-black text-[#9CA3AF] uppercase
-                            tracking-widest mt-0.5">
+                            tracking-widest mt-1">
                             {s.label}
                           </p>
                         </div>
@@ -302,19 +311,19 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-                § BROWSE BY DOMAIN
+                § BROWSE BY DOMAIN (Responsive visual list of modern pills)
             ══════════════════════════════════════════ */}
-            <section>
+            <section className="bg-white border border-[#E8E8E2] rounded-[20px] p-6 shadow-card">
               <SectionHeading label="Browse by Domain" />
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {DOMAINS.map(d => (
                   <button
                     key={d}
                     onClick={() => setActiveDomain(activeDomain === d ? null : d)}
-                    className={`px-3 py-1.5 text-[12px] font-medium border transition-all ${
+                    className={`px-4 py-2 text-[12px] font-bold rounded-full border transition-all duration-150 ${
                       activeDomain === d
-                        ? "bg-[#111111] text-white border-[#111111]"
-                        : "bg-white text-[#555555] border-[#E2E1DC] hover:border-[#111111] hover:text-[#111111]"
+                        ? "bg-[#111111] text-white border-[#111111] shadow-sm"
+                        : "bg-[#FAFAF8] text-[#555555] border-[#E2E1DC] hover:border-[#111111] hover:text-[#111111] hover:bg-white"
                     }`}>
                     {d}
                   </button>
@@ -325,17 +334,17 @@ export default function BenchmarksPage() {
             {/* ══════════════════════════════════════════
                 § BROWSE BY TASK
             ══════════════════════════════════════════ */}
-            <section>
+            <section className="bg-white border border-[#E8E8E2] rounded-[20px] p-6 shadow-card">
               <SectionHeading label="Browse by Task" />
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {TASKS.map(t => (
                   <button
                     key={t}
                     onClick={() => setActiveTask(activeTask === t ? null : t)}
-                    className={`px-3 py-1.5 text-[12px] font-medium border transition-all ${
+                    className={`px-4 py-2 text-[12px] font-bold rounded-full border transition-all duration-150 ${
                       activeTask === t
-                        ? "bg-[#FF5A1F] text-white border-[#FF5A1F]"
-                        : "bg-white text-[#555555] border-[#E2E1DC] hover:border-[#FF5A1F] hover:text-[#FF5A1F]"
+                        ? "bg-[#FF5A1F] text-white border-[#FF5A1F] shadow-sm"
+                        : "bg-[#FAFAF8] text-[#555555] border-[#E2E1DC] hover:border-[#FF5A1F] hover:text-[#FF5A1F] hover:bg-white"
                     }`}>
                     {t}
                   </button>
@@ -344,23 +353,24 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-                § BENCHMARK COLLECTIONS
+                § BENCHMARK COLLECTIONS (Clean horizontal list cards)
             ══════════════════════════════════════════ */}
-            <section>
+            <section className="bg-white border border-[#E8E8E2] rounded-[20px] p-6 shadow-card">
               <SectionHeading label="Benchmark Collections" />
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {COLLECTIONS.map(c => (
                   <Link
                     key={c.slug}
                     href={`/benchmarks?collection=${c.slug}`}
                     className="no-underline group">
-                    <div className="bg-white border border-[#E8E8E2] px-3.5 py-2.5 flex items-center gap-2
-                      hover:border-[#111111] transition-all">
-                      <span className="text-[13px] font-semibold text-[#111111] group-hover:text-[#FF5A1F]
-                        transition-colors leading-none whitespace-nowrap">
+                    <div className="bg-[#FAFAF8] border border-[#E8E8E2] rounded-xl px-4 py-3 flex items-center gap-3
+                      hover:border-[#FF5A1F] hover:bg-[#FFF8F5]/30 hover:shadow-card hover:-translate-y-0.5 transition-all duration-200">
+                      <FolderOpen size={14} className="text-[#FF5A1F] group-hover:scale-110 transition-transform" />
+                      <span className="text-[13px] font-bold text-[#111111] group-hover:text-[#FF5A1F]
+                        transition-colors leading-none">
                         {c.label}
                       </span>
-                      <span className="text-[10px] font-mono text-[#9CA3AF] leading-none whitespace-nowrap">
+                      <span className="text-[10px] font-mono font-bold text-white bg-[#9CA3AF] px-1.5 py-0.5 rounded leading-none">
                         {c.count}
                       </span>
                     </div>
@@ -372,24 +382,24 @@ export default function BenchmarksPage() {
             {/* ══════════════════════════════════════════
                 § POPULAR BENCHMARKS
             ══════════════════════════════════════════ */}
-            <section>
+            <section className="bg-white border border-[#E8E8E2] rounded-[20px] p-6 shadow-card">
               <SectionHeading label="Popular Benchmarks" />
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {POPULAR.map((p, i) => (
                   <Link
                     key={p.slug}
                     href={`/benchmarks/${p.slug}`}
                     className="no-underline group">
-                    <div className="flex items-center gap-3 bg-white border border-[#E8E8E2] px-3 py-2.5
-                      hover:border-[#FF5A1F] hover:bg-[#FFF8F5] transition-all">
-                      <span className="text-[12px] font-mono text-[#C8C8C2] w-5 shrink-0 tabular-nums">
+                    <div className="flex items-center gap-3 bg-[#FAFAF8] border border-[#E8E8E2] rounded-xl px-4 py-3
+                      hover:border-[#FF5A1F] hover:bg-[#FFF8F5]/40 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200">
+                      <span className="text-[11px] font-mono font-bold text-[#C8C8C2] w-5 shrink-0 tabular-nums">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="text-[12px] font-semibold text-[#111111]
+                      <span className="text-[13px] font-bold text-[#111111]
                         group-hover:text-[#FF5A1F] transition-colors truncate">
                         {p.name}
                       </span>
-                      <ArrowUpRight size={11}
+                      <ArrowUpRight size={13}
                         className="text-[#C8C8C2] group-hover:text-[#FF5A1F] ml-auto shrink-0 transition-colors" />
                     </div>
                   </Link>
@@ -398,41 +408,38 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-                § RECENTLY ADDED + TRENDING  (side by side)
+                § RECENTLY ADDED + TRENDING (Sleek side-by-side dashboard cards)
             ══════════════════════════════════════════ */}
             <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
               {/* Recently Added */}
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Clock size={14} className="text-[#9CA3AF]" />
-                  <h2 className="text-[15px] font-black text-[#111111]">Recently Added</h2>
+              <div className="bg-white border border-[#E8E8E2] rounded-[20px] p-6 shadow-card">
+                <div className="flex items-center justify-between mb-4 border-b border-[#F0EFEA] pb-3">
+                  <div className="flex items-center gap-2">
+                    <Clock size={16} className="text-[#FF5A1F]" />
+                    <h2 className="text-[15px] font-black text-[#111111] uppercase tracking-wider">Recently Added</h2>
+                  </div>
+                  <span className="text-[11px] font-semibold text-[#9CA3AF]">Newest releases</span>
                 </div>
-                <p className="text-[12px] text-[#9CA3AF] mb-3">
-                  Newest benchmarks added to Frontier Atlas.
-                </p>
-                <div className="bg-white border border-[#E8E8E2] divide-y divide-[#F4F4F0]">
+                <div className="space-y-2.5">
                   {loading ? (
                     Array.from({ length: 5 }).map((_, i) => (
-                      <div key={i} className="px-4 py-3 animate-pulse">
-                        <div className="h-3 bg-[#F0F0EA] rounded w-3/4 mb-1.5" />
-                        <div className="h-2.5 bg-[#F0F0EA] rounded w-1/3" />
-                      </div>
+                      <div key={i} className="px-4 py-3 animate-pulse bg-[#FAFAF8] rounded-xl h-[52px]" />
                     ))
                   ) : recent.map(b => {
                     const meta = getMeta(b.name);
                     return (
                       <Link key={b.id} href={`/benchmarks/${b.slug}`}
-                        className="no-underline flex items-center gap-3 px-4 py-3
-                          hover:bg-[#FAFAF8] group transition-colors">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-[12px] font-semibold text-[#111111]
+                        className="no-underline flex items-center justify-between px-4 py-3 bg-[#FAFAF8] border border-[#F0EFEA] rounded-xl
+                          hover:bg-[#FFF8F5]/30 hover:border-[#FF5A1F]/30 group transition-all duration-200">
+                        <div className="min-w-0 pr-4">
+                          <p className="text-[13px] font-bold text-[#111111]
                             group-hover:text-[#FF5A1F] transition-colors truncate">
                             {b.name}
                           </p>
-                          <p className="text-[10px] text-[#9CA3AF] mt-0.5">{meta.category}</p>
+                          <p className="text-[10px] font-medium text-[#9CA3AF] mt-0.5">{meta.category}</p>
                         </div>
-                        <ArrowUpRight size={12}
+                        <ArrowUpRight size={13}
                           className="text-[#C8C8C2] group-hover:text-[#FF5A1F] shrink-0 transition-colors" />
                       </Link>
                     );
@@ -441,41 +448,40 @@ export default function BenchmarksPage() {
               </div>
 
               {/* Trending Benchmarks */}
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Flame size={14} className="text-[#FF5A1F]" />
-                  <h2 className="text-[15px] font-black text-[#111111]">Trending Benchmarks</h2>
+              <div className="bg-white border border-[#E8E8E2] rounded-[20px] p-6 shadow-card">
+                <div className="flex items-center justify-between mb-4 border-b border-[#F0EFEA] pb-3">
+                  <div className="flex items-center gap-2">
+                    <Flame size={16} className="text-[#FF5A1F] animate-pulse" />
+                    <h2 className="text-[15px] font-black text-[#111111] uppercase tracking-wider">Trending Benchmarks</h2>
+                  </div>
+                  <span className="text-[11px] font-semibold text-[#9CA3AF]">Most active</span>
                 </div>
-                <p className="text-[12px] text-[#9CA3AF] mb-3">
-                  Most viewed and fastest-growing benchmarks this week.
-                </p>
-                <div className="bg-white border border-[#E8E8E2] divide-y divide-[#F4F4F0]">
+                <div className="space-y-2.5">
                   {loading ? (
                     Array.from({ length: 6 }).map((_, i) => (
-                      <div key={i} className="px-4 py-3 animate-pulse flex items-center gap-3">
-                        <div className="w-5 h-3 bg-[#F0F0EA] rounded shrink-0" />
-                        <div className="h-3 bg-[#F0F0EA] rounded w-3/4" />
-                      </div>
+                      <div key={i} className="px-4 py-3 animate-pulse bg-[#FAFAF8] rounded-xl h-[52px]" />
                     ))
                   ) : trending.map((b, i) => {
                     const meta = getMeta(b.name);
                     return (
                       <Link key={b.id} href={`/benchmarks/${b.slug}`}
-                        className="no-underline flex items-center gap-3 px-4 py-3
-                          hover:bg-[#FAFAF8] group transition-colors">
-                        <span className="text-[11px] font-mono font-bold text-[#C8C8C2] w-5 shrink-0 tabular-nums">
-                          {i + 1}
-                        </span>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-[12px] font-semibold text-[#111111]
-                            group-hover:text-[#FF5A1F] transition-colors truncate">
-                            {b.name}
-                          </p>
-                          <p className="text-[10px] text-[#9CA3AF] mt-0.5">{meta.category}</p>
+                        className="no-underline flex items-center justify-between px-4 py-3 bg-[#FAFAF8] border border-[#F0EFEA] rounded-xl
+                          hover:bg-[#FFF8F5]/30 hover:border-[#FF5A1F]/30 group transition-all duration-200">
+                        <div className="flex items-center gap-3 min-w-0 pr-4">
+                          <span className="text-[11px] font-mono font-bold text-[#C8C8C2] w-4 shrink-0 tabular-nums">
+                            {i + 1}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-[13px] font-bold text-[#111111]
+                              group-hover:text-[#FF5A1F] transition-colors truncate">
+                              {b.name}
+                            </p>
+                            <p className="text-[10px] font-medium text-[#9CA3AF] mt-0.5">{meta.category}</p>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1 shrink-0">
-                          <TrendingUp size={11} className="text-[#FF5A1F]" />
-                          <span className="text-[11px] font-bold text-[#FF5A1F] font-mono tabular-nums">
+                        <div className="flex items-center gap-1.5 shrink-0 bg-[#FFF3EE] px-2.5 py-1 rounded-lg">
+                          <TrendingUp size={12} className="text-[#FF5A1F]" />
+                          <span className="text-[11px] font-extrabold text-[#FF5A1F] font-mono tabular-nums">
                             {b._count?.rankings ?? 0}
                           </span>
                         </div>
@@ -489,15 +495,15 @@ export default function BenchmarksPage() {
             {/* ══════════════════════════════════════════
                 § BENCHMARK DIRECTORY
             ══════════════════════════════════════════ */}
-            <section id="directory">
+            <section id="directory" className="bg-white border border-[#E8E8E2] rounded-[24px] p-6 shadow-card space-y-6">
               {/* toolbar */}
-              <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
+              <div className="flex items-center justify-between gap-4 flex-wrap border-b border-[#F0EFEA] pb-5">
                 <div>
-                  <h2 className="text-[15px] font-black text-[#111111] mb-0.5">
+                  <h2 className="text-[18px] font-black text-[#111111] tracking-tight">
                     Benchmark Directory
                   </h2>
                   {!loading && (
-                    <p className="text-[12px] text-[#9CA3AF]">
+                    <p className="text-[12px] text-[#9CA3AF] mt-0.5">
                       Showing <span className="font-semibold text-[#555555]">{filtered.length}</span>
                       {" "}of{" "}
                       <span className="font-semibold text-[#555555]">{benchmarks.length}</span> benchmarks
@@ -505,54 +511,54 @@ export default function BenchmarksPage() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-2.5 flex-wrap">
                   {/* filter toggle */}
                   <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className={`flex items-center gap-1.5 border px-3 py-2 text-[12px] font-medium
+                    className={`flex items-center gap-2 border px-4 py-2 rounded-full text-[12px] font-bold
                       transition-all ${showFilters
-                        ? "bg-[#111111] text-white border-[#111111]"
-                        : "bg-white text-[#555555] border-[#E2E1DC] hover:border-[#111111]"}`}>
-                    <SlidersHorizontal size={12} /> Filters
-                    {(filterStatus) && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A1F] ml-0.5" />
+                        ? "bg-[#111111] text-white border-[#111111] shadow-sm"
+                        : "bg-white text-[#555555] border-[#E2E1DC] hover:border-[#111111] hover:text-[#111111]"}`}>
+                    <SlidersHorizontal size={13} /> Filters
+                    {(filterStatus || activeDomain || activeTask) && (
+                      <span className="w-2 h-2 rounded-full bg-[#FF5A1F] ml-0.5" />
                     )}
                   </button>
 
                   {/* search */}
                   <div className="relative">
-                    <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
+                    <Search size={13} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
                     <input
                       type="text"
                       value={search}
                       onChange={e => setSearch(e.target.value)}
                       placeholder="Search benchmarks…"
-                      className="ds-input pl-9 h-9 w-[200px] text-[12px]"
+                      className="ds-input pl-10 pr-8 h-9 w-[220px] text-[12px]"
                     />
                     {search && (
                       <button
                         onClick={() => setSearch("")}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]
                           hover:text-[#555555] transition-colors">
-                        <X size={12} />
+                        <X size={13} />
                       </button>
                     )}
                   </div>
 
                   {/* view toggle */}
-                  <div className="flex items-center bg-white border border-[#E2E1DC] p-0.5">
+                  <div className="flex items-center bg-[#F2F1EC] rounded-xl p-0.5 border border-[#E2E1DC]">
                     <button onClick={() => setViewMode("table")}
-                      className={`p-1.5 transition-colors ${
+                      className={`p-2 rounded-lg transition-colors ${
                         viewMode === "table"
-                          ? "bg-[#111111] text-white"
+                          ? "bg-white text-[#111] shadow-sm"
                           : "text-[#9CA3AF] hover:text-[#111111]"
                       }`}>
                       <List size={14} />
                     </button>
                     <button onClick={() => setViewMode("grid")}
-                      className={`p-1.5 transition-colors ${
+                      className={`p-2 rounded-lg transition-colors ${
                         viewMode === "grid"
-                          ? "bg-[#111111] text-white"
+                          ? "bg-white text-[#111] shadow-sm"
                           : "text-[#9CA3AF] hover:text-[#111111]"
                       }`}>
                       <Grid size={14} />
@@ -562,53 +568,73 @@ export default function BenchmarksPage() {
               </div>
 
               {/* filter bar */}
-              {showFilters && (
-                <div className="flex items-center gap-3 flex-wrap p-4 bg-white border border-[#E2E1DC] mb-4">
-                  <span className="text-[11px] font-black text-[#9CA3AF] uppercase tracking-wider">
-                    Filter by:
-                  </span>
+              {(showFilters || filterStatus || activeDomain || activeTask) && (
+                <div className="flex flex-col gap-3.5 p-4 bg-[#FAFAF8] border border-[#E2E1DC] rounded-2xl animate-fade-in">
+                  <div className="flex items-center justify-between border-b border-[#EBEBE5] pb-2">
+                    <span className="text-[11px] font-black text-[#9CA3AF] uppercase tracking-wider">
+                      Active Filters
+                    </span>
+                    {(filterStatus || activeDomain || activeTask) && (
+                      <button
+                        onClick={() => { setFilterStatus(""); setActiveDomain(null); setActiveTask(null); }}
+                        className="flex items-center gap-1 text-[11px] text-[#FF5A1F] font-bold hover:text-[#E04E1A] transition-colors">
+                        <X size={12} /> Clear all filters
+                      </button>
+                    )}
+                  </div>
 
-                  {/* Status filter */}
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-[11px] text-[#555555] font-medium">Status</span>
+                  {/* Status filter selection */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[11px] text-[#777777] font-bold uppercase tracking-wider w-16">Status:</span>
                     {["Active","Saturating","Saturated","Superseded","Unmapped"].map(s => (
                       <button key={s}
                         onClick={() => setFilterStatus(filterStatus === s ? "" : s)}
-                        className={`px-2.5 py-1 text-[11px] font-medium border transition-all ${
+                        className={`px-3 py-1 text-[11px] font-bold rounded border transition-all ${
                           filterStatus === s
-                            ? "bg-[#111111] text-white border-[#111111]"
-                            : "bg-white text-[#555555] border-[#E2E1DC] hover:border-[#555555]"
+                            ? "bg-[#FF5A1F] text-white border-[#FF5A1F]"
+                            : "bg-white text-[#555555] border-[#E2E1DC] hover:border-[#FF5A1F] hover:text-[#FF5A1F]"
                         }`}>
                         {s}
                       </button>
                     ))}
                   </div>
 
-                  {(filterStatus) && (
-                    <button
-                      onClick={() => { setFilterStatus(""); }}
-                      className="flex items-center gap-1 text-[11px] text-[#FF5A1F] font-semibold ml-auto">
-                      <X size={11} /> Clear
-                    </button>
+                  {/* Active pills state indicator */}
+                  {(activeDomain || activeTask) && (
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[11px] text-[#777777] font-bold uppercase tracking-wider w-16">Chips:</span>
+                      {activeDomain && (
+                        <span className="inline-flex items-center gap-1 bg-[#111111] text-white text-[11px] font-bold px-2.5 py-1 rounded">
+                          Domain: {activeDomain}
+                          <button onClick={() => setActiveDomain(null)}><X size={10} /></button>
+                        </span>
+                      )}
+                      {activeTask && (
+                        <span className="inline-flex items-center gap-1 bg-[#FF5A1F] text-white text-[11px] font-bold px-2.5 py-1 rounded">
+                          Task: {activeTask}
+                          <button onClick={() => setActiveTask(null)}><X size={10} /></button>
+                        </span>
+                      )}
+                    </div>
                   )}
                 </div>
               )}
 
               {/* ── TABLE VIEW ── */}
               {viewMode === "table" && (
-                <div className="bg-white border border-[#E8E8E2] overflow-hidden overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
+                <div className="border border-[#E8E8E2] rounded-2xl overflow-hidden bg-white shadow-sm overflow-x-auto">
+                  <table className="w-full text-left border-collapse min-w-[800px]">
                     <thead>
                       <tr className="bg-[#FAFAF8] border-b border-[#E8E8E2]">
                         {[
-                          { label: "Benchmark",  cls: "" },
+                          { label: "Benchmark",  cls: "pl-5" },
                           { label: "Task",       cls: "" },
                           { label: "Category",   cls: "" },
                           { label: "Metric",     cls: "" },
                           { label: "Status",     cls: "" },
                           { label: "Year",       cls: "text-center" },
                           { label: "Results",    cls: "text-center" },
-                          { label: "Models",     cls: "text-center" },
+                          { label: "Models",     cls: "pr-5 text-center" },
                         ].map(h => (
                           <th key={h.label}
                             className={`py-3 px-4 text-[10px] font-black uppercase tracking-wider
@@ -618,21 +644,21 @@ export default function BenchmarksPage() {
                         ))}
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-[#F0EFEA]">
                       {loading ? (
                         Array.from({ length: 10 }).map((_, i) => (
-                          <tr key={i} className="border-b border-[#F4F4F0] animate-pulse">
+                          <tr key={i} className="animate-pulse">
                             {Array.from({ length: 8 }).map((_, j) => (
-                              <td key={j} className="py-3.5 px-4">
-                                <div className="h-3 bg-[#F0F0EA] rounded w-3/4" />
+                              <td key={j} className="py-4 px-4">
+                                <div className="h-3.5 bg-[#F0F0EA] rounded w-3/4" />
                               </td>
                             ))}
                           </tr>
                         ))
                       ) : filtered.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="py-16 text-center text-[#9CA3AF] text-[13px]">
-                            No benchmarks match your search.
+                          <td colSpan={8} className="py-16 text-center text-[#9CA3AF] text-[13px] font-medium">
+                            No benchmarks found. Try adjusting your search/filter settings.
                           </td>
                         </tr>
                       ) : (
@@ -647,51 +673,51 @@ export default function BenchmarksPage() {
               {viewMode === "grid" && (
                 <>
                   {loading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                       {Array.from({ length: 8 }).map((_, i) => (
-                        <div key={i} className="bg-white border border-[#E8E8E2] p-4 h-[130px] animate-pulse">
-                          <div className="h-3.5 bg-[#F0F0EA] rounded w-3/4 mb-2" />
-                          <div className="h-2.5 bg-[#F0F0EA] rounded w-1/2 mb-5" />
-                          <div className="h-2.5 bg-[#F0F0EA] rounded w-2/3" />
+                        <div key={i} className="bg-white border border-[#E8E8E2] rounded-2xl p-5 h-[140px] animate-pulse">
+                          <div className="h-4 bg-[#F0F0EA] rounded w-3/4 mb-3.5" />
+                          <div className="h-3 bg-[#F0F0EA] rounded w-1/2 mb-5" />
+                          <div className="h-3 bg-[#F0F0EA] rounded w-2/3" />
                         </div>
                       ))}
                     </div>
                   ) : filtered.length === 0 ? (
-                    <div className="py-20 text-center text-[#9CA3AF] text-[13px]">
-                      No benchmarks match your search.
+                    <div className="py-20 text-center text-[#9CA3AF] text-[13px] font-medium">
+                      No benchmarks found. Try adjusting your search/filter settings.
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                       {filtered.map(b => {
                         const meta = getMeta(b.name);
                         const cfg  = STATUS_CFG[meta.status] ?? STATUS_CFG["Unmapped"];
                         return (
                           <Link key={b.id} href={`/benchmarks/${b.slug}`}
                             className="no-underline group block">
-                            <div className="bg-white border border-[#E8E8E2] p-4 h-full flex flex-col gap-3
-                              hover:border-[#111111] hover:shadow-sm transition-all">
+                            <div className="bg-white border border-[#E8E8E2] rounded-2xl p-5 h-full flex flex-col gap-4 shadow-sm
+                              hover:border-[#FF5A1F] hover:shadow-card hover:-translate-y-0.5 transition-all duration-200">
                               <div className="flex items-start justify-between gap-2">
                                 <div className="flex-1 min-w-0">
                                   <p className="text-[13px] font-bold text-[#111111]
                                     group-hover:text-[#FF5A1F] transition-colors leading-snug line-clamp-2">
                                     {b.name}
                                   </p>
-                                  <p className="text-[10px] font-mono text-[#9CA3AF] mt-0.5">{meta.category}</p>
+                                  <p className="text-[10px] font-mono text-[#9CA3AF] mt-1">{meta.category}</p>
                                 </div>
-                                <ArrowUpRight size={13}
+                                <ArrowUpRight size={14}
                                   className="text-[#C8C8C2] group-hover:text-[#FF5A1F] shrink-0 transition-colors" />
                               </div>
-                              <div className="flex flex-col gap-0.5">
-                                <span className="text-[11px] text-[#555555]">{meta.task}</span>
-                                <span className="text-[10px] font-mono text-[#9CA3AF]">{meta.metric}</span>
+                              <div className="flex flex-col gap-1 text-[12px] font-medium text-[#555555]">
+                                <span>{meta.task}</span>
+                                <span className="text-[10px] font-mono text-[#9CA3AF] bg-[#F8F7F2] py-0.5 px-1.5 rounded w-fit">{meta.metric}</span>
                               </div>
-                              <div className="mt-auto flex items-center justify-between pt-2.5 border-t border-[#F0F0EA]">
-                                <span className="flex items-center gap-1.5 text-[11px] font-medium text-[#555555]">
+                              <div className="mt-auto flex items-center justify-between pt-3 border-t border-[#F0EFEA]">
+                                <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-0.5 rounded ${cfg.bg} ${cfg.text} border ${cfg.border}`}>
                                   <span className="w-1.5 h-1.5 rounded-full shrink-0"
                                     style={{ background: cfg.color }} />
                                   {meta.status}
                                 </span>
-                                <span className="text-[11px] font-bold text-[#FF5A1F] font-mono tabular-nums">
+                                <span className="text-[12px] font-black text-[#FF5A1F] font-mono tabular-nums">
                                   {b._count?.rankings ?? 0} results
                                 </span>
                               </div>
@@ -706,18 +732,25 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-                § FOOTER CTA
+                § FOOTER CTA (Premium matching full bleed card layout)
             ══════════════════════════════════════════ */}
-            <section className="bg-white border border-[#E8E8E2] p-8 text-center">
-              <h3 className="text-[18px] font-black text-[#111111] mb-2">
-                Missing a benchmark?
-              </h3>
-              <p className="text-[13px] text-[#555555] leading-relaxed mb-5 max-w-md mx-auto">
-                Submit a benchmark or contribute evaluation results to help keep Frontier Atlas up to date.
-              </p>
-              <button className="ds-button inline-flex items-center gap-1.5 text-[13px] py-2.5 px-6">
-                Submit Benchmark <ArrowUpRight size={14} />
-              </button>
+            <section className="bg-white border border-[#E8E8E2] rounded-[24px] p-8 md:p-12 text-center shadow-card hover:shadow-soft transition-all duration-300 relative overflow-hidden">
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#FFF3EE] rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-[#FFF3EE] rounded-full blur-2xl pointer-events-none" />
+
+              <div className="relative z-10 max-w-xl mx-auto space-y-4">
+                <h3 className="text-[20px] md:text-[24px] font-extrabold text-[#111111] tracking-tight">
+                  Missing a benchmark?
+                </h3>
+                <p className="text-[14px] text-[#555555] leading-relaxed">
+                  Submit a benchmark or contribute evaluation results to help keep Frontier Atlas up to date.
+                </p>
+                <div className="pt-2">
+                  <button className="ds-button inline-flex items-center gap-2 text-[13px] py-2.5 px-8 shadow-soft hover:shadow-card hover:-translate-y-0.5 transition-all">
+                    Submit Benchmark <ArrowUpRight size={14} />
+                  </button>
+                </div>
+              </div>
             </section>
 
           </main>
