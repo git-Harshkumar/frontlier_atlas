@@ -57,7 +57,7 @@ const SORT_OPTIONS: { label: string; key: SortKey; Icon: React.ComponentType<any
 function matchesFilter(paper: Paper, key: string, keywords: string[]): boolean {
   if (key === "all") return true;
   const haystack = `${paper.title ?? ""} ${paper.abstract ?? ""}`.toLowerCase();
-  const taskNames = paper.tasks?.map((t) => t.name.toLowerCase()).join(" ") ?? "";
+  const taskNames = paper.tasks?.map((t) => (t.name ?? '').toLowerCase()).join(" ") ?? "";
   const combined = `${haystack} ${taskNames}`;
   return keywords.some((kw) => combined.includes(kw.toLowerCase()));
 }
@@ -303,7 +303,7 @@ export default function MethodFilteredPapers({ papers, methodName }: Props) {
                               : "bg-purple-50 text-purple-600"
                           }`}
                         >
-                          {t.name}
+                          {t.name ?? ''}
                         </span>
                       ))}
                     </div>
