@@ -346,8 +346,9 @@ Metric.displayName = "Metric";
 const PaperCard = memo(({ paper }: { paper: Paper }) => {
   const upvotesNum = parseFloat(paper.upvotes) || 0;
 
-  const visibleAuthors = paper.authors.slice(0, 3);
-  const remaining = paper.authors.length - 3;
+  const safeAuthors = paper.authors || [];
+  const visibleAuthors = safeAuthors.slice(0, 3);
+  const remaining = safeAuthors.length - 3;
 
   return (
     <Link href={`/papers/${paper.slug}`} className="no-underline block">
@@ -576,7 +577,7 @@ export default function PaperList({
       if (!normalizedSearchQuery) return true;
       const haystack = [
         paper.title,
-        paper.authors.map((a) => a.name).join(" "),
+        (paper.authors || []).map((a) => a.name).join(" "),
         paper.description,
         ...(paper.tags ?? []),
         ...(paper.additionalTags ?? []),

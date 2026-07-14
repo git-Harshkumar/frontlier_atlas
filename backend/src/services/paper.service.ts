@@ -386,6 +386,129 @@ export const getPaperBySlug = async (
           githubUrl: true,
           isOfficialCode: true,
           discoverySource: true,
+
+          authors: {
+            select: {
+              paper_id: true,
+              author_id: true,
+              author: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                },
+              },
+            },
+          },
+          models: {
+            select: {
+              paper_id: true,
+              model_id: true,
+              model: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                },
+              },
+            },
+          },
+          datasets: {
+            select: {
+              paper_id: true,
+              dataset_id: true,
+              dataset: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                },
+              },
+            },
+          },
+          tasks: {
+  take: 3,
+  orderBy: {
+    task: {
+      name: "asc",
+    },
+  },
+  select: {
+    paper_id: true,
+    task_id: true,
+    task: {
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        color: true,
+      },
+    },
+  },
+},
+          methods: {
+  take: 3,
+  orderBy: {
+    method: {
+      name: "asc",
+    },
+  },
+  select: {
+    paper_id: true,
+    method_id: true,
+    method: {
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+      },
+    },
+  },
+},
+          conferences: {
+            select: {
+              paper_id: true,
+              conference_id: true,
+              conference: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                },
+              },
+            },
+          },
+          rankings: {
+            select: {
+              id: true,
+              paper_id: true,
+              benchmark_id: true,
+              rank: true,
+              previous_rank: true,
+              updated_at: true,
+              benchmark: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                },
+              },
+            },
+          },
+          sotaClaims: {
+            select: {
+              id: true,
+              paper_id: true,
+              benchmark_id: true,
+              benchmark: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                },
+              },
+            },
+          },
         },
       });
 

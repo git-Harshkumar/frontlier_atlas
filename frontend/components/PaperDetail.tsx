@@ -573,7 +573,7 @@ function BenchmarksSection({
   );
 }
 
-function RelatedPaperCard({ paper }: { paper: Paper }) {
+export function RelatedPaperCard({ paper }: { paper: Paper }) {
   const [thumbnailFailed, setThumbnailFailed] = useState(false);
   const showThumbnail = !!paper.thumbnail && !thumbnailFailed;
 
@@ -856,13 +856,13 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
                       </Link>
                     </span>
                   ))}
-                  {paper.authors.length > 3 && (
+                  {(paper.authors || []).length > 3 && (
                     <button
                       type="button"
                       onClick={() => setShowAllAuthors(!showAllAuthors)}
-                      className="ml-1 text-[13px] font-bold text-[#FF5A1F] bg-transparent border-none cursor-pointer p-0 hover:underline"
+                      className="text-[13px] font-semibold text-[#4A7AA0] hover:text-[#2c4e69] hover:underline"
                     >
-                      {showAllAuthors ? "Show less" : `+${paper.authors.length - 3} more`}
+                      {showAllAuthors ? "Show less" : `+${(paper.authors || []).length - 3} more`}
                     </button>
                   )}
                   {showAllAuthors && paper.authors.slice(3).map((pa) => (
@@ -1103,9 +1103,9 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
               {/* TASKS */}
               <section className="flex flex-col gap-3">
                 <h3 className="text-[11px] font-black uppercase tracking-[0.1em] text-[#8B8B8B] m-0">TASKS</h3>
-                {paper.tasks.length > 0 ? (
+                {(paper.tasks || []).length > 0 ? (
                   <div className="flex flex-wrap gap-1.5">
-                    {paper.tasks.map((t) => (
+                    {(paper.tasks || []).map((t) => (
                       <Link
                         key={t.task.id}
                         href={`/tasks/${t.task.slug}`}
@@ -1124,9 +1124,9 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
               {/* METHODS */}
               <section className="flex flex-col gap-3">
                 <h3 className="text-[11px] font-black uppercase tracking-[0.1em] text-[#8B8B8B] m-0">METHODS</h3>
-                {paper.methods.length > 0 ? (
+                {(paper.methods || []).length > 0 ? (
                   <div className="flex flex-wrap gap-1.5">
-                    {paper.methods.map((m) => (
+                    {(paper.methods || []).map((m) => (
                       <Link
                         key={m.method.id}
                         href={`/methods/${m.method.slug}`}
@@ -1145,9 +1145,9 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
               {/* MODELS */}
               <section className="flex flex-col gap-3">
                 <h3 className="text-[11px] font-black uppercase tracking-[0.1em] text-[#8B8B8B] m-0">MODELS</h3>
-                {paper.models.length > 0 ? (
+                {(paper.models || []).length > 0 ? (
                   <div className="flex flex-wrap gap-1.5">
-                    {paper.models.map((m) => (
+                    {(paper.models || []).map((m) => (
                       <Link
                         key={m.model.id}
                         href={`/models/${m.model.slug}`}
