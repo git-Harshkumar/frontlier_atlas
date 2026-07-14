@@ -214,78 +214,76 @@ export default function BenchmarksPage() {
           <main className="flex-1 min-w-0 space-y-12">
 
             {/* ══ § HERO ══ */}
-            <section className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-[24px] overflow-hidden shadow-card hover:bg-white transition-colors duration-300">
-              <div className="h-[4px] w-full"
+            <section className="pb-8 border-b border-[#E8E8E2]">
+              <div className="h-[4px] w-full mb-6 rounded-full"
                 style={{ background: "linear-gradient(90deg,#FF5A1F 0%,#FFB347 60%,#FF5A1F 100%)" }} />
-              <div className="p-6 md:p-10">
-                <nav className="flex items-center gap-1.5 text-[12px] text-[#9CA3AF] mb-6">
-                  <Link href="/" className="hover:text-[#FF5A1F] transition-colors no-underline font-medium">Home</Link>
-                  <span className="text-[#C8C8C2]">/</span>
-                  <span className="text-[#555555] font-semibold">Benchmarks</span>
-                </nav>
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-12 xl:gap-20">
-                  <div className="flex-1 min-w-0">
-                    <div className="inline-flex items-center gap-1.5 bg-[#FFF3EE] text-[#FF5A1F]
-                      text-[11px] font-black px-3.5 py-1.5 rounded-full mb-5 uppercase tracking-wider border border-[#FFE4D9]">
-                      <Trophy size={11} /> Benchmark Registry
-                    </div>
-                    <h1 className="text-[28px] sm:text-[34px] md:text-[40px] font-extrabold
-                      text-[#111111] leading-[1.12] mb-4 tracking-tight">
-                      Which benchmark<br />should you trust?
-                    </h1>
-                    <p className="text-[14px] text-[#555555] leading-relaxed max-w-xl mb-8">
-                      Tasks answer what problem you are solving. Benchmarks answer whether the
-                      evidence is still useful. This page separates active evaluations from
-                      saturated leaderboards so old scores do not masquerade as current capability.
-                    </p>
-                    <div className="flex items-center gap-4 flex-wrap">
-                      <Link href="/tasks"
-                        className="ds-button no-underline inline-flex items-center gap-2 text-[13px] py-2.5 px-6">
-                        Browse tasks <ArrowUpRight size={14} />
-                      </Link>
-                      <button className="text-[13px] font-bold text-[#111111] hover:text-[#FF5A1F]
+              <nav className="flex items-center gap-1.5 text-[12px] text-[#9CA3AF] mb-6">
+                <Link href="/" className="hover:text-[#FF5A1F] transition-colors no-underline font-medium">Home</Link>
+                <span className="text-[#C8C8C2]">/</span>
+                <span className="text-[#555555] font-semibold">Benchmarks</span>
+              </nav>
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-12 xl:gap-20">
+                <div className="flex-1 min-w-0">
+                  <div className="inline-flex items-center gap-1.5 bg-[#FFF3EE] text-[#FF5A1F]
+                    text-[11px] font-black px-3.5 py-1.5 rounded-full mb-5 uppercase tracking-wider border border-[#FFE4D9]">
+                    <Trophy size={11} /> Benchmark Registry
+                  </div>
+                  <h1 className="text-[28px] sm:text-[34px] md:text-[40px] font-extrabold
+                    text-[#111111] leading-[1.12] mb-4 tracking-tight">
+                    Which benchmark<br />should you trust?
+                  </h1>
+                  <p className="text-[14px] text-[#555555] leading-relaxed max-w-xl mb-8">
+                    Tasks answer what problem you are solving. Benchmarks answer whether the
+                    evidence is still useful. This page separates active evaluations from
+                    saturated leaderboards so old scores do not masquerade as current capability.
+                  </p>
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <Link href="/tasks"
+                      className="ds-button no-underline inline-flex items-center gap-2 text-[13px] py-2.5 px-6">
+                      Browse tasks <ArrowUpRight size={14} />
+                    </Link>
+                    <button className="text-[13px] font-bold text-[#111111] hover:text-[#FF5A1F]
+                      transition-colors bg-transparent border-none cursor-pointer px-2 py-2.5">
+                      Submit result
+                    </button>
+                    <button
+                      onClick={() =>
+                        document.getElementById("directory")?.scrollIntoView({ behavior: "smooth" })}
+                      className="text-[13px] font-bold text-[#111111] hover:text-[#FF5A1F]
                         transition-colors bg-transparent border-none cursor-pointer px-2 py-2.5">
-                        Submit result
-                      </button>
-                      <button
-                        onClick={() =>
-                          document.getElementById("directory")?.scrollIntoView({ behavior: "smooth" })}
-                        className="text-[13px] font-bold text-[#111111] hover:text-[#FF5A1F]
-                          transition-colors bg-transparent border-none cursor-pointer px-2 py-2.5">
-                        Benchmark lineages ↓
-                      </button>
-                    </div>
+                      Benchmark lineages ↓
+                    </button>
                   </div>
-                  <div className="grid grid-cols-2 lg:flex lg:flex-col gap-3.5 shrink-0 w-full lg:w-auto">
-                    {[
-                      { icon: <BarChart2 size={18} />,   val: loading ? "—" : String(benchmarks.length),                                                                 label: "BENCHMARKS"    },
-                      { icon: <Database size={18} />,    val: loading ? "—" : String(benchmarks.filter(b => (b._count?.rankings ?? 0) > 0).length),                     label: "WITH RESULTS"  },
-                      { icon: <Zap size={18} />,         val: loading ? "—" : String(benchmarks.reduce((s, b) => s + (b._count?.rankings ?? 0), 0)),                    label: "RESULT ROWS"   },
-                      { icon: <CheckSquare size={18} />, val: loading ? "—" : String(Math.round(benchmarks.reduce((s, b) => s + (b._count?.rankings ?? 0), 0) * 0.48)), label: "VERIFIED ROWS" },
-                    ].map(s => (
-                      <div key={s.label}
-                        className="flex items-center gap-4 bg-[#F8F7F2] border border-[#E8E8E2] rounded-2xl
-                          px-5 py-4 min-w-[140px] md:min-w-[180px] hover:border-[#FF5A1F]/30 transition-all duration-200">
-                        <span className="text-[#FF5A1F] bg-white border border-[#FFE4D9] p-2 rounded-xl shrink-0 shadow-sm">
-                          {s.icon}
-                        </span>
-                        <div>
-                          <p className={`text-[24px] font-extrabold leading-none text-[#111111] tracking-tight ${loading ? "opacity-30" : ""}`}>
-                            {s.val}
-                          </p>
-                          <p className="text-[9px] font-black text-[#9CA3AF] uppercase tracking-widest mt-1">
-                            {s.label}
-                          </p>
-                        </div>
+                </div>
+                <div className="grid grid-cols-2 lg:flex lg:flex-col gap-3.5 shrink-0 w-full lg:w-auto">
+                  {[
+                    { icon: <BarChart2 size={18} />,   val: loading ? "—" : String(benchmarks.length),                                                                 label: "BENCHMARKS"    },
+                    { icon: <Database size={18} />,    val: loading ? "—" : String(benchmarks.filter(b => (b._count?.rankings ?? 0) > 0).length),                     label: "WITH RESULTS"  },
+                    { icon: <Zap size={18} />,         val: loading ? "—" : String(benchmarks.reduce((s, b) => s + (b._count?.rankings ?? 0), 0)),                    label: "RESULT ROWS"   },
+                    { icon: <CheckSquare size={18} />, val: loading ? "—" : String(Math.round(benchmarks.reduce((s, b) => s + (b._count?.rankings ?? 0), 0) * 0.48)), label: "VERIFIED ROWS" },
+                  ].map(s => (
+                    <div key={s.label}
+                      className="flex items-center gap-4 bg-[#F8F7F2] border border-[#E8E8E2] rounded-2xl
+                        px-5 py-4 min-w-[140px] md:min-w-[180px] hover:border-[#FF5A1F]/30 transition-all duration-200">
+                      <span className="text-[#FF5A1F] bg-white border border-[#FFE4D9] p-2 rounded-xl shrink-0 shadow-sm">
+                        {s.icon}
+                      </span>
+                      <div>
+                        <p className={`text-[24px] font-extrabold leading-none text-[#111111] tracking-tight ${loading ? "opacity-30" : ""}`}>
+                          {s.val}
+                        </p>
+                        <p className="text-[9px] font-black text-[#9CA3AF] uppercase tracking-widest mt-1">
+                          {s.label}
+                        </p>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </section>
 
             {/* ══ § BROWSE BY DOMAIN ══ */}
-            <section className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-[20px] p-6 shadow-card hover:bg-white transition-colors duration-200">
+            <section className="py-6 border-b border-[#E8E8E2]">
               <SectionHeading label="Browse by Domain" />
               <div className="flex flex-wrap gap-2.5">
                 {DOMAINS.map(d => (
@@ -303,7 +301,7 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══ § BROWSE BY TASK ══ */}
-            <section className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-[20px] p-6 shadow-card hover:bg-white transition-colors duration-200">
+            <section className="py-6 border-b border-[#E8E8E2]">
               <SectionHeading label="Browse by Task" />
               <div className="flex flex-wrap gap-2.5">
                 {TASKS.map(t => (
@@ -321,7 +319,7 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══ § BENCHMARK COLLECTIONS ══ */}
-            <section className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-[20px] p-6 shadow-card hover:bg-white transition-colors duration-200">
+            <section className="py-6 border-b border-[#E8E8E2]">
               <SectionHeading label="Benchmark Collections" />
               <div className="flex flex-wrap gap-2.5">
                 {COLLECTIONS.map(c => (
@@ -343,7 +341,7 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══ § POPULAR BENCHMARKS ══ */}
-            <section className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-[20px] p-6 shadow-card hover:bg-white transition-colors duration-200">
+            <section className="py-6 border-b border-[#E8E8E2]">
               <SectionHeading label="Popular Benchmarks" />
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {POPULAR.map((p, i) => (
@@ -366,8 +364,8 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══ § RECENTLY ADDED + TRENDING ══ */}
-            <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-[20px] p-6 shadow-card hover:bg-white transition-colors duration-200">
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6 border-b border-[#E8E8E2]">
+              <div>
                 <div className="flex items-center justify-between mb-4 border-b border-[#F0EFEA] pb-3">
                   <div className="flex items-center gap-2">
                     <Clock size={16} className="text-[#FF5A1F]" />
@@ -399,7 +397,7 @@ export default function BenchmarksPage() {
                 </div>
               </div>
 
-              <div className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-[20px] p-6 shadow-card hover:bg-white transition-colors duration-200">
+              <div>
                 <div className="flex items-center justify-between mb-4 border-b border-[#F0EFEA] pb-3">
                   <div className="flex items-center gap-2">
                     <Flame size={16} className="text-[#FF5A1F]" />
@@ -441,7 +439,7 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══ § BENCHMARK DIRECTORY ══ */}
-            <section id="directory" className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-[24px] p-6 shadow-card space-y-6 hover:bg-white transition-colors duration-200">
+            <section id="directory" className="py-6 border-b border-[#E8E8E2] space-y-6">
               <div className="flex items-center justify-between gap-4 flex-wrap border-b border-[#F0EFEA] pb-5">
                 <div>
                   <h2 className="text-[18px] font-black text-[#111111] tracking-tight">Benchmark Directory</h2>
@@ -649,9 +647,7 @@ export default function BenchmarksPage() {
             </section>
 
             {/* ══ § FOOTER CTA ══ */}
-            <section className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-[24px] p-8 md:p-12 text-center shadow-card relative overflow-hidden hover:bg-white transition-colors duration-200">
-              <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#FFF3EE] rounded-full blur-2xl pointer-events-none" />
-              <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-[#FFF3EE] rounded-full blur-2xl pointer-events-none" />
+            <section className="py-10 text-center relative overflow-hidden">
               <div className="relative z-10 max-w-xl mx-auto space-y-4">
                 <h3 className="text-[20px] md:text-[24px] font-extrabold text-[#111111] tracking-tight">
                   Missing a benchmark?

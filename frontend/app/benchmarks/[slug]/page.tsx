@@ -350,131 +350,121 @@ export default function BenchmarkDetailPage() {
             </nav>
 
             {/* § 1 — HERO */}
-            <div className="relative rounded-3xl overflow-hidden mb-8 bg-[#F8F7F2] border border-[#E8E8E2] hover:bg-white transition-colors duration-200">
-              <div className="h-[3px] w-full" style={{ background: "linear-gradient(90deg,#FF5A1F 0%,#FFB347 50%,#FF5A1F 100%)" }} />
+            <div className="mb-6">
+              <div className="h-[3px] w-full mb-6 rounded-full" style={{ background: "linear-gradient(90deg,#FF5A1F 0%,#FFB347 50%,#FF5A1F 100%)" }} />
 
-              <div className="p-6 md:p-8">
-                <div className="inline-flex items-center gap-1.5 bg-[rgba(255,90,31,0.08)]
-                  border border-[rgba(255,90,31,0.18)] text-[#FF5A1F] text-[11px] font-bold
-                  px-3 py-1 rounded-full mb-4 uppercase tracking-wider">
-                  <Award size={11} /> Benchmark Leaderboard
-                </div>
-
-                <h1 className="text-[28px] md:text-[36px] font-black text-[#111111] leading-tight mb-3">
-                  {benchmark.name}
-                </h1>
-                <p className="text-[#555555] text-[13px] leading-relaxed max-w-2xl mb-6">
-                  {benchmarkDescription(benchmark.name)}
-                </p>
-
-                <div className="flex flex-wrap gap-3 mb-6">
-                  {[
-                    { icon: <TrendingUp size={13} />, val: benchmark.rankings.length, label: "Ranked entries" },
-                    { icon: <Zap size={13} />,        val: benchmark.claims.length,   label: "SOTA claims"   },
-                    { icon: <FileText size={13} />,   val: totalResults,              label: "Total submissions" },
-                  ].map(s => (
-                    <div key={s.label}
-                      className="flex items-center gap-2 bg-[#F8F7F2] border border-[#E2E1DC] rounded-xl px-4 py-2.5">
-                      <span className="text-[#FF5A1F]">{s.icon}</span>
-                      <span className="text-[#111111] font-black text-[18px] leading-none">{s.val}</span>
-                      <span className="text-[#8B8B8B] text-[11px] font-medium">{s.label}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {bestRanking && (
-                  <div className="flex items-center gap-3 bg-[#F8F7F2] border border-[#E2E1DC] rounded-2xl px-5 py-3 w-fit flex-wrap gap-y-2">
-                    <span className="text-[22px]">🥇</span>
-                    <div>
-                      <p className="text-[10px] text-[#8B8B8B] uppercase tracking-wider font-semibold mb-0.5">Current leader</p>
-                      <p className="text-[14px] font-bold text-[#111111] leading-snug">
-                        {bestRanking.paper.title.split(":")[0].trim()}
-                        <span className="ml-2 text-[#FF5A1F] font-mono font-black text-[13px]">
-                          {scoreFromRank(1).toFixed(3)}
-                        </span>
-                      </p>
-                    </div>
-                    <Link href={`/papers/${bestRanking.paper.slug}`}
-                      className="ml-auto flex items-center gap-1 text-[11px] text-[#FF5A1F]
-                        no-underline hover:text-[#FF6C37] transition-colors font-semibold shrink-0">
-                      View paper <ExternalLink size={11} />
-                    </Link>
-                  </div>
-                )}
+              <div className="inline-flex items-center gap-1.5 bg-[rgba(255,90,31,0.08)]
+                border border-[rgba(255,90,31,0.18)] text-[#FF5A1F] text-[11px] font-bold
+                px-3 py-1 rounded-full mb-4 uppercase tracking-wider">
+                <Award size={11} /> Benchmark Leaderboard
               </div>
+
+              <h1 className="text-[28px] md:text-[36px] font-black text-[#111111] leading-tight mb-3">
+                {benchmark.name}
+              </h1>
+              <p className="text-[#555555] text-[13px] leading-relaxed max-w-2xl mb-6">
+                {benchmarkDescription(benchmark.name)}
+              </p>
+
+              <div className="flex flex-wrap gap-6 mb-6">
+                {[
+                  { icon: <TrendingUp size={13} />, val: benchmark.rankings.length, label: "Ranked entries" },
+                  { icon: <Zap size={13} />,        val: benchmark.claims.length,   label: "SOTA claims"   },
+                  { icon: <FileText size={13} />,   val: totalResults,              label: "Total submissions" },
+                ].map(s => (
+                  <div key={s.label} className="flex items-center gap-2">
+                    <span className="text-[#FF5A1F]">{s.icon}</span>
+                    <span className="text-[#111111] font-black text-[18px] leading-none">{s.val}</span>
+                    <span className="text-[#8B8B8B] text-[11px] font-medium">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {bestRanking && (
+                <div className="flex items-center gap-3 py-2 flex-wrap gap-y-2">
+                  <span className="text-[22px]">🥇</span>
+                  <div>
+                    <p className="text-[10px] text-[#8B8B8B] uppercase tracking-wider font-semibold mb-0.5">Current leader</p>
+                    <p className="text-[14px] font-bold text-[#111111] leading-snug">
+                      {bestRanking.paper.title.split(":")[0].trim()}
+                      <span className="ml-2 text-[#FF5A1F] font-mono font-black text-[13px]">
+                        {scoreFromRank(1).toFixed(3)}
+                      </span>
+                    </p>
+                  </div>
+                  <Link href={`/papers/${bestRanking.paper.slug}`}
+                    className="ml-4 flex items-center gap-1 text-[11px] text-[#FF5A1F]
+                      no-underline hover:text-[#FF6C37] transition-colors font-semibold shrink-0">
+                    View paper <ExternalLink size={11} />
+                  </Link>
+                </div>
+              )}
+
+              <div className="border-t border-[#E8E8E2] mt-6" />
             </div>
 
             {/* § 2 — SOURCE PAPER */}
             {sourcePaper && (
-              <div className="mb-8">
-                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[#9CA3AF] mb-2">Source</p>
-                <Link href={`/papers/${sourcePaper.slug}`} className="no-underline group block w-fit">
-                  <div className="border border-[#E2E1DC] rounded-lg p-4 bg-[#F8F7F2] hover:bg-white hover:border-[#C8C8C2] hover:shadow-sm transition-all max-w-2xl">
-                    <p className="text-[14px] font-semibold text-[#111111] group-hover:text-[#FF5A1F] transition-colors leading-snug underline underline-offset-2 decoration-[#E2E1DC] group-hover:decoration-[#FF5A1F] mb-1.5">
-                      {sourcePaper.title}
-                    </p>
-                    <p className="text-[11px] text-[#9CA3AF] font-mono">{formatYear(sourcePaper.publicationDate)}</p>
+              <div className="mb-6">
+                <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[#9CA3AF] mb-3">Source Paper</p>
+                <Link href={`/papers/${sourcePaper.slug}`} className="no-underline group block">
+                  <div className="flex items-start gap-3 py-3 hover:bg-[#FFF8F5] -mx-3 px-3 rounded-lg transition-colors">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[14px] font-semibold text-[#111111] group-hover:text-[#FF5A1F] transition-colors leading-snug mb-1">
+                        {sourcePaper.title}
+                      </p>
+                      <p className="text-[11px] text-[#9CA3AF] font-mono">{formatYear(sourcePaper.publicationDate)}</p>
+                    </div>
+                    <ExternalLink size={13} className="text-[#C8C8C2] group-hover:text-[#FF5A1F] transition-colors shrink-0 mt-1" />
                   </div>
                 </Link>
+                <div className="border-t border-[#E8E8E2] mt-3" />
               </div>
             )}
 
             {/* § 3 — SOTA PROGRESSION CHART */}
-            <div className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-2xl p-6 mb-8 hover:bg-white transition-colors duration-200">
+            <div className="mb-6">
               <div className="flex items-start justify-between mb-5 flex-wrap gap-3">
                 <div>
-                  <h2 className="text-[16px] font-bold text-[#111111]">SOTA progression</h2>
+                  <h2 className="text-[16px] font-bold text-[#111111]">SOTA Progression</h2>
                   <p className="text-[12px] text-[#8B8B8B] mt-0.5">Best score improvement across all ranked submissions over time</p>
                 </div>
-                <div className="flex items-center gap-1.5 bg-[#FFF3EE] border border-[#FFD5C5] rounded-full px-3 py-1.5 text-[11px] font-semibold text-[#FF5A1F] shrink-0">
+                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#FF5A1F] shrink-0">
                   <TrendingUp size={11} /> Live tracking
                 </div>
               </div>
               <ProgressionChart rankings={benchmark.rankings} />
+              <div className="border-t border-[#E8E8E2] mt-6" />
             </div>
 
             {/* § 4 — LEADERBOARD TABLE */}
-            <div className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-2xl overflow-hidden mb-8 hover:bg-white transition-colors duration-200">
-              <div className="flex items-center justify-between px-5 py-4 border-b border-[#F0EDE8] flex-wrap gap-3">
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
                 <h2 className="text-[16px] font-bold text-[#111111]">
                   Leaderboard
                   <span className="ml-2 text-[13px] font-normal text-[#9CA3AF]">({benchmark.rankings.length})</span>
                 </h2>
-                <div className="flex items-center gap-3 text-[11px]">
-                  <span className="text-[#9CA3AF] uppercase tracking-wider font-semibold">View</span>
-                  <div className="flex items-center gap-1.5 border border-[#E2E1DC] rounded-md px-3 py-1.5 bg-[#FAFAF8] text-[12px] font-medium text-[#111111] cursor-pointer hover:border-[#C8C8C2] transition-colors select-none">
-                    Completeness
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-[#8B8B8B]">
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                  </div>
-                  <div className="flex items-center gap-1.5 cursor-pointer">
-                    <div className="w-8 h-4 rounded-full bg-[#111111] relative">
-                      <div className="absolute right-0.5 top-0.5 w-3 h-3 rounded-full bg-white" />
-                    </div>
-                    <span className="text-[#555555] uppercase tracking-wider font-medium">Closed-source</span>
-                  </div>
+                <div className="flex items-center gap-4 text-[11px] text-[#9CA3AF]">
+                  <span className="uppercase tracking-wider font-semibold">Sorted by rank</span>
                 </div>
               </div>
+              <div className="border-t border-[#E8E8E2]" />
               <LeaderboardTable rankings={benchmark.rankings} />
+              <div className="border-t border-[#E8E8E2]" />
             </div>
 
             {/* § 5 — SOTA CLAIMS */}
             {benchmark.claims.length > 0 && (
-              <div className="bg-[#F8F7F2] border border-[#E8E8E2] rounded-2xl overflow-hidden hover:bg-white transition-colors duration-200">
-                <div className="px-5 py-4 border-b border-[#F0EDE8]">
-                  <h2 className="text-[16px] font-bold text-[#111111]">
-                    SOTA Claimants
-                    <span className="ml-2 text-[13px] font-normal text-[#9CA3AF]">({benchmark.claims.length})</span>
-                  </h2>
-                </div>
-                <div className="divide-y divide-[#F4F4F0]">
+              <div className="mb-6">
+                <h2 className="text-[16px] font-bold text-[#111111] mb-4">
+                  SOTA Claimants
+                  <span className="ml-2 text-[13px] font-normal text-[#9CA3AF]">({benchmark.claims.length})</span>
+                </h2>
+                <div className="border-t border-[#E8E8E2]">
                   {benchmark.claims.map((c, i) => (
                     <Link key={c.id} href={`/papers/${c.paper.slug}`}
-                      className="no-underline flex items-center gap-4 px-5 py-4 hover:bg-[#FFF8F5] transition-colors group">
-                      <div className="w-7 h-7 rounded-lg bg-[#FFF3EE] border border-[#FFD5C5] flex items-center justify-center text-[11px] font-bold text-[#FF5A1F] shrink-0">
-                        {i + 1}
-                      </div>
+                      className="no-underline flex items-center gap-4 py-4 transition-colors group border-b border-[#F0EDE8]">
+                      <span className="text-[12px] font-bold text-[#9CA3AF] w-5 shrink-0 tabular-nums">{i + 1}</span>
                       <div className="flex-1 min-w-0">
                         <p className="text-[13px] font-semibold text-[#111111] line-clamp-1 group-hover:text-[#FF5A1F] transition-colors">
                           {c.paper.title}
