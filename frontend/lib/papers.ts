@@ -3,66 +3,42 @@
 import { fetchApi } from "./api";
 
 export interface PaperAuthor {
-  paper_id: string;
-  author_id: string;
-  author: {
-    id: string;
-    name: string;
-    slug: string;
-    createdAt: string;
-    updatedAt: string;
-  };
+  id: string;
+  name: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface PaperTask {
-  paper_id: string;
-  task_id: string;
-  task: {
-    id: string;
-    name: string;
-    slug: string;
-    color: string | null;
-  };
+  id: string;
+  name: string;
+  slug: string;
+  color: string | null;
 }
 
 export interface PaperModel {
-  paper_id: string;
-  model_id: string;
-  model: {
-    id: string;
-    name: string;
-    slug: string;
-  };
+  id: string;
+  name: string;
+  slug: string;
 }
 
 export interface PaperDataset {
-  paper_id: string;
-  dataset_id: string;
-  dataset: {
-    id: string;
-    name: string;
-    slug: string;
-  };
+  id: string;
+  name: string;
+  slug: string;
 }
 
 export interface PaperMethod {
-  paper_id: string;
-  method_id: string;
-  method: {
-    id: string;
-    name: string;
-    slug: string;
-  };
+  id: string;
+  name: string;
+  slug: string;
 }
 
 export interface PaperConference {
-  paper_id: string;
-  conference_id: string;
-  conference: {
-    id: string;
-    name: string;
-    slug: string;
-  };
+  id: string;
+  name: string;
+  slug: string;
 }
 
 export interface PaperRanking {

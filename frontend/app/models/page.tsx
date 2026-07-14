@@ -91,9 +91,9 @@ function mapModelPaper(raw: ModelPaperRaw): Paper {
     slug: raw.slug,
     title: raw.title,
     thumbnail,
-    authors: raw.authors.map(({ author }) => ({
+    authors: raw.authors.map((author: any) => ({
       name: author.name,
-      slug: (author as { slug?: string }).slug ?? "",
+      slug: author.slug ?? "",
     })),
     date: raw.publicationDate
       ? new Date(raw.publicationDate).toLocaleDateString("en-US", {
@@ -106,12 +106,12 @@ function mapModelPaper(raw: ModelPaperRaw): Paper {
     sota: raw.sotaClaims
       .map(({ benchmark }) => `SOTA on ${benchmark.name}`)
       .join(" • "),
-    tags: raw.tasks.map(({ task }) => task.name),
-    additionalTags: raw.methods.map(({ method }) => method.name),
+    tags: raw.tasks.map((task: any) => task.name),
+    additionalTags: raw.methods.map((method: any) => method.name),
     upvotes: String(raw.githubStars ?? 0),
     repo: String(raw.githubForks ?? 0),
     citations: raw.citationCount ?? 0,
-    conference: raw.conferences[0]?.conference.name ?? "",
+    conference: (raw.conferences || [])[0]?.name ?? "",
     githubUrl: raw.githubUrl ?? undefined,
   };
 }
@@ -247,7 +247,7 @@ function ModelsPageInner() {
     for (const rawPaper of model.papers ?? []) {
       if (activeTask !== "all") {
         const hasTask = rawPaper.tasks.some(
-          ({ task }) => task.slug === activeTask,
+          (task: any) => task.slug === activeTask,
         );
 
         if (!hasTask) continue;

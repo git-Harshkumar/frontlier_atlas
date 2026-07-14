@@ -18,10 +18,10 @@ export interface ModelPaperRaw {
   githubStars: number | null;
   githubForks: number | null;
   githubUrl: string | null;
-  authors: { author: { name: string } }[];
-  tasks: { task: ModelTask }[];
-  methods: { method: { name: string } }[];
-  conferences: { conference: { name: string } }[];
+  authors: { name: string }[];
+  tasks: ModelTask[];
+  methods: { name: string }[];
+  conferences: { name: string }[];
   sotaClaims: { benchmark: { name: string } }[];
 }
 
