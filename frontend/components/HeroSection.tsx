@@ -2,18 +2,18 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Search, Bot, Brain, Eye, Code2, Cpu, Grid, Loader2, ChevronDown, ChevronUp } from "lucide-react";
-import { searchPapers, type Paper } from "@/lib/paperApi";
+import { searchPapers, type Paper, type PaperAuthor } from "@/lib/paperApi";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useScrollThreshold } from "@/lib/useScroll";
 
-const formatAuthors = (authorsStr: string) => {
-  if (!authorsStr) return "";
-  const authorList = authorsStr.split(",").map(a => a.trim());
-  if (authorList.length > 3) {
-    return `${authorList.slice(0, 3).join(", ")} et al.`;
+const formatAuthors = (authors: PaperAuthor[]) => {
+  if (!Array.isArray(authors) || authors.length === 0) return "";
+  const names = authors.map((a) => a.name);
+  if (names.length > 3) {
+    return `${names.slice(0, 3).join(", ")} et al.`;
   }
-  return authorsStr;
+  return names.join(", ");
 };
 
 export default function HeroSection({
