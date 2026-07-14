@@ -115,52 +115,8 @@ const tasks = [
       { name: "GPT-3", count: -2 },
     ],
   },
-  {
-    slug: "coding-agents",
-    displayName: "Coding Agents",
-    title: "CODING AGENTS",
-    description:
-      "Coding agents are autonomous, AI-powered software development tools that understand natural language prompts and execute multi-step tasks to automate coding, bug fixing, and entire software workflows. They act as intelligent assistants within the software development lifecycle, capable of understanding code, generating new code, optimizing existing code, debugging, and handling tasks like documentation and feature scaffolding with minimal user supervision. Examples of coding agents include Claude Code and Cursor Agent.",
-    imageUrl:
-      "https://miro.medium.com/v2/resize:fit:1200/1*abVFbwVxpk1xmz4GvflojQ.png",
-    stats: {
-      benchmarks: 19,
-    },
-    sisterTasks: [],
-    commonMethods: [
-      { name: "Mixture-of-Experts (MoE)", count: -1 },
-      { name: "Transformer", count: -4 },
-      { name: "Large Language model (LLM)", count: -5 },
-      { name: "DeepSeek Sparse Attention", count: -8 },
-      { name: "Post-training", count: -2 },
-      { name: "Qwen3", count: -7 },
-      { name: "MCP", count: -8 },
-      { name: "GRPO", count: -10 },
-    ],
-  },
-  {
-    slug: "computer-use-agents",
-    displayName: "Computer Use Agents",
-    title: "COMPUTER USE AGENTS",
-    description:
-      "Computer Use Agents are AI systems that can interact with computer interfaces, understand graphical user interfaces, execute tasks, and navigate software applications autonomously. These agents combine vision, language understanding, and action planning to perform complex computer-based tasks.",
-    imageUrl:
-      "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/CTU-Diagram-RD4-V01.width-1000.format-webp.webp",
-    stats: {
-      benchmarks: 23,
-    },
-    sisterTasks: [],
-    commonMethods: [
-      { name: "Large Language model (LLM)", count: -5 },
-      { name: "Gemini 2.5", count: -5 },
-      { name: "Fine-tuning", count: -4 },
-      { name: "ReAct", count: -4 },
-      { name: "GRPO", count: -4 },
-      { name: "Mixture-of-Experts (MoE)", count: -3 },
-      { name: "Qwen3", count: -3 },
-      { name: "LLaVa", count: -3 },
-    ],
-  },
+  
+  
   {
     slug: "deepfake-forensics",
     displayName: "Deepfake and Forensics",
@@ -231,9 +187,9 @@ const tasks = [
     ],
   },
   {
-    slug: "language-modeling",
-    displayName: "Language Modeling",
-    title: "LANGUAGE MODELING",
+  slug: "language-models",
+  displayName: "Language Models",
+  title: "LANGUAGE MODELS",
     description:
       "Language Modeling is the task of predicting the next word or character in a sequence given the previous context. Language models learn the probability distribution of word sequences and are foundational for many NLP applications including text generation, machine translation, and speech recognition.",
     imageUrl:
@@ -253,6 +209,58 @@ const tasks = [
       { name: "Post-training", count: -4 },
     ],
   },
+  {
+  slug: "vision-language-models",
+  displayName: "Vision-Language Models",
+  title: "VISION-LANGUAGE MODELS",
+  description:
+    "Vision-Language Models combine visual understanding and natural language processing, enabling AI systems to understand images, answer questions, generate captions, and perform multimodal reasoning.",
+  imageUrl: "",
+  stats: {
+    benchmarks: 0,
+  },
+  sisterTasks: [],
+  commonMethods: [],
+},
+{
+  slug: "multimodal-models",
+  displayName: "Multimodal Models",
+  title: "MULTIMODAL MODELS",
+  description:
+    "Multimodal Models process multiple types of data such as text, images, audio, and video together, allowing richer understanding and generation across different modalities.",
+  imageUrl: "",
+  stats: {
+    benchmarks: 0,
+  },
+  sisterTasks: [],
+  commonMethods: [],
+},
+{
+  slug: "speech",
+  displayName: "Speech",
+  title: "SPEECH",
+  description:
+    "Speech AI focuses on speech recognition, speech synthesis, speaker identification, speech translation, and spoken language understanding.",
+  imageUrl: "",
+  stats: {
+    benchmarks: 0,
+  },
+  sisterTasks: [],
+  commonMethods: [],
+},
+{
+  slug: "image-generation",
+  displayName: "Image Generation",
+  title: "IMAGE GENERATION",
+  description:
+    "Image Generation focuses on creating realistic or artistic images from text prompts or other inputs using diffusion models and generative AI.",
+  imageUrl: "",
+  stats: {
+    benchmarks: 0,
+  },
+  sisterTasks: [],
+  commonMethods: [],
+},
   {
     slug: "ocr",
     displayName: "OCR",
