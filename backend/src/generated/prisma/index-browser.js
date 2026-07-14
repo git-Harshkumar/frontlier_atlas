@@ -211,7 +211,9 @@ exports.Prisma.PaperMethodScalarFieldEnum = {
 exports.Prisma.BenchmarkScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  slug: 'slug'
+  slug: 'slug',
+  description: 'description',
+  metricName: 'metricName'
 };
 
 exports.Prisma.SotaClaimScalarFieldEnum = {

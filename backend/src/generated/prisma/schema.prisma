@@ -142,11 +142,13 @@ model PaperMethod {
 }
 
 model Benchmark {
-  id       String      @id @default(uuid())
-  name     String      @unique
-  slug     String      @unique
-  rankings Ranking[]
-  claims   SotaClaim[]
+  id          String      @id @default(uuid())
+  name        String      @unique
+  slug        String      @unique
+  description String?
+  metricName  String?     @map("metric_name")
+  rankings    Ranking[]
+  claims      SotaClaim[]
 
   @@map("benchmarks")
 }

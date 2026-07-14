@@ -12201,18 +12201,24 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    metricName: string | null
   }
 
   export type BenchmarkMaxAggregateOutputType = {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    metricName: string | null
   }
 
   export type BenchmarkCountAggregateOutputType = {
     id: number
     name: number
     slug: number
+    description: number
+    metricName: number
     _all: number
   }
 
@@ -12221,18 +12227,24 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    metricName?: true
   }
 
   export type BenchmarkMaxAggregateInputType = {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    metricName?: true
   }
 
   export type BenchmarkCountAggregateInputType = {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    metricName?: true
     _all?: true
   }
 
@@ -12312,6 +12324,8 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    description: string | null
+    metricName: string | null
     _count: BenchmarkCountAggregateOutputType | null
     _min: BenchmarkMinAggregateOutputType | null
     _max: BenchmarkMaxAggregateOutputType | null
@@ -12335,6 +12349,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    metricName?: boolean
     rankings?: boolean | Benchmark$rankingsArgs<ExtArgs>
     claims?: boolean | Benchmark$claimsArgs<ExtArgs>
     _count?: boolean | BenchmarkCountOutputTypeDefaultArgs<ExtArgs>
@@ -12344,21 +12360,27 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    metricName?: boolean
   }, ExtArgs["result"]["benchmark"]>
 
   export type BenchmarkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    metricName?: boolean
   }, ExtArgs["result"]["benchmark"]>
 
   export type BenchmarkSelectScalar = {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    metricName?: boolean
   }
 
-  export type BenchmarkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug", ExtArgs["result"]["benchmark"]>
+  export type BenchmarkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "metricName", ExtArgs["result"]["benchmark"]>
   export type BenchmarkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rankings?: boolean | Benchmark$rankingsArgs<ExtArgs>
     claims?: boolean | Benchmark$claimsArgs<ExtArgs>
@@ -12377,6 +12399,8 @@ export namespace Prisma {
       id: string
       name: string
       slug: string
+      description: string | null
+      metricName: string | null
     }, ExtArgs["result"]["benchmark"]>
     composites: {}
   }
@@ -12805,6 +12829,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Benchmark", 'String'>
     readonly name: FieldRef<"Benchmark", 'String'>
     readonly slug: FieldRef<"Benchmark", 'String'>
+    readonly description: FieldRef<"Benchmark", 'String'>
+    readonly metricName: FieldRef<"Benchmark", 'String'>
   }
     
 
@@ -35996,7 +36022,9 @@ export namespace Prisma {
   export const BenchmarkScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    slug: 'slug'
+    slug: 'slug',
+    description: 'description',
+    metricName: 'metricName'
   };
 
   export type BenchmarkScalarFieldEnum = (typeof BenchmarkScalarFieldEnum)[keyof typeof BenchmarkScalarFieldEnum]
@@ -36955,6 +36983,8 @@ export namespace Prisma {
     id?: StringFilter<"Benchmark"> | string
     name?: StringFilter<"Benchmark"> | string
     slug?: StringFilter<"Benchmark"> | string
+    description?: StringNullableFilter<"Benchmark"> | string | null
+    metricName?: StringNullableFilter<"Benchmark"> | string | null
     rankings?: RankingListRelationFilter
     claims?: SotaClaimListRelationFilter
   }
@@ -36963,6 +36993,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    metricName?: SortOrderInput | SortOrder
     rankings?: RankingOrderByRelationAggregateInput
     claims?: SotaClaimOrderByRelationAggregateInput
   }
@@ -36974,6 +37006,8 @@ export namespace Prisma {
     AND?: BenchmarkWhereInput | BenchmarkWhereInput[]
     OR?: BenchmarkWhereInput[]
     NOT?: BenchmarkWhereInput | BenchmarkWhereInput[]
+    description?: StringNullableFilter<"Benchmark"> | string | null
+    metricName?: StringNullableFilter<"Benchmark"> | string | null
     rankings?: RankingListRelationFilter
     claims?: SotaClaimListRelationFilter
   }, "id" | "name" | "slug">
@@ -36982,6 +37016,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    metricName?: SortOrderInput | SortOrder
     _count?: BenchmarkCountOrderByAggregateInput
     _max?: BenchmarkMaxOrderByAggregateInput
     _min?: BenchmarkMinOrderByAggregateInput
@@ -36994,6 +37030,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Benchmark"> | string
     name?: StringWithAggregatesFilter<"Benchmark"> | string
     slug?: StringWithAggregatesFilter<"Benchmark"> | string
+    description?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    metricName?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
   }
 
   export type SotaClaimWhereInput = {
@@ -38874,6 +38912,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    metricName?: string | null
     rankings?: RankingCreateNestedManyWithoutBenchmarkInput
     claims?: SotaClaimCreateNestedManyWithoutBenchmarkInput
   }
@@ -38882,6 +38922,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    metricName?: string | null
     rankings?: RankingUncheckedCreateNestedManyWithoutBenchmarkInput
     claims?: SotaClaimUncheckedCreateNestedManyWithoutBenchmarkInput
   }
@@ -38890,6 +38932,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metricName?: NullableStringFieldUpdateOperationsInput | string | null
     rankings?: RankingUpdateManyWithoutBenchmarkNestedInput
     claims?: SotaClaimUpdateManyWithoutBenchmarkNestedInput
   }
@@ -38898,6 +38942,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metricName?: NullableStringFieldUpdateOperationsInput | string | null
     rankings?: RankingUncheckedUpdateManyWithoutBenchmarkNestedInput
     claims?: SotaClaimUncheckedUpdateManyWithoutBenchmarkNestedInput
   }
@@ -38906,18 +38952,24 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    metricName?: string | null
   }
 
   export type BenchmarkUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metricName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BenchmarkUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metricName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SotaClaimCreateInput = {
@@ -40870,18 +40922,24 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    metricName?: SortOrder
   }
 
   export type BenchmarkMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    metricName?: SortOrder
   }
 
   export type BenchmarkMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    metricName?: SortOrder
   }
 
   export type BenchmarkScalarRelationFilter = {
@@ -44651,6 +44709,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    metricName?: string | null
     rankings?: RankingCreateNestedManyWithoutBenchmarkInput
   }
 
@@ -44658,6 +44718,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    metricName?: string | null
     rankings?: RankingUncheckedCreateNestedManyWithoutBenchmarkInput
   }
 
@@ -44784,6 +44846,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metricName?: NullableStringFieldUpdateOperationsInput | string | null
     rankings?: RankingUpdateManyWithoutBenchmarkNestedInput
   }
 
@@ -44791,6 +44855,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metricName?: NullableStringFieldUpdateOperationsInput | string | null
     rankings?: RankingUncheckedUpdateManyWithoutBenchmarkNestedInput
   }
 
@@ -44907,6 +44973,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    metricName?: string | null
     claims?: SotaClaimCreateNestedManyWithoutBenchmarkInput
   }
 
@@ -44914,6 +44982,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    metricName?: string | null
     claims?: SotaClaimUncheckedCreateNestedManyWithoutBenchmarkInput
   }
 
@@ -45040,6 +45110,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metricName?: NullableStringFieldUpdateOperationsInput | string | null
     claims?: SotaClaimUpdateManyWithoutBenchmarkNestedInput
   }
 
@@ -45047,6 +45119,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metricName?: NullableStringFieldUpdateOperationsInput | string | null
     claims?: SotaClaimUncheckedUpdateManyWithoutBenchmarkNestedInput
   }
 
