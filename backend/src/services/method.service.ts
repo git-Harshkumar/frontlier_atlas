@@ -183,6 +183,7 @@ export const getMethodBySlug = async (queryRouter: QueryRouter, slug: string) =>
                 id: true,
                 title: true,
                 slug: true,
+                abstract: true,
                 citationCount: true,
                 publicationDate: true,
                 githubStars: true,

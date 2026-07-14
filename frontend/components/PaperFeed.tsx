@@ -342,8 +342,7 @@ const Metric = memo(
 );
 Metric.displayName = "Metric";
 
-/* ─── Paper Card ─────────────────────────────────────────────────────────── */
-const PaperCard = memo(({ paper }: { paper: Paper }) => {
+export const PaperCard = memo(({ paper }: { paper: Paper }) => {
   const upvotesNum = parseFloat(paper.upvotes) || 0;
 
   const safeAuthors = paper.authors || [];
