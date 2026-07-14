@@ -428,32 +428,44 @@ export const getPaperBySlug = async (
             },
           },
           tasks: {
-            select: {
-              paper_id: true,
-              task_id: true,
-              task: {
-                select: {
-                  id: true,
-                  name: true,
-                  slug: true,
-                  color: true,
-                },
-              },
-            },
-          },
+  take: 3,
+  orderBy: {
+    task: {
+      name: "asc",
+    },
+  },
+  select: {
+    paper_id: true,
+    task_id: true,
+    task: {
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        color: true,
+      },
+    },
+  },
+},
           methods: {
-            select: {
-              paper_id: true,
-              method_id: true,
-              method: {
-                select: {
-                  id: true,
-                  name: true,
-                  slug: true,
-                },
-              },
-            },
-          },
+  take: 3,
+  orderBy: {
+    method: {
+      name: "asc",
+    },
+  },
+  select: {
+    paper_id: true,
+    method_id: true,
+    method: {
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+      },
+    },
+  },
+},
           conferences: {
             select: {
               paper_id: true,
