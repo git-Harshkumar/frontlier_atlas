@@ -19,9 +19,9 @@ const getPaper = cache(async (slug: string): Promise<PaperDetailType> => {
 });
 
 async function RelatedPapersStream({ paper }: { paper: PaperDetailType }) {
-  const taskSlugs = [...new Set(paper.tasks.map((t) => t.slug).filter(Boolean))];
-  const methodSlugs = [...new Set(paper.methods.map((m) => m.slug))];
-  const modelSlugs = [...new Set(paper.models.map((m) => m.slug))];
+  const taskSlugs = [...new Set(paper.tasks.map((t) => t.task.slug).filter(Boolean))];
+  const methodSlugs = [...new Set(paper.methods.map((m) => m.method.slug).filter(Boolean))];
+  const modelSlugs = [...new Set(paper.models.map((m) => m.model.slug).filter(Boolean))];
 
   if (taskSlugs.length === 0 && methodSlugs.length === 0 && modelSlugs.length === 0) {
     return <span className="text-[13px] text-[#999] italic">Not available</span>;
