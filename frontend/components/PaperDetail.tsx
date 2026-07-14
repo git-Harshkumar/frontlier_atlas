@@ -845,9 +845,9 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
                 <h1 className="text-[26px] font-black leading-[1.1] tracking-[-0.03em] text-[#171717] md:text-[34px] lg:text-[38px]">
                   {paper.title}
                 </h1>
-
                 {/* Authors */}
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                <div className="flex items-center flex-wrap gap-2">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
                   {paper.authors.slice(0, 3).map((pa, i) => (
                     <span key={pa.id} className="inline-flex items-center">
                       {i > 0 && <span className="mr-2 text-[#DCDCD7]">·</span>}
@@ -873,6 +873,13 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
                       </Link>
                     </span>
                   ))}
+                </div>
+                {paper.publicationDate && (
+  <div className="flex items-center text-[14px] text-[#666]">
+    <span className="mx-2 text-[#B0B0B0]">•</span>
+    <span>{formatDate(paper.publicationDate)}</span>
+  </div>
+)}
                 </div>
 
                 {/* Stats Bar */}

@@ -365,35 +365,39 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
             {paper.title}
           </h3>
 
-          {/* Authors — clickable, comma-separated */}
-          <div className="text-[12.5px] sm:text-[13px] xl:text-[13.5px] text-[#555555] mb-2 xl:mb-2.5 flex flex-wrap items-baseline gap-x-0.5">
-            {visibleAuthors.length > 0 ? (
-              visibleAuthors.map((a, i) => (
-                <span key={a.slug || i}>
-                  {i > 0 && <span className="text-[#999]">, </span>}
-                  <Link
-                    href={`/authors/${a.slug}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="hover:text-[#FF5A1F] transition-colors no-underline text-[#555555] hover:underline"
-                  >
-                    {a.name}
-                  </Link>
-                </span>
-              ))
-            ) : (
-              <span className="text-[#999]">Unknown Author</span>
-            )}
-            {remaining > 0 && (
-              <span className="text-[#999] ml-0.5">et al.</span>
-            )}
-          </div>
+          {/* Authors + Date + Citations */}
+<div className="flex flex-wrap items-center gap-x-2 text-[13px] text-[#666666] mb-3">
 
-          {/* Date + citations */}
-          <div className="flex items-center text-[11.5px] sm:text-[12px] xl:text-[12.5px] text-[#999999] mb-2 xl:mb-2.5 min-w-0 w-full flex-wrap gap-y-1">
-            <span className="shrink-0">{paper.date}</span>
-            <span className="mx-1.5 hidden sm:inline text-[#ccc]">·</span>
-            <span className="shrink-0 hidden sm:inline">{paper.citations || 0} citations</span>
-          </div>
+  {visibleAuthors.length > 0 ? (
+    visibleAuthors.map((a, i) => (
+      <span key={a.slug || i}>
+        {i > 0 && <span>, </span>}
+        <Link
+          href={`/authors/${a.slug}`}
+          onClick={(e) => e.stopPropagation()}
+          className="hover:text-[#F55036] hover:underline"
+        >
+          {a.name}
+        </Link>
+      </span>
+    ))
+  ) : (
+    <span>Unknown Author</span>
+  )}
+
+  {remaining > 0 && <span> et al.</span>}
+
+  <span className="text-[#CCCCCC]">•</span>
+
+  <span>{paper.date}</span>
+
+  <span className="text-[#CCCCCC]">•</span>
+
+  <span>{paper.citations || 0} citations</span>
+
+</div>
+
+          
 
           {/* Description */}
           <p className="text-[13px] sm:text-[13.5px] xl:text-[14px] text-[#444444] leading-[1.6] mb-3 line-clamp-3">
@@ -407,7 +411,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
 
           {/* Tasks (Row 2) */}
           <div className="flex flex-wrap items-center gap-1.5 mb-1.5 w-full">
-            {paper.tags?.map((t) => {
+            {paper.tags?.slice(0,4).map((t) => {
               const colorKey = getTagColor(t);
               return <Pill key={t} label={t} colorKey={colorKey} />;
             })}
@@ -415,7 +419,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
 
           {/* Methods (Row 3) */}
           <div className="flex flex-wrap items-center gap-1.5 w-full">
-            {paper.additionalTags?.map((t) => {
+            {paper.additionalTags?.slice(0,4).map((t) => {
               return <Pill key={t} label={t} colorKey="gray" />;
             })}
           </div>
