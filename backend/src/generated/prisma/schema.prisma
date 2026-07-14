@@ -13,50 +13,53 @@ datasource db {
 }
 
 model Paper {
-  id              String            @id @default(uuid())
-  slug            String            @unique
-  title           String
-  shortTitle      String?           @map("short_title")
-  abstract        String?
-  tlDr            String?           @map("tl_dr")
-  publicationDate DateTime?         @map("publication_date")
-  submissionDate  DateTime?         @map("submission_date")
-  arxivId         String?           @unique @map("arxiv_id")
-  doi             String?
-  paperUrl        String?           @map("paper_url")
-  pdfUrl          String?           @map("pdf_url")
-  thumbnailUrl    String?           @map("thumbnail_url")
-  sourceUrl       String?           @map("source_url")
-  projectUrl      String?           @map("project_url")
-  citationCount   Int               @default(0) @map("citation_count")
-  referenceCount  Int               @default(0) @map("reference_count")
-  pageCount       Int?              @map("page_count")
-  paperType       String?           @map("paper_type")
-  status          String?
-  language        String?
-  license         String?
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime?         @updatedAt @map("updated_at")
-  githubForks     Int?              @default(0) @map("github_forks")
-  githubStars     Int?              @default(0) @map("github_stars")
-  githubUrl       String?           @map("github_url")
-  isOfficialCode  Boolean?          @default(false) @map("is_official_code")
-  hfUpvotes       Int?              @default(0) @map("hf_upvotes")
-  trendingScore   Float?            @default(0) @map("trending_score")
-  discoverySource String?           @map("discovery_source")
-  authors         PaperAuthor[]
-  conferences     PaperConference[]
-  datasets        PaperDataset[]
-  journals        PaperJournal[]
-  labs            PaperLab[]
-  methods         PaperMethod[]
-  models          PaperModel[]
-  repositories    PaperRepository[]
-  tasks           PaperTask[]
-  universities    PaperUniversity[]
-  rankings        Ranking[]
-  sotaClaims      SotaClaim[]
-  summaries       Summary[]
+  id               String            @id @default(uuid())
+  slug             String            @unique
+  title            String
+  shortTitle       String?           @map("short_title")
+  abstract         String?
+  tlDr             String?           @map("tl_dr")
+  publicationDate  DateTime?         @map("publication_date")
+  submissionDate   DateTime?         @map("submission_date")
+  arxivId          String?           @unique @map("arxiv_id")
+  doi              String?
+  paperUrl         String?           @map("paper_url")
+  pdfUrl           String?           @map("pdf_url")
+  thumbnailUrl     String?           @map("thumbnail_url")
+  sourceUrl        String?           @map("source_url")
+  projectUrl       String?           @map("project_url")
+  citationCount    Int               @default(0) @map("citation_count")
+  referenceCount   Int               @default(0) @map("reference_count")
+  pageCount        Int?              @map("page_count")
+  paperType        String?           @map("paper_type")
+  status           String?
+  language         String?
+  license          String?
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime?         @updatedAt @map("updated_at")
+  githubForks      Int?              @default(0) @map("github_forks")
+  githubStars      Int?              @default(0) @map("github_stars")
+  githubUrl        String?           @map("github_url")
+  isOfficialCode   Boolean?          @default(false) @map("is_official_code")
+  hfUpvotes        Int?              @default(0) @map("hf_upvotes")
+  trendingScore    Float?            @default(0) @map("trending_score")
+  discoverySource  String?           @map("discovery_source")
+  importance_score Float?            @default(0.0)
+  venue            String?
+  organization     String?
+  authors          PaperAuthor[]
+  conferences      PaperConference[]
+  datasets         PaperDataset[]
+  journals         PaperJournal[]
+  labs             PaperLab[]
+  methods          PaperMethod[]
+  models           PaperModel[]
+  repositories     PaperRepository[]
+  tasks            PaperTask[]
+  universities     PaperUniversity[]
+  rankings         Ranking[]
+  sotaClaims       SotaClaim[]
+  summaries        Summary[]
 
   @@map("papers")
 }
@@ -89,11 +92,20 @@ model Startup {
 }
 
 model Task {
-  id     String      @id @default(uuid())
-  name   String      @unique
-  slug   String      @unique
-  color  String?
+  id    String  @id @default(uuid())
+  name  String  @unique
+  slug  String  @unique
+  color String?
+
+  description String?
+  summary     String?
+  icon        String?
+  image       String?
+
   papers PaperTask[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("tasks")
 }
@@ -156,9 +168,15 @@ model Ranking {
   benchmark_id  String
   rank          Int
   previous_rank Int?
+  metric        String?
+  score         Float?
+  resultDate    DateTime?
+  sourceUrl     String?
+  verified      Boolean   @default(false)
   updated_at    DateTime  @updatedAt
-  benchmark     Benchmark @relation(fields: [benchmark_id], references: [id])
-  paper         Paper     @relation(fields: [paper_id], references: [id])
+
+  benchmark Benchmark @relation(fields: [benchmark_id], references: [id])
+  paper     Paper     @relation(fields: [paper_id], references: [id])
 
   @@unique([paper_id, benchmark_id])
   @@index([benchmark_id, rank])
@@ -187,12 +205,21 @@ model PaperAuthor {
 }
 
 model Model {
-  id        String       @id @default(uuid())
-  name      String
-  slug      String       @unique
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  papers    PaperModel[]
+  id              String    @id @default(uuid())
+  name            String
+  slug            String    @unique
+  vendor          String?
+  releaseDate     DateTime?
+  parameterCount  String?
+  modality        String?
+  accessType      String?
+  opennessType    String?
+  description     String?
+  benchmark_score Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  papers PaperModel[]
 
   @@map("models")
 }

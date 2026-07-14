@@ -151,7 +151,10 @@ exports.Prisma.PaperScalarFieldEnum = {
   isOfficialCode: 'isOfficialCode',
   hfUpvotes: 'hfUpvotes',
   trendingScore: 'trendingScore',
-  discoverySource: 'discoverySource'
+  discoverySource: 'discoverySource',
+  importance_score: 'importance_score',
+  venue: 'venue',
+  organization: 'organization'
 };
 
 exports.Prisma.EntityRelationshipScalarFieldEnum = {
@@ -178,7 +181,13 @@ exports.Prisma.TaskScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
-  color: 'color'
+  color: 'color',
+  description: 'description',
+  summary: 'summary',
+  icon: 'icon',
+  image: 'image',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PaperTaskScalarFieldEnum = {
@@ -217,6 +226,11 @@ exports.Prisma.RankingScalarFieldEnum = {
   benchmark_id: 'benchmark_id',
   rank: 'rank',
   previous_rank: 'previous_rank',
+  metric: 'metric',
+  score: 'score',
+  resultDate: 'resultDate',
+  sourceUrl: 'sourceUrl',
+  verified: 'verified',
   updated_at: 'updated_at'
 };
 
@@ -237,6 +251,14 @@ exports.Prisma.ModelScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
+  vendor: 'vendor',
+  releaseDate: 'releaseDate',
+  parameterCount: 'parameterCount',
+  modality: 'modality',
+  accessType: 'accessType',
+  opennessType: 'opennessType',
+  description: 'description',
+  benchmark_score: 'benchmark_score',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
