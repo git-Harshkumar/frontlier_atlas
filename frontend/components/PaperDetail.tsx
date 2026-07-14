@@ -578,10 +578,10 @@ function RelatedPaperCard({ paper }: { paper: Paper }) {
   const showThumbnail = !!paper.thumbnail && !thumbnailFailed;
 
   const displayAuthors = (() => {
-    if (!paper.authors) return "";
-    const list = paper.authors.split(",").map((a) => a.trim());
-    if (list.length > 2) return `${list[0]}, ${list[1]} et al.`;
-    return paper.authors;
+    if (!Array.isArray(paper.authors) || paper.authors.length === 0) return "";
+    const names = paper.authors.map((a) => a.name);
+    if (names.length > 2) return `${names.slice(0, 2).join(", ")} et al.`;
+    return names.join(", ");
   })();
 
   const hasCode = !!paper.githubUrl;

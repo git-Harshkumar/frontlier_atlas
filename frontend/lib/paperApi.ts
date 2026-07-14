@@ -200,7 +200,7 @@ export async function searchPapers(query: string): Promise<Paper[]> {
       return result.papers.filter((paper) => {
         return (
           paper.title.toLowerCase().includes(lowerQuery) ||
-          paper.authors.toLowerCase().includes(lowerQuery) ||
+          paper.authors.map(a => a.name).join(' ').toLowerCase().includes(lowerQuery) ||
           paper.description.toLowerCase().includes(lowerQuery) ||
           paper.tags.some(t => t.toLowerCase().includes(lowerQuery)) ||
           (paper.additionalTags || []).some(t => t.toLowerCase().includes(lowerQuery))
