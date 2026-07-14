@@ -272,20 +272,20 @@ const PaperThumbnail = memo(
     const [hasError, setHasError] = useState(false);
 
     return (
-      <div className="w-full xl:w-[160px] h-[100px] sm:h-[125px] xl:h-[180px] shrink-0 border border-[#E5E5E0] bg-white rounded-none overflow-hidden shadow-sm relative flex items-center justify-center">
+      <div className="w-[140px] sm:w-[180px] xl:w-[160px] h-auto aspect-[1/1.414] xl:aspect-auto xl:h-full shrink-0 border border-[#E5E5E0] bg-[#F8F7F2] rounded-none overflow-hidden shadow-sm relative flex items-center justify-center mx-auto xl:mx-0">
         {isValidImageSrc(thumbnail) && !hasError ? (
           <Image
             src={thumbnail}
             alt={title || "Paper thumbnail"}
             fill
             unoptimized
-            className="object-contain"
+            className="object-cover xl:object-cover xl:object-top"
             sizes="(max-width: 1280px) 100vw, 220px"
             onError={() => setHasError(true)}
           />
         ) : (
           <div className="w-full h-full">
-             <GeneratedCover title={title} />
+            <GeneratedCover title={title} />
           </div>
         )}
       </div>
@@ -322,7 +322,7 @@ const Metric = memo(
         }}
       >
         <div className={`flex items-center justify-center w-7 h-7 rounded-full bg-white/60 border border-[#E5E5E0]/60 ${isInteractive ? "group-hover/metric:border-[#F55036]/20 group-hover/metric:bg-[#F55036]/5 transition-colors" : ""}`}>
-           {children}
+          {children}
         </div>
         <div className="flex flex-col items-start justify-center">
           <span
@@ -352,9 +352,9 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
 
   return (
     <Link href={`/papers/${paper.slug}`} className="no-underline block">
-      <div className="group flex flex-row gap-3 sm:gap-4 xl:gap-5 p-3 sm:p-4 xl:py-5 bg-white xl:bg-transparent border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] rounded-none cursor-pointer hover:shadow-lg xl:hover:bg-white xl:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 relative hover:z-10 active:scale-[0.99]">
+      <div className="group flex flex-col xl:flex-row gap-3 sm:gap-4 xl:gap-5 p-3 sm:p-4 xl:py-5 bg-white xl:bg-transparent border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] rounded-none cursor-pointer hover:shadow-lg xl:hover:bg-white xl:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 relative hover:z-10 active:scale-[0.99]">
         {/* LEFT — PDF thumbnail */}
-        <div className="shrink-0 w-[72px] sm:w-[90px] xl:w-auto self-start xl:self-stretch">
+        <div className="shrink-0 w-full xl:w-auto mx-auto xl:mx-0 xl:self-stretch border-b xl:border-b-0 border-[#E5E5E0] pb-3 xl:pb-0 mb-1 xl:mb-0">
           <PaperThumbnail title={paper.title} thumbnail={paper.thumbnail} />
         </div>
 
@@ -396,7 +396,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
           </div>
 
           {/* Description */}
-          <p className="text-[13px] sm:text-[13.5px] xl:text-[14px] text-[#444444] leading-[1.6] mb-3 line-clamp-2 xl:line-clamp-3 hidden sm:block">
+          <p className="text-[13px] sm:text-[13.5px] xl:text-[14px] text-[#444444] leading-[1.6] mb-3 line-clamp-3">
             {paper.description}
           </p>
 
@@ -433,7 +433,7 @@ const PaperCard = memo(({ paper }: { paper: Paper }) => {
               <span className="font-medium text-[11px] sm:text-[13px]">arXiv</span>
               <ArrowUpRight size={14} strokeWidth={1.5} className="hidden sm:block" />
             </button>
-            
+
             <button
               onClick={(e) => {
                 e.preventDefault();
