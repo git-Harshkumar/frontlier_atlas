@@ -44,6 +44,9 @@ model Paper {
   hfUpvotes       Int?              @default(0) @map("hf_upvotes")
   trendingScore   Float?            @default(0) @map("trending_score")
   discoverySource String?           @map("discovery_source")
+  importance_score Float? @default(0.0)
+  venue            String?
+  organization     String?
   authors         PaperAuthor[]
   conferences     PaperConference[]
   datasets        PaperDataset[]
