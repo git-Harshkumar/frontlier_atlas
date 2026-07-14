@@ -54,6 +54,7 @@ const paperSelect = {
   githubStars: true,
   githubForks: true,
   citationCount: true,
+  trendingScore: true,
   language: true,
   authors: {
     select: {
@@ -315,10 +316,10 @@ export const getPapers = async (
         : sort === "alphabetical"
           ? [{ title: "asc" as const }, { slug: "asc" as const }]
           : [
-              { githubStars: "desc" as const },
-              { citationCount: "desc" as const },
-              { publicationDate: "desc" as const },
-              { slug: "asc" as const },
+             { trendingScore: "desc" as const },
+             { githubStars: "desc" as const },
+             { publicationDate: "desc" as const },
+             { slug: "asc" as const },
             ];
 
   const papers = await queryRouter.routeQuery<any>(
