@@ -5,6 +5,11 @@ export const getModels = async (
   queryRouter: QueryRouter,
   limit: number = 50,
   skip: number = 0,
+  sort: string = "name",
+  vendor?: string,
+  modality?: string,
+  accessType?: string,
+  opennessType?: string,
 ) => {
   const intent: QueryIntent = {
     type: QueryType.READ,
@@ -12,11 +17,52 @@ export const getModels = async (
     operation: "findMany",
   };
 
+  const isTrending = sort === "trending";
+  const needsFullSort =
+    isTrending || sort === "benchmark" || sort === "papers";
+
   const routingResult = await queryRouter.routeQuery(intent, async (prisma) => {
     return prisma.model.findMany({
-      take: limit,
-      skip,
-      orderBy: { name: "asc" },
+      where: {
+        ...(vendor
+          ? {
+              vendor: {
+                equals: vendor,
+                mode: "insensitive",
+              },
+            }
+          : {}),
+        ...(modality
+          ? {
+              modality: {
+                equals: modality,
+                mode: "insensitive",
+              },
+            }
+          : {}),
+        ...(accessType
+          ? {
+              accessType: {
+                equals: accessType,
+                mode: "insensitive",
+              },
+            }
+          : {}),
+        ...(opennessType
+          ? {
+              opennessType: {
+                equals: opennessType,
+                mode: "insensitive",
+              },
+            }
+          : {}),
+      },
+      take: needsFullSort ? 200 : limit,
+      skip: needsFullSort ? 0 : skip,
+      orderBy:
+        sort === "recent"
+          ? { releaseDate: "desc" }
+          : { name: "asc" },
       select: {
         id: true,
         name: true,
@@ -35,6 +81,20 @@ export const getModels = async (
             papers: true,
           },
         },
+        papers: isTrending
+          ? {
+              take: 100,
+              select: {
+                paper: {
+                  select: {
+                    id: true,
+                    citationCount: true,
+                    githubStars: true,
+                  },
+                },
+              },
+            }
+          : false,
       },
     });
   });
@@ -55,10 +115,28 @@ export const getModels = async (
     }
   }
 
-  return Array.from(modelsById.values())
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .slice(0, limit)
-    .map((model) => ({
+  const models = Array.from(modelsById.values()).map((model) => {
+    let citationCount = 0;
+    let githubStars = 0;
+
+    if (isTrending && model.papers) {
+      const seenPaperIds = new Set<string>();
+
+      for (const paperRelation of model.papers) {
+        const paper = paperRelation.paper;
+
+        if (seenPaperIds.has(paper.id)) continue;
+
+        seenPaperIds.add(paper.id);
+
+        citationCount += paper.citationCount || 0;
+        githubStars += paper.githubStars || 0;
+      }
+    }
+
+    const trendingScore = citationCount + githubStars;
+
+    return {
       id: model.id,
       name: model.name,
       slug: model.slug,
@@ -72,7 +150,53 @@ export const getModels = async (
       benchmarkScore: model.benchmark_score,
       createdAt: model.createdAt,
       paperCount: model._count.papers,
-    }));
+      citationCount: isTrending ? citationCount : undefined,
+      githubStars: isTrending ? githubStars : undefined,
+      trendingScore: isTrending ? trendingScore : undefined,
+    };
+  });
+
+  models.sort((a, b) => {
+    if (sort === "recent") {
+      const dateA = a.releaseDate
+        ? new Date(a.releaseDate).getTime()
+        : 0;
+
+      const dateB = b.releaseDate
+        ? new Date(b.releaseDate).getTime()
+        : 0;
+
+      return dateB - dateA;
+    }
+
+    if (sort === "trending") {
+      return (b.trendingScore || 0) - (a.trendingScore || 0);
+    }
+
+    if (sort === "papers") {
+      return b.paperCount - a.paperCount;
+    }
+
+    if (sort === "benchmark") {
+      const scoreA =
+        typeof a.benchmarkScore?.mmlu === "number"
+          ? a.benchmarkScore.mmlu
+          : 0;
+
+      const scoreB =
+        typeof b.benchmarkScore?.mmlu === "number"
+          ? b.benchmarkScore.mmlu
+          : 0;
+
+      return scoreB - scoreA;
+    }
+
+    return a.name.localeCompare(b.name);
+  });
+
+  return needsFullSort
+    ? models.slice(skip, skip + limit)
+    : models.slice(0, limit);
 };
 
 export const getModelBySlug = async (
@@ -359,5 +483,72 @@ export const getModelBySlug = async (
       slug: model.slug,
       paperCount: model._count.papers,
     })),
+  };
+};
+
+export const getModelFacets = async (queryRouter: QueryRouter) => {
+  const intent: QueryIntent = {
+    type: QueryType.READ,
+    entity: "model",
+    operation: "facets",
+  };
+
+  const routingResult = await queryRouter.routeQuery(intent, async (prisma) => {
+    return prisma.model.findMany({
+      select: {
+        id: true,
+        vendor: true,
+        modality: true,
+        accessType: true,
+        opennessType: true,
+      },
+    });
+  });
+
+  const modelsById = new Map<string, any>();
+
+  for (const result of routingResult.results) {
+    for (const model of result) {
+      if (!modelsById.has(model.id)) {
+        modelsById.set(model.id, model);
+      }
+    }
+  }
+
+  const vendors = new Map<string, number>();
+  const modalities = new Map<string, number>();
+  const accessTypes = new Map<string, number>();
+  const opennessTypes = new Map<string, number>();
+
+  const incrementCount = (
+    map: Map<string, number>,
+    value: string | null,
+  ) => {
+    if (!value) return;
+
+    map.set(value, (map.get(value) || 0) + 1);
+  };
+
+  for (const model of modelsById.values()) {
+    incrementCount(vendors, model.vendor);
+    incrementCount(modalities, model.modality);
+    incrementCount(accessTypes, model.accessType);
+    incrementCount(opennessTypes, model.opennessType);
+  }
+
+  const toFacetArray = (map: Map<string, number>) =>
+    Array.from(map.entries())
+      .map(([name, count]) => ({
+        name,
+        count,
+      }))
+      .sort((a, b) => b.count - a.count);
+
+  return {
+    totalModels: modelsById.size,
+    vendors: toFacetArray(vendors),
+    modalities: toFacetArray(modalities),
+    accessTypes: toFacetArray(accessTypes),
+    opennessTypes: toFacetArray(opennessTypes),
   };
 };
