@@ -74,7 +74,19 @@ export const getModelBySlug = async (
     return Promise.all([
       prisma.model.findUnique({
         where: { slug },
-        include: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          vendor: true,
+          releaseDate: true,
+          parameterCount: true,
+          modality: true,
+          accessType: true,
+          opennessType: true,
+          description: true,
+          benchmark_score: true,
+          createdAt: true,
           _count: {
             select: {
               papers: true,
@@ -97,6 +109,7 @@ export const getModelBySlug = async (
           },
         },
       }),
+
       prisma.paper.findMany({
         take: 200,
         where: {
@@ -159,6 +172,7 @@ export const getModelBySlug = async (
           },
         },
       }),
+
       prisma.model.findMany({
         take: 6,
         where: {
@@ -306,6 +320,14 @@ export const getModelBySlug = async (
     id: baseModel.id,
     name: baseModel.name,
     slug: baseModel.slug,
+    vendor: baseModel.vendor,
+    releaseDate: baseModel.releaseDate,
+    parameterCount: baseModel.parameterCount,
+    modality: baseModel.modality,
+    accessType: baseModel.accessType,
+    opennessType: baseModel.opennessType,
+    description: baseModel.description,
+    benchmarkScore: baseModel.benchmark_score,
     createdAt: baseModel.createdAt,
     paperCount,
     citationCount,
