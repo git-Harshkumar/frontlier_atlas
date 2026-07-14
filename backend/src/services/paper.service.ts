@@ -535,17 +535,46 @@ export const getPaperBySlug = async (
             })
             .then((rows) => rows.map((r) => r.dataset)),
           prisma.paperTask
-            .findMany({
-              where: { paper_id: paperData.id },
-              select: { task: { select: { id: true, name: true, slug: true, color: true } } },
-            })
-            .then((rows) => rows.map((r) => r.task)),
+  .findMany({
+    where: { paper_id: paperData.id },
+    take: 4,
+    orderBy: {
+      task: {
+        name: "asc",
+      },
+    },
+    select: {
+      task: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          color: true,
+        },
+      },
+    },
+  })
+  .then((rows) => rows.map((r) => r.task)),
           prisma.paperMethod
-            .findMany({
-              where: { paper_id: paperData.id },
-              select: { method: { select: { id: true, name: true, slug: true } } },
-            })
-            .then((rows) => rows.map((r) => r.method)),
+  .findMany({
+    where: { paper_id: paperData.id },
+    take: 4,
+    orderBy: {
+      method: {
+        name: "asc",
+      },
+    },
+    select: {
+      method: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+    },
+  })
+  .then((rows) => rows.map((r) => r.method)),
           prisma.paperConference
             .findMany({
               where: { paper_id: paperData.id },
