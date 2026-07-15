@@ -889,49 +889,49 @@ const FrontierAtlas: React.FC = () => {
         >
           <div className="max-w-7xl mx-auto px-6 py-8 w-full">
             {/* Hero section - reduced by 25% */}
-            <div className="relative overflow-hidden mb-10 hidden md:flex min-h-[375px]">
-              <div className="relative z-10 w-[35%] px-6 md:px-8 py-8 md:py-10">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 tracking-tight text-gray-900">
+            <div className="relative overflow-hidden mb-10 hidden md:flex min-h-[187.5px]">
+              <div className="relative z-10 w-[30%] px-6 md:px-8 py-4 md:py-5">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 tracking-tight text-gray-900">
                   All Research
                   <br />
                   <span className="text-[#e11d48]">Domains</span>
                 </h1>
-                <p className="text-gray-600 text-sm md:text-base mb-6 max-w-md leading-relaxed">
+                <p className="text-gray-600 text-xs md:text-sm mb-4 max-w-md leading-relaxed">
                   Explore the full spectrum of AI research across tasks,
                   methods, and applications.
                 </p>
-                <div className="flex items-center gap-5 whitespace-nowrap text-sm">
+                <div className="flex items-center gap-4 whitespace-nowrap text-xs md:text-sm">
                   {stats.map((stat, index) => (
-                    <div key={stat.label} className="flex items-center gap-5">
+                    <div key={stat.label} className="flex items-center gap-4">
                       <div>
-                        <div className="text-xl md:text-2xl font-bold text-gray-800">
+                        <div className="text-lg md:text-xl font-bold text-gray-800">
                           {stat.value}
                         </div>
-                        <div className="text-gray-500 text-xs md:text-sm">
+                        <div className="text-gray-500 text-[10px] md:text-xs">
                           {stat.label}
                         </div>
                       </div>
                       {index < stats.length - 1 && (
-                        <div className="w-px h-8 bg-gray-200" />
+                        <div className="w-px h-6 bg-gray-200" />
                       )}
                     </div>
                   ))}
-                  <div className="flex items-center gap-2 border-2 border-gray-200 rounded-full px-3 py-1 bg-white/50 backdrop-blur-sm ml-2 cursor-pointer hover:shadow-sm">
-                    <TrendingUp size={12} className="text-emerald-500" />
-                    <span className="text-gray-600 font-medium text-xs md:text-sm">
+                  <div className="flex items-center gap-1.5 border-2 border-gray-200 rounded-full px-2.5 py-1 bg-white/50 backdrop-blur-sm ml-1 cursor-pointer hover:shadow-sm">
+                    <TrendingUp size={10} className="text-emerald-500" />
+                    <span className="text-gray-600 font-medium text-[10px] md:text-xs">
                       Daily updates
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="relative w-[65%]">
-                <Image
+              <div className="relative w-[70%] h-[250px] flex justify-center">
+                {/*<Image
                   src={bgImage}
                   alt="AI Research Background"
                   fill
                   className="object-contain object-right"
                   priority
-                />
+                />*/}
               </div>
             </div>
 
