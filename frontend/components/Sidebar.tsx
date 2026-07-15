@@ -155,13 +155,6 @@ const methods = [
   { label: "All Methods", icon: <FileText size={16} />, slug: "" },
 ];
 
-  const generation = [
-    { label: "Text Generation", icon: <FileText size={16} />, slug: "text-generation" },
-    { label: "Image Generation", icon: <ImageIcon size={16} />, slug: "image-generation" },
-    { label: "Video Generation", icon: <Video size={16} />, slug: "video-generation" },
-    { label: "Audio Generation", icon: <Volume2 size={16} />, slug: "audio-generation" },
-  ];
-
   return (
     <aside className="flex flex-col w-full bg-transparent h-full">
       <div className="flex-1 px-2 py-2 space-y-0.5 pb-8">
@@ -215,23 +208,6 @@ const methods = [
             ))}
 
 
-          </div>
-        </div>
-
-        {/* GENERATION Section */}
-        <div>
-          <SectionLabel title="Generation" />
-          <div className="flex flex-col gap-0.5">
-            {generation.map((item) => (
-              <NavItem
-                key={item.label}
-                icon={item.icon}
-                label={item.label}
-                isActive={activeItem === item.label}
-                onClick={() => handleItemClick(item.label)}
-                href={`/category/${item.slug}`}
-              />
-            ))}
           </div>
         </div>
       </div>
