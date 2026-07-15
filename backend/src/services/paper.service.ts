@@ -107,6 +107,17 @@ const paperSelect = {
       },
     },
   },
+  repositories: {
+  select: {
+    repository: {
+      select: {
+        url: true,
+        owner: true,
+        name: true,
+      },
+    },
+  },
+},
 } satisfies Prisma.PaperSelect;
 
 // Infer the type from the select object
@@ -339,9 +350,13 @@ export const getPapers = async (
   return {
     papers: pagePapers.map((paper: any) => ({
       ...exposeThumbnailUrl(paper),
-      authors: paper.authors.map(({ author }: any) => author),
+      repositories: paper.repositories.map(
+    ({ repository }: any) => repository
+  ),
+      authors: paper.authors,
       tasks: paper.tasks.map(({ task }: any) => task),
       methods: paper.methods.map(({ method }: any) => method),
+      
     })),
     total: pagePapers.length, // Let the frontend use hasMore rather than a fake total
     page,
@@ -387,19 +402,7 @@ export const getPaperBySlug = async (
           isOfficialCode: true,
           discoverySource: true,
 
-          authors: {
-            select: {
-              paper_id: true,
-              author_id: true,
-              author: {
-                select: {
-                  id: true,
-                  name: true,
-                  slug: true,
-                },
-              },
-            },
-          },
+          authors: true,
           models: {
             select: {
               paper_id: true,
