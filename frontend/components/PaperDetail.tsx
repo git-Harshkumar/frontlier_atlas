@@ -1230,7 +1230,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
 
             {/* Back link */}
             <Link
-              href="/papers"
+              href="/"
               className="hover-dim inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#8B8B8B] no-underline border-t border-[#E5E5E0] pt-3.5 transition-colors hover:text-[#FF5A1F]"
             >
               <ArrowLeft size={13} />
