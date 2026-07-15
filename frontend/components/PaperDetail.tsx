@@ -977,6 +977,15 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
                       )}
                     </a>
                   )}
+                  <button
+  type="button"
+  onClick={() => {
+    alert("Hugging Face model will be available soon.");
+  }}
+  className="ds-button-ghost inline-flex items-center justify-center gap-1.5 rounded-full border-[1.5px] border-[#E0DDD6] bg-transparent px-5 py-2 text-[13px] font-medium text-[#444444] transition-all hover:bg-[rgba(255,90,31,0.06)] hover:text-[#FF5A1F] hover:border-[rgba(255,90,31,0.3)]"
+>
+   Hugging Face
+</button>
                   {paper.projectUrl && (
                     <a
                       href={paper.projectUrl}

@@ -351,33 +351,10 @@ export const PaperCard = memo(({ paper }: { paper: Paper }) => {
   const githubRepo = paper.repositories?.find(
   (repo: any) => repo.url.includes("github.com")
 );
-
 const huggingFaceRepo = paper.repositories?.find(
-  (repo: any) => repo.url.includes("huggingface.co")
+  (repo: any) => repo.url?.includes("huggingface.co")
 );
-{huggingFaceRepo && (
-  <button
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      window.open(huggingFaceRepo.url, "_blank");
-    }}
-    className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#FFF8E7] text-[#111111] border border-[#F5D565] rounded-[6px] hover:bg-[#FFEFB3] transition-colors"
-  >
-    <div className="flex items-center gap-1 sm:gap-2">
-      <span className="text-[14px]">🤗</span>
-      <span className="font-medium text-[11px] sm:text-[13px]">
-        Hugging Face
-      </span>
-    </div>
 
-    <ArrowUpRight
-      size={14}
-      strokeWidth={1.5}
-      className="text-[#9CA3AF] hidden sm:block"
-    />
-  </button>
-)}
 
   return (
     <Link href={`/papers/${paper.slug}`} className="no-underline block">
@@ -494,6 +471,32 @@ const huggingFaceRepo = paper.repositories?.find(
               </div>
               <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#9CA3AF] hidden sm:block" />
             </button>
+            <button
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (huggingFaceRepo?.url) {
+      window.open(huggingFaceRepo.url, "_blank");
+    } else {
+      alert("Hugging Face model will be available soon.");
+    }
+  }}
+  className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#FFF8E7] text-[#111111] border border-[#F5D565] rounded-[6px] hover:bg-[#FFEFB3] transition-colors"
+>
+  <div className="flex items-center gap-1 sm:gap-2">
+    <span className="text-[14px]">🤗</span>
+    <span className="font-medium text-[11px] sm:text-[13px]">
+      Hugging Face
+    </span>
+  </div>
+
+  <ArrowUpRight
+    size={14}
+    strokeWidth={1.5}
+    className="text-[#9CA3AF] hidden sm:block"
+  />
+</button>
           </div>
         </div>
       </div>
