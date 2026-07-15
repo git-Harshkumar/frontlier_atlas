@@ -10,6 +10,10 @@ export const getModels = async (
   modality?: string,
   accessType?: string,
   opennessType?: string,
+  modelFamily?: string,
+  category?: string,
+  capability?: string,
+  researchArea?: string,
 ) => {
   const intent: QueryIntent = {
     type: QueryType.READ,
@@ -26,36 +30,77 @@ export const getModels = async (
       where: {
         ...(vendor
           ? {
-              vendor: {
-                equals: vendor,
-                mode: "insensitive",
-              },
-            }
+            vendor: {
+              equals: vendor,
+              mode: "insensitive",
+            },
+          }
           : {}),
         ...(modality
           ? {
-              modality: {
-                equals: modality,
-                mode: "insensitive",
-              },
-            }
+            modality: {
+              equals: modality,
+              mode: "insensitive",
+            },
+          }
           : {}),
         ...(accessType
           ? {
-              accessType: {
-                equals: accessType,
-                mode: "insensitive",
-              },
-            }
+            accessType: {
+              equals: accessType,
+              mode: "insensitive",
+            },
+          }
           : {}),
         ...(opennessType
           ? {
-              opennessType: {
-                equals: opennessType,
-                mode: "insensitive",
-              },
-            }
+            opennessType: {
+              equals: opennessType,
+              mode: "insensitive",
+            },
+          }
           : {}),
+        ...(modelFamily
+          ? {
+            OR: [
+              {
+                modelFamily: {
+                  equals: modelFamily,
+                  mode: "insensitive",
+                },
+              },
+              {
+                model_family: {
+                  equals: modelFamily,
+                  mode: "insensitive",
+                },
+              },
+            ],
+          }
+          : {}),
+        ...(category
+          ? {
+            category: {
+              equals: category,
+              mode: "insensitive",
+            },
+          }
+          : {}),
+        ...(capability
+          ? {
+            capabilities: {
+              array_contains: [capability],
+            },
+          }
+          : {}),
+        ...(researchArea
+          ? {
+            researchAreas: {
+              array_contains: [researchArea],
+            },
+          }
+          : {}),
+
       },
       take: needsFullSort ? 200 : limit,
       skip: needsFullSort ? 0 : skip,
@@ -75,6 +120,26 @@ export const getModels = async (
         opennessType: true,
         description: true,
         benchmark_score: true,
+        model_family: true,
+        modelFamily: true,
+        category: true,
+        capabilities: true,
+        research_areas: true,
+        researchAreas: true,
+        architecture: true,
+        context_window: true,
+        contextWindow: true,
+        license: true,
+        model_versions: true,
+        modelVersions: true,
+        release_notes: true,
+        releaseNotes: true,
+        paper_url: true,
+        paperUrl: true,
+        repository_url: true,
+        repositoryUrl: true,
+        api_url: true,
+        apiUrl: true,
         createdAt: true,
         _count: {
           select: {
@@ -83,17 +148,17 @@ export const getModels = async (
         },
         papers: isTrending
           ? {
-              take: 100,
-              select: {
-                paper: {
-                  select: {
-                    id: true,
-                    citationCount: true,
-                    githubStars: true,
-                  },
+            take: 100,
+            select: {
+              paper: {
+                select: {
+                  id: true,
+                  citationCount: true,
+                  githubStars: true,
                 },
               },
-            }
+            },
+          }
           : false,
       },
     });
@@ -148,6 +213,18 @@ export const getModels = async (
       opennessType: model.opennessType,
       description: model.description,
       benchmarkScore: model.benchmark_score,
+      modelFamily: model.modelFamily ?? model.model_family,
+      category: model.category,
+      capabilities: model.capabilities,
+      researchAreas: model.researchAreas ?? model.research_areas,
+      architecture: model.architecture,
+      contextWindow: model.contextWindow ?? model.context_window,
+      license: model.license,
+      modelVersions: model.modelVersions ?? model.model_versions,
+      releaseNotes: model.releaseNotes ?? model.release_notes,
+      paperUrl: model.paperUrl ?? model.paper_url,
+      repositoryUrl: model.repositoryUrl ?? model.repository_url,
+      apiUrl: model.apiUrl ?? model.api_url,
       createdAt: model.createdAt,
       paperCount: model._count.papers,
       citationCount: isTrending ? citationCount : undefined,
@@ -226,6 +303,26 @@ export const getModelBySlug = async (
           opennessType: true,
           description: true,
           benchmark_score: true,
+          model_family: true,
+          modelFamily: true,
+          category: true,
+          capabilities: true,
+          research_areas: true,
+          researchAreas: true,
+          architecture: true,
+          context_window: true,
+          contextWindow: true,
+          license: true,
+          model_versions: true,
+          modelVersions: true,
+          release_notes: true,
+          releaseNotes: true,
+          paper_url: true,
+          paperUrl: true,
+          repository_url: true,
+          repositoryUrl: true,
+          api_url: true,
+          apiUrl: true,
           createdAt: true,
           _count: {
             select: {
@@ -468,6 +565,18 @@ export const getModelBySlug = async (
     opennessType: baseModel.opennessType,
     description: baseModel.description,
     benchmarkScore: baseModel.benchmark_score,
+    modelFamily: baseModel.modelFamily ?? baseModel.model_family,
+    category: baseModel.category,
+    capabilities: baseModel.capabilities,
+    researchAreas: baseModel.researchAreas ?? baseModel.research_areas,
+    architecture: baseModel.architecture,
+    contextWindow: baseModel.contextWindow ?? baseModel.context_window,
+    license: baseModel.license,
+    modelVersions: baseModel.modelVersions ?? baseModel.model_versions,
+    releaseNotes: baseModel.releaseNotes ?? baseModel.release_notes,
+    paperUrl: baseModel.paperUrl ?? baseModel.paper_url,
+    repositoryUrl: baseModel.repositoryUrl ?? baseModel.repository_url,
+    apiUrl: baseModel.apiUrl ?? baseModel.api_url,
     createdAt: baseModel.createdAt,
     paperCount,
     citationCount,
@@ -501,6 +610,11 @@ export const getModelFacets = async (queryRouter: QueryRouter) => {
         modality: true,
         accessType: true,
         opennessType: true,
+        model_family: true,
+        modelFamily: true,
+        capabilities: true,
+        research_areas: true,
+        researchAreas: true,
       },
     });
   });
@@ -519,6 +633,9 @@ export const getModelFacets = async (queryRouter: QueryRouter) => {
   const modalities = new Map<string, number>();
   const accessTypes = new Map<string, number>();
   const opennessTypes = new Map<string, number>();
+  const modelFamilies = new Map<string, number>();
+  const capabilities = new Map<string, number>();
+  const researchAreas = new Map<string, number>();
 
   const incrementCount = (
     map: Map<string, number>,
@@ -534,6 +651,31 @@ export const getModelFacets = async (queryRouter: QueryRouter) => {
     incrementCount(modalities, model.modality);
     incrementCount(accessTypes, model.accessType);
     incrementCount(opennessTypes, model.opennessType);
+    incrementCount(
+      modelFamilies,
+      model.modelFamily ?? model.model_family,
+    );
+
+    const modelCapabilities = Array.isArray(model.capabilities)
+      ? model.capabilities
+      : [];
+
+    for (const capability of modelCapabilities) {
+      if (typeof capability === "string") {
+        incrementCount(capabilities, capability);
+      }
+    }
+
+    const modelResearchAreas =
+      model.researchAreas ?? model.research_areas;
+
+    if (Array.isArray(modelResearchAreas)) {
+      for (const researchArea of modelResearchAreas) {
+        if (typeof researchArea === "string") {
+          incrementCount(researchAreas, researchArea);
+        }
+      }
+    }
   }
 
   const toFacetArray = (map: Map<string, number>) =>
@@ -550,5 +692,8 @@ export const getModelFacets = async (queryRouter: QueryRouter) => {
     modalities: toFacetArray(modalities),
     accessTypes: toFacetArray(accessTypes),
     opennessTypes: toFacetArray(opennessTypes),
+    modelFamilies: toFacetArray(modelFamilies),
+    capabilities: toFacetArray(capabilities),
+    researchAreas: toFacetArray(researchAreas),
   };
 };
