@@ -64,6 +64,16 @@ export type SotaClaim = $Result.DefaultSelection<Prisma.$SotaClaimPayload>
  */
 export type Ranking = $Result.DefaultSelection<Prisma.$RankingPayload>
 /**
+ * Model Author
+ * 
+ */
+export type Author = $Result.DefaultSelection<Prisma.$AuthorPayload>
+/**
+ * Model PaperAuthor
+ * 
+ */
+export type PaperAuthor = $Result.DefaultSelection<Prisma.$PaperAuthorPayload>
+/**
  * Model Model
  * 
  */
@@ -369,6 +379,26 @@ export class PrismaClient<
     * ```
     */
   get ranking(): Prisma.RankingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.author`: Exposes CRUD operations for the **Author** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Authors
+    * const authors = await prisma.author.findMany()
+    * ```
+    */
+  get author(): Prisma.AuthorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.paperAuthor`: Exposes CRUD operations for the **PaperAuthor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PaperAuthors
+    * const paperAuthors = await prisma.paperAuthor.findMany()
+    * ```
+    */
+  get paperAuthor(): Prisma.PaperAuthorDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.model`: Exposes CRUD operations for the **Model** model.
@@ -983,6 +1013,8 @@ export namespace Prisma {
     Benchmark: 'Benchmark',
     SotaClaim: 'SotaClaim',
     Ranking: 'Ranking',
+    Author: 'Author',
+    PaperAuthor: 'PaperAuthor',
     Model: 'Model',
     PaperModel: 'PaperModel',
     Dataset: 'Dataset',
@@ -1015,7 +1047,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "paper" | "entityRelationship" | "startup" | "task" | "paperTask" | "method" | "paperMethod" | "benchmark" | "sotaClaim" | "ranking" | "model" | "paperModel" | "dataset" | "paperDataset" | "lab" | "paperLab" | "university" | "paperUniversity" | "conference" | "paperConference" | "journal" | "paperJournal" | "repository" | "paperRepository" | "user" | "refreshToken" | "summary"
+      modelProps: "paper" | "entityRelationship" | "startup" | "task" | "paperTask" | "method" | "paperMethod" | "benchmark" | "sotaClaim" | "ranking" | "author" | "paperAuthor" | "model" | "paperModel" | "dataset" | "paperDataset" | "lab" | "paperLab" | "university" | "paperUniversity" | "conference" | "paperConference" | "journal" | "paperJournal" | "repository" | "paperRepository" | "user" | "refreshToken" | "summary"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1756,6 +1788,154 @@ export namespace Prisma {
           count: {
             args: Prisma.RankingCountArgs<ExtArgs>
             result: $Utils.Optional<RankingCountAggregateOutputType> | number
+          }
+        }
+      }
+      Author: {
+        payload: Prisma.$AuthorPayload<ExtArgs>
+        fields: Prisma.AuthorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuthorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuthorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload>
+          }
+          findFirst: {
+            args: Prisma.AuthorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuthorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload>
+          }
+          findMany: {
+            args: Prisma.AuthorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload>[]
+          }
+          create: {
+            args: Prisma.AuthorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload>
+          }
+          createMany: {
+            args: Prisma.AuthorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuthorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload>[]
+          }
+          delete: {
+            args: Prisma.AuthorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload>
+          }
+          update: {
+            args: Prisma.AuthorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuthorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuthorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuthorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuthorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorPayload>
+          }
+          aggregate: {
+            args: Prisma.AuthorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuthor>
+          }
+          groupBy: {
+            args: Prisma.AuthorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuthorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuthorCountArgs<ExtArgs>
+            result: $Utils.Optional<AuthorCountAggregateOutputType> | number
+          }
+        }
+      }
+      PaperAuthor: {
+        payload: Prisma.$PaperAuthorPayload<ExtArgs>
+        fields: Prisma.PaperAuthorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PaperAuthorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PaperAuthorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload>
+          }
+          findFirst: {
+            args: Prisma.PaperAuthorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PaperAuthorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload>
+          }
+          findMany: {
+            args: Prisma.PaperAuthorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload>[]
+          }
+          create: {
+            args: Prisma.PaperAuthorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload>
+          }
+          createMany: {
+            args: Prisma.PaperAuthorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PaperAuthorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload>[]
+          }
+          delete: {
+            args: Prisma.PaperAuthorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload>
+          }
+          update: {
+            args: Prisma.PaperAuthorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload>
+          }
+          deleteMany: {
+            args: Prisma.PaperAuthorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PaperAuthorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PaperAuthorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload>[]
+          }
+          upsert: {
+            args: Prisma.PaperAuthorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaperAuthorPayload>
+          }
+          aggregate: {
+            args: Prisma.PaperAuthorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePaperAuthor>
+          }
+          groupBy: {
+            args: Prisma.PaperAuthorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PaperAuthorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PaperAuthorCountArgs<ExtArgs>
+            result: $Utils.Optional<PaperAuthorCountAggregateOutputType> | number
           }
         }
       }
@@ -3135,6 +3315,8 @@ export namespace Prisma {
     benchmark?: BenchmarkOmit
     sotaClaim?: SotaClaimOmit
     ranking?: RankingOmit
+    author?: AuthorOmit
+    paperAuthor?: PaperAuthorOmit
     model?: ModelOmit
     paperModel?: PaperModelOmit
     dataset?: DatasetOmit
@@ -3232,6 +3414,7 @@ export namespace Prisma {
    */
 
   export type PaperCountOutputType = {
+    authors: number
     conferences: number
     datasets: number
     journals: number
@@ -3247,6 +3430,7 @@ export namespace Prisma {
   }
 
   export type PaperCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    authors?: boolean | PaperCountOutputTypeCountAuthorsArgs
     conferences?: boolean | PaperCountOutputTypeCountConferencesArgs
     datasets?: boolean | PaperCountOutputTypeCountDatasetsArgs
     journals?: boolean | PaperCountOutputTypeCountJournalsArgs
@@ -3270,6 +3454,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the PaperCountOutputType
      */
     select?: PaperCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PaperCountOutputType without action
+   */
+  export type PaperCountOutputTypeCountAuthorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaperAuthorWhereInput
   }
 
   /**
@@ -3456,6 +3647,37 @@ export namespace Prisma {
    */
   export type BenchmarkCountOutputTypeCountClaimsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SotaClaimWhereInput
+  }
+
+
+  /**
+   * Count Type AuthorCountOutputType
+   */
+
+  export type AuthorCountOutputType = {
+    papers: number
+  }
+
+  export type AuthorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    papers?: boolean | AuthorCountOutputTypeCountPapersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AuthorCountOutputType without action
+   */
+  export type AuthorCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorCountOutputType
+     */
+    select?: AuthorCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AuthorCountOutputType without action
+   */
+  export type AuthorCountOutputTypeCountPapersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaperAuthorWhereInput
   }
 
 
@@ -3789,7 +4011,6 @@ export namespace Prisma {
     importance_score: number | null
     venue: string | null
     organization: string | null
-    authors: string | null
   }
 
   export type PaperMaxAggregateOutputType = {
@@ -3827,7 +4048,6 @@ export namespace Prisma {
     importance_score: number | null
     venue: string | null
     organization: string | null
-    authors: string | null
   }
 
   export type PaperCountAggregateOutputType = {
@@ -3865,7 +4085,6 @@ export namespace Prisma {
     importance_score: number
     venue: number
     organization: number
-    authors: number
     _all: number
   }
 
@@ -3927,7 +4146,6 @@ export namespace Prisma {
     importance_score?: true
     venue?: true
     organization?: true
-    authors?: true
   }
 
   export type PaperMaxAggregateInputType = {
@@ -3965,7 +4183,6 @@ export namespace Prisma {
     importance_score?: true
     venue?: true
     organization?: true
-    authors?: true
   }
 
   export type PaperCountAggregateInputType = {
@@ -4003,7 +4220,6 @@ export namespace Prisma {
     importance_score?: true
     venue?: true
     organization?: true
-    authors?: true
     _all?: true
   }
 
@@ -4128,7 +4344,6 @@ export namespace Prisma {
     importance_score: number | null
     venue: string | null
     organization: string | null
-    authors: string | null
     _count: PaperCountAggregateOutputType | null
     _avg: PaperAvgAggregateOutputType | null
     _sum: PaperSumAggregateOutputType | null
@@ -4185,7 +4400,7 @@ export namespace Prisma {
     importance_score?: boolean
     venue?: boolean
     organization?: boolean
-    authors?: boolean
+    authors?: boolean | Paper$authorsArgs<ExtArgs>
     conferences?: boolean | Paper$conferencesArgs<ExtArgs>
     datasets?: boolean | Paper$datasetsArgs<ExtArgs>
     journals?: boolean | Paper$journalsArgs<ExtArgs>
@@ -4236,7 +4451,6 @@ export namespace Prisma {
     importance_score?: boolean
     venue?: boolean
     organization?: boolean
-    authors?: boolean
   }, ExtArgs["result"]["paper"]>
 
   export type PaperSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4274,7 +4488,6 @@ export namespace Prisma {
     importance_score?: boolean
     venue?: boolean
     organization?: boolean
-    authors?: boolean
   }, ExtArgs["result"]["paper"]>
 
   export type PaperSelectScalar = {
@@ -4312,11 +4525,11 @@ export namespace Prisma {
     importance_score?: boolean
     venue?: boolean
     organization?: boolean
-    authors?: boolean
   }
 
-  export type PaperOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "shortTitle" | "abstract" | "tlDr" | "publicationDate" | "submissionDate" | "arxivId" | "doi" | "paperUrl" | "pdfUrl" | "thumbnailUrl" | "sourceUrl" | "projectUrl" | "citationCount" | "referenceCount" | "pageCount" | "paperType" | "status" | "language" | "license" | "createdAt" | "updatedAt" | "githubForks" | "githubStars" | "githubUrl" | "isOfficialCode" | "hfUpvotes" | "trendingScore" | "discoverySource" | "importance_score" | "venue" | "organization" | "authors", ExtArgs["result"]["paper"]>
+  export type PaperOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "shortTitle" | "abstract" | "tlDr" | "publicationDate" | "submissionDate" | "arxivId" | "doi" | "paperUrl" | "pdfUrl" | "thumbnailUrl" | "sourceUrl" | "projectUrl" | "citationCount" | "referenceCount" | "pageCount" | "paperType" | "status" | "language" | "license" | "createdAt" | "updatedAt" | "githubForks" | "githubStars" | "githubUrl" | "isOfficialCode" | "hfUpvotes" | "trendingScore" | "discoverySource" | "importance_score" | "venue" | "organization", ExtArgs["result"]["paper"]>
   export type PaperInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    authors?: boolean | Paper$authorsArgs<ExtArgs>
     conferences?: boolean | Paper$conferencesArgs<ExtArgs>
     datasets?: boolean | Paper$datasetsArgs<ExtArgs>
     journals?: boolean | Paper$journalsArgs<ExtArgs>
@@ -4337,6 +4550,7 @@ export namespace Prisma {
   export type $PaperPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Paper"
     objects: {
+      authors: Prisma.$PaperAuthorPayload<ExtArgs>[]
       conferences: Prisma.$PaperConferencePayload<ExtArgs>[]
       datasets: Prisma.$PaperDatasetPayload<ExtArgs>[]
       journals: Prisma.$PaperJournalPayload<ExtArgs>[]
@@ -4385,7 +4599,6 @@ export namespace Prisma {
       importance_score: number | null
       venue: string | null
       organization: string | null
-      authors: string | null
     }, ExtArgs["result"]["paper"]>
     composites: {}
   }
@@ -4780,6 +4993,7 @@ export namespace Prisma {
    */
   export interface Prisma__PaperClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    authors<T extends Paper$authorsArgs<ExtArgs> = {}>(args?: Subset<T, Paper$authorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     conferences<T extends Paper$conferencesArgs<ExtArgs> = {}>(args?: Subset<T, Paper$conferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaperConferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     datasets<T extends Paper$datasetsArgs<ExtArgs> = {}>(args?: Subset<T, Paper$datasetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaperDatasetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     journals<T extends Paper$journalsArgs<ExtArgs> = {}>(args?: Subset<T, Paper$journalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaperJournalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4855,7 +5069,6 @@ export namespace Prisma {
     readonly importance_score: FieldRef<"Paper", 'Float'>
     readonly venue: FieldRef<"Paper", 'String'>
     readonly organization: FieldRef<"Paper", 'String'>
-    readonly authors: FieldRef<"Paper", 'String'>
   }
     
 
@@ -5246,6 +5459,30 @@ export namespace Prisma {
      * Limit how many Papers to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Paper.authors
+   */
+  export type Paper$authorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    where?: PaperAuthorWhereInput
+    orderBy?: PaperAuthorOrderByWithRelationInput | PaperAuthorOrderByWithRelationInput[]
+    cursor?: PaperAuthorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaperAuthorScalarFieldEnum | PaperAuthorScalarFieldEnum[]
   }
 
   /**
@@ -15418,6 +15655,2113 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: RankingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Author
+   */
+
+  export type AggregateAuthor = {
+    _count: AuthorCountAggregateOutputType | null
+    _min: AuthorMinAggregateOutputType | null
+    _max: AuthorMaxAggregateOutputType | null
+  }
+
+  export type AuthorMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    slug: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AuthorMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    slug: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AuthorCountAggregateOutputType = {
+    id: number
+    name: number
+    slug: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AuthorMinAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AuthorMaxAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AuthorCountAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AuthorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Author to aggregate.
+     */
+    where?: AuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Authors to fetch.
+     */
+    orderBy?: AuthorOrderByWithRelationInput | AuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Authors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Authors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Authors
+    **/
+    _count?: true | AuthorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuthorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuthorMaxAggregateInputType
+  }
+
+  export type GetAuthorAggregateType<T extends AuthorAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuthor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuthor[P]>
+      : GetScalarType<T[P], AggregateAuthor[P]>
+  }
+
+
+
+
+  export type AuthorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuthorWhereInput
+    orderBy?: AuthorOrderByWithAggregationInput | AuthorOrderByWithAggregationInput[]
+    by: AuthorScalarFieldEnum[] | AuthorScalarFieldEnum
+    having?: AuthorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuthorCountAggregateInputType | true
+    _min?: AuthorMinAggregateInputType
+    _max?: AuthorMaxAggregateInputType
+  }
+
+  export type AuthorGroupByOutputType = {
+    id: string
+    name: string
+    slug: string
+    createdAt: Date
+    updatedAt: Date
+    _count: AuthorCountAggregateOutputType | null
+    _min: AuthorMinAggregateOutputType | null
+    _max: AuthorMaxAggregateOutputType | null
+  }
+
+  type GetAuthorGroupByPayload<T extends AuthorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuthorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuthorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuthorGroupByOutputType[P]>
+            : GetScalarType<T[P], AuthorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuthorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    papers?: boolean | Author$papersArgs<ExtArgs>
+    _count?: boolean | AuthorCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["author"]>
+
+  export type AuthorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["author"]>
+
+  export type AuthorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["author"]>
+
+  export type AuthorSelectScalar = {
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AuthorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt", ExtArgs["result"]["author"]>
+  export type AuthorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    papers?: boolean | Author$papersArgs<ExtArgs>
+    _count?: boolean | AuthorCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AuthorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type AuthorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $AuthorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Author"
+    objects: {
+      papers: Prisma.$PaperAuthorPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      slug: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["author"]>
+    composites: {}
+  }
+
+  type AuthorGetPayload<S extends boolean | null | undefined | AuthorDefaultArgs> = $Result.GetResult<Prisma.$AuthorPayload, S>
+
+  type AuthorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AuthorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AuthorCountAggregateInputType | true
+    }
+
+  export interface AuthorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Author'], meta: { name: 'Author' } }
+    /**
+     * Find zero or one Author that matches the filter.
+     * @param {AuthorFindUniqueArgs} args - Arguments to find a Author
+     * @example
+     * // Get one Author
+     * const author = await prisma.author.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuthorFindUniqueArgs>(args: SelectSubset<T, AuthorFindUniqueArgs<ExtArgs>>): Prisma__AuthorClient<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Author that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AuthorFindUniqueOrThrowArgs} args - Arguments to find a Author
+     * @example
+     * // Get one Author
+     * const author = await prisma.author.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuthorFindUniqueOrThrowArgs>(args: SelectSubset<T, AuthorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuthorClient<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Author that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorFindFirstArgs} args - Arguments to find a Author
+     * @example
+     * // Get one Author
+     * const author = await prisma.author.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuthorFindFirstArgs>(args?: SelectSubset<T, AuthorFindFirstArgs<ExtArgs>>): Prisma__AuthorClient<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Author that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorFindFirstOrThrowArgs} args - Arguments to find a Author
+     * @example
+     * // Get one Author
+     * const author = await prisma.author.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuthorFindFirstOrThrowArgs>(args?: SelectSubset<T, AuthorFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuthorClient<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Authors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Authors
+     * const authors = await prisma.author.findMany()
+     * 
+     * // Get first 10 Authors
+     * const authors = await prisma.author.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const authorWithIdOnly = await prisma.author.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AuthorFindManyArgs>(args?: SelectSubset<T, AuthorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Author.
+     * @param {AuthorCreateArgs} args - Arguments to create a Author.
+     * @example
+     * // Create one Author
+     * const Author = await prisma.author.create({
+     *   data: {
+     *     // ... data to create a Author
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuthorCreateArgs>(args: SelectSubset<T, AuthorCreateArgs<ExtArgs>>): Prisma__AuthorClient<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Authors.
+     * @param {AuthorCreateManyArgs} args - Arguments to create many Authors.
+     * @example
+     * // Create many Authors
+     * const author = await prisma.author.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuthorCreateManyArgs>(args?: SelectSubset<T, AuthorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Authors and returns the data saved in the database.
+     * @param {AuthorCreateManyAndReturnArgs} args - Arguments to create many Authors.
+     * @example
+     * // Create many Authors
+     * const author = await prisma.author.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Authors and only return the `id`
+     * const authorWithIdOnly = await prisma.author.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuthorCreateManyAndReturnArgs>(args?: SelectSubset<T, AuthorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Author.
+     * @param {AuthorDeleteArgs} args - Arguments to delete one Author.
+     * @example
+     * // Delete one Author
+     * const Author = await prisma.author.delete({
+     *   where: {
+     *     // ... filter to delete one Author
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuthorDeleteArgs>(args: SelectSubset<T, AuthorDeleteArgs<ExtArgs>>): Prisma__AuthorClient<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Author.
+     * @param {AuthorUpdateArgs} args - Arguments to update one Author.
+     * @example
+     * // Update one Author
+     * const author = await prisma.author.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuthorUpdateArgs>(args: SelectSubset<T, AuthorUpdateArgs<ExtArgs>>): Prisma__AuthorClient<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Authors.
+     * @param {AuthorDeleteManyArgs} args - Arguments to filter Authors to delete.
+     * @example
+     * // Delete a few Authors
+     * const { count } = await prisma.author.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuthorDeleteManyArgs>(args?: SelectSubset<T, AuthorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Authors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Authors
+     * const author = await prisma.author.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuthorUpdateManyArgs>(args: SelectSubset<T, AuthorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Authors and returns the data updated in the database.
+     * @param {AuthorUpdateManyAndReturnArgs} args - Arguments to update many Authors.
+     * @example
+     * // Update many Authors
+     * const author = await prisma.author.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Authors and only return the `id`
+     * const authorWithIdOnly = await prisma.author.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AuthorUpdateManyAndReturnArgs>(args: SelectSubset<T, AuthorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Author.
+     * @param {AuthorUpsertArgs} args - Arguments to update or create a Author.
+     * @example
+     * // Update or create a Author
+     * const author = await prisma.author.upsert({
+     *   create: {
+     *     // ... data to create a Author
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Author we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuthorUpsertArgs>(args: SelectSubset<T, AuthorUpsertArgs<ExtArgs>>): Prisma__AuthorClient<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Authors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorCountArgs} args - Arguments to filter Authors to count.
+     * @example
+     * // Count the number of Authors
+     * const count = await prisma.author.count({
+     *   where: {
+     *     // ... the filter for the Authors we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuthorCountArgs>(
+      args?: Subset<T, AuthorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuthorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Author.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuthorAggregateArgs>(args: Subset<T, AuthorAggregateArgs>): Prisma.PrismaPromise<GetAuthorAggregateType<T>>
+
+    /**
+     * Group by Author.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuthorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuthorGroupByArgs['orderBy'] }
+        : { orderBy?: AuthorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuthorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuthorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Author model
+   */
+  readonly fields: AuthorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Author.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuthorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    papers<T extends Author$papersArgs<ExtArgs> = {}>(args?: Subset<T, Author$papersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Author model
+   */
+  interface AuthorFieldRefs {
+    readonly id: FieldRef<"Author", 'String'>
+    readonly name: FieldRef<"Author", 'String'>
+    readonly slug: FieldRef<"Author", 'String'>
+    readonly createdAt: FieldRef<"Author", 'DateTime'>
+    readonly updatedAt: FieldRef<"Author", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Author findUnique
+   */
+  export type AuthorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which Author to fetch.
+     */
+    where: AuthorWhereUniqueInput
+  }
+
+  /**
+   * Author findUniqueOrThrow
+   */
+  export type AuthorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which Author to fetch.
+     */
+    where: AuthorWhereUniqueInput
+  }
+
+  /**
+   * Author findFirst
+   */
+  export type AuthorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which Author to fetch.
+     */
+    where?: AuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Authors to fetch.
+     */
+    orderBy?: AuthorOrderByWithRelationInput | AuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Authors.
+     */
+    cursor?: AuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Authors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Authors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Authors.
+     */
+    distinct?: AuthorScalarFieldEnum | AuthorScalarFieldEnum[]
+  }
+
+  /**
+   * Author findFirstOrThrow
+   */
+  export type AuthorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which Author to fetch.
+     */
+    where?: AuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Authors to fetch.
+     */
+    orderBy?: AuthorOrderByWithRelationInput | AuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Authors.
+     */
+    cursor?: AuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Authors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Authors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Authors.
+     */
+    distinct?: AuthorScalarFieldEnum | AuthorScalarFieldEnum[]
+  }
+
+  /**
+   * Author findMany
+   */
+  export type AuthorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which Authors to fetch.
+     */
+    where?: AuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Authors to fetch.
+     */
+    orderBy?: AuthorOrderByWithRelationInput | AuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Authors.
+     */
+    cursor?: AuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Authors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Authors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Authors.
+     */
+    distinct?: AuthorScalarFieldEnum | AuthorScalarFieldEnum[]
+  }
+
+  /**
+   * Author create
+   */
+  export type AuthorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Author.
+     */
+    data: XOR<AuthorCreateInput, AuthorUncheckedCreateInput>
+  }
+
+  /**
+   * Author createMany
+   */
+  export type AuthorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Authors.
+     */
+    data: AuthorCreateManyInput | AuthorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Author createManyAndReturn
+   */
+  export type AuthorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * The data used to create many Authors.
+     */
+    data: AuthorCreateManyInput | AuthorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Author update
+   */
+  export type AuthorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Author.
+     */
+    data: XOR<AuthorUpdateInput, AuthorUncheckedUpdateInput>
+    /**
+     * Choose, which Author to update.
+     */
+    where: AuthorWhereUniqueInput
+  }
+
+  /**
+   * Author updateMany
+   */
+  export type AuthorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Authors.
+     */
+    data: XOR<AuthorUpdateManyMutationInput, AuthorUncheckedUpdateManyInput>
+    /**
+     * Filter which Authors to update
+     */
+    where?: AuthorWhereInput
+    /**
+     * Limit how many Authors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Author updateManyAndReturn
+   */
+  export type AuthorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * The data used to update Authors.
+     */
+    data: XOR<AuthorUpdateManyMutationInput, AuthorUncheckedUpdateManyInput>
+    /**
+     * Filter which Authors to update
+     */
+    where?: AuthorWhereInput
+    /**
+     * Limit how many Authors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Author upsert
+   */
+  export type AuthorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Author to update in case it exists.
+     */
+    where: AuthorWhereUniqueInput
+    /**
+     * In case the Author found by the `where` argument doesn't exist, create a new Author with this data.
+     */
+    create: XOR<AuthorCreateInput, AuthorUncheckedCreateInput>
+    /**
+     * In case the Author was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuthorUpdateInput, AuthorUncheckedUpdateInput>
+  }
+
+  /**
+   * Author delete
+   */
+  export type AuthorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+    /**
+     * Filter which Author to delete.
+     */
+    where: AuthorWhereUniqueInput
+  }
+
+  /**
+   * Author deleteMany
+   */
+  export type AuthorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Authors to delete
+     */
+    where?: AuthorWhereInput
+    /**
+     * Limit how many Authors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Author.papers
+   */
+  export type Author$papersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    where?: PaperAuthorWhereInput
+    orderBy?: PaperAuthorOrderByWithRelationInput | PaperAuthorOrderByWithRelationInput[]
+    cursor?: PaperAuthorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaperAuthorScalarFieldEnum | PaperAuthorScalarFieldEnum[]
+  }
+
+  /**
+   * Author without action
+   */
+  export type AuthorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Author
+     */
+    select?: AuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Author
+     */
+    omit?: AuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuthorInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PaperAuthor
+   */
+
+  export type AggregatePaperAuthor = {
+    _count: PaperAuthorCountAggregateOutputType | null
+    _min: PaperAuthorMinAggregateOutputType | null
+    _max: PaperAuthorMaxAggregateOutputType | null
+  }
+
+  export type PaperAuthorMinAggregateOutputType = {
+    paper_id: string | null
+    author_id: string | null
+  }
+
+  export type PaperAuthorMaxAggregateOutputType = {
+    paper_id: string | null
+    author_id: string | null
+  }
+
+  export type PaperAuthorCountAggregateOutputType = {
+    paper_id: number
+    author_id: number
+    _all: number
+  }
+
+
+  export type PaperAuthorMinAggregateInputType = {
+    paper_id?: true
+    author_id?: true
+  }
+
+  export type PaperAuthorMaxAggregateInputType = {
+    paper_id?: true
+    author_id?: true
+  }
+
+  export type PaperAuthorCountAggregateInputType = {
+    paper_id?: true
+    author_id?: true
+    _all?: true
+  }
+
+  export type PaperAuthorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaperAuthor to aggregate.
+     */
+    where?: PaperAuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaperAuthors to fetch.
+     */
+    orderBy?: PaperAuthorOrderByWithRelationInput | PaperAuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PaperAuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaperAuthors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaperAuthors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PaperAuthors
+    **/
+    _count?: true | PaperAuthorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PaperAuthorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PaperAuthorMaxAggregateInputType
+  }
+
+  export type GetPaperAuthorAggregateType<T extends PaperAuthorAggregateArgs> = {
+        [P in keyof T & keyof AggregatePaperAuthor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePaperAuthor[P]>
+      : GetScalarType<T[P], AggregatePaperAuthor[P]>
+  }
+
+
+
+
+  export type PaperAuthorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaperAuthorWhereInput
+    orderBy?: PaperAuthorOrderByWithAggregationInput | PaperAuthorOrderByWithAggregationInput[]
+    by: PaperAuthorScalarFieldEnum[] | PaperAuthorScalarFieldEnum
+    having?: PaperAuthorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PaperAuthorCountAggregateInputType | true
+    _min?: PaperAuthorMinAggregateInputType
+    _max?: PaperAuthorMaxAggregateInputType
+  }
+
+  export type PaperAuthorGroupByOutputType = {
+    paper_id: string
+    author_id: string
+    _count: PaperAuthorCountAggregateOutputType | null
+    _min: PaperAuthorMinAggregateOutputType | null
+    _max: PaperAuthorMaxAggregateOutputType | null
+  }
+
+  type GetPaperAuthorGroupByPayload<T extends PaperAuthorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PaperAuthorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PaperAuthorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PaperAuthorGroupByOutputType[P]>
+            : GetScalarType<T[P], PaperAuthorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PaperAuthorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    paper_id?: boolean
+    author_id?: boolean
+    author?: boolean | AuthorDefaultArgs<ExtArgs>
+    paper?: boolean | PaperDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paperAuthor"]>
+
+  export type PaperAuthorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    paper_id?: boolean
+    author_id?: boolean
+    author?: boolean | AuthorDefaultArgs<ExtArgs>
+    paper?: boolean | PaperDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paperAuthor"]>
+
+  export type PaperAuthorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    paper_id?: boolean
+    author_id?: boolean
+    author?: boolean | AuthorDefaultArgs<ExtArgs>
+    paper?: boolean | PaperDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paperAuthor"]>
+
+  export type PaperAuthorSelectScalar = {
+    paper_id?: boolean
+    author_id?: boolean
+  }
+
+  export type PaperAuthorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"paper_id" | "author_id", ExtArgs["result"]["paperAuthor"]>
+  export type PaperAuthorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | AuthorDefaultArgs<ExtArgs>
+    paper?: boolean | PaperDefaultArgs<ExtArgs>
+  }
+  export type PaperAuthorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | AuthorDefaultArgs<ExtArgs>
+    paper?: boolean | PaperDefaultArgs<ExtArgs>
+  }
+  export type PaperAuthorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | AuthorDefaultArgs<ExtArgs>
+    paper?: boolean | PaperDefaultArgs<ExtArgs>
+  }
+
+  export type $PaperAuthorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PaperAuthor"
+    objects: {
+      author: Prisma.$AuthorPayload<ExtArgs>
+      paper: Prisma.$PaperPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      paper_id: string
+      author_id: string
+    }, ExtArgs["result"]["paperAuthor"]>
+    composites: {}
+  }
+
+  type PaperAuthorGetPayload<S extends boolean | null | undefined | PaperAuthorDefaultArgs> = $Result.GetResult<Prisma.$PaperAuthorPayload, S>
+
+  type PaperAuthorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PaperAuthorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PaperAuthorCountAggregateInputType | true
+    }
+
+  export interface PaperAuthorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PaperAuthor'], meta: { name: 'PaperAuthor' } }
+    /**
+     * Find zero or one PaperAuthor that matches the filter.
+     * @param {PaperAuthorFindUniqueArgs} args - Arguments to find a PaperAuthor
+     * @example
+     * // Get one PaperAuthor
+     * const paperAuthor = await prisma.paperAuthor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PaperAuthorFindUniqueArgs>(args: SelectSubset<T, PaperAuthorFindUniqueArgs<ExtArgs>>): Prisma__PaperAuthorClient<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PaperAuthor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PaperAuthorFindUniqueOrThrowArgs} args - Arguments to find a PaperAuthor
+     * @example
+     * // Get one PaperAuthor
+     * const paperAuthor = await prisma.paperAuthor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PaperAuthorFindUniqueOrThrowArgs>(args: SelectSubset<T, PaperAuthorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaperAuthorClient<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaperAuthor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaperAuthorFindFirstArgs} args - Arguments to find a PaperAuthor
+     * @example
+     * // Get one PaperAuthor
+     * const paperAuthor = await prisma.paperAuthor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PaperAuthorFindFirstArgs>(args?: SelectSubset<T, PaperAuthorFindFirstArgs<ExtArgs>>): Prisma__PaperAuthorClient<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaperAuthor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaperAuthorFindFirstOrThrowArgs} args - Arguments to find a PaperAuthor
+     * @example
+     * // Get one PaperAuthor
+     * const paperAuthor = await prisma.paperAuthor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PaperAuthorFindFirstOrThrowArgs>(args?: SelectSubset<T, PaperAuthorFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaperAuthorClient<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PaperAuthors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaperAuthorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PaperAuthors
+     * const paperAuthors = await prisma.paperAuthor.findMany()
+     * 
+     * // Get first 10 PaperAuthors
+     * const paperAuthors = await prisma.paperAuthor.findMany({ take: 10 })
+     * 
+     * // Only select the `paper_id`
+     * const paperAuthorWithPaper_idOnly = await prisma.paperAuthor.findMany({ select: { paper_id: true } })
+     * 
+     */
+    findMany<T extends PaperAuthorFindManyArgs>(args?: SelectSubset<T, PaperAuthorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PaperAuthor.
+     * @param {PaperAuthorCreateArgs} args - Arguments to create a PaperAuthor.
+     * @example
+     * // Create one PaperAuthor
+     * const PaperAuthor = await prisma.paperAuthor.create({
+     *   data: {
+     *     // ... data to create a PaperAuthor
+     *   }
+     * })
+     * 
+     */
+    create<T extends PaperAuthorCreateArgs>(args: SelectSubset<T, PaperAuthorCreateArgs<ExtArgs>>): Prisma__PaperAuthorClient<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PaperAuthors.
+     * @param {PaperAuthorCreateManyArgs} args - Arguments to create many PaperAuthors.
+     * @example
+     * // Create many PaperAuthors
+     * const paperAuthor = await prisma.paperAuthor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PaperAuthorCreateManyArgs>(args?: SelectSubset<T, PaperAuthorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PaperAuthors and returns the data saved in the database.
+     * @param {PaperAuthorCreateManyAndReturnArgs} args - Arguments to create many PaperAuthors.
+     * @example
+     * // Create many PaperAuthors
+     * const paperAuthor = await prisma.paperAuthor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PaperAuthors and only return the `paper_id`
+     * const paperAuthorWithPaper_idOnly = await prisma.paperAuthor.createManyAndReturn({
+     *   select: { paper_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PaperAuthorCreateManyAndReturnArgs>(args?: SelectSubset<T, PaperAuthorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PaperAuthor.
+     * @param {PaperAuthorDeleteArgs} args - Arguments to delete one PaperAuthor.
+     * @example
+     * // Delete one PaperAuthor
+     * const PaperAuthor = await prisma.paperAuthor.delete({
+     *   where: {
+     *     // ... filter to delete one PaperAuthor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PaperAuthorDeleteArgs>(args: SelectSubset<T, PaperAuthorDeleteArgs<ExtArgs>>): Prisma__PaperAuthorClient<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PaperAuthor.
+     * @param {PaperAuthorUpdateArgs} args - Arguments to update one PaperAuthor.
+     * @example
+     * // Update one PaperAuthor
+     * const paperAuthor = await prisma.paperAuthor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PaperAuthorUpdateArgs>(args: SelectSubset<T, PaperAuthorUpdateArgs<ExtArgs>>): Prisma__PaperAuthorClient<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PaperAuthors.
+     * @param {PaperAuthorDeleteManyArgs} args - Arguments to filter PaperAuthors to delete.
+     * @example
+     * // Delete a few PaperAuthors
+     * const { count } = await prisma.paperAuthor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PaperAuthorDeleteManyArgs>(args?: SelectSubset<T, PaperAuthorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaperAuthors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaperAuthorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PaperAuthors
+     * const paperAuthor = await prisma.paperAuthor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PaperAuthorUpdateManyArgs>(args: SelectSubset<T, PaperAuthorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaperAuthors and returns the data updated in the database.
+     * @param {PaperAuthorUpdateManyAndReturnArgs} args - Arguments to update many PaperAuthors.
+     * @example
+     * // Update many PaperAuthors
+     * const paperAuthor = await prisma.paperAuthor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PaperAuthors and only return the `paper_id`
+     * const paperAuthorWithPaper_idOnly = await prisma.paperAuthor.updateManyAndReturn({
+     *   select: { paper_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PaperAuthorUpdateManyAndReturnArgs>(args: SelectSubset<T, PaperAuthorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PaperAuthor.
+     * @param {PaperAuthorUpsertArgs} args - Arguments to update or create a PaperAuthor.
+     * @example
+     * // Update or create a PaperAuthor
+     * const paperAuthor = await prisma.paperAuthor.upsert({
+     *   create: {
+     *     // ... data to create a PaperAuthor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PaperAuthor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PaperAuthorUpsertArgs>(args: SelectSubset<T, PaperAuthorUpsertArgs<ExtArgs>>): Prisma__PaperAuthorClient<$Result.GetResult<Prisma.$PaperAuthorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PaperAuthors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaperAuthorCountArgs} args - Arguments to filter PaperAuthors to count.
+     * @example
+     * // Count the number of PaperAuthors
+     * const count = await prisma.paperAuthor.count({
+     *   where: {
+     *     // ... the filter for the PaperAuthors we want to count
+     *   }
+     * })
+    **/
+    count<T extends PaperAuthorCountArgs>(
+      args?: Subset<T, PaperAuthorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PaperAuthorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PaperAuthor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaperAuthorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PaperAuthorAggregateArgs>(args: Subset<T, PaperAuthorAggregateArgs>): Prisma.PrismaPromise<GetPaperAuthorAggregateType<T>>
+
+    /**
+     * Group by PaperAuthor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaperAuthorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PaperAuthorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PaperAuthorGroupByArgs['orderBy'] }
+        : { orderBy?: PaperAuthorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PaperAuthorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaperAuthorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PaperAuthor model
+   */
+  readonly fields: PaperAuthorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PaperAuthor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PaperAuthorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    author<T extends AuthorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AuthorDefaultArgs<ExtArgs>>): Prisma__AuthorClient<$Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    paper<T extends PaperDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaperDefaultArgs<ExtArgs>>): Prisma__PaperClient<$Result.GetResult<Prisma.$PaperPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PaperAuthor model
+   */
+  interface PaperAuthorFieldRefs {
+    readonly paper_id: FieldRef<"PaperAuthor", 'String'>
+    readonly author_id: FieldRef<"PaperAuthor", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PaperAuthor findUnique
+   */
+  export type PaperAuthorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which PaperAuthor to fetch.
+     */
+    where: PaperAuthorWhereUniqueInput
+  }
+
+  /**
+   * PaperAuthor findUniqueOrThrow
+   */
+  export type PaperAuthorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which PaperAuthor to fetch.
+     */
+    where: PaperAuthorWhereUniqueInput
+  }
+
+  /**
+   * PaperAuthor findFirst
+   */
+  export type PaperAuthorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which PaperAuthor to fetch.
+     */
+    where?: PaperAuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaperAuthors to fetch.
+     */
+    orderBy?: PaperAuthorOrderByWithRelationInput | PaperAuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaperAuthors.
+     */
+    cursor?: PaperAuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaperAuthors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaperAuthors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaperAuthors.
+     */
+    distinct?: PaperAuthorScalarFieldEnum | PaperAuthorScalarFieldEnum[]
+  }
+
+  /**
+   * PaperAuthor findFirstOrThrow
+   */
+  export type PaperAuthorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which PaperAuthor to fetch.
+     */
+    where?: PaperAuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaperAuthors to fetch.
+     */
+    orderBy?: PaperAuthorOrderByWithRelationInput | PaperAuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaperAuthors.
+     */
+    cursor?: PaperAuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaperAuthors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaperAuthors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaperAuthors.
+     */
+    distinct?: PaperAuthorScalarFieldEnum | PaperAuthorScalarFieldEnum[]
+  }
+
+  /**
+   * PaperAuthor findMany
+   */
+  export type PaperAuthorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    /**
+     * Filter, which PaperAuthors to fetch.
+     */
+    where?: PaperAuthorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaperAuthors to fetch.
+     */
+    orderBy?: PaperAuthorOrderByWithRelationInput | PaperAuthorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PaperAuthors.
+     */
+    cursor?: PaperAuthorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaperAuthors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaperAuthors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaperAuthors.
+     */
+    distinct?: PaperAuthorScalarFieldEnum | PaperAuthorScalarFieldEnum[]
+  }
+
+  /**
+   * PaperAuthor create
+   */
+  export type PaperAuthorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PaperAuthor.
+     */
+    data: XOR<PaperAuthorCreateInput, PaperAuthorUncheckedCreateInput>
+  }
+
+  /**
+   * PaperAuthor createMany
+   */
+  export type PaperAuthorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PaperAuthors.
+     */
+    data: PaperAuthorCreateManyInput | PaperAuthorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PaperAuthor createManyAndReturn
+   */
+  export type PaperAuthorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * The data used to create many PaperAuthors.
+     */
+    data: PaperAuthorCreateManyInput | PaperAuthorCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaperAuthor update
+   */
+  export type PaperAuthorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PaperAuthor.
+     */
+    data: XOR<PaperAuthorUpdateInput, PaperAuthorUncheckedUpdateInput>
+    /**
+     * Choose, which PaperAuthor to update.
+     */
+    where: PaperAuthorWhereUniqueInput
+  }
+
+  /**
+   * PaperAuthor updateMany
+   */
+  export type PaperAuthorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PaperAuthors.
+     */
+    data: XOR<PaperAuthorUpdateManyMutationInput, PaperAuthorUncheckedUpdateManyInput>
+    /**
+     * Filter which PaperAuthors to update
+     */
+    where?: PaperAuthorWhereInput
+    /**
+     * Limit how many PaperAuthors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaperAuthor updateManyAndReturn
+   */
+  export type PaperAuthorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * The data used to update PaperAuthors.
+     */
+    data: XOR<PaperAuthorUpdateManyMutationInput, PaperAuthorUncheckedUpdateManyInput>
+    /**
+     * Filter which PaperAuthors to update
+     */
+    where?: PaperAuthorWhereInput
+    /**
+     * Limit how many PaperAuthors to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaperAuthor upsert
+   */
+  export type PaperAuthorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PaperAuthor to update in case it exists.
+     */
+    where: PaperAuthorWhereUniqueInput
+    /**
+     * In case the PaperAuthor found by the `where` argument doesn't exist, create a new PaperAuthor with this data.
+     */
+    create: XOR<PaperAuthorCreateInput, PaperAuthorUncheckedCreateInput>
+    /**
+     * In case the PaperAuthor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PaperAuthorUpdateInput, PaperAuthorUncheckedUpdateInput>
+  }
+
+  /**
+   * PaperAuthor delete
+   */
+  export type PaperAuthorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
+    /**
+     * Filter which PaperAuthor to delete.
+     */
+    where: PaperAuthorWhereUniqueInput
+  }
+
+  /**
+   * PaperAuthor deleteMany
+   */
+  export type PaperAuthorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaperAuthors to delete
+     */
+    where?: PaperAuthorWhereInput
+    /**
+     * Limit how many PaperAuthors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaperAuthor without action
+   */
+  export type PaperAuthorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaperAuthor
+     */
+    select?: PaperAuthorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaperAuthor
+     */
+    omit?: PaperAuthorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaperAuthorInclude<ExtArgs> | null
   }
 
 
@@ -34293,8 +36637,7 @@ export namespace Prisma {
     discoverySource: 'discoverySource',
     importance_score: 'importance_score',
     venue: 'venue',
-    organization: 'organization',
-    authors: 'authors'
+    organization: 'organization'
   };
 
   export type PaperScalarFieldEnum = (typeof PaperScalarFieldEnum)[keyof typeof PaperScalarFieldEnum]
@@ -34408,6 +36751,25 @@ export namespace Prisma {
   };
 
   export type RankingScalarFieldEnum = (typeof RankingScalarFieldEnum)[keyof typeof RankingScalarFieldEnum]
+
+
+  export const AuthorScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    slug: 'slug',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AuthorScalarFieldEnum = (typeof AuthorScalarFieldEnum)[keyof typeof AuthorScalarFieldEnum]
+
+
+  export const PaperAuthorScalarFieldEnum: {
+    paper_id: 'paper_id',
+    author_id: 'author_id'
+  };
+
+  export type PaperAuthorScalarFieldEnum = (typeof PaperAuthorScalarFieldEnum)[keyof typeof PaperAuthorScalarFieldEnum]
 
 
   export const ModelScalarFieldEnum: {
@@ -34804,7 +37166,7 @@ export namespace Prisma {
     importance_score?: FloatNullableFilter<"Paper"> | number | null
     venue?: StringNullableFilter<"Paper"> | string | null
     organization?: StringNullableFilter<"Paper"> | string | null
-    authors?: StringNullableFilter<"Paper"> | string | null
+    authors?: PaperAuthorListRelationFilter
     conferences?: PaperConferenceListRelationFilter
     datasets?: PaperDatasetListRelationFilter
     journals?: PaperJournalListRelationFilter
@@ -34854,7 +37216,7 @@ export namespace Prisma {
     importance_score?: SortOrderInput | SortOrder
     venue?: SortOrderInput | SortOrder
     organization?: SortOrderInput | SortOrder
-    authors?: SortOrderInput | SortOrder
+    authors?: PaperAuthorOrderByRelationAggregateInput
     conferences?: PaperConferenceOrderByRelationAggregateInput
     datasets?: PaperDatasetOrderByRelationAggregateInput
     journals?: PaperJournalOrderByRelationAggregateInput
@@ -34907,7 +37269,7 @@ export namespace Prisma {
     importance_score?: FloatNullableFilter<"Paper"> | number | null
     venue?: StringNullableFilter<"Paper"> | string | null
     organization?: StringNullableFilter<"Paper"> | string | null
-    authors?: StringNullableFilter<"Paper"> | string | null
+    authors?: PaperAuthorListRelationFilter
     conferences?: PaperConferenceListRelationFilter
     datasets?: PaperDatasetListRelationFilter
     journals?: PaperJournalListRelationFilter
@@ -34957,7 +37319,6 @@ export namespace Prisma {
     importance_score?: SortOrderInput | SortOrder
     venue?: SortOrderInput | SortOrder
     organization?: SortOrderInput | SortOrder
-    authors?: SortOrderInput | SortOrder
     _count?: PaperCountOrderByAggregateInput
     _avg?: PaperAvgOrderByAggregateInput
     _max?: PaperMaxOrderByAggregateInput
@@ -35003,7 +37364,6 @@ export namespace Prisma {
     importance_score?: FloatNullableWithAggregatesFilter<"Paper"> | number | null
     venue?: StringNullableWithAggregatesFilter<"Paper"> | string | null
     organization?: StringNullableWithAggregatesFilter<"Paper"> | string | null
-    authors?: StringNullableWithAggregatesFilter<"Paper"> | string | null
   }
 
   export type EntityRelationshipWhereInput = {
@@ -35574,6 +37934,105 @@ export namespace Prisma {
     resultDate?: DateTimeNullableWithAggregatesFilter<"Ranking"> | Date | string | null
     previousRank?: IntNullableWithAggregatesFilter<"Ranking"> | number | null
     sourceUrl?: StringNullableWithAggregatesFilter<"Ranking"> | string | null
+  }
+
+  export type AuthorWhereInput = {
+    AND?: AuthorWhereInput | AuthorWhereInput[]
+    OR?: AuthorWhereInput[]
+    NOT?: AuthorWhereInput | AuthorWhereInput[]
+    id?: StringFilter<"Author"> | string
+    name?: StringFilter<"Author"> | string
+    slug?: StringFilter<"Author"> | string
+    createdAt?: DateTimeFilter<"Author"> | Date | string
+    updatedAt?: DateTimeFilter<"Author"> | Date | string
+    papers?: PaperAuthorListRelationFilter
+  }
+
+  export type AuthorOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    papers?: PaperAuthorOrderByRelationAggregateInput
+  }
+
+  export type AuthorWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug?: string
+    AND?: AuthorWhereInput | AuthorWhereInput[]
+    OR?: AuthorWhereInput[]
+    NOT?: AuthorWhereInput | AuthorWhereInput[]
+    name?: StringFilter<"Author"> | string
+    createdAt?: DateTimeFilter<"Author"> | Date | string
+    updatedAt?: DateTimeFilter<"Author"> | Date | string
+    papers?: PaperAuthorListRelationFilter
+  }, "id" | "slug">
+
+  export type AuthorOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AuthorCountOrderByAggregateInput
+    _max?: AuthorMaxOrderByAggregateInput
+    _min?: AuthorMinOrderByAggregateInput
+  }
+
+  export type AuthorScalarWhereWithAggregatesInput = {
+    AND?: AuthorScalarWhereWithAggregatesInput | AuthorScalarWhereWithAggregatesInput[]
+    OR?: AuthorScalarWhereWithAggregatesInput[]
+    NOT?: AuthorScalarWhereWithAggregatesInput | AuthorScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Author"> | string
+    name?: StringWithAggregatesFilter<"Author"> | string
+    slug?: StringWithAggregatesFilter<"Author"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Author"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Author"> | Date | string
+  }
+
+  export type PaperAuthorWhereInput = {
+    AND?: PaperAuthorWhereInput | PaperAuthorWhereInput[]
+    OR?: PaperAuthorWhereInput[]
+    NOT?: PaperAuthorWhereInput | PaperAuthorWhereInput[]
+    paper_id?: StringFilter<"PaperAuthor"> | string
+    author_id?: StringFilter<"PaperAuthor"> | string
+    author?: XOR<AuthorScalarRelationFilter, AuthorWhereInput>
+    paper?: XOR<PaperScalarRelationFilter, PaperWhereInput>
+  }
+
+  export type PaperAuthorOrderByWithRelationInput = {
+    paper_id?: SortOrder
+    author_id?: SortOrder
+    author?: AuthorOrderByWithRelationInput
+    paper?: PaperOrderByWithRelationInput
+  }
+
+  export type PaperAuthorWhereUniqueInput = Prisma.AtLeast<{
+    paper_id_author_id?: PaperAuthorPaper_idAuthor_idCompoundUniqueInput
+    AND?: PaperAuthorWhereInput | PaperAuthorWhereInput[]
+    OR?: PaperAuthorWhereInput[]
+    NOT?: PaperAuthorWhereInput | PaperAuthorWhereInput[]
+    paper_id?: StringFilter<"PaperAuthor"> | string
+    author_id?: StringFilter<"PaperAuthor"> | string
+    author?: XOR<AuthorScalarRelationFilter, AuthorWhereInput>
+    paper?: XOR<PaperScalarRelationFilter, PaperWhereInput>
+  }, "paper_id_author_id">
+
+  export type PaperAuthorOrderByWithAggregationInput = {
+    paper_id?: SortOrder
+    author_id?: SortOrder
+    _count?: PaperAuthorCountOrderByAggregateInput
+    _max?: PaperAuthorMaxOrderByAggregateInput
+    _min?: PaperAuthorMinOrderByAggregateInput
+  }
+
+  export type PaperAuthorScalarWhereWithAggregatesInput = {
+    AND?: PaperAuthorScalarWhereWithAggregatesInput | PaperAuthorScalarWhereWithAggregatesInput[]
+    OR?: PaperAuthorScalarWhereWithAggregatesInput[]
+    NOT?: PaperAuthorScalarWhereWithAggregatesInput | PaperAuthorScalarWhereWithAggregatesInput[]
+    paper_id?: StringWithAggregatesFilter<"PaperAuthor"> | string
+    author_id?: StringWithAggregatesFilter<"PaperAuthor"> | string
   }
 
   export type ModelWhereInput = {
@@ -36797,7 +39256,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -36847,7 +39306,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -36897,7 +39356,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -36947,7 +39406,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -36997,7 +39456,6 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
   }
 
   export type PaperUpdateManyMutationInput = {
@@ -37035,7 +39493,6 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaperUncheckedUpdateManyInput = {
@@ -37073,7 +39530,6 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EntityRelationshipCreateInput = {
@@ -37665,6 +40121,100 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AuthorCreateInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    papers?: PaperAuthorCreateNestedManyWithoutAuthorInput
+  }
+
+  export type AuthorUncheckedCreateInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    papers?: PaperAuthorUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type AuthorUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    papers?: PaperAuthorUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type AuthorUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    papers?: PaperAuthorUncheckedUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type AuthorCreateManyInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AuthorUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuthorUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaperAuthorCreateInput = {
+    author: AuthorCreateNestedOneWithoutPapersInput
+    paper: PaperCreateNestedOneWithoutAuthorsInput
+  }
+
+  export type PaperAuthorUncheckedCreateInput = {
+    paper_id: string
+    author_id: string
+  }
+
+  export type PaperAuthorUpdateInput = {
+    author?: AuthorUpdateOneRequiredWithoutPapersNestedInput
+    paper?: PaperUpdateOneRequiredWithoutAuthorsNestedInput
+  }
+
+  export type PaperAuthorUncheckedUpdateInput = {
+    paper_id?: StringFieldUpdateOperationsInput | string
+    author_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PaperAuthorCreateManyInput = {
+    paper_id: string
+    author_id: string
+  }
+
+  export type PaperAuthorUpdateManyMutationInput = {
+
+  }
+
+  export type PaperAuthorUncheckedUpdateManyInput = {
+    paper_id?: StringFieldUpdateOperationsInput | string
+    author_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type ModelCreateInput = {
@@ -39036,6 +41586,12 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type PaperAuthorListRelationFilter = {
+    every?: PaperAuthorWhereInput
+    some?: PaperAuthorWhereInput
+    none?: PaperAuthorWhereInput
+  }
+
   export type PaperConferenceListRelationFilter = {
     every?: PaperConferenceWhereInput
     some?: PaperConferenceWhereInput
@@ -39111,6 +41667,10 @@ export namespace Prisma {
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type PaperAuthorOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type PaperConferenceOrderByRelationAggregateInput = {
@@ -39196,7 +41756,6 @@ export namespace Prisma {
     importance_score?: SortOrder
     venue?: SortOrder
     organization?: SortOrder
-    authors?: SortOrder
   }
 
   export type PaperAvgOrderByAggregateInput = {
@@ -39245,7 +41804,6 @@ export namespace Prisma {
     importance_score?: SortOrder
     venue?: SortOrder
     organization?: SortOrder
-    authors?: SortOrder
   }
 
   export type PaperMinOrderByAggregateInput = {
@@ -39283,7 +41841,6 @@ export namespace Prisma {
     importance_score?: SortOrder
     venue?: SortOrder
     organization?: SortOrder
-    authors?: SortOrder
   }
 
   export type PaperSumOrderByAggregateInput = {
@@ -39832,6 +42389,55 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type AuthorCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AuthorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AuthorMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AuthorScalarRelationFilter = {
+    is?: AuthorWhereInput
+    isNot?: AuthorWhereInput
+  }
+
+  export type PaperAuthorPaper_idAuthor_idCompoundUniqueInput = {
+    paper_id: string
+    author_id: string
+  }
+
+  export type PaperAuthorCountOrderByAggregateInput = {
+    paper_id?: SortOrder
+    author_id?: SortOrder
+  }
+
+  export type PaperAuthorMaxOrderByAggregateInput = {
+    paper_id?: SortOrder
+    author_id?: SortOrder
+  }
+
+  export type PaperAuthorMinOrderByAggregateInput = {
+    paper_id?: SortOrder
+    author_id?: SortOrder
   }
 
   export type ModelCountOrderByAggregateInput = {
@@ -40450,6 +43056,13 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type PaperAuthorCreateNestedManyWithoutPaperInput = {
+    create?: XOR<PaperAuthorCreateWithoutPaperInput, PaperAuthorUncheckedCreateWithoutPaperInput> | PaperAuthorCreateWithoutPaperInput[] | PaperAuthorUncheckedCreateWithoutPaperInput[]
+    connectOrCreate?: PaperAuthorCreateOrConnectWithoutPaperInput | PaperAuthorCreateOrConnectWithoutPaperInput[]
+    createMany?: PaperAuthorCreateManyPaperInputEnvelope
+    connect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+  }
+
   export type PaperConferenceCreateNestedManyWithoutPaperInput = {
     create?: XOR<PaperConferenceCreateWithoutPaperInput, PaperConferenceUncheckedCreateWithoutPaperInput> | PaperConferenceCreateWithoutPaperInput[] | PaperConferenceUncheckedCreateWithoutPaperInput[]
     connectOrCreate?: PaperConferenceCreateOrConnectWithoutPaperInput | PaperConferenceCreateOrConnectWithoutPaperInput[]
@@ -40532,6 +43145,13 @@ export namespace Prisma {
     connectOrCreate?: SummaryCreateOrConnectWithoutPaperInput | SummaryCreateOrConnectWithoutPaperInput[]
     createMany?: SummaryCreateManyPaperInputEnvelope
     connect?: SummaryWhereUniqueInput | SummaryWhereUniqueInput[]
+  }
+
+  export type PaperAuthorUncheckedCreateNestedManyWithoutPaperInput = {
+    create?: XOR<PaperAuthorCreateWithoutPaperInput, PaperAuthorUncheckedCreateWithoutPaperInput> | PaperAuthorCreateWithoutPaperInput[] | PaperAuthorUncheckedCreateWithoutPaperInput[]
+    connectOrCreate?: PaperAuthorCreateOrConnectWithoutPaperInput | PaperAuthorCreateOrConnectWithoutPaperInput[]
+    createMany?: PaperAuthorCreateManyPaperInputEnvelope
+    connect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
   }
 
   export type PaperConferenceUncheckedCreateNestedManyWithoutPaperInput = {
@@ -40660,6 +43280,20 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type PaperAuthorUpdateManyWithoutPaperNestedInput = {
+    create?: XOR<PaperAuthorCreateWithoutPaperInput, PaperAuthorUncheckedCreateWithoutPaperInput> | PaperAuthorCreateWithoutPaperInput[] | PaperAuthorUncheckedCreateWithoutPaperInput[]
+    connectOrCreate?: PaperAuthorCreateOrConnectWithoutPaperInput | PaperAuthorCreateOrConnectWithoutPaperInput[]
+    upsert?: PaperAuthorUpsertWithWhereUniqueWithoutPaperInput | PaperAuthorUpsertWithWhereUniqueWithoutPaperInput[]
+    createMany?: PaperAuthorCreateManyPaperInputEnvelope
+    set?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    disconnect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    delete?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    connect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    update?: PaperAuthorUpdateWithWhereUniqueWithoutPaperInput | PaperAuthorUpdateWithWhereUniqueWithoutPaperInput[]
+    updateMany?: PaperAuthorUpdateManyWithWhereWithoutPaperInput | PaperAuthorUpdateManyWithWhereWithoutPaperInput[]
+    deleteMany?: PaperAuthorScalarWhereInput | PaperAuthorScalarWhereInput[]
   }
 
   export type PaperConferenceUpdateManyWithoutPaperNestedInput = {
@@ -40828,6 +43462,20 @@ export namespace Prisma {
     update?: SummaryUpdateWithWhereUniqueWithoutPaperInput | SummaryUpdateWithWhereUniqueWithoutPaperInput[]
     updateMany?: SummaryUpdateManyWithWhereWithoutPaperInput | SummaryUpdateManyWithWhereWithoutPaperInput[]
     deleteMany?: SummaryScalarWhereInput | SummaryScalarWhereInput[]
+  }
+
+  export type PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput = {
+    create?: XOR<PaperAuthorCreateWithoutPaperInput, PaperAuthorUncheckedCreateWithoutPaperInput> | PaperAuthorCreateWithoutPaperInput[] | PaperAuthorUncheckedCreateWithoutPaperInput[]
+    connectOrCreate?: PaperAuthorCreateOrConnectWithoutPaperInput | PaperAuthorCreateOrConnectWithoutPaperInput[]
+    upsert?: PaperAuthorUpsertWithWhereUniqueWithoutPaperInput | PaperAuthorUpsertWithWhereUniqueWithoutPaperInput[]
+    createMany?: PaperAuthorCreateManyPaperInputEnvelope
+    set?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    disconnect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    delete?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    connect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    update?: PaperAuthorUpdateWithWhereUniqueWithoutPaperInput | PaperAuthorUpdateWithWhereUniqueWithoutPaperInput[]
+    updateMany?: PaperAuthorUpdateManyWithWhereWithoutPaperInput | PaperAuthorUpdateManyWithWhereWithoutPaperInput[]
+    deleteMany?: PaperAuthorScalarWhereInput | PaperAuthorScalarWhereInput[]
   }
 
   export type PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput = {
@@ -41296,6 +43944,76 @@ export namespace Prisma {
     delete?: PaperWhereInput | boolean
     connect?: PaperWhereUniqueInput
     update?: XOR<XOR<PaperUpdateToOneWithWhereWithoutRankingsInput, PaperUpdateWithoutRankingsInput>, PaperUncheckedUpdateWithoutRankingsInput>
+  }
+
+  export type PaperAuthorCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<PaperAuthorCreateWithoutAuthorInput, PaperAuthorUncheckedCreateWithoutAuthorInput> | PaperAuthorCreateWithoutAuthorInput[] | PaperAuthorUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: PaperAuthorCreateOrConnectWithoutAuthorInput | PaperAuthorCreateOrConnectWithoutAuthorInput[]
+    createMany?: PaperAuthorCreateManyAuthorInputEnvelope
+    connect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+  }
+
+  export type PaperAuthorUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<PaperAuthorCreateWithoutAuthorInput, PaperAuthorUncheckedCreateWithoutAuthorInput> | PaperAuthorCreateWithoutAuthorInput[] | PaperAuthorUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: PaperAuthorCreateOrConnectWithoutAuthorInput | PaperAuthorCreateOrConnectWithoutAuthorInput[]
+    createMany?: PaperAuthorCreateManyAuthorInputEnvelope
+    connect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+  }
+
+  export type PaperAuthorUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<PaperAuthorCreateWithoutAuthorInput, PaperAuthorUncheckedCreateWithoutAuthorInput> | PaperAuthorCreateWithoutAuthorInput[] | PaperAuthorUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: PaperAuthorCreateOrConnectWithoutAuthorInput | PaperAuthorCreateOrConnectWithoutAuthorInput[]
+    upsert?: PaperAuthorUpsertWithWhereUniqueWithoutAuthorInput | PaperAuthorUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: PaperAuthorCreateManyAuthorInputEnvelope
+    set?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    disconnect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    delete?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    connect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    update?: PaperAuthorUpdateWithWhereUniqueWithoutAuthorInput | PaperAuthorUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: PaperAuthorUpdateManyWithWhereWithoutAuthorInput | PaperAuthorUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: PaperAuthorScalarWhereInput | PaperAuthorScalarWhereInput[]
+  }
+
+  export type PaperAuthorUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<PaperAuthorCreateWithoutAuthorInput, PaperAuthorUncheckedCreateWithoutAuthorInput> | PaperAuthorCreateWithoutAuthorInput[] | PaperAuthorUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: PaperAuthorCreateOrConnectWithoutAuthorInput | PaperAuthorCreateOrConnectWithoutAuthorInput[]
+    upsert?: PaperAuthorUpsertWithWhereUniqueWithoutAuthorInput | PaperAuthorUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: PaperAuthorCreateManyAuthorInputEnvelope
+    set?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    disconnect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    delete?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    connect?: PaperAuthorWhereUniqueInput | PaperAuthorWhereUniqueInput[]
+    update?: PaperAuthorUpdateWithWhereUniqueWithoutAuthorInput | PaperAuthorUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: PaperAuthorUpdateManyWithWhereWithoutAuthorInput | PaperAuthorUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: PaperAuthorScalarWhereInput | PaperAuthorScalarWhereInput[]
+  }
+
+  export type AuthorCreateNestedOneWithoutPapersInput = {
+    create?: XOR<AuthorCreateWithoutPapersInput, AuthorUncheckedCreateWithoutPapersInput>
+    connectOrCreate?: AuthorCreateOrConnectWithoutPapersInput
+    connect?: AuthorWhereUniqueInput
+  }
+
+  export type PaperCreateNestedOneWithoutAuthorsInput = {
+    create?: XOR<PaperCreateWithoutAuthorsInput, PaperUncheckedCreateWithoutAuthorsInput>
+    connectOrCreate?: PaperCreateOrConnectWithoutAuthorsInput
+    connect?: PaperWhereUniqueInput
+  }
+
+  export type AuthorUpdateOneRequiredWithoutPapersNestedInput = {
+    create?: XOR<AuthorCreateWithoutPapersInput, AuthorUncheckedCreateWithoutPapersInput>
+    connectOrCreate?: AuthorCreateOrConnectWithoutPapersInput
+    upsert?: AuthorUpsertWithoutPapersInput
+    connect?: AuthorWhereUniqueInput
+    update?: XOR<XOR<AuthorUpdateToOneWithWhereWithoutPapersInput, AuthorUpdateWithoutPapersInput>, AuthorUncheckedUpdateWithoutPapersInput>
+  }
+
+  export type PaperUpdateOneRequiredWithoutAuthorsNestedInput = {
+    create?: XOR<PaperCreateWithoutAuthorsInput, PaperUncheckedCreateWithoutAuthorsInput>
+    connectOrCreate?: PaperCreateOrConnectWithoutAuthorsInput
+    upsert?: PaperUpsertWithoutAuthorsInput
+    connect?: PaperWhereUniqueInput
+    update?: XOR<XOR<PaperUpdateToOneWithWhereWithoutAuthorsInput, PaperUpdateWithoutAuthorsInput>, PaperUncheckedUpdateWithoutAuthorsInput>
   }
 
   export type PaperModelCreateNestedManyWithoutModelInput = {
@@ -42183,6 +44901,24 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type PaperAuthorCreateWithoutPaperInput = {
+    author: AuthorCreateNestedOneWithoutPapersInput
+  }
+
+  export type PaperAuthorUncheckedCreateWithoutPaperInput = {
+    author_id: string
+  }
+
+  export type PaperAuthorCreateOrConnectWithoutPaperInput = {
+    where: PaperAuthorWhereUniqueInput
+    create: XOR<PaperAuthorCreateWithoutPaperInput, PaperAuthorUncheckedCreateWithoutPaperInput>
+  }
+
+  export type PaperAuthorCreateManyPaperInputEnvelope = {
+    data: PaperAuthorCreateManyPaperInput | PaperAuthorCreateManyPaperInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PaperConferenceCreateWithoutPaperInput = {
     conference: ConferenceCreateNestedOneWithoutPapersInput
   }
@@ -42437,6 +45173,30 @@ export namespace Prisma {
   export type SummaryCreateManyPaperInputEnvelope = {
     data: SummaryCreateManyPaperInput | SummaryCreateManyPaperInput[]
     skipDuplicates?: boolean
+  }
+
+  export type PaperAuthorUpsertWithWhereUniqueWithoutPaperInput = {
+    where: PaperAuthorWhereUniqueInput
+    update: XOR<PaperAuthorUpdateWithoutPaperInput, PaperAuthorUncheckedUpdateWithoutPaperInput>
+    create: XOR<PaperAuthorCreateWithoutPaperInput, PaperAuthorUncheckedCreateWithoutPaperInput>
+  }
+
+  export type PaperAuthorUpdateWithWhereUniqueWithoutPaperInput = {
+    where: PaperAuthorWhereUniqueInput
+    data: XOR<PaperAuthorUpdateWithoutPaperInput, PaperAuthorUncheckedUpdateWithoutPaperInput>
+  }
+
+  export type PaperAuthorUpdateManyWithWhereWithoutPaperInput = {
+    where: PaperAuthorScalarWhereInput
+    data: XOR<PaperAuthorUpdateManyMutationInput, PaperAuthorUncheckedUpdateManyWithoutPaperInput>
+  }
+
+  export type PaperAuthorScalarWhereInput = {
+    AND?: PaperAuthorScalarWhereInput | PaperAuthorScalarWhereInput[]
+    OR?: PaperAuthorScalarWhereInput[]
+    NOT?: PaperAuthorScalarWhereInput | PaperAuthorScalarWhereInput[]
+    paper_id?: StringFilter<"PaperAuthor"> | string
+    author_id?: StringFilter<"PaperAuthor"> | string
   }
 
   export type PaperConferenceUpsertWithWhereUniqueWithoutPaperInput = {
@@ -42816,7 +45576,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -42865,7 +45625,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -42953,7 +45713,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -43002,7 +45762,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -43139,7 +45899,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -43188,7 +45948,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -43284,7 +46044,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -43333,7 +46093,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -43501,7 +46261,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -43550,7 +46310,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -43644,7 +46404,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -43693,7 +46453,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -43765,7 +46525,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -43814,7 +46574,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -43908,7 +46668,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -43957,7 +46717,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -43967,6 +46727,300 @@ export namespace Prisma {
     repositories?: PaperRepositoryUncheckedUpdateManyWithoutPaperNestedInput
     tasks?: PaperTaskUncheckedUpdateManyWithoutPaperNestedInput
     universities?: PaperUniversityUncheckedUpdateManyWithoutPaperNestedInput
+    sotaClaims?: SotaClaimUncheckedUpdateManyWithoutPaperNestedInput
+    summaries?: SummaryUncheckedUpdateManyWithoutPaperNestedInput
+  }
+
+  export type PaperAuthorCreateWithoutAuthorInput = {
+    paper: PaperCreateNestedOneWithoutAuthorsInput
+  }
+
+  export type PaperAuthorUncheckedCreateWithoutAuthorInput = {
+    paper_id: string
+  }
+
+  export type PaperAuthorCreateOrConnectWithoutAuthorInput = {
+    where: PaperAuthorWhereUniqueInput
+    create: XOR<PaperAuthorCreateWithoutAuthorInput, PaperAuthorUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type PaperAuthorCreateManyAuthorInputEnvelope = {
+    data: PaperAuthorCreateManyAuthorInput | PaperAuthorCreateManyAuthorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaperAuthorUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: PaperAuthorWhereUniqueInput
+    update: XOR<PaperAuthorUpdateWithoutAuthorInput, PaperAuthorUncheckedUpdateWithoutAuthorInput>
+    create: XOR<PaperAuthorCreateWithoutAuthorInput, PaperAuthorUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type PaperAuthorUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: PaperAuthorWhereUniqueInput
+    data: XOR<PaperAuthorUpdateWithoutAuthorInput, PaperAuthorUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type PaperAuthorUpdateManyWithWhereWithoutAuthorInput = {
+    where: PaperAuthorScalarWhereInput
+    data: XOR<PaperAuthorUpdateManyMutationInput, PaperAuthorUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type AuthorCreateWithoutPapersInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AuthorUncheckedCreateWithoutPapersInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AuthorCreateOrConnectWithoutPapersInput = {
+    where: AuthorWhereUniqueInput
+    create: XOR<AuthorCreateWithoutPapersInput, AuthorUncheckedCreateWithoutPapersInput>
+  }
+
+  export type PaperCreateWithoutAuthorsInput = {
+    id?: string
+    slug: string
+    title: string
+    shortTitle?: string | null
+    abstract?: string | null
+    tlDr?: string | null
+    publicationDate?: Date | string | null
+    submissionDate?: Date | string | null
+    arxivId?: string | null
+    doi?: string | null
+    paperUrl?: string | null
+    pdfUrl?: string | null
+    thumbnailUrl?: string | null
+    sourceUrl?: string | null
+    projectUrl?: string | null
+    citationCount?: number
+    referenceCount?: number
+    pageCount?: number | null
+    paperType?: string | null
+    status?: string | null
+    language?: string | null
+    license?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    githubForks?: number | null
+    githubStars?: number | null
+    githubUrl?: string | null
+    isOfficialCode?: boolean | null
+    hfUpvotes?: number | null
+    trendingScore?: number | null
+    discoverySource?: string | null
+    importance_score?: number | null
+    venue?: string | null
+    organization?: string | null
+    conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
+    datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
+    journals?: PaperJournalCreateNestedManyWithoutPaperInput
+    labs?: PaperLabCreateNestedManyWithoutPaperInput
+    methods?: PaperMethodCreateNestedManyWithoutPaperInput
+    models?: PaperModelCreateNestedManyWithoutPaperInput
+    repositories?: PaperRepositoryCreateNestedManyWithoutPaperInput
+    tasks?: PaperTaskCreateNestedManyWithoutPaperInput
+    universities?: PaperUniversityCreateNestedManyWithoutPaperInput
+    rankings?: RankingCreateNestedManyWithoutPaperInput
+    sotaClaims?: SotaClaimCreateNestedManyWithoutPaperInput
+    summaries?: SummaryCreateNestedManyWithoutPaperInput
+  }
+
+  export type PaperUncheckedCreateWithoutAuthorsInput = {
+    id?: string
+    slug: string
+    title: string
+    shortTitle?: string | null
+    abstract?: string | null
+    tlDr?: string | null
+    publicationDate?: Date | string | null
+    submissionDate?: Date | string | null
+    arxivId?: string | null
+    doi?: string | null
+    paperUrl?: string | null
+    pdfUrl?: string | null
+    thumbnailUrl?: string | null
+    sourceUrl?: string | null
+    projectUrl?: string | null
+    citationCount?: number
+    referenceCount?: number
+    pageCount?: number | null
+    paperType?: string | null
+    status?: string | null
+    language?: string | null
+    license?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    githubForks?: number | null
+    githubStars?: number | null
+    githubUrl?: string | null
+    isOfficialCode?: boolean | null
+    hfUpvotes?: number | null
+    trendingScore?: number | null
+    discoverySource?: string | null
+    importance_score?: number | null
+    venue?: string | null
+    organization?: string | null
+    conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
+    datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
+    journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
+    labs?: PaperLabUncheckedCreateNestedManyWithoutPaperInput
+    methods?: PaperMethodUncheckedCreateNestedManyWithoutPaperInput
+    models?: PaperModelUncheckedCreateNestedManyWithoutPaperInput
+    repositories?: PaperRepositoryUncheckedCreateNestedManyWithoutPaperInput
+    tasks?: PaperTaskUncheckedCreateNestedManyWithoutPaperInput
+    universities?: PaperUniversityUncheckedCreateNestedManyWithoutPaperInput
+    rankings?: RankingUncheckedCreateNestedManyWithoutPaperInput
+    sotaClaims?: SotaClaimUncheckedCreateNestedManyWithoutPaperInput
+    summaries?: SummaryUncheckedCreateNestedManyWithoutPaperInput
+  }
+
+  export type PaperCreateOrConnectWithoutAuthorsInput = {
+    where: PaperWhereUniqueInput
+    create: XOR<PaperCreateWithoutAuthorsInput, PaperUncheckedCreateWithoutAuthorsInput>
+  }
+
+  export type AuthorUpsertWithoutPapersInput = {
+    update: XOR<AuthorUpdateWithoutPapersInput, AuthorUncheckedUpdateWithoutPapersInput>
+    create: XOR<AuthorCreateWithoutPapersInput, AuthorUncheckedCreateWithoutPapersInput>
+    where?: AuthorWhereInput
+  }
+
+  export type AuthorUpdateToOneWithWhereWithoutPapersInput = {
+    where?: AuthorWhereInput
+    data: XOR<AuthorUpdateWithoutPapersInput, AuthorUncheckedUpdateWithoutPapersInput>
+  }
+
+  export type AuthorUpdateWithoutPapersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuthorUncheckedUpdateWithoutPapersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaperUpsertWithoutAuthorsInput = {
+    update: XOR<PaperUpdateWithoutAuthorsInput, PaperUncheckedUpdateWithoutAuthorsInput>
+    create: XOR<PaperCreateWithoutAuthorsInput, PaperUncheckedCreateWithoutAuthorsInput>
+    where?: PaperWhereInput
+  }
+
+  export type PaperUpdateToOneWithWhereWithoutAuthorsInput = {
+    where?: PaperWhereInput
+    data: XOR<PaperUpdateWithoutAuthorsInput, PaperUncheckedUpdateWithoutAuthorsInput>
+  }
+
+  export type PaperUpdateWithoutAuthorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    shortTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    abstract?: NullableStringFieldUpdateOperationsInput | string | null
+    tlDr?: NullableStringFieldUpdateOperationsInput | string | null
+    publicationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    arxivId?: NullableStringFieldUpdateOperationsInput | string | null
+    doi?: NullableStringFieldUpdateOperationsInput | string | null
+    paperUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    projectUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    citationCount?: IntFieldUpdateOperationsInput | number
+    referenceCount?: IntFieldUpdateOperationsInput | number
+    pageCount?: NullableIntFieldUpdateOperationsInput | number | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    license?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    githubForks?: NullableIntFieldUpdateOperationsInput | number | null
+    githubStars?: NullableIntFieldUpdateOperationsInput | number | null
+    githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isOfficialCode?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    hfUpvotes?: NullableIntFieldUpdateOperationsInput | number | null
+    trendingScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    discoverySource?: NullableStringFieldUpdateOperationsInput | string | null
+    importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    venue?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
+    datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
+    journals?: PaperJournalUpdateManyWithoutPaperNestedInput
+    labs?: PaperLabUpdateManyWithoutPaperNestedInput
+    methods?: PaperMethodUpdateManyWithoutPaperNestedInput
+    models?: PaperModelUpdateManyWithoutPaperNestedInput
+    repositories?: PaperRepositoryUpdateManyWithoutPaperNestedInput
+    tasks?: PaperTaskUpdateManyWithoutPaperNestedInput
+    universities?: PaperUniversityUpdateManyWithoutPaperNestedInput
+    rankings?: RankingUpdateManyWithoutPaperNestedInput
+    sotaClaims?: SotaClaimUpdateManyWithoutPaperNestedInput
+    summaries?: SummaryUpdateManyWithoutPaperNestedInput
+  }
+
+  export type PaperUncheckedUpdateWithoutAuthorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    shortTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    abstract?: NullableStringFieldUpdateOperationsInput | string | null
+    tlDr?: NullableStringFieldUpdateOperationsInput | string | null
+    publicationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    arxivId?: NullableStringFieldUpdateOperationsInput | string | null
+    doi?: NullableStringFieldUpdateOperationsInput | string | null
+    paperUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    projectUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    citationCount?: IntFieldUpdateOperationsInput | number
+    referenceCount?: IntFieldUpdateOperationsInput | number
+    pageCount?: NullableIntFieldUpdateOperationsInput | number | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    license?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    githubForks?: NullableIntFieldUpdateOperationsInput | number | null
+    githubStars?: NullableIntFieldUpdateOperationsInput | number | null
+    githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isOfficialCode?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    hfUpvotes?: NullableIntFieldUpdateOperationsInput | number | null
+    trendingScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    discoverySource?: NullableStringFieldUpdateOperationsInput | string | null
+    importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    venue?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
+    datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
+    journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
+    labs?: PaperLabUncheckedUpdateManyWithoutPaperNestedInput
+    methods?: PaperMethodUncheckedUpdateManyWithoutPaperNestedInput
+    models?: PaperModelUncheckedUpdateManyWithoutPaperNestedInput
+    repositories?: PaperRepositoryUncheckedUpdateManyWithoutPaperNestedInput
+    tasks?: PaperTaskUncheckedUpdateManyWithoutPaperNestedInput
+    universities?: PaperUniversityUncheckedUpdateManyWithoutPaperNestedInput
+    rankings?: RankingUncheckedUpdateManyWithoutPaperNestedInput
     sotaClaims?: SotaClaimUncheckedUpdateManyWithoutPaperNestedInput
     summaries?: SummaryUncheckedUpdateManyWithoutPaperNestedInput
   }
@@ -44131,7 +47185,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -44180,7 +47234,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -44342,7 +47396,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -44391,7 +47445,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -44499,7 +47553,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
     labs?: PaperLabCreateNestedManyWithoutPaperInput
@@ -44548,7 +47602,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
     labs?: PaperLabUncheckedCreateNestedManyWithoutPaperInput
@@ -44644,7 +47698,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUpdateManyWithoutPaperNestedInput
@@ -44693,7 +47747,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUncheckedUpdateManyWithoutPaperNestedInput
@@ -44801,7 +47855,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -44850,7 +47904,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -44946,7 +48000,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -44995,7 +48049,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -45078,7 +48132,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -45127,7 +48181,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -45217,7 +48271,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -45266,7 +48320,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -45405,7 +48459,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
     labs?: PaperLabCreateNestedManyWithoutPaperInput
@@ -45454,7 +48508,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
     labs?: PaperLabUncheckedCreateNestedManyWithoutPaperInput
@@ -45550,7 +48604,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUpdateManyWithoutPaperNestedInput
@@ -45599,7 +48653,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUncheckedUpdateManyWithoutPaperNestedInput
@@ -45707,7 +48761,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     labs?: PaperLabCreateNestedManyWithoutPaperInput
@@ -45756,7 +48810,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     labs?: PaperLabUncheckedCreateNestedManyWithoutPaperInput
@@ -45852,7 +48906,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUpdateManyWithoutPaperNestedInput
@@ -45901,7 +48955,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUncheckedUpdateManyWithoutPaperNestedInput
@@ -45984,7 +49038,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -46033,7 +49087,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -46125,7 +49179,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -46174,7 +49228,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -46455,7 +49509,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -46504,7 +49558,7 @@ export namespace Prisma {
     importance_score?: number | null
     venue?: string | null
     organization?: string | null
-    authors?: string | null
+    authors?: PaperAuthorUncheckedCreateNestedManyWithoutPaperInput
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -46614,7 +49668,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -46663,7 +49717,7 @@ export namespace Prisma {
     importance_score?: NullableFloatFieldUpdateOperationsInput | number | null
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
-    authors?: NullableStringFieldUpdateOperationsInput | string | null
+    authors?: PaperAuthorUncheckedUpdateManyWithoutPaperNestedInput
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -46726,6 +49780,10 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refresh_tokens?: RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
+  export type PaperAuthorCreateManyPaperInput = {
+    author_id: string
   }
 
   export type PaperConferenceCreateManyPaperInput = {
@@ -46794,6 +49852,18 @@ export namespace Prisma {
     updated_at?: Date | string
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+  }
+
+  export type PaperAuthorUpdateWithoutPaperInput = {
+    author?: AuthorUpdateOneRequiredWithoutPapersNestedInput
+  }
+
+  export type PaperAuthorUncheckedUpdateWithoutPaperInput = {
+    author_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PaperAuthorUncheckedUpdateManyWithoutPaperInput = {
+    author_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type PaperConferenceUpdateWithoutPaperInput = {
@@ -47118,6 +50188,22 @@ export namespace Prisma {
   export type SotaClaimUncheckedUpdateManyWithoutBenchmarkInput = {
     id?: StringFieldUpdateOperationsInput | string
     paper_id?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PaperAuthorCreateManyAuthorInput = {
+    paper_id: string
+  }
+
+  export type PaperAuthorUpdateWithoutAuthorInput = {
+    paper?: PaperUpdateOneRequiredWithoutAuthorsNestedInput
+  }
+
+  export type PaperAuthorUncheckedUpdateWithoutAuthorInput = {
+    paper_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PaperAuthorUncheckedUpdateManyWithoutAuthorInput = {
+    paper_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type PaperModelCreateManyModelInput = {
