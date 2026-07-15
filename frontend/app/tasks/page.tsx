@@ -893,7 +893,7 @@ const FrontierAtlas: React.FC = () => {
               <div className="relative z-10 w-[30%] px-6 md:px-8 py-4 md:py-5">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 tracking-tight text-gray-900">
                   All
-                  <span className="text-[#e11d48]">Tasks</span>
+                  <span className="text-[#e11d48] ml-3">Tasks</span>
                 </h1>
                 <p className="text-gray-600 text-xs md:text-sm mb-4 max-w-md leading-relaxed">
                   Discover the full landscape of AI research through 105 tasks spanning language, vision, video, audio, robotics, healthcare, and more.
