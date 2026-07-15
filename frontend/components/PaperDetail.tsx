@@ -8,14 +8,12 @@ import {
   ArrowLeft,
   FileText,
   Github,
-  ChevronDown,
   Calendar,
   BookOpen,
   Quote,
   Star,
   GitBranch,
   MessageSquare,
-  Bookmark,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -648,7 +646,6 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
  
   const [relatedPapers, setRelatedPapers] = useState<Paper[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(true);
-  const [saved, setSaved] = useState(false);
   const [showAllAuthors, setShowAllAuthors] = useState(false);
   const [copiedArxiv, setCopiedArxiv] = useState(false);
   const [deferred, setDeferred] = useState(false);
@@ -805,7 +802,6 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
 
       <div className="mx-auto w-full max-w-[1440px] px-4 py-5 sm:px-6 md:px-12 lg:px-16 lg:py-6">
 
-        {/* Breadcrumb */}
         {/* Breadcrumb */}
 <nav
   className="mb-5 lg:mb-6 flex items-center gap-2 text-[12.5px] font-semibold text-[#8B8B8B]"
@@ -1001,14 +997,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
                     >
                       <Share2 size={18} />
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => setSaved(!saved)}
-                      className={`ds-button-ghost !p-0 w-11 h-11 rounded-full border-[1.5px] border-[#E0DDD6] bg-transparent inline-flex items-center justify-center transition-all hover:bg-[rgba(255,90,31,0.06)] hover:text-[#FF5A1F] hover:border-[rgba(255,90,31,0.3)] active:scale-[0.97] ${saved ? "text-[#FF5A1F]" : ""}`}
-                      title={saved ? "Saved" : "Save"}
-                    >
-                      <Bookmark size={18} fill={saved ? "#FF5A1F" : "none"} />
-                    </button>
+
                   </div>
                 </div>
 
@@ -1093,13 +1082,9 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
               {paper.abstract && (
                 <div className="flex flex-col gap-3">
                   <h2 className="section-label">ABSTRACT</h2>
-                  <div className="relative">
-                    <p className="text-[15px] leading-7 text-[#444]">
-                      {paper.abstract}
-                    </p>
-                    
-                  </div>
-                  
+                  <p className="text-[15px] leading-7 text-[#444]">
+                    {paper.abstract}
+                  </p>
                 </div>
               )}
 
