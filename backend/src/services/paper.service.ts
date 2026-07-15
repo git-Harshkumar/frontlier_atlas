@@ -431,7 +431,6 @@ export const getPaperBySlug = async (
             },
           },
           tasks: {
-  take: 3,
   orderBy: {
     task: {
       name: "asc",
@@ -451,7 +450,6 @@ export const getPaperBySlug = async (
   },
 },
           methods: {
-  take: 3,
   orderBy: {
     method: {
       name: "asc",
@@ -556,23 +554,27 @@ export const getPaperBySlug = async (
               where: { paper_id: paperData.id },
               select: {
                 id: true,
+                paper_id: true,
+                benchmark_id: true,
                 rank: true,
                 previous_rank: true,
                 benchmark: { select: { id: true, name: true, slug: true } },
               },
             })
             .then((rows) =>
-              rows.map((r) => ({ id: r.id, rank: r.rank, previous_rank: r.previous_rank, benchmark: r.benchmark })),
+              rows.map((r) => ({ id: r.id, paper_id: r.paper_id, benchmark_id: r.benchmark_id, rank: r.rank, previous_rank: r.previous_rank, benchmark: r.benchmark })),
             ),
           prisma.sotaClaim
             .findMany({
               where: { paper_id: paperData.id },
               select: {
                 id: true,
+                paper_id: true,
+                benchmark_id: true,
                 benchmark: { select: { id: true, name: true, slug: true } },
               },
             })
-            .then((rows) => rows.map((r) => ({ id: r.id, benchmark: r.benchmark }))),
+            .then((rows) => rows.map((r) => ({ id: r.id, paper_id: r.paper_id, benchmark_id: r.benchmark_id, benchmark: r.benchmark }))),
         ]);
 
       const thumbnailUrl = paperData.thumbnailUrl === "FAILED_404" ? null : paperData.thumbnailUrl;

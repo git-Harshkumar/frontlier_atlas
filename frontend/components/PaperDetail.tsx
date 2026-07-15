@@ -8,14 +8,12 @@ import {
   ArrowLeft,
   FileText,
   Github,
-  ChevronDown,
   Calendar,
   BookOpen,
   Quote,
   Star,
   GitBranch,
   MessageSquare,
-  Bookmark,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -645,10 +643,9 @@ export function RelatedPaperCard({ paper }: { paper: Paper }) {
 export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
   const [citationCopied, setCitationCopied] = useState<CitationFormat | null>(null);
   const [selectedCitationFormat, setSelectedCitationFormat] = useState<CitationFormat>("bibtex");
-  const [abstractExpanded, setAbstractExpanded] = useState(false);
+ 
   const [relatedPapers, setRelatedPapers] = useState<Paper[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(true);
-  const [saved, setSaved] = useState(false);
   const [showAllAuthors, setShowAllAuthors] = useState(false);
   const [copiedArxiv, setCopiedArxiv] = useState(false);
   const [deferred, setDeferred] = useState(false);
@@ -806,12 +803,25 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
       <div className="mx-auto w-full max-w-[1440px] px-4 py-5 sm:px-6 md:px-12 lg:px-16 lg:py-6">
 
         {/* Breadcrumb */}
-        <nav className="mb-5 lg:mb-6 flex items-center gap-2 text-[12.5px] font-semibold text-[#8B8B8B]" aria-label="Breadcrumb">
-          <Link href="/papers" className="transition-colors hover:text-[#FF5A1F] no-underline text-[#8B8B8B]">Papers</Link>
-          <span className="text-[#DCDCD7] font-normal" aria-hidden="true">/</span>
-          <span className="text-[#555555] truncate max-w-[200px] sm:max-w-none">Research</span>
-        </nav>
+<nav
+  className="mb-5 lg:mb-6 flex items-center gap-2 text-[12.5px] font-semibold text-[#8B8B8B]"
+  aria-label="Breadcrumb"
+>
+  <Link
+    href="/"
+    className="transition-colors hover:text-[#FF5A1F] no-underline text-[#8B8B8B]"
+  >
+    Papers
+  </Link>
 
+  <span className="text-[#DCDCD7] font-normal" aria-hidden="true">
+    /
+  </span>
+
+  <span className="text-[#555555] truncate max-w-[300px]">
+    {paper.title}
+  </span>
+</nav>
         {/* Grid: Main + Sidebar */}
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1fr_320px] xl:gap-10">
 
@@ -877,7 +887,15 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
                 {paper.publicationDate && (
   <div className="flex items-center text-[14px] text-[#666]">
     <span className="mx-2 text-[#B0B0B0]">•</span>
-    <span>{formatDate(paper.publicationDate)}</span>
+   <span>
+  {paper.publicationDate
+    ? new Date(paper.publicationDate).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "N/A"}
+</span>
   </div>
 )}
                 </div>
@@ -979,14 +997,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
                     >
                       <Share2 size={18} />
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => setSaved(!saved)}
-                      className={`ds-button-ghost !p-0 w-11 h-11 rounded-full border-[1.5px] border-[#E0DDD6] bg-transparent inline-flex items-center justify-center transition-all hover:bg-[rgba(255,90,31,0.06)] hover:text-[#FF5A1F] hover:border-[rgba(255,90,31,0.3)] active:scale-[0.97] ${saved ? "text-[#FF5A1F]" : ""}`}
-                      title={saved ? "Saved" : "Save"}
-                    >
-                      <Bookmark size={18} fill={saved ? "#FF5A1F" : "none"} />
-                    </button>
+
                   </div>
                 </div>
 
@@ -1071,36 +1082,9 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
               {paper.abstract && (
                 <div className="flex flex-col gap-3">
                   <h2 className="section-label">ABSTRACT</h2>
-                  <div className="relative">
-                    <p
-                      className={`text-[14.5px] leading-[1.8] text-[#484848] font-[450] m-0 ${
-                        abstractExpanded ? "" : "max-h-[130px] overflow-hidden"
-                      }`}
-                      style={{ transition: 'max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1)' }}
-                    >
-                      {paper.abstract}
-                    </p>
-                    {!abstractExpanded && (
-                      <div style={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        height: '48px',
-                        background: 'linear-gradient(to top, #F8F7F2, transparent)',
-                        pointerEvents: 'none',
-                        transition: 'opacity 0.3s ease',
-                      }} />
-                    )}
-                  </div>
-                  <button
-                    onClick={() => setAbstractExpanded((v) => !v)}
-                    className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#FF5A1F] hover:text-[#FF6C37] transition-colors focus-visible:outline-none bg-transparent border-none cursor-pointer p-0 w-fit"
-                    aria-expanded={abstractExpanded}
-                  >
-                    <span id="abstract-btn-text">{abstractExpanded ? "Show less" : "Read full abstract"}</span>
-                    <ChevronDown size={15} className={`transition-transform ${abstractExpanded ? "rotate-180" : ""}`} />
-                  </button>
+                  <p className="text-[15px] leading-7 text-[#444]">
+                    {paper.abstract}
+                  </p>
                 </div>
               )}
 
@@ -1246,7 +1230,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
 
             {/* Back link */}
             <Link
-              href="/papers"
+              href="/"
               className="hover-dim inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#8B8B8B] no-underline border-t border-[#E5E5E0] pt-3.5 transition-colors hover:text-[#FF5A1F]"
             >
               <ArrowLeft size={13} />
