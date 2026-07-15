@@ -24,6 +24,7 @@ import {
   BarChart2,
   Target,
   Plug,
+  Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -141,15 +142,18 @@ export default function Sidebar({
   { label: "All Tasks", icon: <FileText size={16} />, slug: "" },
 ];
 
-  const methods = [
-    { label: "Transformer", icon: <Zap size={16} />, slug: "transformer" },
-    { label: "Chain of Thought", icon: <LinkIcon size={16} />, slug: "chain-of-thought" },
-    { label: "ReAct", icon: <RefreshCw size={16} />, slug: "react" },
-    { label: "LoRA", icon: <Layers size={16} />, slug: "lora" },
-    { label: "RLHF", icon: <BarChart2 size={16} />, slug: "rlhf" },
-    { label: "DPO", icon: <Target size={16} />, slug: "dpo" },
-    { label: "MCP", icon: <Plug size={16} />, slug: "mcp" },
-  ];
+const methods = [
+  { label: "Transformers", icon: <Zap size={16} />, slug: "transformer" },
+  { label: "Diffusion Models", icon: <ImageIcon size={16} />, slug: "diffusion-models" },
+  { label: "Mixture of Experts", icon: <Layers size={16} />, slug: "mixture-of-experts-moe" },
+  { label: "Reinforcement Learning", icon: <BarChart2 size={16} />, slug: "policy-learning" },
+  { label: "Chain-of-Thought", icon: <LinkIcon size={16} />, slug: "chain-of-thought" },
+  { label: "Retrieval-Augmented Generation", icon: <Search size={16} />, slug: "rag" },
+  { label: "Model Context Protocol", icon: <Plug size={16} />, slug: "mcp" },
+  { label: "LoRA", icon: <Layers size={16} />, slug: "lora" },
+  { label: "RLHF", icon: <Target size={16} />, slug: "rlhf" },
+  { label: "All Methods", icon: <FileText size={16} />, slug: "" },
+];
 
   const generation = [
     { label: "Text Generation", icon: <FileText size={16} />, slug: "text-generation" },
