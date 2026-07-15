@@ -7,7 +7,7 @@ import { redisManager } from "./lib/redis";
 
 import authRoutes from "./routes/auth.routes.js";
 import paperRoutes from "./routes/paper.routes.js";
-import authorRoutes from "./routes/author.routes.js";
+//import authorRoutes from "./routes/author.routes.js";
 import modelRoutes from "./routes/model.routes.js";
 import datasetRoutes from "./routes/dataset.routes.js";
 import taskRoutes from "./routes/task.routes.js";
@@ -85,7 +85,7 @@ app.get("/health", (c) =>
 );
 app.route("/api/v1/auth", authRoutes);
 app.route("/api/v1/research-papers", paperRoutes);
-app.route("/api/v1/authors", authorRoutes);
+//app.route("/api/v1/authors", authorRoutes);
 app.route("/api/v1/models", modelRoutes);
 app.route("/api/v1/datasets", datasetRoutes);
 app.route("/api/v1/tasks", taskRoutes);

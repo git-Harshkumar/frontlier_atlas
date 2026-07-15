@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { FileText, User, Beaker, ListChecks, Cpu, Database, AlertCircle, Inbox } from "lucide-react";
 import Link from "next/link";
 import { globalSearch, type SearchResult, type SearchResultType } from "@/lib/search";
@@ -77,6 +77,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   const fetchResults = useCallback(async () => {
     if (!query.trim()) {
@@ -106,9 +107,21 @@ export default function SearchResults({ query }: SearchResultsProps) {
   }, [query]);
 
   // Fetch results when query changes
-  useEffect(() => {
+ useEffect(() => {
+  if (debounceTimer.current) {
+    clearTimeout(debounceTimer.current);
+  }
+
+  debounceTimer.current = setTimeout(() => {
     fetchResults();
-  }, [fetchResults]);
+  }, 300);
+
+  return () => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+  };
+}, [fetchResults]);
 
   const activeResults = results[activeTab];
   const totalResults = Object.values(results).reduce((sum, arr) => sum + arr.length, 0);

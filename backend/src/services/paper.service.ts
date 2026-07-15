@@ -648,6 +648,7 @@ export const searchPapers = async (
   query: { q?: string; limit?: number; page?: number; sort?: string } = {},
 ) => {
   const searchTerm = query.q?.trim() || "";
+  console.log("Search term received:", searchTerm);
   if (!searchTerm) {
     return { papers: [], total: 0, page: 1, hasMore: false, query: "" };
   }
@@ -676,6 +677,14 @@ export const searchPapers = async (
       });
     },
   );
+
+  
+  console.log("Search returned", papers.length, "papers");
+console.log(
+  papers.map((p:any) => p.title)
+);
+
+  
 
 
 
