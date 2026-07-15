@@ -85,18 +85,6 @@ model Startup {
   sourceUrl     String?   @map("source_url")
   employeeCount Int?      @map("employee_count")
   collectedAt   DateTime  @default(now()) @map("collected_at") @db.Timestamp(6)
-model Startup {
-  id            String   @id @default(uuid())
-  canonicalName String   @unique @map("canonical_name")
-  sourceName    String?  @map("source_name")
-  sourceUrl     String?  @map("source_url")
-  employeeCount Int?     @map("employee_count")
-  collectedAt   DateTime @default(now()) @map("collected_at") @db.Timestamp(6)
-  createdAt     DateTime? @default(now()) @db.Timestamp(6)
-  updatedAt     DateTime? @default(now()) @db.Timestamp(6)
-
-  @@map("startups")
-}
   createdAt     DateTime? @default(now()) @db.Timestamp(6)
   updatedAt     DateTime? @default(now()) @db.Timestamp(6)
 
