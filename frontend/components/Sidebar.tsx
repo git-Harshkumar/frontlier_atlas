@@ -129,14 +129,17 @@ export default function Sidebar({
   ];
 
   const tasks = [
-    { label: "Agents", icon: <Bot size={16} />, slug: "agents" },
-    { label: "Reasoning", icon: <Brain size={16} />, slug: "reasoning" },
-    { label: "Language Modeling", icon: <MessageSquare size={16} />, slug: "language-modeling" },
-    { label: "Coding Agents", icon: <Code2 size={16} />, slug: "coding-agents" },
-    { label: "Computer Use", icon: <Monitor size={16} />, slug: "computer-use-agents" },
-    { label: "World Models", icon: <Globe size={16} />, slug: "world-models" },
-    { label: "Robotics", icon: <Cpu size={16} />, slug: "robotics" },
-  ];
+  { label: "Language Models", icon: <MessageSquare size={16} />, slug: "language-models" },
+  { label: "Agents", icon: <Bot size={16} />, slug: "agents" },
+  { label: "Reasoning", icon: <Brain size={16} />, slug: "reasoning" },
+  { label: "Vision-Language Models", icon: <ImageIcon size={16} />, slug: "vision-language-models" },
+  { label: "Multimodal Models", icon: <Layers size={16} />, slug: "multimodal-models" },
+  { label: "World Models", icon: <Globe size={16} />, slug: "world-models" },
+  { label: "Image Generation", icon: <ImageIcon size={16} />, slug: "image-generation" },
+  { label: "Speech", icon: <Volume2 size={16} />, slug: "speech" },
+  { label: "Robotics", icon: <Cpu size={16} />, slug: "robotics" },
+  { label: "All Tasks", icon: <FileText size={16} />, slug: "" },
+];
 
   const methods = [
     { label: "Transformer", icon: <Zap size={16} />, slug: "transformer" },
@@ -186,7 +189,7 @@ export default function Sidebar({
                 label={item.label}
                 isActive={activeItem === item.label}
                 onClick={() => handleItemClick(item.label)}
-                href={`/tasks/${item.slug}`}
+                href={item.slug ? `/tasks/${item.slug}` : `/tasks`}
               />
             ))}
           </div>

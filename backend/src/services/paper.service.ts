@@ -97,6 +97,17 @@ const paperSelect = {
       },
     },
   },
+  repositories: {
+  select: {
+    repository: {
+      select: {
+        url: true,
+        owner: true,
+        name: true,
+      },
+    },
+  },
+},
 } satisfies Prisma.PaperSelect;
 
 // Infer the type from the select object
@@ -329,9 +340,24 @@ export const getPapers = async (
   return {
     papers: pagePapers.map((paper: any) => ({
       ...exposeThumbnailUrl(paper),
-      authors: paper.authors && typeof paper.authors === 'string' ? paper.authors.split(',').map((name: string) => { const t = name.trim(); return { id: t, name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }; }) : [],
+repositories: paper.repositories.map(
+  ({ repository }: any) => repository
+),
+
+authors:
+  paper.authors && typeof paper.authors === "string"
+    ? paper.authors.split(",").map((name: string) => {
+        const t = name.trim();
+        return {
+          id: t,
+          name: t,
+          slug: t.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        };
+      })
+    : [],
       tasks: paper.tasks.map(({ task }: any) => task),
       methods: paper.methods.map(({ method }: any) => method),
+      
     })),
     total: pagePapers.length, // Let the frontend use hasMore rather than a fake total
     page,

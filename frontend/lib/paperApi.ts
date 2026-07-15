@@ -21,6 +21,11 @@ export interface Paper {
   citations: number;
   conference?: string;
   githubUrl?: string;
+  repositories?: {
+  url: string;
+  owner: string;
+  name: string;
+}[];
 }
 
 export interface PapersResponse {

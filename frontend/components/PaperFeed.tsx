@@ -348,6 +348,13 @@ export const PaperCard = memo(({ paper }: { paper: Paper }) => {
   const safeAuthors = paper.authors || [];
   const visibleAuthors = safeAuthors.slice(0, 3);
   const remaining = safeAuthors.length - 3;
+  const githubRepo = paper.repositories?.find(
+  (repo: any) => repo.url.includes("github.com")
+);
+const huggingFaceRepo = paper.repositories?.find(
+  (repo: any) => repo.url?.includes("huggingface.co")
+);
+
 
   return (
     <Link href={`/papers/${paper.slug}`} className="no-underline block">
@@ -453,7 +460,7 @@ export const PaperCard = memo(({ paper }: { paper: Paper }) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                window.open(paper.githubUrl || "https://github.com", "_blank");
+                window.open(githubRepo?.url || "https://github.com", "_blank");
               }}
               className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#F7F8F9] text-[#111111] border border-[#E5E7EB] rounded-[6px] hover:bg-[#E5E7EB]/70 transition-colors"
             >
@@ -464,6 +471,32 @@ export const PaperCard = memo(({ paper }: { paper: Paper }) => {
               </div>
               <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#9CA3AF] hidden sm:block" />
             </button>
+            <button
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (huggingFaceRepo?.url) {
+      window.open(huggingFaceRepo.url, "_blank");
+    } else {
+      alert("Hugging Face model will be available soon.");
+    }
+  }}
+  className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#FFF8E7] text-[#111111] border border-[#F5D565] rounded-[6px] hover:bg-[#FFEFB3] transition-colors"
+>
+  <div className="flex items-center gap-1 sm:gap-2">
+    <span className="text-[14px]">🤗</span>
+    <span className="font-medium text-[11px] sm:text-[13px]">
+      Hugging Face
+    </span>
+  </div>
+
+  <ArrowUpRight
+    size={14}
+    strokeWidth={1.5}
+    className="text-[#9CA3AF] hidden sm:block"
+  />
+</button>
           </div>
         </div>
       </div>
