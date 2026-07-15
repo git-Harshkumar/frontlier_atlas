@@ -59,7 +59,7 @@ export const getBenchmarkBySlug = async (prisma: PrismaClient, slug: string) => 
 
   // Fix: data mein duplicate rank=1 entries hain (seeding bug).
   // Yahan score (agar available hai) ke hisaab se sort karke clean sequential rank assign karte hain.
-  const sortedRankings = [...benchmark.rankings].sort((a, b) => {
+  const sortedRankings = [...benchmark.rankings].sort((a: any, b: any) => {
     if (a.score != null && b.score != null) return b.score - a.score;
     return (a.rank ?? 999) - (b.rank ?? 999);
   });

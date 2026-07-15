@@ -456,7 +456,7 @@ export default async function MethodDetailPage({
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs lg:text-sm text-gray-500 mb-6 lg:mb-8">
             <Link href="/" className="hover:text-gray-800">Home</Link>
             <span>›</span>
-            <Link href="/methods" className="hover:text-gray-800">{categoryName}</Link>
+            <Link href="/methods" className="hover:text-gray-800">Methods</Link>
             <span>›</span>
             <span className="text-orange-600 font-medium">{methodDetail.name}</span>
           </nav>
@@ -480,8 +480,8 @@ export default async function MethodDetailPage({
               </p>
 
               {/* Metrics Widget */}
-              <div className="inline-flex items-center gap-4 bg-white border border-gray-100 rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
-                <div className="bg-orange-50 p-3 rounded-lg mr-2 lg:mr-0">
+              <div className="inline-flex items-center gap-4 bg-white border border-gray-100 rounded-none p-4 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+                <div className="bg-orange-50 p-3 rounded-none mr-2 lg:mr-0">
                   <DynamicIcon className="w-6 h-6 lg:w-8 lg:h-8 text-orange-500" strokeWidth={1.5} />
                 </div>
                 <div>
