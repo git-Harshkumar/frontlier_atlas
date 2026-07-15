@@ -232,7 +232,7 @@ export default function BenchmarksPage() {
   const activeFilterCount = [domainFilter, taskFilter, statusFilter, yearFilter].filter(Boolean).length;
 
   // Benchmark card reusable
-  const BenchmarkCard = ({ b, compact = false }: { b: BenchmarkItem; compact?: boolean }) => {
+  const BenchmarkCard = ({ b }: { b: BenchmarkItem }) => {
     const meta = getMeta(b.name);
     const cfg  = STATUS_CFG[meta.status] ?? STATUS_CFG["Unmapped"];
     const Icon = getCategoryIcon(meta.category);
@@ -240,28 +240,29 @@ export default function BenchmarksPage() {
     return (
       <div
         onClick={() => handleItemClick(b.slug)}
-        className={`bg-white border border-gray-100 rounded-sm shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between ${compact ? "p-4 min-h-[140px]" : "p-5 min-h-[180px]"}`}
+        className="bg-white border border-gray-100 rounded-lg shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between p-4 h-[145px] w-full"
       >
-        <div>
+        <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <div className="flex-shrink-0 p-2 rounded-lg group-hover:scale-110 transition-transform">
-              <Icon size={compact ? 16 : 20} style={{ color }} />
+            <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
+              <Icon size={16} style={{ color }} />
             </div>
-            <h3 className={`font-semibold text-gray-800 leading-snug truncate ${compact ? "text-[13px]" : "text-[15px]"}`}>{b.name}</h3>
+            <h3 className="font-semibold text-gray-800 text-[13px] leading-snug truncate flex-1 min-w-0">{b.name}</h3>
           </div>
-          <div className="ml-10 text-xs text-gray-500 space-y-1 mt-1.5">
-            <div>Task: <span className="font-medium text-gray-700">{meta.task}</span></div>
-            <div className="flex items-center gap-1.5">
-              Metric: <span className="font-mono bg-gray-50 px-1 rounded border border-gray-100 text-gray-600 text-[10px]">{meta.metric}</span>
+          <div className="ml-9 text-[11px] text-gray-500 space-y-0.5 mt-2 min-w-0">
+            <div className="truncate">Task: <span className="font-medium text-gray-700">{meta.task}</span></div>
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="shrink-0">Metric:</span>
+              <span className="font-mono bg-gray-50 px-1 rounded border border-gray-100 text-gray-600 text-[9px] truncate">{meta.metric}</span>
             </div>
           </div>
         </div>
-        <div className={`ml-10 flex items-center justify-between pt-3 border-t border-gray-50 ${compact ? "mt-3" : "mt-4"}`}>
-          <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded ${cfg.bg} ${cfg.text} border ${cfg.border}`}>
+        <div className="ml-9 flex items-center justify-between pt-2 border-t border-gray-50 shrink-0">
+          <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded ${cfg.bg} ${cfg.text} border ${cfg.border}`}>
             <span className="w-1 h-1 rounded-full shrink-0" style={{ background: cfg.color }} />
             {meta.status}
           </span>
-          <span className="text-[11px] font-bold text-[#e11d48] font-mono tabular-nums">
+          <span className="text-[10px] font-bold text-[#e11d48] font-mono tabular-nums">
             {b._count?.rankings ?? 0} results
           </span>
         </div>
@@ -420,12 +421,12 @@ export default function BenchmarksPage() {
                       <button
                         key={label}
                         onClick={() => scrollToDirectory(label)}
-                        className="flex items-center gap-2.5 bg-white border border-gray-100 rounded-lg p-3 hover:shadow-md hover:border-gray-200 transition-all group text-left"
+                        className="flex items-center gap-3 bg-white border border-gray-100 rounded-lg p-3 hover:shadow-md hover:border-gray-200 transition-all group text-left h-[54px] w-full"
                       >
-                        <div className="p-1.5 rounded-md group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
+                        <div className="p-1.5 rounded-md group-hover:scale-110 transition-transform flex-shrink-0" style={{ background: color + "18" }}>
                           <Icon size={16} style={{ color }} />
                         </div>
-                        <span className="text-xs font-medium text-gray-700 leading-tight truncate">{label}</span>
+                        <span className="text-xs font-semibold text-gray-700 leading-tight truncate flex-1 min-w-0">{label}</span>
                       </button>
                     ))}
                   </div>
@@ -457,17 +458,17 @@ export default function BenchmarksPage() {
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-bold text-gray-800">Benchmark Collections</h2>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {COLLECTIONS.map(({ label, icon: Icon, color, bg }) => (
                       <button
                         key={label}
                         onClick={() => scrollToDirectory(label)}
-                        className="flex items-center gap-3 bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md transition-all group text-left"
+                        className="flex items-center gap-3 bg-white border border-gray-100 rounded-lg p-3 hover:shadow-md hover:border-gray-200 transition-all group text-left h-[54px] w-full"
                       >
-                        <div className="p-2 rounded-lg flex-shrink-0 group-hover:scale-110 transition-transform" style={{ background: bg }}>
+                        <div className="p-1.5 rounded-md group-hover:scale-110 transition-transform flex-shrink-0" style={{ background: bg }}>
                           <Icon size={16} style={{ color }} />
                         </div>
-                        <span className="text-sm font-medium text-gray-700 leading-tight">{label}</span>
+                        <span className="text-xs font-semibold text-gray-700 leading-tight truncate flex-1 min-w-0">{label}</span>
                       </button>
                     ))}
                   </div>
@@ -483,7 +484,7 @@ export default function BenchmarksPage() {
                   {loading ? (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                       {Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="bg-white border border-gray-100 rounded-sm p-4 h-[140px] animate-pulse">
+                        <div key={i} className="bg-white border border-gray-100 rounded-lg p-4 h-[145px] animate-pulse">
                           <div className="h-3 bg-gray-100 rounded w-3/4 mb-2" />
                           <div className="h-2 bg-gray-100 rounded w-1/2" />
                         </div>
@@ -491,7 +492,7 @@ export default function BenchmarksPage() {
                     </div>
                   ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                      {popularBenchmarks.slice(0, 12).map(b => <BenchmarkCard key={b.id} b={b} compact />)}
+                      {popularBenchmarks.slice(0, 12).map(b => <BenchmarkCard key={b.id} b={b} />)}
                     </div>
                   )}
                 </section>
