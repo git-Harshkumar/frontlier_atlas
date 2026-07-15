@@ -8,12 +8,10 @@ import {
   ArrowLeft,
   FileText,
   Github,
-  Calendar,
   BookOpen,
   Quote,
   Star,
   GitBranch,
-  MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -73,28 +71,6 @@ function formatCompactNumber(n: number): string {
   if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`;
   if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
   return n.toString();
-}
-
-function formatRelativeTime(dateStr: string | null): string {
-  if (!dateStr) return "";
-  const now = Date.now();
-  const then = new Date(dateStr).getTime();
-  const diffMs = now - then;
-  if (diffMs < 0) return "just now";
-  const seconds = Math.floor(diffMs / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-  const weeks = Math.floor(days / 7);
-  const months = Math.floor(days / 30);
-  const years = Math.floor(days / 365);
-  if (years > 0) return `${years}y ago`;
-  if (months > 0) return `${months}mo ago`;
-  if (weeks > 0) return `${weeks}w ago`;
-  if (days > 0) return `${days}d ago`;
-  if (hours > 0) return `${hours}h ago`;
-  if (minutes > 0) return `${minutes}m ago`;
-  return "just now";
 }
 
 type CitationFormat = "bibtex" | "apa" | "mla" | "chicago";
@@ -209,67 +185,67 @@ function RepositoryPanel({ paper }: { paper: PaperDetailType }) {
   const hasForks = paper.githubForks != null && paper.githubForks > 0;
   if (!paper.githubUrl) {
     return (
-      <div>
-        <div className="flex items-center gap-2.5 pb-3 border-b border-[#E5E5E0]">
-          <Github size={14} className="text-[#8B8B8B]" />
-          <h3 className="text-[11px] font-black uppercase tracking-[0.12em] text-[#171717] m-0">Repository</h3>
+      <div className="border border-[#EDE8DF] rounded-lg p-6">
+        <div className="flex items-center gap-3 pb-4 border-b border-[#E5E5E0]">
+          <Github size={16} className="text-[#8B8B8B]" />
+          <h3 className="text-[12px] font-black uppercase tracking-[0.12em] text-[#171717] m-0">Repository</h3>
         </div>
-        <div className="pt-4 pb-2 flex flex-col items-center text-center">
-          <Github size={22} className="mb-2.5 text-[#DCDCD7]" strokeWidth={1.5} />
-          <p className="text-[13px] font-semibold text-[#171717]">No repository available</p>
+        <div className="pt-5 pb-2 flex flex-col items-center text-center">
+          <Github size={26} className="mb-3 text-[#DCDCD7]" strokeWidth={1.5} />
+          <p className="text-[14px] font-semibold text-[#171717]">No repository available</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="flex items-center gap-2.5 pb-3 border-b border-[#E5E5E0]">
-        <Github size={14} className="text-[#8B8B8B]" />
-        <h3 className="text-[11px] font-black uppercase tracking-[0.12em] text-[#171717] m-0">Repository</h3>
+    <div className="border border-[#EDE8DF] rounded-lg p-6">
+      <div className="flex items-center gap-3 pb-4 border-b border-[#E5E5E0]">
+        <Github size={16} className="text-[#8B8B8B]" />
+        <h3 className="text-[12px] font-black uppercase tracking-[0.12em] text-[#171717] m-0">Repository</h3>
       </div>
-      <div className="pt-4 flex flex-col gap-3.5">
-        <div className="flex items-center justify-between gap-2">
-          <div className="min-w-0 flex flex-col gap-1.5">
-            <p className="font-mono text-[13px] font-bold text-[#171717] m-0 truncate">
+      <div className="pt-5 flex flex-col gap-4">
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0 flex flex-col gap-2">
+            <p className="font-mono text-[16px] font-extrabold text-[#171717] m-0 truncate">
               {repoName ?? "GitHub Repository"}
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {paper.isOfficialCode === true && (
-                <span className="inline-flex items-center rounded-full border border-[#BAE6FD] bg-[#E0F2FE] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.06em] text-[#0369A1]">
+                <span className="inline-flex items-center rounded-full border border-[#BAE6FD] bg-[#E0F2FE] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.06em] text-[#0369A1]">
                   Official
                 </span>
               )}
               {hasStars && (
-                <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-[#444444]">
-                  <Star size={12} fill="#FF5A1F" stroke="#FF5A1F" />
+                <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#444444]">
+                  <Star size={14} fill="#FF5A1F" stroke="#FF5A1F" />
                   {formatCompactNumber(paper.githubStars!)}
                 </span>
               )}
               {hasForks && (
-                <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-[#444444]">
-                  <GitBranch size={12} className="text-[#FF5A1F]" />
+                <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#444444]">
+                  <GitBranch size={14} className="text-[#FF5A1F]" />
                   {formatCompactNumber(paper.githubForks!)}
                 </span>
               )}
             </div>
           </div>
-          <Github size={18} className="shrink-0 text-[#8B8B8B]" />
+          <Github size={24} className="shrink-0 text-[#8B8B8B]" />
         </div>
 
         {paper.githubUrl && (
           <>
-            <p className="text-[11.5px] font-medium text-[#6F665D] m-0">
+            <p className="text-[13px] font-medium text-[#6F665D] m-0">
               {paper.isOfficialCode ? "Official implementation from the authors" : "Community-maintained repository"}
             </p>
             <a
               href={paper.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-2 rounded-full border border-[#E0DDD6] bg-transparent px-4 py-2.5 text-[13px] font-medium text-[#444444] no-underline transition-all hover:bg-[rgba(255,90,31,0.06)] hover:text-[#FF5A1F] hover:border-[rgba(255,90,31,0.3)]"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full border border-[#E0DDD6] bg-transparent px-5 py-3 text-[14px] font-medium text-[#444444] no-underline transition-all hover:bg-[rgba(255,90,31,0.06)] hover:text-[#FF5A1F] hover:border-[rgba(255,90,31,0.3)]"
             >
               Open Repository
-              <ExternalLink size={13} />
+              <ExternalLink size={14} />
             </a>
           </>
         )}
@@ -647,19 +623,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
   const [relatedPapers, setRelatedPapers] = useState<Paper[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(true);
   const [showAllAuthors, setShowAllAuthors] = useState(false);
-  const [copiedArxiv, setCopiedArxiv] = useState(false);
   const [deferred, setDeferred] = useState(false);
-
-  const handleCopyArxivId = useCallback(async () => {
-    if (!paper.arxivId) return;
-    try {
-      await navigator.clipboard.writeText(paper.arxivId);
-      setCopiedArxiv(true);
-      setTimeout(() => setCopiedArxiv(false), 2000);
-    } catch {
-      // ignore
-    }
-  }, [paper.arxivId]);
 
   const arxivUrl = paper.arxivId ? `https://arxiv.org/abs/${paper.arxivId}` : null;
   const doiUrl = paper.doi ? `https://doi.org/${paper.doi}` : null;
@@ -803,25 +767,23 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
       <div className="mx-auto w-full max-w-[1440px] px-4 py-5 sm:px-6 md:px-12 lg:px-16 lg:py-6">
 
         {/* Breadcrumb */}
-<nav
-  className="mb-5 lg:mb-6 flex items-center gap-2 text-[12.5px] font-semibold text-[#8B8B8B]"
-  aria-label="Breadcrumb"
->
-  <Link
-    href="/"
-    className="transition-colors hover:text-[#FF5A1F] no-underline text-[#8B8B8B]"
-  >
-    Papers
-  </Link>
-
-  <span className="text-[#DCDCD7] font-normal" aria-hidden="true">
-    /
-  </span>
-
-  <span className="text-[#555555] truncate max-w-[300px]">
-    {paper.title}
-  </span>
-</nav>
+        <nav
+          className="mb-5 lg:mb-6 flex items-center gap-2 text-[12.5px] font-semibold text-[#8B8B8B]"
+          aria-label="Breadcrumb"
+        >
+          <Link
+            href="/"
+            className="transition-colors hover:text-[#FF5A1F] no-underline text-[#8B8B8B]"
+          >
+            Home
+          </Link>
+          {paper.arxivId && (
+            <>
+              <span className="text-[#DCDCD7] font-normal" aria-hidden="true">/</span>
+              <span className="text-[#555555]">arXiv: {paper.arxivId}</span>
+            </>
+          )}
+        </nav>
         {/* Grid: Main + Sidebar */}
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1fr_320px] xl:gap-10">
 
@@ -834,16 +796,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
 
                 {/* Badge row */}
                 <div className="flex flex-wrap items-center gap-3">
-                  {paper.arxivId && (
-                    <button
-                      type="button"
-                      onClick={handleCopyArxivId}
-                      className="inline-flex items-center gap-1 rounded-full border border-[#E0DDD6] bg-[#F6F5F0] px-2.5 py-1 text-[11px] font-bold text-[#171717] transition-all hover:bg-[rgba(255,90,31,0.06)] hover:text-[#FF5A1F] hover:border-[rgba(255,90,31,0.3)] cursor-pointer"
-                      title="Copy arXiv ID"
-                    >
-                      {copiedArxiv ? <Check size={12} /> : <Copy size={12} />}
-                    </button>
-                  )}
+
                   {(paper.conferences || []).slice(0, 2).map((c) => (
                     <span key={c.id} className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E40AF] text-[11px] font-bold uppercase tracking-wide">
                       {c.name}
@@ -856,87 +809,49 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
                   {paper.title}
                 </h1>
                 {/* Authors */}
-                <div className="flex items-center flex-wrap gap-2">
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                <div className="flex items-center flex-wrap">
+                  <div className="flex flex-wrap items-center">
                   {paper.authors.slice(0, 3).map((pa, i) => (
                     <span key={pa.id} className="inline-flex items-center">
-                      {i > 0 && <span className="mr-2 text-[#DCDCD7]">·</span>}
                       <Link href={`/authors/${pa.slug}`} className="text-[14px] font-semibold text-[#444444] no-underline hover:text-[#FF5A1F] hover:underline decoration-2 underline-offset-4 transition-colors">
                         {pa.name}
                       </Link>
+                      {i < (showAllAuthors && paper.authors.length > 3 ? 3 : Math.min(paper.authors.length, 3)) - 1 && <span className="ml-0.5 text-[#171717] font-bold">,</span>}
                     </span>
                   ))}
                   {(paper.authors || []).length > 3 && (
-                    <button
-                      type="button"
-                      onClick={() => setShowAllAuthors(!showAllAuthors)}
-                      className="text-[13px] font-semibold text-[#4A7AA0] hover:text-[#2c4e69] hover:underline"
-                    >
-                      {showAllAuthors ? "Show less" : `+${(paper.authors || []).length - 3} more`}
-                    </button>
+                    <span className="inline-flex items-center">
+                      <span className="ml-0.5 text-[#171717] font-bold">,</span>
+                      <button
+                        type="button"
+                        onClick={() => setShowAllAuthors(!showAllAuthors)}
+                        className="text-[13px] font-semibold text-[#4A7AA0] hover:text-[#2c4e69] hover:underline"
+                      >
+                        {showAllAuthors ? "Show less" : `+${(paper.authors || []).length - 3} more`}
+                      </button>
+                    </span>
                   )}
-                  {showAllAuthors && (paper.authors || []).slice(3).map((pa) => (
+                  {showAllAuthors && (paper.authors || []).slice(3).map((pa, i) => (
                     <span key={pa.id} className="inline-flex items-center">
-                      <span className="mr-2 text-[#DCDCD7]">·</span>
                       <Link href={`/authors/${pa.slug}`} className="text-[14px] font-semibold text-[#444444] no-underline hover:text-[#FF5A1F] hover:underline decoration-2 underline-offset-4 transition-colors">
                         {pa.name}
                       </Link>
+                      {i < (paper.authors || []).slice(3).length - 1 && <span className="ml-0.5 text-[#171717] font-bold">,</span>}
                     </span>
                   ))}
                 </div>
                 {paper.publicationDate && (
-  <div className="flex items-center text-[14px] text-[#666]">
-    <span className="mx-2 text-[#B0B0B0]">•</span>
-   <span>
-  {paper.publicationDate
-    ? new Date(paper.publicationDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "N/A"}
-</span>
-  </div>
-)}
-                </div>
-
-                {/* Stats Bar */}
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 pt-1">
-                  {paper.citationCount > 0 && (
-                    <div className="flex items-center gap-1.5">
-                      <MessageSquare size={13} className="text-[#999999]" strokeWidth={1.8} />
-                      <span className="text-[13.5px] font-bold text-[#171717]">{formatCompactNumber(paper.citationCount)}</span>
-                      <span className="text-[10px] font-bold text-[#171717]">citations</span>
-                    </div>
-                  )}
-                  {paper.githubStars != null && paper.githubStars > 0 && (
-                    <div className="flex items-center gap-1.5">
-                      <Star size={13} fill="#FF5A1F" stroke="#FF5A1F" strokeWidth={1} />
-                      <span className="text-[13.5px] font-bold text-[#171717]">{formatCompactNumber(paper.githubStars)}</span>
-                      <span className="text-[10px] font-bold text-[#171717]">stars</span>
-                    </div>
-                  )}
-                  {paper.githubForks != null && paper.githubForks > 0 && (
-                    <div className="flex items-center gap-1.5">
-                      <GitBranch size={13} className="text-[#FF5A1F]" strokeWidth={1.8} />
-                      <span className="text-[13.5px] font-bold text-[#171717]">{formatCompactNumber(paper.githubForks)}</span>
-                      <span className="text-[10px] font-bold text-[#171717]">forks</span>
-                    </div>
-                  )}
-                  {paper.referenceCount > 0 && (
-                    <div className="flex items-center gap-1.5">
-                      <BookOpen size={13} className="text-[#999999]" strokeWidth={1.8} />
-                      <span className="text-[13.5px] font-bold text-[#171717]">{formatCompactNumber(paper.referenceCount)}</span>
-                      <span className="text-[10px] font-bold text-[#171717]">references</span>
-                    </div>
-                  )}
-                  {paper.publicationDate && (
-                    <div className="flex items-center gap-1.5">
-                      <Calendar size={13} className="text-[#999999]" strokeWidth={1.8} />
-                      <span className="text-[13.5px] font-bold text-[#171717]">{formatRelativeTime(paper.publicationDate)}</span>
-                      <span className="text-[10px] font-bold text-[#171717]">published</span>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-1.5 text-[14px] text-[#666]">
+                    <span className="text-[#B0B0B0]">•</span>
+                    <span>
+                      {new Date(paper.publicationDate).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
+                  </div>
+                )}
                 </div>
 
                 {/* Action buttons */}
@@ -1065,7 +980,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
 
             {/* TL;DR */}
             {paper.tlDr && (
-              <div style={{ borderLeft: '3px solid rgba(255,90,31,0.15)', paddingLeft: '20px' }}>
+              <div className="border-l-[3px] border-[rgba(255,90,31,0.15)] pl-5">
                 <div className="mb-3 flex items-center gap-3">
                   <span className="text-[12px] font-black uppercase tracking-[0.15em] text-[#171717]">TL;DR</span>
                 </div>
@@ -1234,7 +1149,7 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
               className="hover-dim inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#8B8B8B] no-underline border-t border-[#E5E5E0] pt-3.5 transition-colors hover:text-[#FF5A1F]"
             >
               <ArrowLeft size={13} />
-              Back to papers
+              Back to Home
             </Link>
           </main>
 
