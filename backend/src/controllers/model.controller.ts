@@ -14,6 +14,10 @@ export const getModels = async (c: Context) => {
   const modality = c.req.query('modality');
   const accessType = c.req.query('accessType');
   const opennessType = c.req.query('opennessType');
+  const modelFamily = c.req.query('modelFamily');
+  const category = c.req.query('category');
+  const capability = c.req.query('capability');
+  const researchArea = c.req.query('researchArea');
 
   const cacheKey = [
     'models:list',
@@ -24,6 +28,10 @@ export const getModels = async (c: Context) => {
     modality || 'all',
     accessType || 'all',
     opennessType || 'all',
+    modelFamily || 'all',
+    category || 'all',
+    capability || 'all',
+    researchArea || 'all',
   ].join(':');
 
   try {
@@ -49,6 +57,10 @@ export const getModels = async (c: Context) => {
       modality,
       accessType,
       opennessType,
+      modelFamily,
+      category,
+      capability,
+      researchArea,
     );
 
     const response = {
