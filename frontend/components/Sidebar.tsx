@@ -37,8 +37,8 @@ interface SidebarProps {
 // ============ Sub-Components ============
 const SectionLabel = ({ title }: { title: string }) => {
   return (
-    <div className="px-3 mb-0.5 mt-4 first:mt-1">
-      <p className="text-[10px] font-bold text-[#8B8B8B] uppercase tracking-wider">
+    <div className="px-3 mb-0.5 mt-3 first:mt-0">
+      <p className="text-[11px] font-bold text-[#8B8B8B] uppercase tracking-wider">
         {title}
       </p>
     </div>
@@ -52,7 +52,7 @@ const NavItem = ({
   onClick,
   href,
 }: {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   label: string;
   isActive?: boolean;
   onClick: () => void;
@@ -62,21 +62,23 @@ const NavItem = ({
     <div
       onClick={onClick}
       className={cn(
-        "flex items-center gap-2.5 px-3 py-1 mx-1 cursor-pointer transition-colors rounded-md text-[12px] font-medium leading-snug",
+        "flex items-center gap-2.5 px-3 py-1 mx-1 cursor-pointer transition-colors rounded-md text-[13px] font-medium leading-snug",
         isActive
           ? "text-[#F55036]"
           : "text-[#555555] hover:text-[#111111]"
       )}
     >
-      <span
-        className={cn(
-          "flex items-center justify-center shrink-0 w-4 h-4 transition-colors",
-          isActive ? "text-[#F55036]" : "text-[#8B8B8B]"
-        )}
-      >
-        {icon}
-      </span>
-      <span className="truncate">{label}</span>
+      {icon && (
+        <span
+          className={cn(
+            "flex items-center justify-center shrink-0 w-4 h-4 transition-colors",
+            isActive ? "text-[#F55036]" : "text-[#8B8B8B]"
+          )}
+        >
+          {icon}
+        </span>
+      )}
+      <span className="whitespace-normal leading-tight">{label}</span>
     </div>
   );
 
@@ -156,12 +158,12 @@ const methods = [
 ];
 
   return (
-    <aside className="flex flex-col w-full bg-transparent h-full">
-      <div className="flex-1 px-2 py-2 space-y-0.5 pb-8">
+    <aside className="flex flex-col w-full bg-transparent h-full border-r border-[#E5E5E0]">
+      <div className="flex-1 px-2 pt-1 pb-2 space-y-0">
         {/* DISCOVER Section */}
         <div>
           <SectionLabel title="Discover" />
-          <div className="flex flex-col gap-0.5">
+          <div className="flex flex-col gap-0">
             {discover.map((item) => (
               <NavItem
                 key={item.label}
@@ -178,7 +180,7 @@ const methods = [
         {/* TASKS Section */}
         <div>
           <SectionLabel title="Tasks" />
-          <div className="flex flex-col gap-0.5">
+          <div className="flex flex-col gap-0">
             {tasks.map((item) => (
               <NavItem
                 key={item.label}
@@ -195,7 +197,7 @@ const methods = [
         {/* METHODS Section */}
         <div>
           <SectionLabel title="Methods" />
-          <div className="flex flex-col gap-0.5">
+          <div className="flex flex-col gap-0">
             {methods.map((item) => (
               <NavItem
                 key={item.label}
