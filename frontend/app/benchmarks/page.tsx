@@ -31,6 +31,30 @@ import {
   Flame,
   Star,
   Filter,
+  Languages,
+  FileSearch,
+  ImageIcon,
+  Scissors,
+  Headphones,
+  Speaker,
+  Film,
+  Radar,
+  Scan,
+  Sparkles,
+  Puzzle,
+  Shield,
+  Stethoscope,
+  FlaskConical,
+  Binary,
+  Move,
+  Satellite,
+  Fingerprint,
+  Zap,
+  Database,
+  Box,
+  Users,
+  Palette,
+  ScanEye,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
@@ -104,26 +128,174 @@ const DOMAINS = [
 ];
 
 const TASKS = [
-  "Question Answering", "Text Generation", "Summarization", "Machine Translation",
-  "Reasoning", "Mathematical Reasoning", "Code Generation", "Software Engineering",
-  "Retrieval", "Image Classification", "Object Detection", "Semantic Segmentation",
-  "Visual Question Answering", "Document Parsing", "OCR", "Image Captioning",
-  "Speech Recognition", "Speech Synthesis", "Audio Classification",
-  "Video Understanding", "Planning", "Navigation",
+  {
+    label: "Question Answering",
+    icon: MessageSquare,
+    color: "#9333ea",
+    bg: "#f3e8ff",
+    desc: "Answer questions from context or knowledge bases. Evaluates comprehension and factual recall across open and closed domains.",
+  },
+  {
+    label: "Text Generation",
+    icon: Puzzle,
+    color: "#0284c7",
+    bg: "#e0f2fe",
+    desc: "Generate coherent and fluent text from prompts. Covers creative writing, dialogue, and open-ended generation tasks.",
+  },
+  {
+    label: "Summarization",
+    icon: Zap,
+    color: "#16a34a",
+    bg: "#dcfce7",
+    desc: "Condense long documents into concise summaries. Measures information compression, faithfulness, and coverage.",
+  },
+  {
+    label: "Machine Translation",
+    icon: Languages,
+    color: "#d97706",
+    bg: "#fef3c7",
+    desc: "Automatically translate text between languages. Evaluated on fluency, adequacy, and BLEU score across language pairs.",
+  },
+  {
+    label: "Reasoning",
+    icon: Shield,
+    color: "#7c3aed",
+    bg: "#ede9fe",
+    desc: "Multi-step logical, causal, and commonsense reasoning. Tests a model's ability to chain inference steps correctly.",
+  },
+  {
+    label: "Mathematical Reasoning",
+    icon: Binary,
+    color: "#1d4ed8",
+    bg: "#dbeafe",
+    desc: "Solve problems from arithmetic to formal proofs. Evaluates symbolic, algebraic, and numerical reasoning ability.",
+  },
+  {
+    label: "Code Generation",
+    icon: Database,
+    color: "#059669",
+    bg: "#d1fae5",
+    desc: "Generate functional code from natural language specs. Measured by pass@k across programming languages and tasks.",
+  },
+  {
+    label: "Software Engineering",
+    icon: Box,
+    color: "#0891b2",
+    bg: "#cffafe",
+    desc: "Resolve real-world software issues end-to-end. Tests coding, debugging, and repository-level understanding.",
+  },
+  {
+    label: "Retrieval",
+    icon: FileSearch,
+    color: "#e11d48",
+    bg: "#ffe4e6",
+    desc: "Fetch relevant documents from large-scale corpora. Evaluated on precision, recall, NDCG, and ranking quality.",
+  },
+  {
+    label: "Image Classification",
+    icon: ImageIcon,
+    color: "#6366f1",
+    bg: "#e0e7ff",
+    desc: "Assign category labels to input images. Benchmarked via top-1 and top-5 accuracy on standard datasets.",
+  },
+  {
+    label: "Object Detection",
+    icon: Radar,
+    color: "#ea580c",
+    bg: "#fff7ed",
+    desc: "Locate and classify objects within images using bounding boxes. Evaluated using mean average precision (mAP).",
+  },
+  {
+    label: "Semantic Segmentation",
+    icon: Scissors,
+    color: "#65a30d",
+    bg: "#f7fee7",
+    desc: "Assign semantic labels to every pixel in an image. Measured by mean IoU across foreground and background classes.",
+  },
+  {
+    label: "Visual Question Answering",
+    icon: Fingerprint,
+    color: "#db2777",
+    bg: "#fce7f3",
+    desc: "Answer natural language questions grounded in images. Tests joint vision–language understanding and reasoning.",
+  },
+  {
+    label: "Document Parsing",
+    icon: FlaskConical,
+    color: "#7e22ce",
+    bg: "#f5f3ff",
+    desc: "Extract structured content from complex documents. Covers layout understanding, table extraction, and formula parsing.",
+  },
+  {
+    label: "OCR",
+    icon: Scan,
+    color: "#4f46e5",
+    bg: "#eef2ff",
+    desc: "Recognize and digitize text from images and scans. Evaluated across fonts, languages, orientations, and noise conditions.",
+  },
+  {
+    label: "Image Captioning",
+    icon: Sparkles,
+    color: "#f59e0b",
+    bg: "#fef9c3",
+    desc: "Generate descriptive captions for images. Scored using BLEU, CIDEr, METEOR, and human preference ratings.",
+  },
+  {
+    label: "Speech Recognition",
+    icon: Headphones,
+    color: "#0d9488",
+    bg: "#ccfbf1",
+    desc: "Convert spoken audio to accurate text transcriptions. Measured by word error rate (WER) across accents and domains.",
+  },
+  {
+    label: "Speech Synthesis",
+    icon: Speaker,
+    color: "#c026d3",
+    bg: "#fae8ff",
+    desc: "Generate natural, expressive speech from text. Evaluated on naturalness, intelligibility, and speaker similarity.",
+  },
+  {
+    label: "Audio Classification",
+    icon: Move,
+    color: "#ca8a04",
+    bg: "#fefce8",
+    desc: "Categorize audio clips into predefined classes. Tests accuracy across speech, environmental sounds, and music genres.",
+  },
+  {
+    label: "Video Understanding",
+    icon: Film,
+    color: "#dc2626",
+    bg: "#fee2e2",
+    desc: "Analyze temporal events and semantics in video. Covers action recognition, video QA, and temporal grounding.",
+  },
+  {
+    label: "Planning",
+    icon: Satellite,
+    color: "#10b981",
+    bg: "#ecfdf5",
+    desc: "Formulate step-by-step plans to reach specified goals. Tests agent foresight, task decomposition, and decision making.",
+  },
+  {
+    label: "Navigation",
+    icon: Network,
+    color: "#f97316",
+    bg: "#fff7ed",
+    desc: "Move through 2D and 3D environments to reach targets. Evaluated on path efficiency, success rate, and SPL.",
+  },
 ];
 
 const COLLECTIONS = [
-  { label: "Reasoning",        icon: Brain,    color: "#9333ea", bg: "#f3e8ff" },
-  { label: "Coding",           icon: Code,     color: "#16a34a", bg: "#dcfce7" },
-  { label: "Agent Evaluation", icon: Bot,      color: "#d97706", bg: "#fef3c7" },
-  { label: "Vision",           icon: Eye,      color: "#0891b2", bg: "#e0f2fe" },
-  { label: "OCR & Document AI",icon: FileText, color: "#7c3aed", bg: "#ede9fe" },
-  { label: "Language",         icon: BookOpen, color: "#0284c7", bg: "#dbeafe" },
-  { label: "Multimodal",       icon: Layers,   color: "#db2777", bg: "#fce7f3" },
-  { label: "Audio & Speech",   icon: Music,    color: "#0d9488", bg: "#ccfbf1" },
-  { label: "Robotics",         icon: Cpu,      color: "#4f46e5", bg: "#e0e7ff" },
-  { label: "Healthcare",       icon: Heart,    color: "#dc2626", bg: "#fee2e2" },
-  { label: "Mathematics",      icon: BarChart3,color: "#2563eb", bg: "#dbeafe" },
+  { label: "Reasoning",        icon: Stethoscope, color: "#9333ea", bg: "#f3e8ff" },
+  { label: "Coding",           icon: Palette,     color: "#16a34a", bg: "#dcfce7" },
+  { label: "Agent Evaluation", icon: ScanEye,     color: "#d97706", bg: "#fef3c7" },
+  { label: "Vision",           icon: Clock,       color: "#0891b2", bg: "#e0f2fe" },
+  { label: "OCR & Document AI",icon: Flame,       color: "#7c3aed", bg: "#ede9fe" },
+  { label: "Language",         icon: ArrowUpRight, color: "#0284c7", bg: "#dbeafe" },
+  { label: "Multimodal",       icon: Star,        color: "#db2777", bg: "#fce7f3" },
+  { label: "Audio & Speech",   icon: Music,       color: "#0d9488", bg: "#ccfbf1" },
+  { label: "Robotics",         icon: Plus,        color: "#4f46e5", bg: "#e0e7ff" },
+  { label: "Healthcare",       icon: Filter,      color: "#dc2626", bg: "#fee2e2" },
+  { label: "Mathematics",      icon: Trophy,      color: "#2563eb", bg: "#dbeafe" },
 ];
 
 const POPULAR_BENCHMARK_NAMES = [
@@ -141,6 +313,54 @@ const getCategoryColor = (category: string) => {
   const found = DOMAINS.find(d => d.label === category);
   return found?.color ?? "#e11d48";
 };
+
+// ── Popular Benchmarks icon pool (12 unique icons) ──────────────────────────
+const POPULAR_ICON_POOL = [
+  { icon: Trophy,      color: "#e11d48", bg: "#ffe4e6" },
+  { icon: Brain,       color: "#9333ea", bg: "#f3e8ff" },
+  { icon: Code,        color: "#059669", bg: "#d1fae5" },
+  { icon: Eye,         color: "#0891b2", bg: "#e0f2fe" },
+  { icon: BarChart3,   color: "#1d4ed8", bg: "#dbeafe" },
+  { icon: Layers,      color: "#db2777", bg: "#fce7f3" },
+  { icon: Mic,         color: "#0d9488", bg: "#ccfbf1" },
+  { icon: Heart,       color: "#dc2626", bg: "#fee2e2" },
+  { icon: Network,     color: "#7c3aed", bg: "#ede9fe" },
+  { icon: Activity,    color: "#ea580c", bg: "#fff7ed" },
+  { icon: Target,      color: "#65a30d", bg: "#f7fee7" },
+  { icon: BookOpen,    color: "#0284c7", bg: "#dbeafe" },
+] as const;
+
+// ── Recently Added icon pool (12 unique icons — none from POPULAR_ICON_POOL) ─
+const RECENT_ICON_POOL = [
+  { icon: Bot,         color: "#d97706", bg: "#fef3c7" },
+  { icon: FileText,    color: "#7c3aed", bg: "#ede9fe" },
+  { icon: Video,       color: "#e11d48", bg: "#ffe4e6" },
+  { icon: Cpu,         color: "#4f46e5", bg: "#e0e7ff" },
+  { icon: TrendingUp,  color: "#16a34a", bg: "#dcfce7" },
+  { icon: MessageSquare, color: "#0891b2", bg: "#e0f2fe" },
+  { icon: Puzzle,      color: "#9333ea", bg: "#f3e8ff" },
+  { icon: Zap,         color: "#ca8a04", bg: "#fef9c3" },
+  { icon: Languages,   color: "#0d9488", bg: "#ccfbf1" },
+  { icon: Shield,      color: "#c026d3", bg: "#fae8ff" },
+  { icon: Binary,      color: "#1d4ed8", bg: "#dbeafe" },
+  { icon: Database,    color: "#059669", bg: "#d1fae5" },
+] as const;
+
+// ── Trending Benchmarks icon pool (12 unique icons — none from above pools) ──
+const TRENDING_ICON_POOL = [
+  { icon: Box,         color: "#ea580c", bg: "#fff7ed" },
+  { icon: FileSearch,  color: "#db2777", bg: "#fce7f3" },
+  { icon: ImageIcon,   color: "#6366f1", bg: "#e0e7ff" },
+  { icon: Radar,       color: "#0284c7", bg: "#e0f2fe" },
+  { icon: Scissors,    color: "#65a30d", bg: "#f7fee7" },
+  { icon: Fingerprint, color: "#7e22ce", bg: "#f5f3ff" },
+  { icon: FlaskConical,color: "#0891b2", bg: "#cffafe" },
+  { icon: Scan,        color: "#dc2626", bg: "#fee2e2" },
+  { icon: Sparkles,    color: "#f59e0b", bg: "#fef9c3" },
+  { icon: Headphones,  color: "#0d9488", bg: "#ccfbf1" },
+  { icon: Speaker,     color: "#9333ea", bg: "#f3e8ff" },
+  { icon: Film,        color: "#d97706", bg: "#fef3c7" },
+] as const;
 
 /* ══════════════════════════════════════════════════════════════
    COMPONENT
@@ -231,11 +451,10 @@ export default function BenchmarksPage() {
 
   const activeFilterCount = [domainFilter, taskFilter, statusFilter, yearFilter].filter(Boolean).length;
 
-  // Benchmark card — same style as Browse by Domain cards
-  const BenchmarkCard = ({ b }: { b: BenchmarkItem }) => {
+  // Benchmark card — uses POPULAR_ICON_POOL so no two cards share an icon
+  const BenchmarkCard = ({ b, index }: { b: BenchmarkItem; index: number }) => {
     const meta = getMeta(b.name);
-    const Icon = getCategoryIcon(meta.category);
-    const color = getCategoryColor(meta.category);
+    const { icon: Icon, color, bg } = POPULAR_ICON_POOL[index % POPULAR_ICON_POOL.length];
     return (
       <div
         onClick={() => handleItemClick(b.slug)}
@@ -423,22 +642,22 @@ export default function BenchmarksPage() {
                     <h2 className="text-xl font-bold text-gray-800">Browse by Task</h2>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
-                    {TASKS.map(task => (
+                    {TASKS.map(({ label, icon: Icon, color, bg, desc }) => (
                       <button
-                        key={task}
+                        key={label}
                         onClick={() => {
-                          setTaskFilter(task);
+                          setTaskFilter(label);
                           scrollToDirectory();
                         }}
-                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-[#e11d48] transition-all group text-left flex flex-col h-full min-h-[130px] w-full cursor-pointer"
+                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-gray-200 transition-all group text-left flex flex-col h-full min-h-[130px] w-full cursor-pointer"
                       >
                         <div className="flex items-start gap-2.5 mb-2">
-                          <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: "#e11d4812" }}>
-                            <Target size={20} style={{ color: "#e11d48" }} />
+                          <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: bg }}>
+                            <Icon size={20} style={{ color }} />
                           </div>
-                          <span className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0 group-hover:text-[#e11d48] transition-colors">{task}</span>
+                          <span className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0 group-hover:text-[#e11d48] transition-colors">{label}</span>
                         </div>
-                        <p className="text-sm text-gray-400 ml-[2.375rem] flex-1">Filter benchmarks</p>
+                        <p className="text-sm text-gray-500 ml-[2.375rem] flex-1 line-clamp-3 leading-relaxed">{desc}</p>
                       </button>
                     ))}
                   </div>
@@ -486,7 +705,7 @@ export default function BenchmarksPage() {
                     </div>
                   ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
-                      {popularBenchmarks.slice(0, 12).map(b => <BenchmarkCard key={b.id} b={b} />)}
+                      {popularBenchmarks.slice(0, 12).map((b, idx) => <BenchmarkCard key={b.id} b={b} index={idx} />)}
                     </div>
                   )}
                 </section>
@@ -511,8 +730,7 @@ export default function BenchmarksPage() {
                       {recentlyAdded.map((b, idx) => {
                         const meta = getMeta(b.name);
                         const cfg = STATUS_CFG[meta.status] ?? STATUS_CFG["Unmapped"];
-                        const Icon = getCategoryIcon(meta.category);
-                        const color = getCategoryColor(meta.category);
+                        const { icon: Icon, color, bg } = RECENT_ICON_POOL[idx % RECENT_ICON_POOL.length];
                         return (
                           <div
                             key={b.id}
@@ -520,7 +738,7 @@ export default function BenchmarksPage() {
                             className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md cursor-pointer group transition-all flex flex-col h-full min-h-[130px]"
                           >
                             <div className="flex items-start gap-2.5 mb-2">
-                              <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
+                              <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: bg }}>
                                 <Icon size={20} style={{ color }} />
                               </div>
                               <h3 className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{b.name}</h3>
@@ -561,8 +779,7 @@ export default function BenchmarksPage() {
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
                       {trending.map((b, idx) => {
                         const meta = getMeta(b.name);
-                        const Icon = getCategoryIcon(meta.category);
-                        const color = getCategoryColor(meta.category);
+                        const { icon: Icon, color, bg } = TRENDING_ICON_POOL[idx % TRENDING_ICON_POOL.length];
                         return (
                           <div
                             key={b.id}
@@ -570,7 +787,7 @@ export default function BenchmarksPage() {
                             className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md cursor-pointer group transition-all flex flex-col h-full min-h-[130px]"
                           >
                             <div className="flex items-start gap-2.5 mb-2">
-                              <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
+                              <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: bg }}>
                                 <Icon size={20} style={{ color }} />
                               </div>
                               <h3 className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{b.name}</h3>
