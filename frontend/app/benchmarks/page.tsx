@@ -231,41 +231,23 @@ export default function BenchmarksPage() {
 
   const activeFilterCount = [domainFilter, taskFilter, statusFilter, yearFilter].filter(Boolean).length;
 
-  // Benchmark card reusable
+  // Benchmark card — same style as Browse by Domain cards
   const BenchmarkCard = ({ b }: { b: BenchmarkItem }) => {
     const meta = getMeta(b.name);
-    const cfg  = STATUS_CFG[meta.status] ?? STATUS_CFG["Unmapped"];
     const Icon = getCategoryIcon(meta.category);
     const color = getCategoryColor(meta.category);
     return (
       <div
         onClick={() => handleItemClick(b.slug)}
-        className="bg-white border border-gray-100 rounded-lg shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between p-4 h-[145px] w-full"
+        className="bg-white border border-gray-100 rounded-sm hover:shadow-md hover:border-gray-200 transition-all cursor-pointer group flex flex-col h-full min-h-[130px] p-5 w-full"
       >
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
-              <Icon size={16} style={{ color }} />
-            </div>
-            <h3 className="font-semibold text-gray-800 text-[13px] leading-snug truncate flex-1 min-w-0">{b.name}</h3>
+        <div className="flex items-start gap-2.5 mb-2">
+          <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
+            <Icon size={20} style={{ color }} />
           </div>
-          <div className="ml-9 text-[11px] text-gray-500 space-y-0.5 mt-2 min-w-0">
-            <div className="truncate">Task: <span className="font-medium text-gray-700">{meta.task}</span></div>
-            <div className="flex items-center gap-1.5 min-w-0">
-              <span className="shrink-0">Metric:</span>
-              <span className="font-mono bg-gray-50 px-1 rounded border border-gray-100 text-gray-600 text-[9px] truncate">{meta.metric}</span>
-            </div>
-          </div>
+          <h3 className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{b.name}</h3>
         </div>
-        <div className="ml-9 flex items-center justify-between pt-2 border-t border-gray-50 shrink-0">
-          <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded ${cfg.bg} ${cfg.text} border ${cfg.border}`}>
-            <span className="w-1 h-1 rounded-full shrink-0" style={{ background: cfg.color }} />
-            {meta.status}
-          </span>
-          <span className="text-[10px] font-bold text-[#e11d48] font-mono tabular-nums">
-            {b._count?.rankings ?? 0} results
-          </span>
-        </div>
+        <p className="text-sm text-gray-400 ml-[2.375rem] flex-1">{meta.task}</p>
       </div>
     );
   };
@@ -416,17 +398,20 @@ export default function BenchmarksPage() {
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-bold text-gray-800">Browse by Domain</h2>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
                     {DOMAINS.map(({ label, icon: Icon, color }) => (
                       <button
                         key={label}
                         onClick={() => scrollToDirectory(label)}
-                        className="flex items-center gap-3 bg-white border border-gray-100 rounded-lg p-3 hover:shadow-md hover:border-gray-200 transition-all group text-left h-[54px] w-full"
+                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-gray-200 transition-all group text-left flex flex-col h-full min-h-[130px] w-full cursor-pointer"
                       >
-                        <div className="p-1.5 rounded-md group-hover:scale-110 transition-transform flex-shrink-0" style={{ background: color + "18" }}>
-                          <Icon size={16} style={{ color }} />
+                        <div className="flex items-start gap-2.5 mb-2">
+                          <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
+                            <Icon size={20} style={{ color }} />
+                          </div>
+                          <span className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{label}</span>
                         </div>
-                        <span className="text-xs font-semibold text-gray-700 leading-tight truncate flex-1 min-w-0">{label}</span>
+                        <p className="text-sm text-gray-400 ml-[2.375rem] flex-1">Browse benchmarks</p>
                       </button>
                     ))}
                   </div>
@@ -437,7 +422,7 @@ export default function BenchmarksPage() {
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-bold text-gray-800">Browse by Task</h2>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
                     {TASKS.map(task => (
                       <button
                         key={task}
@@ -445,9 +430,15 @@ export default function BenchmarksPage() {
                           setTaskFilter(task);
                           scrollToDirectory();
                         }}
-                        className="px-3 py-1.5 bg-white border border-gray-200 hover:border-[#e11d48] hover:text-[#e11d48] rounded-full text-xs font-medium text-gray-600 transition-all hover:shadow-sm"
+                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-[#e11d48] transition-all group text-left flex flex-col h-full min-h-[130px] w-full cursor-pointer"
                       >
-                        {task}
+                        <div className="flex items-start gap-2.5 mb-2">
+                          <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: "#e11d4812" }}>
+                            <Target size={20} style={{ color: "#e11d48" }} />
+                          </div>
+                          <span className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0 group-hover:text-[#e11d48] transition-colors">{task}</span>
+                        </div>
+                        <p className="text-sm text-gray-400 ml-[2.375rem] flex-1">Filter benchmarks</p>
                       </button>
                     ))}
                   </div>
@@ -458,17 +449,20 @@ export default function BenchmarksPage() {
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-bold text-gray-800">Benchmark Collections</h2>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
                     {COLLECTIONS.map(({ label, icon: Icon, color, bg }) => (
                       <button
                         key={label}
                         onClick={() => scrollToDirectory(label)}
-                        className="flex items-center gap-3 bg-white border border-gray-100 rounded-lg p-3 hover:shadow-md hover:border-gray-200 transition-all group text-left h-[54px] w-full"
+                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-gray-200 transition-all group text-left flex flex-col h-full min-h-[130px] w-full cursor-pointer"
                       >
-                        <div className="p-1.5 rounded-md group-hover:scale-110 transition-transform flex-shrink-0" style={{ background: bg }}>
-                          <Icon size={16} style={{ color }} />
+                        <div className="flex items-start gap-2.5 mb-2">
+                          <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: bg }}>
+                            <Icon size={20} style={{ color }} />
+                          </div>
+                          <span className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{label}</span>
                         </div>
-                        <span className="text-xs font-semibold text-gray-700 leading-tight truncate flex-1 min-w-0">{label}</span>
+                        <p className="text-sm text-gray-400 ml-[2.375rem] flex-1">View collection</p>
                       </button>
                     ))}
                   </div>
@@ -482,106 +476,115 @@ export default function BenchmarksPage() {
                     <h2 className="text-xl font-bold text-gray-800">Popular Benchmarks</h2>
                   </div>
                   {loading ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                      {Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="bg-white border border-gray-100 rounded-lg p-4 h-[145px] animate-pulse">
-                          <div className="h-3 bg-gray-100 rounded w-3/4 mb-2" />
-                          <div className="h-2 bg-gray-100 rounded w-1/2" />
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <div key={i} className="bg-white border border-gray-100 rounded-sm p-5 min-h-[130px] animate-pulse">
+                          <div className="h-4 bg-gray-100 rounded w-3/4 mb-3" />
+                          <div className="h-3 bg-gray-100 rounded w-1/2" />
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
                       {popularBenchmarks.slice(0, 12).map(b => <BenchmarkCard key={b.id} b={b} />)}
                     </div>
                   )}
                 </section>
 
-                {/* ══ 6. RECENTLY ADDED + 7. TRENDING BENCHMARKS ══ */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Recently Added */}
-                  <section>
-                    <div className="flex items-center gap-2 mb-1">
-                      <Clock size={18} className="text-[#0284c7]" />
-                      <h2 className="text-lg font-bold text-gray-800 font-sans">Recently Added</h2>
+                {/* ══ 6. RECENTLY ADDED ══ */}
+                <section>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Clock size={18} className="text-[#0284c7]" />
+                    <h2 className="text-xl font-bold text-gray-800">Recently Added</h2>
+                  </div>
+                  {loading ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <div key={i} className="bg-white border border-gray-100 rounded-sm p-5 min-h-[130px] animate-pulse">
+                          <div className="h-4 bg-gray-100 rounded w-3/4 mb-3" />
+                          <div className="h-3 bg-gray-100 rounded w-1/2" />
+                        </div>
+                      ))}
                     </div>
-                    <p className="text-xs text-gray-400 mb-3">Newest benchmarks added to Frontier Atlas.</p>
-                    {loading ? (
-                      <div className="space-y-2">
-                        {Array.from({ length: 4 }).map((_, i) => (
-                          <div key={i} className="bg-white border border-gray-100 rounded-sm p-3 h-[50px] animate-pulse" />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {recentlyAdded.map((b, idx) => {
-                          const meta = getMeta(b.name);
-                          const cfg = STATUS_CFG[meta.status] ?? STATUS_CFG["Unmapped"];
-                          const Icon = getCategoryIcon(meta.category);
-                          const color = getCategoryColor(meta.category);
-                          return (
-                            <div
-                              key={b.id}
-                              onClick={() => handleItemClick(b.slug)}
-                              className="flex items-center gap-3 bg-white border border-gray-100 rounded-sm p-3 hover:shadow-md cursor-pointer group transition-all"
-                            >
-                              <span className="text-xs text-gray-400 font-mono w-5 shrink-0">{idx + 1}</span>
-                              <div className="p-1.5 rounded-md group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
-                                <Icon size={14} style={{ color }} />
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
+                      {recentlyAdded.map((b, idx) => {
+                        const meta = getMeta(b.name);
+                        const cfg = STATUS_CFG[meta.status] ?? STATUS_CFG["Unmapped"];
+                        const Icon = getCategoryIcon(meta.category);
+                        const color = getCategoryColor(meta.category);
+                        return (
+                          <div
+                            key={b.id}
+                            onClick={() => handleItemClick(b.slug)}
+                            className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md cursor-pointer group transition-all flex flex-col h-full min-h-[130px]"
+                          >
+                            <div className="flex items-start gap-2.5 mb-2">
+                              <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
+                                <Icon size={20} style={{ color }} />
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="font-semibold text-gray-800 text-xs truncate">{b.name}</div>
-                                <div className="text-[10px] text-gray-400">{meta.task} · {meta.year}</div>
-                              </div>
-                              <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${cfg.bg} ${cfg.text} border ${cfg.border} shrink-0`}>{meta.status}</span>
+                              <h3 className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{b.name}</h3>
                             </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </section>
+                            <div className="ml-[2.375rem] text-sm text-gray-500 flex-1">
+                              <div className="truncate">{meta.task}</div>
+                              <div className="text-xs text-gray-400">{meta.year}</div>
+                            </div>
+                            <div className="ml-[2.375rem] pt-2 mt-2 border-t border-gray-50 shrink-0">
+                              <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded ${cfg.bg} ${cfg.text} border ${cfg.border}`}>
+                                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: cfg.color }} />
+                                {meta.status}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </section>
 
-                  {/* Trending Benchmarks */}
-                  <section>
-                    <div className="flex items-center gap-2 mb-1">
-                      <Flame size={18} className="text-[#e11d48]" />
-                      <h2 className="text-lg font-bold text-gray-800 font-sans">Trending Benchmarks</h2>
+                {/* ══ 7. TRENDING BENCHMARKS ══ */}
+                <section>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Flame size={18} className="text-[#e11d48]" />
+                    <h2 className="text-xl font-bold text-gray-800">Trending Benchmarks</h2>
+                  </div>
+                  {loading ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <div key={i} className="bg-white border border-gray-100 rounded-sm p-5 min-h-[130px] animate-pulse">
+                          <div className="h-4 bg-gray-100 rounded w-3/4 mb-3" />
+                          <div className="h-3 bg-gray-100 rounded w-1/2" />
+                        </div>
+                      ))}
                     </div>
-                    <p className="text-xs text-gray-400 mb-3">Most viewed and fastest-growing benchmarks this week.</p>
-                    {loading ? (
-                      <div className="space-y-2">
-                        {Array.from({ length: 4 }).map((_, i) => (
-                          <div key={i} className="bg-white border border-gray-100 rounded-sm p-3 h-[50px] animate-pulse" />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {trending.map((b, idx) => {
-                          const meta = getMeta(b.name);
-                          const Icon = getCategoryIcon(meta.category);
-                          const color = getCategoryColor(meta.category);
-                          return (
-                            <div
-                              key={b.id}
-                              onClick={() => handleItemClick(b.slug)}
-                              className="flex items-center gap-3 bg-white border border-gray-100 rounded-sm p-3 hover:shadow-md cursor-pointer group transition-all"
-                            >
-                              <span className="text-xs text-gray-400 font-mono w-5 shrink-0">{idx + 1}</span>
-                              <div className="p-1.5 rounded-md group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
-                                <Icon size={14} style={{ color }} />
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 items-stretch">
+                      {trending.map((b, idx) => {
+                        const meta = getMeta(b.name);
+                        const Icon = getCategoryIcon(meta.category);
+                        const color = getCategoryColor(meta.category);
+                        return (
+                          <div
+                            key={b.id}
+                            onClick={() => handleItemClick(b.slug)}
+                            className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md cursor-pointer group transition-all flex flex-col h-full min-h-[130px]"
+                          >
+                            <div className="flex items-start gap-2.5 mb-2">
+                              <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
+                                <Icon size={20} style={{ color }} />
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="font-semibold text-gray-800 text-xs truncate">{b.name}</div>
-                                <div className="text-[10px] text-gray-400">{meta.task}</div>
-                              </div>
-                              <span className="text-xs font-bold text-[#e11d48] font-mono shrink-0">{b._count?.rankings ?? 0} results</span>
+                              <h3 className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{b.name}</h3>
                             </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </section>
-                </div>
+                            <div className="ml-[2.375rem] text-sm text-gray-500 flex-1 truncate">{meta.task}</div>
+                            <div className="ml-[2.375rem] pt-2 mt-2 border-t border-gray-50 shrink-0">
+                              <span className="text-[12px] font-bold text-[#e11d48] font-mono tabular-nums">{b._count?.rankings ?? 0} results</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </section>
 
                 {/* ══ 8. BENCHMARK DIRECTORY ══ */}
                 <section ref={directoryRef} className="scroll-mt-6">
