@@ -4,7 +4,7 @@ import { getTasks } from './tasks';
 import { getModels } from './models';
 import { getDatasets } from './datasets';
 import { getAuthors } from './authors';
-import { getPapers } from './paperApi';
+import { getPapers, searchPapers } from "./paperApi";
 
 export type SearchResultType = 'papers' | 'authors' | 'methods' | 'tasks' | 'models' | 'datasets';
 
@@ -72,15 +72,17 @@ export async function globalSearch(query: string, limit: number = 10): Promise<S
   }
 
   try {
-    // Try backend global search endpoint (when implemented)
-    const response = await fetchApi<SearchResultsResponse>(
-      `/api/v1/search?q=${encodeURIComponent(query)}&limit=${limit}`
-    );
-    return response.data;
-  } catch {
-    // Fallback: Use individual APIs with client-side filtering
-    return fallbackSearch(query, limit);
-  }
+  console.log("Calling backend search...");
+  const response = await fetchApi<SearchResultsResponse>(
+    `/api/v1/search?q=${encodeURIComponent(query)}&limit=${limit}`
+  );
+  console.log("Backend search succeeded");
+  return response.data;
+} catch (err) {
+  console.log("Backend search failed:", err);
+  console.log("Using fallback search");
+  return fallbackSearch(query, limit);
+}
 }
 
 /**
@@ -107,10 +109,11 @@ async function fallbackSearch(query: string, limit: number): Promise<SearchResul
     getModels(),
     getDatasets(),
     getAuthors(),
-    getPapers({ page: 1 }),
+    searchPapers(query),
   ]);
 
-  const papersData = papersResult.papers;
+  const papersData = papersResult;
+  console.log("papersData:", papersData);
 
   const tasksFiltered = tasks
     .filter((t) => t.name.toLowerCase().includes(q))

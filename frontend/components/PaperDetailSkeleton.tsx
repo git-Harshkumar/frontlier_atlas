@@ -6,6 +6,8 @@ export default function PaperDetailSkeleton() {
         <div className="mb-5 lg:mb-6 flex items-center gap-2">
           <div className="h-3 w-12 bg-[#E4E0D8] rounded animate-pulse" />
           <span className="text-[#DCDCD7]">/</span>
+          <div className="h-3 w-14 bg-[#E4E0D8] rounded animate-pulse" />
+          <span className="text-[#DCDCD7]">/</span>
           <div className="h-3 w-16 bg-[#E4E0D8] rounded animate-pulse" />
         </div>
 

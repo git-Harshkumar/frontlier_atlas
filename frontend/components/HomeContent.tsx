@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import PaperList from "@/components/PaperFeed";
 import PaperTabs from "@/components/PaperTabs";
-import RightSidebar from "@/components/RightSidebar";
 import HeroSection from "@/components/HeroSection";
 import type { GetPapersResult } from "@/lib/paperApi";
 
@@ -77,7 +76,7 @@ export default function HomeContent({
             <Sidebar initialActive={activeSort} onItemSelect={setActiveSort} />
           </div>
 
-          <main className="flex-1 min-w-0 max-w-full">
+          <main className="flex-1 min-w-0">
             <PaperTabs selectedPeriod={selectedPeriod} onPeriodSelect={setSelectedPeriod} />
             <PaperList
               selectedTag={selectedTag}
@@ -87,10 +86,6 @@ export default function HomeContent({
               initialError={initialError}
             />
           </main>
-
-          <div className="hidden xl:block w-[280px] shrink-0 sticky top-6 h-fit max-h-[calc(100vh-80px)] overflow-y-auto overscroll-contain hide-scroll">
-            <RightSidebar />
-          </div>
         </div>
       </div>
     </div>

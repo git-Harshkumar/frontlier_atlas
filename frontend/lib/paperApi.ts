@@ -21,6 +21,11 @@ export interface Paper {
   citations: number;
   conference?: string;
   githubUrl?: string;
+  repositories?: {
+  url: string;
+  owner: string;
+  name: string;
+}[];
 }
 
 export interface PapersResponse {
@@ -189,7 +194,14 @@ export async function searchPapers(query: string): Promise<Paper[]> {
   
   try {
     // Try backend search first
-    const response = await fetchApi<PapersResponse>(`/api/v1/research-papers?search=${encodeURIComponent(query)}`);
+   const response = await fetchApi<{
+  status: string;
+  data: {
+    papers: Record<string, unknown>[];
+  };
+}>(
+  `/api/v1/research-papers/search?q=${encodeURIComponent(query)}`
+);
     return response.data.papers.map(mapBackendPaper);
   } catch (error) {
     console.warn('Backend search unavailable, falling back to client-side filtering', error);

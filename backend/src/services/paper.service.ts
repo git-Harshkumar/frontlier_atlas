@@ -54,19 +54,8 @@ const paperSelect = {
   githubStars: true,
   githubForks: true,
   citationCount: true,
-  trendingScore: true,
   language: true,
-  authors: {
-    select: {
-      author: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-        },
-      },
-    },
-  },
+  authors: true,
   tasks: {
     select: {
       task: {
@@ -108,6 +97,17 @@ const paperSelect = {
       },
     },
   },
+  repositories: {
+  select: {
+    repository: {
+      select: {
+        url: true,
+        owner: true,
+        name: true,
+      },
+    },
+  },
+},
 } satisfies Prisma.PaperSelect;
 
 // Infer the type from the select object
@@ -139,7 +139,7 @@ const getCompletenessScore = (paper: PaperQueryItem): number => {
     paper.pdfUrl,
     paper.githubUrl,
     paper.language,
-    paper.authors.length,
+    paper.authors?.length || 0,
     paper.tasks.length,
     paper.methods.length,
     paper.sotaClaims.length,
@@ -316,10 +316,10 @@ export const getPapers = async (
         : sort === "alphabetical"
           ? [{ title: "asc" as const }, { slug: "asc" as const }]
           : [
-             { trendingScore: "desc" as const },
-             { githubStars: "desc" as const },
-             { publicationDate: "desc" as const },
-             { slug: "asc" as const },
+              { githubStars: "desc" as const },
+              { citationCount: "desc" as const },
+              { publicationDate: "desc" as const },
+              { slug: "asc" as const },
             ];
 
   const papers = await queryRouter.routeQuery<any>(
@@ -340,9 +340,24 @@ export const getPapers = async (
   return {
     papers: pagePapers.map((paper: any) => ({
       ...exposeThumbnailUrl(paper),
-      authors: paper.authors.map(({ author }: any) => author),
+repositories: paper.repositories.map(
+  ({ repository }: any) => repository
+),
+
+authors:
+  paper.authors && typeof paper.authors === "string"
+    ? paper.authors.split(",").map((name: string) => {
+        const t = name.trim();
+        return {
+          id: t,
+          name: t,
+          slug: t.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        };
+      })
+    : [],
       tasks: paper.tasks.map(({ task }: any) => task),
       methods: paper.methods.map(({ method }: any) => method),
+      
     })),
     total: pagePapers.length, // Let the frontend use hasMore rather than a fake total
     page,
@@ -388,19 +403,7 @@ export const getPaperBySlug = async (
           isOfficialCode: true,
           discoverySource: true,
 
-          authors: {
-            select: {
-              paper_id: true,
-              author_id: true,
-              author: {
-                select: {
-                  id: true,
-                  name: true,
-                  slug: true,
-                },
-              },
-            },
-          },
+          authors: true,
           models: {
             select: {
               paper_id: true,
@@ -428,7 +431,6 @@ export const getPaperBySlug = async (
             },
           },
           tasks: {
-  take: 3,
   orderBy: {
     task: {
       name: "asc",
@@ -448,7 +450,6 @@ export const getPaperBySlug = async (
   },
 },
           methods: {
-  take: 3,
   orderBy: {
     method: {
       name: "asc",
@@ -517,12 +518,7 @@ export const getPaperBySlug = async (
 
       const [authors, models, datasets, tasks, methods, conferences, rankings, sotaClaims] =
         await Promise.all([
-          prisma.paperAuthor
-            .findMany({
-              where: { paper_id: paperData.id },
-              select: { author: { select: { id: true, name: true, slug: true } } },
-            })
-            .then((rows) => rows.map((r) => r.author)),
+          Promise.resolve((paperData as any).authors && typeof (paperData as any).authors === 'string' ? ((paperData as any).authors as string).split(',').map((name: string) => { const t = name.trim(); return { id: t, name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }; }) : []),
           prisma.paperModel
             .findMany({
               where: { paper_id: paperData.id },
@@ -536,46 +532,17 @@ export const getPaperBySlug = async (
             })
             .then((rows) => rows.map((r) => r.dataset)),
           prisma.paperTask
-  .findMany({
-    where: { paper_id: paperData.id },
-    take: 4,
-    orderBy: {
-      task: {
-        name: "asc",
-      },
-    },
-    select: {
-      task: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          color: true,
-        },
-      },
-    },
-  })
-  .then((rows) => rows.map((r) => r.task)),
+            .findMany({
+              where: { paper_id: paperData.id },
+              select: { task: { select: { id: true, name: true, slug: true, color: true } } },
+            })
+            .then((rows) => rows.map((r) => r.task)),
           prisma.paperMethod
-  .findMany({
-    where: { paper_id: paperData.id },
-    take: 4,
-    orderBy: {
-      method: {
-        name: "asc",
-      },
-    },
-    select: {
-      method: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-        },
-      },
-    },
-  })
-  .then((rows) => rows.map((r) => r.method)),
+            .findMany({
+              where: { paper_id: paperData.id },
+              select: { method: { select: { id: true, name: true, slug: true } } },
+            })
+            .then((rows) => rows.map((r) => r.method)),
           prisma.paperConference
             .findMany({
               where: { paper_id: paperData.id },
@@ -587,23 +554,27 @@ export const getPaperBySlug = async (
               where: { paper_id: paperData.id },
               select: {
                 id: true,
+                paper_id: true,
+                benchmark_id: true,
                 rank: true,
                 previous_rank: true,
                 benchmark: { select: { id: true, name: true, slug: true } },
               },
             })
             .then((rows) =>
-              rows.map((r) => ({ id: r.id, rank: r.rank, previous_rank: r.previous_rank, benchmark: r.benchmark })),
+              rows.map((r) => ({ id: r.id, paper_id: r.paper_id, benchmark_id: r.benchmark_id, rank: r.rank, previous_rank: r.previous_rank, benchmark: r.benchmark })),
             ),
           prisma.sotaClaim
             .findMany({
               where: { paper_id: paperData.id },
               select: {
                 id: true,
+                paper_id: true,
+                benchmark_id: true,
                 benchmark: { select: { id: true, name: true, slug: true } },
               },
             })
-            .then((rows) => rows.map((r) => ({ id: r.id, benchmark: r.benchmark }))),
+            .then((rows) => rows.map((r) => ({ id: r.id, paper_id: r.paper_id, benchmark_id: r.benchmark_id, benchmark: r.benchmark }))),
         ]);
 
       const thumbnailUrl = paperData.thumbnailUrl === "FAILED_404" ? null : paperData.thumbnailUrl;
@@ -677,6 +648,7 @@ export const searchPapers = async (
   query: { q?: string; limit?: number; page?: number; sort?: string } = {},
 ) => {
   const searchTerm = query.q?.trim() || "";
+  console.log("Search term received:", searchTerm);
   if (!searchTerm) {
     return { papers: [], total: 0, page: 1, hasMore: false, query: "" };
   }
@@ -706,12 +678,20 @@ export const searchPapers = async (
     },
   );
 
+  
+  console.log("Search returned", papers.length, "papers");
+console.log(
+  papers.map((p:any) => p.title)
+);
+
+  
+
 
 
   return {
     papers: papers.map((paper: any) => ({
       ...exposeThumbnailUrl(paper),
-      authors: paper.authors.map(({ author }: any) => author),
+      authors: paper.authors && typeof paper.authors === 'string' ? paper.authors.split(',').map((name: string) => { const t = name.trim(); return { id: t, name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }; }) : [],
       tasks: paper.tasks.map(({ task }: any) => task),
       methods: paper.methods.map(({ method }: any) => method),
     })),

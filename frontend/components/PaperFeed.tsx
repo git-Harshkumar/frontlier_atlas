@@ -9,7 +9,12 @@ import {
   memo,
   Profiler,
 } from "react";
-import { Github, ArrowUpRight } from "lucide-react";
+import {
+  Github,
+  ArrowUpRight,
+  FileText,
+  FileCode2,
+} from "lucide-react";
 import Link from "next/link";
 import {
   getPapers,
@@ -348,6 +353,13 @@ export const PaperCard = memo(({ paper }: { paper: Paper }) => {
   const safeAuthors = paper.authors || [];
   const visibleAuthors = safeAuthors.slice(0, 3);
   const remaining = safeAuthors.length - 3;
+  const githubRepo = paper.repositories?.find(
+  (repo: any) => repo.url.includes("github.com")
+);
+const huggingFaceRepo = paper.repositories?.find(
+  (repo: any) => repo.url?.includes("huggingface.co")
+);
+
 
   return (
     <Link href={`/papers/${paper.slug}`} className="no-underline block">
@@ -424,16 +436,30 @@ export const PaperCard = memo(({ paper }: { paper: Paper }) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-row items-center w-full mt-auto pt-3 gap-1.5 sm:gap-3">
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 mt-5">
             <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 window.open((paper as any).arxivUrl || "https://arxiv.org", "_blank");
               }}
-              className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#FFF8F4] text-[#E0663B] border border-[#FDE3D6] rounded-[6px] hover:bg-[#FDE3D6]/50 transition-colors"
+              className="flex-1 flex items-center justify-center sm:justify-between px-4 h-[58px]bg-[#FFF8F4] text-[#E0663B] border border-[#FDE3D6] rounded-[6px] hover:bg-[#FDE3D6]/50 transition-colors"
             >
-              <span className="font-medium text-[11px] sm:text-[13px]">arXiv</span>
+              <div className="flex items-center gap-3">
+    <div className="w-10 h-10 rounded-xl bg-[#F97316] flex items-center justify-center">
+        <FileCode2 className="text-white" size={20}/>
+    </div>
+
+    <div className="flex flex-col items-start">
+    <span className="font-semibold text-[15px]">
+        arXiv
+    </span>
+
+    <span className="text-[12px] text-[#666]">
+        Original preprint
+    </span>
+</div>
+</div>
               <ArrowUpRight size={14} strokeWidth={1.5} className="hidden sm:block" />
             </button>
 
@@ -443,9 +469,23 @@ export const PaperCard = memo(({ paper }: { paper: Paper }) => {
                 e.stopPropagation();
                 window.open((paper as any).pdfUrl || "https://arxiv.org/pdf", "_blank");
               }}
-              className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#FFF4F6] text-[#E54D59] border border-[#FDD4DC] rounded-[6px] hover:bg-[#FDD4DC]/50 transition-colors"
+              className="flex-1 flex items-center justify-between px-4 h-[58px] bg-[#FFF4F6] text-[#E54D59] border border-[#FDD4DC] rounded-[6px] hover:bg-[#FDD4DC]/50 transition-colors"
             >
-              <span className="font-medium text-[11px] sm:text-[13px]">PDF</span>
+              <div className="flex items-center gap-3">
+    <div className="w-10 h-10 rounded-xl bg-pink-600 flex items-center justify-center">
+        <FileText className="text-white" size={20}/>
+    </div>
+
+    <div className="flex flex-col items-start">
+    <span className="font-semibold text-[15px]">
+        PDF
+    </span>
+
+    <span className="text-[12px] text-[#666]">
+        Full paper
+    </span>
+</div>
+</div>
               <ArrowUpRight size={14} strokeWidth={1.5} className="hidden sm:block" />
             </button>
 
@@ -453,17 +493,67 @@ export const PaperCard = memo(({ paper }: { paper: Paper }) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                window.open(paper.githubUrl || "https://github.com", "_blank");
+                window.open(githubRepo?.url || "https://github.com", "_blank");
               }}
-              className="flex-1 flex items-center justify-center sm:justify-between px-2 sm:px-3.5 h-[32px] sm:h-[34px] bg-[#F7F8F9] text-[#111111] border border-[#E5E7EB] rounded-[6px] hover:bg-[#E5E7EB]/70 transition-colors"
+              className="flex-1 flex items-center justify-center sm:justify-between px-4 h-[58px] bg-[#F7F8F9] text-[#111111] border border-[#E5E7EB] rounded-[6px] hover:bg-[#E5E7EB]/70 transition-colors"
             >
-              <div className="flex items-center gap-1 sm:gap-2">
-                <Github size={13} strokeWidth={1.5} className="hidden sm:block" />
-                <span className="font-medium text-[11px] sm:text-[13px]">GitHub</span>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center">
+    <Github className="text-white" size={20}/>
+</div>
+
+                <div className="flex flex-col items-start">
+    <span className="font-semibold text-[15px]">
+        GitHub
+    </span>
+
+    <span className="text-[12px] text-[#666]">
+        {upvotesNum > 0
+  ? `${upvotesNum >= 1000 ? (upvotesNum / 1000).toFixed(1) + "k" : upvotesNum} stars`
+  : "0 stars"}
+    </span>
+</div>
                 {upvotesNum > 0 && <span className="hidden sm:inline text-[#9CA3AF] text-[12.5px] font-normal">{upvotesNum}k</span>}
               </div>
               <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#9CA3AF] hidden sm:block" />
             </button>
+            <button
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (huggingFaceRepo?.url) {
+      window.open(huggingFaceRepo.url, "_blank");
+    } else {
+      alert("Hugging Face model will be available soon.");
+    }
+  }}
+  className="flex-1 flex items-center justify-center sm:justify-between px-4 h-[58px] bg-[#FFF8E7] text-[#111111] border border-[#F5D565] rounded-[6px] hover:bg-[#FFEFB3] transition-colors"
+>
+  <div className="flex items-center gap-3">
+    <div className="w-10 h-10 rounded-xl bg-[#F97316] flex items-center justify-center">
+        <FileCode2 className="text-white" size={20}/>
+    </div>
+
+    <div className="flex flex-col items-start">
+    <span className="font-semibold text-[15px]">
+        Hugging Face
+    </span>
+
+    <span className="text-[12px] text-[#666]">
+        {paper.repositories?.filter(
+  (repo: any) => repo.url?.includes("huggingface.co")
+).length || 0} models
+    </span>
+</div>
+  </div>
+
+  <ArrowUpRight
+    size={14}
+    strokeWidth={1.5}
+    className="text-[#9CA3AF] hidden sm:block"
+  />
+</button>
           </div>
         </div>
       </div>

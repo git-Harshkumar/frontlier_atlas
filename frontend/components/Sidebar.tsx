@@ -24,6 +24,7 @@ import {
   BarChart2,
   Target,
   Plug,
+  Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -129,31 +130,30 @@ export default function Sidebar({
   ];
 
   const tasks = [
-    { label: "Agents", icon: <Bot size={16} />, slug: "agents" },
-    { label: "Reasoning", icon: <Brain size={16} />, slug: "reasoning" },
-    { label: "Language Modeling", icon: <MessageSquare size={16} />, slug: "language-modeling" },
-    { label: "Coding Agents", icon: <Code2 size={16} />, slug: "coding-agents" },
-    { label: "Computer Use", icon: <Monitor size={16} />, slug: "computer-use-agents" },
-    { label: "World Models", icon: <Globe size={16} />, slug: "world-models" },
-    { label: "Robotics", icon: <Cpu size={16} />, slug: "robotics" },
-  ];
+  { label: "Language Models", icon: <MessageSquare size={16} />, slug: "language-models" },
+  { label: "Agents", icon: <Bot size={16} />, slug: "agents" },
+  { label: "Reasoning", icon: <Brain size={16} />, slug: "reasoning" },
+  { label: "Vision-Language Models", icon: <ImageIcon size={16} />, slug: "vision-language-models" },
+  { label: "Multimodal Models", icon: <Layers size={16} />, slug: "multimodal-models" },
+  { label: "World Models", icon: <Globe size={16} />, slug: "world-models" },
+  { label: "Image Generation", icon: <ImageIcon size={16} />, slug: "image-generation" },
+  { label: "Speech", icon: <Volume2 size={16} />, slug: "speech" },
+  { label: "Robotics", icon: <Cpu size={16} />, slug: "robotics" },
+  { label: "All Tasks", icon: <FileText size={16} />, slug: "" },
+];
 
-  const methods = [
-    { label: "Transformer", icon: <Zap size={16} />, slug: "transformer" },
-    { label: "Chain of Thought", icon: <LinkIcon size={16} />, slug: "chain-of-thought" },
-    { label: "ReAct", icon: <RefreshCw size={16} />, slug: "react" },
-    { label: "LoRA", icon: <Layers size={16} />, slug: "lora" },
-    { label: "RLHF", icon: <BarChart2 size={16} />, slug: "rlhf" },
-    { label: "DPO", icon: <Target size={16} />, slug: "dpo" },
-    { label: "MCP", icon: <Plug size={16} />, slug: "mcp" },
-  ];
-
-  const generation = [
-    { label: "Text Generation", icon: <FileText size={16} />, slug: "text-generation" },
-    { label: "Image Generation", icon: <ImageIcon size={16} />, slug: "image-generation" },
-    { label: "Video Generation", icon: <Video size={16} />, slug: "video-generation" },
-    { label: "Audio Generation", icon: <Volume2 size={16} />, slug: "audio-generation" },
-  ];
+const methods = [
+  { label: "Transformers", icon: <Zap size={16} />, slug: "transformer" },
+  { label: "Diffusion Models", icon: <ImageIcon size={16} />, slug: "diffusion-models" },
+  { label: "Mixture of Experts", icon: <Layers size={16} />, slug: "mixture-of-experts-moe" },
+  { label: "Reinforcement Learning", icon: <BarChart2 size={16} />, slug: "policy-learning" },
+  { label: "Chain-of-Thought", icon: <LinkIcon size={16} />, slug: "chain-of-thought" },
+  { label: "Retrieval-Augmented Generation", icon: <Search size={16} />, slug: "rag" },
+  { label: "Model Context Protocol", icon: <Plug size={16} />, slug: "mcp" },
+  { label: "LoRA", icon: <Layers size={16} />, slug: "lora" },
+  { label: "RLHF", icon: <Target size={16} />, slug: "rlhf" },
+  { label: "All Methods", icon: <FileText size={16} />, slug: "" },
+];
 
   return (
     <aside className="flex flex-col w-full bg-transparent h-full">
@@ -186,7 +186,7 @@ export default function Sidebar({
                 label={item.label}
                 isActive={activeItem === item.label}
                 onClick={() => handleItemClick(item.label)}
-                href={`/tasks/${item.slug}`}
+                href={item.slug ? `/tasks/${item.slug}` : `/tasks`}
               />
             ))}
           </div>
@@ -208,23 +208,6 @@ export default function Sidebar({
             ))}
 
 
-          </div>
-        </div>
-
-        {/* GENERATION Section */}
-        <div>
-          <SectionLabel title="Generation" />
-          <div className="flex flex-col gap-0.5">
-            {generation.map((item) => (
-              <NavItem
-                key={item.label}
-                icon={item.icon}
-                label={item.label}
-                isActive={activeItem === item.label}
-                onClick={() => handleItemClick(item.label)}
-                href={`/category/${item.slug}`}
-              />
-            ))}
           </div>
         </div>
       </div>

@@ -183,7 +183,6 @@ export const getMethodBySlug = async (queryRouter: QueryRouter, slug: string) =>
                 id: true,
                 title: true,
                 slug: true,
-                abstract: true,
                 citationCount: true,
                 publicationDate: true,
                 githubStars: true,
@@ -193,13 +192,7 @@ export const getMethodBySlug = async (queryRouter: QueryRouter, slug: string) =>
                 pdfUrl: true,
                 paperUrl: true,
                 githubUrl: true,
-                authors: {
-                  select: {
-                    author: {
-                      select: { name: true },
-                    },
-                  },
-                },
+                authors: true,
                 sotaClaims: {
                   select: {
                     benchmark: { select: { name: true, slug: true } }
@@ -274,7 +267,7 @@ export const getMethodBySlug = async (queryRouter: QueryRouter, slug: string) =>
     paperCount: totalPaperCount,
     papers: topPapers.map(({ paper }) => ({
       ...paper,
-      authors: paper.authors.map((a: any) => a.author),
+      authors: paper.authors && typeof paper.authors === 'string' ? paper.authors.split(',').map((name: string) => { const t = name.trim(); return { id: t, name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }; }) : [],
       sotaClaims: paper.sotaClaims?.map((c: any) => c.benchmark) || [],
     })),
   };

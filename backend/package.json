@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "build": "tsc --noEmit",
-    "daily-sync": "npx prisma generate --schema=src/generated/prisma/schema.prisma && tsx scripts/daily-sync.ts",
+    "daily-sync": "prisma generate --schema=prisma/schema.prisma && tsx scripts/daily-sync.ts",
     "import-papers-github": "tsx scripts/importPapersWithGithub.ts",
     "import-sota": "tsx scripts/importSota.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

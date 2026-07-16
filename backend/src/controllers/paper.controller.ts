@@ -177,6 +177,7 @@ export const getPaperBySlug = async (c: Context) => {
 };
 
 export const getPaperById = async (c: Context) => {
+  
   const queryRouter = c.var.queryRouter as QueryRouter;
   const id = c.req.param("id");
 
@@ -317,6 +318,7 @@ export const searchPapers = async (c: Context) => {
       }
 
       const result = await paperService.searchPapers(queryRouter, searchQuery);
+      console.log("Controller result:", result);
       const response = { status: "success", data: result };
 
       // Only cache results that actually returned data (avoid caching empty hits)
