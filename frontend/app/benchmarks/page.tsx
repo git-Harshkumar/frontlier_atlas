@@ -871,7 +871,7 @@ export default function BenchmarksPage() {
                           className="px-3 py-1.5 text-sm rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:border-rose-400 text-gray-700"
                         >
                           <option value="">All Tasks</option>
-                          {TASKS.map(t => <option key={t} value={t}>{t}</option>)}
+                          {TASKS.map(t => <option key={t.label} value={t.label}>{t.label}</option>)}
                         </select>
 
                         {/* Status */}
