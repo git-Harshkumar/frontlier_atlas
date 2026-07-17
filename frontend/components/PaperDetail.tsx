@@ -939,8 +939,8 @@ export default function PaperDetail({ paper }: { paper: PaperDetailType }) {
                 )}
               </div>
 
-              {/* Preview (desktop) */}
-              <div className="hidden lg:block w-[200px] lg:w-[220px] shrink-0">
+              {/* Preview */}
+              <div className="block w-full lg:w-[220px] shrink-0">
                 <a
                   href={previewHref || "#"}
                   target="_blank"
