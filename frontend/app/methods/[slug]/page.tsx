@@ -451,9 +451,9 @@ export default async function MethodDetailPage({
       <Navbar />
 
       <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <main className="max-w-7xl mx-auto px-5 lg:px-6 py-6 lg:py-8 w-full">
+        <main className="max-w-7xl mx-auto px-5 lg:px-6 py-5 lg:py-6 w-full">
           {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs lg:text-sm text-gray-500 mb-6 lg:mb-8">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs lg:text-sm text-gray-500 mb-4 lg:mb-6">
             <Link href="/" className="hover:text-gray-800">Home</Link>
             <span>›</span>
             <Link href="/methods" className="hover:text-gray-800">Methods</Link>
@@ -461,21 +461,13 @@ export default async function MethodDetailPage({
             <span className="text-orange-600 font-medium">{methodDetail.name}</span>
           </nav>
 
-          {/* Hero Section */}
-          <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-10 lg:mb-16">
-            <div className="lg:col-span-7">
-              <div className="flex items-center gap-2 text-[10px] font-bold text-orange-600 mb-3 lg:mb-4 tracking-widest uppercase">
-                <div className="p-1 lg:p-1.5 bg-orange-50 lg:bg-transparent lg:border lg:border-orange-200 rounded lg:rounded-md">
-                  <DynamicIcon className="w-4 h-4 lg:w-3 lg:h-3" strokeWidth={2.5} />
-                </div>
-                Method
-              </div>
-
-              <h1 className="text-3xl lg:text-5xl font-bold mb-4 lg:mb-6 text-slate-800 leading-tight">
+          <section className="mb-8 lg:mb-10">
+            <div className="w-full max-w-4xl">
+              <h1 className="text-3xl lg:text-5xl font-bold mb-3 lg:mb-4 text-slate-800 leading-tight">
                 {methodDetail.name}
               </h1>
 
-              <p className="text-sm lg:text-lg text-gray-500 leading-relaxed max-w-2xl mb-8 lg:mb-10">
+              <p className="text-sm lg:text-lg text-gray-500 leading-relaxed mb-5 lg:mb-6">
                 {methodDetail.description || `${methodDetail.name} is an advanced artificial intelligence system that learns to process human language by being trained on vast amounts of text data.`}
               </p>
 
@@ -488,25 +480,6 @@ export default async function MethodDetailPage({
                   <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Papers Using</div>
                   <div className="text-2xl lg:text-3xl font-bold text-orange-600">{actualPaperCount.toLocaleString()}</div>
                 </div>
-              </div>
-            </div>
-
-
-            {/* Hero Illustration — desktop only, hidden on mobile to save space */}
-            <div className="hidden lg:block lg:col-span-5 w-full mt-2 lg:mt-0">
-              <div className="bg-orange-50/30 border border-orange-100 rounded-2xl p-8 flex flex-col items-center justify-center relative overflow-hidden aspect-[1.4/1]">
-                <div className="w-full h-full flex flex-col items-center justify-center relative">
-                  <CategorySVG category={categoryName} />
-                </div>
-                <a
-                  className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-orange-600 text-sm font-medium hover:underline z-10"
-                  href={methodDetail.sourceUrl || "https://arxiv.org"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  {methodDetail.sourceUrl ? methodDetail.sourceUrl.replace(/^https?:\/\//, '') : `arxiv.org/search/?query=${encodeURIComponent(methodDetail.name)}`}
-                </a>
               </div>
             </div>
           </section>
