@@ -27,7 +27,6 @@ export function TaxonomyView({ initialTaxonomy }: { initialTaxonomy: any[] }) {
             });
           }
         });
-
         setTaxonomy(prev => prev.map(cat => ({
           ...cat,
           methods: cat.methods.map((m: any) => {
@@ -55,7 +54,6 @@ export function TaxonomyView({ initialTaxonomy }: { initialTaxonomy: any[] }) {
     ),
   }))
   .filter((category: any) => category.methods.length > 0);
-
   return (
   <>
     <MethodsHero taxonomy={taxonomy} />
