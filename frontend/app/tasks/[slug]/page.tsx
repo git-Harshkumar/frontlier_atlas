@@ -19,8 +19,7 @@ const tasks = [
     title: "AGENTS",
     description:
       "AI agents are autonomous software systems that use artificial intelligence to achieve goals and complete tasks on behalf of users, acting independently to perceive their environment, make decisions, and take actions without constant human intervention. They use advanced capabilities like reasoning, memory, planning, and learning, often leveraging large language models (LLMs) and other AI tools to interpret information and perform complex workflows across various industries.",
-    imageUrl:
-      "https://paperswithcode.co/api/v1/tasks/agents/image?v=1781525141",
+
     stats: {
       benchmarks: 8,
     },
@@ -46,8 +45,7 @@ const tasks = [
     title: "WORLD MODELS",
     description:
       "World models are AI systems that learn a function from a (current world state, action) pair to the next world state, letting an agent predict how its environment will evolve and simulate the outcomes of actions before taking them. The term spans two paradigms: internal world models that predict the future at a high, semantic level (cognitive sense, in the spirit of LeCun's JEPA family) and external world models that aim to simulate reality at full visual fidelity (e.g. Genie-2, GAIA-1). Both are foundational for embodied AI: agents can plan and act using internal models while learning inside external simulators.",
-    imageUrl:
-      "https://paperswithcode.co/api/v1/tasks/world-models/image?v=1781533541",
+
     stats: {
       benchmarks: 8,
     },
@@ -70,7 +68,7 @@ const tasks = [
     title: "ANOMALY DETECTION",
     description:
       "Anomaly and out-of-distribution (OOD) detection identifies unusual, novel, or defective inputs in images, video, and other sensor data.",
-    imageUrl: "",
+    
     stats: {
       benchmarks: 8,
     },
@@ -92,7 +90,7 @@ const tasks = [
     title: "AUTONOMOUS DRIVING",
     description:
       "Autonomous driving research covers perception, planning, and control for self-driving vehicles, including bird's-eye-view (BEV) perception, occupancy prediction, end-to-end driving, and ADAS.",
-    imageUrl: "",
+    
     stats: {
       benchmarks: 8,
     },
@@ -123,7 +121,7 @@ const tasks = [
     title: "DEEPFAKE AND FORENSICS",
     description:
       "Deepfake detection and media forensics identify synthetic, manipulated, or spoofed visual and audiovisual content, including anti-spoofing and security-oriented authenticity verification.",
-    imageUrl: "",
+    
     stats: {
       benchmarks: 8,
     },
@@ -142,7 +140,7 @@ const tasks = [
     title: "DOCUMENT UNDERSTANDING",
     description:
       "Document understanding covers machine learning systems that interpret visually rich documents, including forms, receipts, tables, layout-aware OCR, key information extraction, entity extraction, and entity linking.",
-    imageUrl: "",
+   
     stats: {
       benchmarks: 11,
     },
@@ -167,8 +165,7 @@ const tasks = [
     title: "EMBEDDING MODELS",
     description:
       "Embedding models are algorithms that transform complex, high-dimensional data—like words, images, or audio—into dense, low-dimensional numerical vectors. These vectors capture the underlying meaning, context, and relationships within the data, allowing machines to understand and process it more efficiently. By representing data as points in a shared mathematical space, embedding models enable tasks such as semantic search, recommendation systems, and image recognition by placing similar items close together.",
-    imageUrl:
-      "https://media.geeksforgeeks.org/wp-content/uploads/20250602113842201899/Vector-Embedding.webp",
+  
     stats: {
       benchmarks: 9,
     },
@@ -187,35 +184,40 @@ const tasks = [
     ],
   },
   {
-  slug: "language-models",
-  displayName: "Language Models",
-  title: "LANGUAGE MODELS",
-    description:
-      "Language Modeling is the task of predicting the next word or character in a sequence given the previous context. Language models learn the probability distribution of word sequences and are foundational for many NLP applications including text generation, machine translation, and speech recognition.",
-    imageUrl:
-      "https://lena-voita.github.io/resources/lectures/lang_models/neural/one_step_loss_intuition-min.png",
-    stats: {
-      benchmarks: 54,
-    },
-    sisterTasks: [],
-    commonMethods: [
-      { name: "Large Language Model (LLM)", count: -11 },
-      { name: "Qwen3", count: -8 },
-      { name: "DeepSeek Sparse Attention", count: -4 },
-      { name: "Mixture-of-Experts (MoE)", count: -4 },
-      { name: "Transformer", count: -4 },
-      { name: "GRPO", count: -4 },
-      { name: "On-policy distillation", count: -4 },
-      { name: "Post-training", count: -4 },
-    ],
+  slug: "large-language-models",
+
+  displayName: "Large Language Models",
+  title: "LARGE LANGUAGE MODELS",
+
+  description:
+    "Large Language Models (LLMs) are AI models trained on massive text datasets to understand and generate human language. They are used for text generation, question answering, summarization, translation, coding assistance, reasoning, and many other natural language processing tasks.",
+
+  
+
+  stats: {
+    benchmarks: 54, 
   },
+
+  sisterTasks: [],
+
+  commonMethods: [
+    { name: "Large Language Model (LLM)", count: -11 },
+    { name: "Qwen3", count: -8 },
+    { name: "DeepSeek Sparse Attention", count: -4 },
+    { name: "Mixture-of-Experts (MoE)", count: -4 },
+    { name: "Transformer", count: -4 },
+    { name: "GRPO", count: -4 },
+    { name: "On-policy distillation", count: -4 },
+    { name: "Post-training", count: -4 },
+  ],
+},
   {
   slug: "vision-language-models",
   displayName: "Vision-Language Models",
   title: "VISION-LANGUAGE MODELS",
   description:
     "Vision-Language Models combine visual understanding and natural language processing, enabling AI systems to understand images, answer questions, generate captions, and perform multimodal reasoning.",
-  imageUrl: "",
+  
   stats: {
     benchmarks: 0,
   },
@@ -228,7 +230,7 @@ const tasks = [
   title: "MULTIMODAL MODELS",
   description:
     "Multimodal Models process multiple types of data such as text, images, audio, and video together, allowing richer understanding and generation across different modalities.",
-  imageUrl: "",
+  
   stats: {
     benchmarks: 0,
   },
@@ -241,7 +243,7 @@ const tasks = [
   title: "AUTOMATIC SPEECH RECOGNITION",
   description:
     "Speech AI focuses on speech recognition, speech synthesis, speaker identification, speech translation, and spoken language understanding.",
-  imageUrl: "",
+  
   stats: {
     benchmarks: 0,
   },
@@ -254,12 +256,20 @@ const tasks = [
   title: "IMAGE GENERATION",
   description:
     "Image Generation focuses on creating realistic or artistic images from text prompts or other inputs using diffusion models and generative AI.",
-  imageUrl: "",
+ 
   stats: {
-    benchmarks: 0,
+    benchmarks: 13,
   },
   sisterTasks: [],
-  commonMethods: [],
+  commonMethods: [
+      { name: "AISafety", count: -7 },
+      { name: "GRPO", count: -5 },
+      { name: "Vision Transformer", count: -4 },
+      { name: "Fine-tuning", count: -4 },
+      { name: "CLIP", count: -4 },
+      { name: "Post-training", count: -3 },
+      { name: "Transformer", count: -3 },
+  ],
 },
   {
     slug: "ocr",
@@ -267,8 +277,7 @@ const tasks = [
     title: "OCR",
     description:
       "OCR, or Optical Character Recognition, is the task of converting an image containing text into machine-readable, editable, and searchable digital text data. This involves converting scanned documents, photos, or image-only PDFs to text from their static visual format, enabling the document to be edited, searched, or used for data entry and other applications.",
-    imageUrl:
-      "https://cdn.prod.website-files.com/614c82ed388d53640613982e/6784ce0e5a5a55f2318ce5a1_6442991214b0592c3afebccc_how%2520ocr%2520works.jpeg",
+
     stats: {
       benchmarks: 7,
     },
@@ -293,8 +302,7 @@ const tasks = [
     title: "OMNI MODELS",
     description:
       "Omni models are AI models that take multiple modalities (language, vision, audio) as input and produce multiple modalities as output. Some examples of the first omni models include Qwen2.5 Omni and BAGEL.",
-    imageUrl:
-      "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-Omni/overview.png#center",
+    
     stats: {
       benchmarks: 2,
     },
@@ -307,8 +315,7 @@ const tasks = [
     title: "REASONING",
     description:
       "AI reasoning is the process by which artificial intelligence systems logically derive conclusions and make informed decisions from data, rules, and prior knowledge, enabling them to move beyond simple pattern recognition to solve problems and simulate intelligent behavior. It involves systems that can 'think' by connecting information, applying rules, and performing step-by-step analyses, often using methods like deductive and inductive logic to achieve greater accuracy and adapt to complex, uncertain situations.",
-    imageUrl:
-      "https://substackcdn.com/image/fetch/$s_!zfsl!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffb865992-1eee-4fdb-b98a-165f4d555e11_1774x608.png",
+    
     stats: {
       benchmarks: 21,
     },
@@ -330,8 +337,7 @@ const tasks = [
     title: "REINFORCEMENT LEARNING",
     description:
       "Reinforcement learning (RL) is a machine learning technique where an agent learns to make optimal decisions in an environment through trial and error to maximize cumulative rewards. An agent interacts with an environment, taking actions, and receiving rewards or penalties based on those actions. Unlike other ML methods, RL doesn't have an 'answer key'; instead, it learns a strategy, called a policy, to choose actions that lead to the best long-term outcomes.",
-    imageUrl:
-      "https://www.altexsoft.com/static/blog-post/2023/11/345fadfa-549a-462a-b757-9ab258e747f3.jpg",
+  
     stats: {
       benchmarks: 8,
     },
@@ -353,7 +359,7 @@ const tasks = [
     title: "REMOTE SENSING",
     description:
       "Remote sensing analyzes satellite, aerial, and drone imagery for land cover, environmental monitoring, geospatial understanding, and earth observation.",
-    imageUrl: "",
+    
     stats: {
       benchmarks: null,
     },
@@ -375,8 +381,7 @@ const tasks = [
     title: "ROBOTICS",
     description:
       "Robotics is an interdisciplinary field of study involving computer science, engineering, and technology to design, construct, operate, and utilize machines known as robots. These programmable machines are built to replicate, substitute, or assist in human actions, performing a vast array of tasks in industries from manufacturing and healthcare to exploration and entertainment.",
-    imageUrl:
-      "https://images.ctfassets.net/qx5k8y1u9drj/XDpqBBey1oW5zYszgwfbQ/27b5089928f06047d4d7c5eea47c3b6c/image__69__copy.png",
+   
     stats: {
       benchmarks: 13,
     },
@@ -399,7 +404,7 @@ const tasks = [
     title: "SCENE TEXT RECOGNITION",
     description:
       "Recognize textual content from cropped natural-scene word images. Standard STR benchmarks include regular datasets such as IC13, SVT, and IIIT5K, plus irregular datasets such as IC15, SVTP, and CUTE80.",
-    imageUrl: "",
+
     stats: {
       benchmarks: 6,
     },
@@ -430,7 +435,7 @@ function getTaskMetadata(slug: string) {
       displayName,
       title: displayName.toUpperCase(),
       description: `${displayName} is an AI research task. Explore the latest papers, benchmarks, and methods related to ${displayName}.`,
-      imageUrl: null,
+
       stats: {
         benchmarks: 0,
       },
