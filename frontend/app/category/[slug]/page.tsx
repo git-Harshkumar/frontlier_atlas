@@ -142,11 +142,11 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
             setSelectedTag={setSelectedTag}
           />
         </div>
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-4 pb-12 flex items-start gap-6 xl:gap-8">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-6 pb-20 flex items-start gap-4 xl:gap-5">
           <div className="hidden xl:block w-[240px] shrink-0 sticky top-3 h-[calc(100vh-80px)]">
             <Sidebar onItemSelect={handleSidebarSelect} initialActive={label} />
           </div>
-          <main className="flex-1 min-w-0 max-w-full">
+          <main className="flex-1 min-w-0 xl:max-w-[1380px]">
             <PaperTabs
               selectedPeriod={selectedPeriod}
               onPeriodSelect={setSelectedPeriod}

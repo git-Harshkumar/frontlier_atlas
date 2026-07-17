@@ -150,7 +150,7 @@ const methods = [
   { label: "Mixture of Experts", icon: <Layers size={16} />, slug: "mixture-of-experts-moe" },
   { label: "Reinforcement Learning", icon: <BarChart2 size={16} />, slug: "policy-learning" },
   { label: "Chain-of-Thought", icon: <LinkIcon size={16} />, slug: "chain-of-thought" },
-  { label: "Retrieval-Augmented Generation", icon: <Search size={16} />, slug: "rag" },
+  { label: "RAG", icon: <Search size={16} />, slug: "rag" },
   { label: "Model Context Protocol", icon: <Plug size={16} />, slug: "mcp" },
   { label: "LoRA", icon: <Layers size={16} />, slug: "lora" },
   { label: "RLHF", icon: <Target size={16} />, slug: "rlhf" },
@@ -159,7 +159,7 @@ const methods = [
 
   return (
     <aside className="flex flex-col w-full bg-transparent h-full border-r border-[#E5E5E0]">
-      <div className="flex-1 px-2 pt-1 pb-2 space-y-0">
+      <div className="flex-1 px-2 pt-1 pb-2 space-y-3">
         {/* DISCOVER Section */}
         <div>
           <SectionLabel title="Discover" />

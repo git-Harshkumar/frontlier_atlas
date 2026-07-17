@@ -172,7 +172,7 @@ export default function HeroSection({
                     selectedTag === tag.label ? undefined : tag.label
                   )
                 }
-                className={`flex shrink-0 items-center gap-2 rounded-full px-3.5 py-2 min-h-[32px] transition-all duration-200 ease-out cursor-pointer select-none
+                className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 min-h-[28px] transition-all duration-200 ease-out cursor-pointer select-none
                   ${
                     selectedTag === tag.label
                       ? "bg-[#F55036] text-white border border-[#F55036] scale-[1.04] shadow-[0_2px_8px_rgba(245,80,54,0.30)]"
@@ -180,12 +180,12 @@ export default function HeroSection({
                   }`}
               >
                 <tag.icon
-                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  className={`w-3 h-3 transition-transform duration-200 ${
                     selectedTag === tag.label ? "text-white" : "text-[#F55036]"
                   }`}
                 />
                 <span
-                  className={`text-[12px] font-semibold ${
+                  className={`text-[11.5px] font-semibold ${
                     selectedTag === tag.label ? "text-white" : "text-[#111111]"
                   }`}
                 >

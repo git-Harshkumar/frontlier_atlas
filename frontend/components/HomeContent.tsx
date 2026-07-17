@@ -63,7 +63,7 @@ export default function HomeContent({
         className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll flex flex-col"
       >
         {/* Hero Section Container */}
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-6">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-3">
           <HeroSection
             selectedTag={selectedTag}
             setSelectedTag={setSelectedTag}
@@ -71,12 +71,12 @@ export default function HomeContent({
         </div>
 
         {/* 3-Column Layout */}
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-4 pb-12 flex items-start gap-6 xl:gap-8">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-4 pb-12 flex items-start gap-4 xl:gap-5">
           <div className="hidden lg:block w-[240px] shrink-0 sticky top-3 h-[calc(100vh-80px)]">
             <Sidebar initialActive={activeSort} onItemSelect={setActiveSort} />
           </div>
 
-          <main className="flex-1 min-w-0">
+          <main className="flex-1 min-w-0 max-w-[1380px]">
             <PaperTabs selectedPeriod={selectedPeriod} onPeriodSelect={setSelectedPeriod} />
             <PaperList
               selectedTag={selectedTag}

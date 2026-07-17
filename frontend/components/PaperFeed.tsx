@@ -223,7 +223,7 @@ function GeneratedCover({ title }: { title: string }) {
   const displayLines = lines.slice(0, 3);
 
   const svgContent = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 170 240" preserveAspectRatio="none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 200 250" preserveAspectRatio="none">
       <defs>
         <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="${bg1}"/>
@@ -234,29 +234,28 @@ function GeneratedCover({ title }: { title: string }) {
       <!-- accent bar top -->
       <rect x="0" y="0" width="100%" height="4" fill="${accent}"/>
       <!-- decorative circles -->
-      <circle cx="140" cy="50" r="55" fill="${accent}" fill-opacity="0.07"/>
-      <circle cx="30" cy="200" r="40" fill="${accent}" fill-opacity="0.06"/>
+      <circle cx="160" cy="50" r="55" fill="${accent}" fill-opacity="0.07"/>
+      <circle cx="30" cy="210" r="40" fill="${accent}" fill-opacity="0.06"/>
       <!-- arxiv label -->
       <rect x="12" y="16" width="42" height="14" rx="3" fill="${accent}" fill-opacity="0.9"/>
       <text x="33" y="27" font-family="monospace" font-size="8" fill="white" text-anchor="middle">arXiv</text>
       <!-- title lines -->
       ${displayLines.map((line, i) => `<text x="12" y="${115 + i * 20}" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="white" fill-opacity="0.95">${line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")}</text>`).join("")}
       <!-- bottom accent bar -->
-      <rect x="12" y="237" width="30" height="3" rx="1.5" fill="${accent}"/>
+      <rect x="12" y="247" width="30" height="3" rx="1.5" fill="${accent}"/>
     </svg>
   `;
 
   const dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgContent)}`;
 
   return (
-    <div
-      className="w-full h-full"
-      style={{
-        backgroundImage: `url("${dataUrl}")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    />
+    <div className="absolute inset-0 bg-[#3A3F45]">
+      <img
+        src={dataUrl}
+        alt={`Cover for ${title}`}
+        className="w-full h-full object-cover block"
+      />
+    </div>
   );
 }
 
@@ -277,21 +276,19 @@ const PaperThumbnail = memo(
     const [hasError, setHasError] = useState(false);
 
     return (
-      <div className="w-[140px] sm:w-[180px] xl:w-[160px] h-auto aspect-[1/1.414] xl:aspect-auto xl:h-full shrink-0 border border-[#E5E5E0] bg-[#F8F7F2] rounded-none overflow-hidden shadow-sm relative flex items-center justify-center mx-auto xl:mx-0">
+      <div className="w-[150px] sm:w-[180px] xl:w-[200px] aspect-[4/5] shrink-0 bg-white border border-[#E5E5E0] shadow-sm relative mx-auto xl:mx-0 overflow-hidden">
         {isValidImageSrc(thumbnail) && !hasError ? (
           <Image
             src={thumbnail}
             alt={title || "Paper thumbnail"}
             fill
             unoptimized
-            className="object-cover xl:object-cover xl:object-top"
-            sizes="(max-width: 1280px) 100vw, 220px"
+            className="object-cover object-top absolute inset-0"
+            sizes="(max-width: 1280px) 100vw, 200px"
             onError={() => setHasError(true)}
           />
         ) : (
-          <div className="w-full h-full">
-            <GeneratedCover title={title} />
-          </div>
+          <GeneratedCover title={title} />
         )}
       </div>
     );
@@ -363,7 +360,7 @@ const huggingFaceRepo = paper.repositories?.find(
 
   return (
     <Link href={`/papers/${paper.slug}`} className="no-underline block">
-      <div className="group flex flex-col xl:flex-row gap-3 sm:gap-4 xl:gap-5 p-3 sm:p-4 xl:py-5 bg-white xl:bg-transparent border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] rounded-none cursor-pointer hover:shadow-lg xl:hover:bg-white xl:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 relative hover:z-10 active:scale-[0.99]">
+      <div className="group flex flex-col xl:flex-row gap-3 sm:gap-4 xl:gap-5 p-3 sm:p-4 xl:pt-2 xl:pb-5 bg-white xl:bg-transparent border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] rounded-none cursor-pointer hover:shadow-lg xl:hover:bg-white xl:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 relative hover:z-10 active:scale-[0.99]">
         {/* PDF thumbnail */}
         <div className="order-first xl:order-last shrink-0 w-full xl:w-auto mx-auto xl:mx-0 xl:self-stretch border-b xl:border-b-0 border-[#E5E5E0] pb-3 xl:pb-0 mb-1 xl:mb-0">
           <PaperThumbnail title={paper.title} thumbnail={paper.thumbnail} />
@@ -411,7 +408,7 @@ const huggingFaceRepo = paper.repositories?.find(
           
 
           {/* Description */}
-          <p className="text-[13px] sm:text-[13.5px] xl:text-[14px] text-[#444444] leading-[1.6] mb-3 line-clamp-3 w-[85%]">
+          <p className="text-[13px] sm:text-[13.5px] xl:text-[14px] text-[#444444] leading-[1.6] mb-3 line-clamp-3">
             {paper.description}
           </p>
 
@@ -436,22 +433,22 @@ const huggingFaceRepo = paper.repositories?.find(
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-nowrap overflow-x-auto hide-scroll md:grid md:grid-cols-4 gap-1.5 sm:gap-2 md:gap-3 mt-4 md:mt-5">
+          <div className="grid grid-cols-4 md:grid md:grid-cols-4 gap-1 sm:gap-2 md:gap-3 mt-4 md:mt-5">
             <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 window.open((paper as any).arxivUrl || "https://arxiv.org", "_blank");
               }}
-              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-2 lg:px-4 xl:px-2 h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#b31b1b] border-[1.5px] border-[#b31b1b]/40 hover:border-[#b31b1b] hover:bg-[#b31b1b]/5 rounded-[6px] transition-all duration-300"
+              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-1 md:px-2 lg:px-4 xl:px-2 h-[24px] md:h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#b31b1b] border-[1.5px] border-[#b31b1b]/40 hover:border-[#b31b1b] hover:bg-[#b31b1b]/5 rounded-[6px] transition-all duration-300"
             >
-              <div className="flex items-center gap-1.5 lg:gap-3 xl:gap-1.5">
-                <div className="w-[20px] h-[20px] lg:w-8 lg:h-8 xl:w-[20px] xl:h-[20px] rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
+              <div className="flex items-center gap-1 md:gap-1.5 lg:gap-3 xl:gap-1.5">
+                <div className="w-[14px] h-[14px] md:w-[20px] md:h-[20px] lg:w-8 lg:h-8 xl:w-[20px] xl:h-[20px] rounded-[4px] md:rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="https://cdn.simpleicons.org/arxiv/b31b1b" alt="arXiv" className="w-[12px] h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
+                    <img src="https://cdn.simpleicons.org/arxiv/b31b1b" alt="arXiv" className="w-[10px] h-[10px] md:w-[12px] md:h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
                 </div>
                 <div className="flex flex-col items-start">
-                    <span className="font-medium lg:font-semibold xl:font-medium text-[11.5px] lg:text-[15px] xl:text-[11.5px]">arXiv</span>
+                    <span className="font-medium lg:font-semibold xl:font-medium text-[9.5px] md:text-[11.5px] lg:text-[15px] xl:text-[11.5px] whitespace-nowrap tracking-tight">arXiv</span>
                     <span className="hidden lg:block text-[12px] text-[#666] xl:hidden">Original preprint</span>
                 </div>
               </div>
@@ -464,14 +461,14 @@ const huggingFaceRepo = paper.repositories?.find(
                 e.stopPropagation();
                 window.open((paper as any).pdfUrl || "https://arxiv.org/pdf", "_blank");
               }}
-              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-2 lg:px-4 xl:px-2 h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#E54D59] border-[1.5px] border-[#E54D59]/40 hover:border-[#E54D59] hover:bg-[#E54D59]/5 rounded-[6px] transition-all duration-300"
+              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-1 md:px-2 lg:px-4 xl:px-2 h-[24px] md:h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#E54D59] border-[1.5px] border-[#E54D59]/40 hover:border-[#E54D59] hover:bg-[#E54D59]/5 rounded-[6px] transition-all duration-300"
             >
-              <div className="flex items-center gap-1.5 lg:gap-3 xl:gap-1.5">
-                <div className="w-[20px] h-[20px] lg:w-8 lg:h-8 xl:w-[20px] xl:h-[20px] rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
-                    <FileText className="text-[#E54D59] w-[12px] h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
+              <div className="flex items-center gap-1 md:gap-1.5 lg:gap-3 xl:gap-1.5">
+                <div className="w-[14px] h-[14px] md:w-[20px] md:h-[20px] lg:w-8 lg:h-8 xl:w-[20px] xl:h-[20px] rounded-[4px] md:rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
+                    <FileText className="text-[#E54D59] w-[10px] h-[10px] md:w-[12px] md:h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
                 </div>
                 <div className="flex flex-col items-start">
-                    <span className="font-medium lg:font-semibold xl:font-medium text-[11.5px] lg:text-[15px] xl:text-[11.5px]">PDF</span>
+                    <span className="font-medium lg:font-semibold xl:font-medium text-[9.5px] md:text-[11.5px] lg:text-[15px] xl:text-[11.5px] whitespace-nowrap tracking-tight">PDF</span>
                     <span className="hidden lg:block text-[12px] text-[#666] xl:hidden">Full paper</span>
                 </div>
               </div>
@@ -484,15 +481,15 @@ const huggingFaceRepo = paper.repositories?.find(
                 e.stopPropagation();
                 window.open(githubRepo?.url || "https://github.com", "_blank");
               }}
-              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-2 lg:px-4 xl:px-2 h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#24292f] border-[1.5px] border-[#24292f]/30 hover:border-[#24292f] hover:bg-[#24292f]/5 rounded-[6px] transition-all duration-300"
+              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-1 md:px-2 lg:px-4 xl:px-2 h-[24px] md:h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#24292f] border-[1.5px] border-[#24292f]/30 hover:border-[#24292f] hover:bg-[#24292f]/5 rounded-[6px] transition-all duration-300"
             >
-              <div className="flex items-center gap-1.5 lg:gap-3 xl:gap-1.5">
-                <div className="w-[20px] h-[20px] lg:w-8 lg:h-8 xl:w-[20px] xl:h-[20px] rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
+              <div className="flex items-center gap-1 md:gap-1.5 lg:gap-3 xl:gap-1.5">
+                <div className="w-[14px] h-[14px] md:w-[20px] md:h-[20px] lg:w-8 lg:h-8 xl:w-[20px] xl:h-[20px] rounded-[4px] md:rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="https://cdn.simpleicons.org/github/24292f" alt="GitHub" className="w-[12px] h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
+                    <img src="https://cdn.simpleicons.org/github/24292f" alt="GitHub" className="w-[10px] h-[10px] md:w-[12px] md:h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
                 </div>
                 <div className="flex flex-col items-start">
-                    <span className="font-medium lg:font-semibold xl:font-medium text-[11.5px] lg:text-[15px] xl:text-[11.5px]">GitHub</span>
+                    <span className="font-medium lg:font-semibold xl:font-medium text-[9.5px] md:text-[11.5px] lg:text-[15px] xl:text-[11.5px] whitespace-nowrap tracking-tight">GitHub</span>
                     <span className="hidden lg:block text-[12px] text-[#666] xl:hidden">
                         {upvotesNum > 0 ? `${upvotesNum >= 1000 ? (upvotesNum / 1000).toFixed(1) + "k" : upvotesNum} stars` : "0 stars"}
                     </span>
@@ -512,15 +509,15 @@ const huggingFaceRepo = paper.repositories?.find(
                   alert("Hugging Face model will be available soon.");
                 }
               }}
-              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-2 h-[28px] lg:px-4 xl:px-2 lg:h-[58px] xl:h-[28px] bg-white text-[#B7791F] border-[1.5px] border-[#eab308]/50 hover:border-[#eab308] hover:bg-[#eab308]/10 rounded-[6px] transition-all duration-300"
+              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-1 md:px-2 lg:px-4 xl:px-2 h-[24px] md:h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#B7791F] border-[1.5px] border-[#eab308]/50 hover:border-[#eab308] hover:bg-[#eab308]/10 rounded-[6px] transition-all duration-300"
             >
-              <div className="flex items-center gap-1.5 lg:gap-3 xl:gap-1.5">
-                <div className="w-[20px] h-[20px] lg:w-8 lg:h-8 xl:w-[20px] h-[20px] rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
+              <div className="flex items-center gap-1 md:gap-1.5 lg:gap-3 xl:gap-1.5">
+                <div className="w-[14px] h-[14px] md:w-[20px] md:h-[20px] lg:w-8 lg:h-8 xl:w-[20px] h-[20px] rounded-[4px] md:rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="https://cdn.simpleicons.org/huggingface" alt="Hugging Face" className="w-[12px] h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
+                    <img src="https://cdn.simpleicons.org/huggingface" alt="Hugging Face" className="w-[10px] h-[10px] md:w-[12px] md:h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
                 </div>
                 <div className="flex flex-col items-start">
-                    <span className="font-medium lg:font-semibold xl:font-medium text-[11.5px] lg:text-[15px] xl:text-[11.5px]">Hugging Face</span>
+                    <span className="font-medium lg:font-semibold xl:font-medium text-[9.5px] md:text-[11.5px] lg:text-[15px] xl:text-[11.5px] whitespace-nowrap tracking-tight">Hugging Face</span>
                     <span className="hidden lg:block text-[12px] text-[#666] xl:hidden">
                         {paper.repositories?.filter((repo: any) => repo.url?.includes("huggingface.co")).length || 0} models
                     </span>

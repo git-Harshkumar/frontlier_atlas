@@ -332,13 +332,13 @@ export default function BenchmarkDetailPage() {
 
       <div className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll">
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-5 pb-20
-          flex items-start gap-6 xl:gap-8">
+          flex items-start gap-4 xl:gap-5">
 
           <div className="hidden lg:block w-[240px] shrink-0 sticky top-3 h-[calc(100vh-80px)]">
             <Sidebar />
           </div>
 
-          <main className="flex-1 min-w-0 animate-fade-in">
+          <main className="flex-1 min-w-0 xl:max-w-[1380px] animate-fade-in">
 
             {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-[12px] text-[#9CA3AF] mb-4">
