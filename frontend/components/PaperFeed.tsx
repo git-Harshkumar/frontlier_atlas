@@ -354,8 +354,8 @@ export const PaperCard = memo(({ paper }: { paper: Paper }) => {
   const visibleAuthors = safeAuthors.slice(0, 3);
   const remaining = safeAuthors.length - 3;
   const githubRepo = paper.repositories?.find(
-  (repo: any) => repo.url.includes("github.com")
-);
+    (repo: any) => repo.url?.includes("github.com")
+  );
 const huggingFaceRepo = paper.repositories?.find(
   (repo: any) => repo.url?.includes("huggingface.co")
 );
@@ -364,12 +364,12 @@ const huggingFaceRepo = paper.repositories?.find(
   return (
     <Link href={`/papers/${paper.slug}`} className="no-underline block">
       <div className="group flex flex-col xl:flex-row gap-3 sm:gap-4 xl:gap-5 p-3 sm:p-4 xl:py-5 bg-white xl:bg-transparent border xl:border-x-0 xl:border-t-0 border-[#E5E5E0] rounded-none cursor-pointer hover:shadow-lg xl:hover:bg-white xl:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 relative hover:z-10 active:scale-[0.99]">
-        {/* LEFT — PDF thumbnail */}
-        <div className="shrink-0 w-full xl:w-auto mx-auto xl:mx-0 xl:self-stretch border-b xl:border-b-0 border-[#E5E5E0] pb-3 xl:pb-0 mb-1 xl:mb-0">
+        {/* PDF thumbnail */}
+        <div className="order-first xl:order-last shrink-0 w-full xl:w-auto mx-auto xl:mx-0 xl:self-stretch border-b xl:border-b-0 border-[#E5E5E0] pb-3 xl:pb-0 mb-1 xl:mb-0">
           <PaperThumbnail title={paper.title} thumbnail={paper.thumbnail} />
         </div>
 
-        {/* RIGHT — Content */}
+        {/* Content */}
         <div className="flex-1 min-w-0 flex flex-col">
           {/* Title */}
           <h3 className="text-[15px] sm:text-[17px] xl:text-[20px] font-serif font-medium text-[#111111] leading-snug xl:leading-[1.3] mb-1 xl:mb-1.5 group-hover:text-[#F55036] transition-colors line-clamp-3 xl:line-clamp-none">
@@ -411,7 +411,7 @@ const huggingFaceRepo = paper.repositories?.find(
           
 
           {/* Description */}
-          <p className="text-[13px] sm:text-[13.5px] xl:text-[14px] text-[#444444] leading-[1.6] mb-3 line-clamp-3">
+          <p className="text-[13px] sm:text-[13.5px] xl:text-[14px] text-[#444444] leading-[1.6] mb-3 line-clamp-3 w-[85%]">
             {paper.description}
           </p>
 
@@ -436,31 +436,26 @@ const huggingFaceRepo = paper.repositories?.find(
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 mt-5">
+          <div className="flex flex-nowrap overflow-x-auto hide-scroll md:grid md:grid-cols-4 gap-1.5 sm:gap-2 md:gap-3 mt-4 md:mt-5">
             <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 window.open((paper as any).arxivUrl || "https://arxiv.org", "_blank");
               }}
-              className="flex-1 flex items-center justify-center sm:justify-between px-4 h-[58px]bg-[#FFF8F4] text-[#E0663B] border border-[#FDE3D6] rounded-[6px] hover:bg-[#FDE3D6]/50 transition-colors"
+              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-2 lg:px-4 xl:px-2 h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#b31b1b] border-[1.5px] border-[#b31b1b]/40 hover:border-[#b31b1b] hover:bg-[#b31b1b]/5 rounded-[6px] transition-all duration-300"
             >
-              <div className="flex items-center gap-3">
-    <div className="w-10 h-10 rounded-xl bg-[#F97316] flex items-center justify-center">
-        <FileCode2 className="text-white" size={20}/>
-    </div>
-
-    <div className="flex flex-col items-start">
-    <span className="font-semibold text-[15px]">
-        arXiv
-    </span>
-
-    <span className="text-[12px] text-[#666]">
-        Original preprint
-    </span>
-</div>
-</div>
-              <ArrowUpRight size={14} strokeWidth={1.5} className="hidden sm:block" />
+              <div className="flex items-center gap-1.5 lg:gap-3 xl:gap-1.5">
+                <div className="w-[20px] h-[20px] lg:w-8 lg:h-8 xl:w-[20px] xl:h-[20px] rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="https://cdn.simpleicons.org/arxiv/b31b1b" alt="arXiv" className="w-[12px] h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
+                </div>
+                <div className="flex flex-col items-start">
+                    <span className="font-medium lg:font-semibold xl:font-medium text-[11.5px] lg:text-[15px] xl:text-[11.5px]">arXiv</span>
+                    <span className="hidden lg:block text-[12px] text-[#666] xl:hidden">Original preprint</span>
+                </div>
+              </div>
+              <ArrowUpRight size={14} strokeWidth={1.5} className="hidden lg:block xl:hidden" />
             </button>
 
             <button
@@ -469,24 +464,18 @@ const huggingFaceRepo = paper.repositories?.find(
                 e.stopPropagation();
                 window.open((paper as any).pdfUrl || "https://arxiv.org/pdf", "_blank");
               }}
-              className="flex-1 flex items-center justify-between px-4 h-[58px] bg-[#FFF4F6] text-[#E54D59] border border-[#FDD4DC] rounded-[6px] hover:bg-[#FDD4DC]/50 transition-colors"
+              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-2 lg:px-4 xl:px-2 h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#E54D59] border-[1.5px] border-[#E54D59]/40 hover:border-[#E54D59] hover:bg-[#E54D59]/5 rounded-[6px] transition-all duration-300"
             >
-              <div className="flex items-center gap-3">
-    <div className="w-10 h-10 rounded-xl bg-pink-600 flex items-center justify-center">
-        <FileText className="text-white" size={20}/>
-    </div>
-
-    <div className="flex flex-col items-start">
-    <span className="font-semibold text-[15px]">
-        PDF
-    </span>
-
-    <span className="text-[12px] text-[#666]">
-        Full paper
-    </span>
-</div>
-</div>
-              <ArrowUpRight size={14} strokeWidth={1.5} className="hidden sm:block" />
+              <div className="flex items-center gap-1.5 lg:gap-3 xl:gap-1.5">
+                <div className="w-[20px] h-[20px] lg:w-8 lg:h-8 xl:w-[20px] xl:h-[20px] rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
+                    <FileText className="text-[#E54D59] w-[12px] h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
+                </div>
+                <div className="flex flex-col items-start">
+                    <span className="font-medium lg:font-semibold xl:font-medium text-[11.5px] lg:text-[15px] xl:text-[11.5px]">PDF</span>
+                    <span className="hidden lg:block text-[12px] text-[#666] xl:hidden">Full paper</span>
+                </div>
+              </div>
+              <ArrowUpRight size={14} strokeWidth={1.5} className="hidden lg:block xl:hidden" />
             </button>
 
             <button
@@ -495,65 +484,50 @@ const huggingFaceRepo = paper.repositories?.find(
                 e.stopPropagation();
                 window.open(githubRepo?.url || "https://github.com", "_blank");
               }}
-              className="flex-1 flex items-center justify-center sm:justify-between px-4 h-[58px] bg-[#F7F8F9] text-[#111111] border border-[#E5E7EB] rounded-[6px] hover:bg-[#E5E7EB]/70 transition-colors"
+              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-2 lg:px-4 xl:px-2 h-[28px] lg:h-[58px] xl:h-[28px] bg-white text-[#24292f] border-[1.5px] border-[#24292f]/30 hover:border-[#24292f] hover:bg-[#24292f]/5 rounded-[6px] transition-all duration-300"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center">
-    <Github className="text-white" size={20}/>
-</div>
-
+              <div className="flex items-center gap-1.5 lg:gap-3 xl:gap-1.5">
+                <div className="w-[20px] h-[20px] lg:w-8 lg:h-8 xl:w-[20px] xl:h-[20px] rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="https://cdn.simpleicons.org/github/24292f" alt="GitHub" className="w-[12px] h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
+                </div>
                 <div className="flex flex-col items-start">
-    <span className="font-semibold text-[15px]">
-        GitHub
-    </span>
-
-    <span className="text-[12px] text-[#666]">
-        {upvotesNum > 0
-  ? `${upvotesNum >= 1000 ? (upvotesNum / 1000).toFixed(1) + "k" : upvotesNum} stars`
-  : "0 stars"}
-    </span>
-</div>
-                {upvotesNum > 0 && <span className="hidden sm:inline text-[#9CA3AF] text-[12.5px] font-normal">{upvotesNum}k</span>}
+                    <span className="font-medium lg:font-semibold xl:font-medium text-[11.5px] lg:text-[15px] xl:text-[11.5px]">GitHub</span>
+                    <span className="hidden lg:block text-[12px] text-[#666] xl:hidden">
+                        {upvotesNum > 0 ? `${upvotesNum >= 1000 ? (upvotesNum / 1000).toFixed(1) + "k" : upvotesNum} stars` : "0 stars"}
+                    </span>
+                </div>
+                {upvotesNum > 0 && <span className="hidden lg:inline xl:hidden text-[#9CA3AF] text-[12.5px] font-normal">{upvotesNum}k</span>}
               </div>
-              <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#9CA3AF] hidden sm:block" />
+              <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#9CA3AF] hidden lg:block xl:hidden" />
             </button>
+
             <button
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (huggingFaceRepo?.url) {
-      window.open(huggingFaceRepo.url, "_blank");
-    } else {
-      alert("Hugging Face model will be available soon.");
-    }
-  }}
-  className="flex-1 flex items-center justify-center sm:justify-between px-4 h-[58px] bg-[#FFF8E7] text-[#111111] border border-[#F5D565] rounded-[6px] hover:bg-[#FFEFB3] transition-colors"
->
-  <div className="flex items-center gap-3">
-    <div className="w-10 h-10 rounded-xl bg-[#F97316] flex items-center justify-center">
-        <FileCode2 className="text-white" size={20}/>
-    </div>
-
-    <div className="flex flex-col items-start">
-    <span className="font-semibold text-[15px]">
-        Hugging Face
-    </span>
-
-    <span className="text-[12px] text-[#666]">
-        {paper.repositories?.filter(
-  (repo: any) => repo.url?.includes("huggingface.co")
-).length || 0} models
-    </span>
-</div>
-  </div>
-
-  <ArrowUpRight
-    size={14}
-    strokeWidth={1.5}
-    className="text-[#9CA3AF] hidden sm:block"
-  />
-</button>
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (huggingFaceRepo?.url) {
+                  window.open(huggingFaceRepo.url, "_blank");
+                } else {
+                  alert("Hugging Face model will be available soon.");
+                }
+              }}
+              className="flex-none md:flex-1 flex items-center justify-center lg:justify-between xl:justify-center px-2 h-[28px] lg:px-4 xl:px-2 lg:h-[58px] xl:h-[28px] bg-white text-[#B7791F] border-[1.5px] border-[#eab308]/50 hover:border-[#eab308] hover:bg-[#eab308]/10 rounded-[6px] transition-all duration-300"
+            >
+              <div className="flex items-center gap-1.5 lg:gap-3 xl:gap-1.5">
+                <div className="w-[20px] h-[20px] lg:w-8 lg:h-8 xl:w-[20px] h-[20px] rounded-[6px] lg:rounded-[10px] xl:rounded-[6px] bg-transparent flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="https://cdn.simpleicons.org/huggingface" alt="Hugging Face" className="w-[12px] h-[12px] lg:w-4 lg:h-4 xl:w-[12px] xl:h-[12px]" />
+                </div>
+                <div className="flex flex-col items-start">
+                    <span className="font-medium lg:font-semibold xl:font-medium text-[11.5px] lg:text-[15px] xl:text-[11.5px]">Hugging Face</span>
+                    <span className="hidden lg:block text-[12px] text-[#666] xl:hidden">
+                        {paper.repositories?.filter((repo: any) => repo.url?.includes("huggingface.co")).length || 0} models
+                    </span>
+                </div>
+              </div>
+              <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#9CA3AF] hidden lg:block xl:hidden" />
+            </button>
           </div>
         </div>
       </div>
@@ -886,7 +860,7 @@ export default function PaperList({
   return (
     <Profiler id="PaperList" onRender={logRender}>
       <div
-        className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0"
+        className="pb-12 bg-transparent grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-col gap-6 xl:gap-0 xl:w-[85%]"
         data-page={page}
       >
         {papers.map((paper) => (
