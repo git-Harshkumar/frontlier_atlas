@@ -601,21 +601,7 @@ export default async function TaskPage({ params }: TaskPageProps) {
               )}
             </div>
 
-            {/* Right Visual Card - only show if there's an image */}
-            {metadata.imageUrl && (
-              <div className="w-full max-w-[480px] xl:mt-4">
-                <div className="h-[320px] rounded-2xl border border-[#DDD6CC] bg-white overflow-hidden relative">
-                  <Image
-                    src={metadata.imageUrl}
-                    alt={`${metadata.title} Diagram`}
-                    fill
-                    className="object-contain p-6"
-                    priority
-                    unoptimized
-                  />
-                </div>
-              </div>
-            )}
+            
           </div>
         </div>
 
