@@ -61,8 +61,8 @@ export default function PaperDetailSkeleton() {
                 </div>
               </div>
 
-              {/* Preview thumbnail (desktop only) */}
-              <div className="hidden lg:block w-[200px] lg:w-[220px] shrink-0">
+              {/* Preview thumbnail */}
+              <div className="block w-full lg:w-[220px] shrink-0">
                 <div className="aspect-[3/4] bg-[#EFECE6] rounded overflow-hidden animate-pulse" />
               </div>
             </div>
