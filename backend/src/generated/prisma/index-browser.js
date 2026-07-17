@@ -155,7 +155,10 @@ exports.Prisma.PaperScalarFieldEnum = {
   importance_score: 'importance_score',
   venue: 'venue',
   organization: 'organization',
-  authors: 'authors'
+  authors: 'authors',
+  huggingface_url: 'huggingface_url',
+  domain: 'domain',
+  task: 'task'
 };
 
 exports.Prisma.EntityRelationshipScalarFieldEnum = {
@@ -186,7 +189,8 @@ exports.Prisma.TaskScalarFieldEnum = {
   slug: 'slug',
   color: 'color',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  domain: 'domain'
 };
 
 exports.Prisma.PaperTaskScalarFieldEnum = {
@@ -214,7 +218,26 @@ exports.Prisma.BenchmarkScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  description: 'description',
+  domain: 'domain',
+  task: 'task',
+  category: 'category',
+  metric: 'metric',
+  status: 'status',
+  year: 'year',
+  results_count: 'results_count',
+  models_count: 'models_count',
+  top_models: 'top_models',
+  paper_title: 'paper_title',
+  paper_url: 'paper_url',
+  repo_url: 'repo_url',
+  dataset_url: 'dataset_url',
+  is_popular: 'is_popular',
+  is_trending: 'is_trending',
+  is_recently_added: 'is_recently_added',
+  modality: 'modality',
+  benchmark_url: 'benchmark_url'
 };
 
 exports.Prisma.SotaClaimScalarFieldEnum = {
@@ -238,7 +261,10 @@ exports.Prisma.RankingScalarFieldEnum = {
   updatedAt: 'updatedAt',
   resultDate: 'resultDate',
   previousRank: 'previousRank',
-  sourceUrl: 'sourceUrl'
+  sourceUrl: 'sourceUrl',
+  model_name: 'model_name',
+  organization: 'organization',
+  score_str: 'score_str'
 };
 
 exports.Prisma.ModelScalarFieldEnum = {
