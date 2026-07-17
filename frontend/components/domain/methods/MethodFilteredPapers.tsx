@@ -9,8 +9,7 @@ import type { Paper as ApiPaper } from "@/lib/paperApi";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Task {
-  id?: string;
-  name: string;
+  task?: { name: string; };
 }
 
 interface Paper {
@@ -26,6 +25,7 @@ interface Paper {
   citationCount?: number;
   thumbnailUrl?: string;
   arxivId?: string;
+  githubUrl?: string;
   tasks?: Task[];
 }
 
@@ -59,7 +59,7 @@ const SORT_OPTIONS: { label: string; key: SortKey; Icon: React.ComponentType<any
 function matchesFilter(paper: Paper, key: string, keywords: string[]): boolean {
   if (key === "all") return true;
   const haystack = `${paper.title ?? ""} ${paper.abstract ?? ""}`.toLowerCase();
-  const taskNames = paper.tasks?.map((t) => (t.name ?? '').toLowerCase()).join(" ") ?? "";
+  const taskNames = paper.tasks?.map((t) => (t.task?.name ?? '').toLowerCase()).join(" ") ?? "";
   const combined = `${haystack} ${taskNames}`;
   return keywords.some((kw) => combined.includes(kw.toLowerCase()));
 }
@@ -246,9 +246,7 @@ export default function MethodFilteredPapers({ papers, methodName }: Props) {
               </button>
             ))}
           </div>
-          <span className="ml-auto text-xs text-gray-400 font-medium shrink-0">
-            {displayedPapers.length} paper{displayedPapers.length !== 1 ? "s" : ""}
-          </span>
+
         </div>
       </section>
 
@@ -264,14 +262,28 @@ export default function MethodFilteredPapers({ papers, methodName }: Props) {
               authors: (paper.authors || []).map(a => ({ name: a.name, slug: '' })),
               date: paper.publicationDate ? new Date(paper.publicationDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : "Unknown Date",
               description: paper.abstract || "No abstract available.",
-              sota: "",
-              tags: (paper.tasks || []).map(t => t.name ?? ''),
-              additionalTags: [methodName],
+              sota: Array.isArray((paper as any).sotaClaims) ? (paper as any).sotaClaims.map((sc: any) => `SOTA on ${sc.benchmark?.name}`).join(" • ") : "",
+              tags: (paper.tasks || []).map((t: any) => t.task?.name ?? ''),
+              additionalTags: (paper as any).methods ? (paper as any).methods.map((m: any) => m.method?.name ?? '') : [methodName],
               upvotes: String(paper.githubStars || 0),
               repo: String(paper.githubForks || 0),
               citations: paper.citationCount ?? paper.githubStars ?? 0,
               conference: paper.conference ?? "",
-            };
+              // Additional properties expected by PaperCard
+              ...(paper.githubUrl ? { githubUrl: paper.githubUrl } : {}),
+            } as ApiPaper;
+
+            // PaperCard reads these from (paper as any)
+            (apiPaper as any).arxivUrl = paper.arxivId ? `https://arxiv.org/abs/${paper.arxivId}` : (paper as any).paperUrl;
+            (apiPaper as any).pdfUrl = (paper as any).pdfUrl || (paper.arxivId ? `https://arxiv.org/pdf/${paper.arxivId}` : undefined);
+            
+            apiPaper.repositories = [];
+            if (paper.githubUrl) {
+              apiPaper.repositories.push({ url: paper.githubUrl, name: "GitHub", owner: "" });
+            }
+            if ((paper as any).paperUrl?.includes('huggingface.co') || (paper as any).pdfUrl?.includes('huggingface.co')) {
+              apiPaper.repositories.push({ url: (paper as any).paperUrl || (paper as any).pdfUrl, name: "HuggingFace", owner: "" });
+            }
 
             return (
               <div key={paper.id} className="mb-4">

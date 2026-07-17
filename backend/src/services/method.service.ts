@@ -183,6 +183,7 @@ export const getMethodBySlug = async (queryRouter: QueryRouter, slug: string) =>
                 id: true,
                 title: true,
                 slug: true,
+                abstract: true,
                 citationCount: true,
                 publicationDate: true,
                 githubStars: true,
@@ -193,6 +194,8 @@ export const getMethodBySlug = async (queryRouter: QueryRouter, slug: string) =>
                 paperUrl: true,
                 githubUrl: true,
                 authors: true,
+                tasks: { select: { task: { select: { name: true, slug: true } } } },
+                methods: { select: { method: { select: { name: true, slug: true } } } },
                 sotaClaims: {
                   select: {
                     benchmark: { select: { name: true, slug: true } }
