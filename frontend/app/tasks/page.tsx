@@ -791,12 +791,6 @@ const sections: SectionsType = {
         desc: "Distributed learning across decentralized data.",
         slug: "federated-learning",
       },
-      {
-        icon: Monitor,
-        title: "Edge AI",
-        desc: "Running AI models on edge devices with limited resources.",
-        slug: "edge-ai",
-      },
     ],
   },
 };
