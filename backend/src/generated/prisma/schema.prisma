@@ -48,6 +48,9 @@ model Paper {
   venue            String?
   organization     String?
   authors          String?
+  huggingface_url  String?
+  domain           String?
+  task             String?
   conferences      PaperConference[]
   datasets         PaperDataset[]
   journals         PaperJournal[]
@@ -79,15 +82,14 @@ model EntityRelationship {
 }
 
 model Startup {
-  id            String   @id @default(uuid())
-  canonicalName String   @unique @map("canonical_name")
-  sourceName    String?  @map("source_name")
-  sourceUrl     String?  @map("source_url")
-  employeeCount Int?     @map("employee_count")
-  collectedAt   DateTime @default(now()) @map("collected_at") @db.Timestamp(6)
-
-  createdAt DateTime? @default(now()) @db.Timestamp(6)
-  updatedAt DateTime? @default(now()) @db.Timestamp(6)
+  id            String    @id @default(uuid())
+  canonicalName String    @unique @map("canonical_name")
+  sourceName    String?   @map("source_name")
+  sourceUrl     String?   @map("source_url")
+  employeeCount Int?      @map("employee_count")
+  collectedAt   DateTime  @default(now()) @map("collected_at") @db.Timestamp(6)
+  createdAt     DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime? @default(now()) @db.Timestamp(6)
 
   @@map("startups")
 }
@@ -99,6 +101,7 @@ model Task {
   color     String?
   createdAt DateTime?   @default(now()) @db.Timestamp(6)
   updatedAt DateTime?   @default(now()) @updatedAt @db.Timestamp(6)
+  domain    String?
   papers    PaperTask[]
 
   @@map("tasks")
@@ -138,13 +141,32 @@ model PaperMethod {
 }
 
 model Benchmark {
-  id        String      @id @default(uuid())
-  name      String      @unique
-  slug      String      @unique
-  createdAt DateTime?   @default(now()) @db.Timestamp(6)
-  updatedAt DateTime?   @default(now()) @db.Timestamp(6)
-  rankings  Ranking[]
-  claims    SotaClaim[]
+  id                String      @id @default(uuid())
+  name              String      @unique
+  slug              String      @unique
+  createdAt         DateTime?   @default(now()) @db.Timestamp(6)
+  updatedAt         DateTime?   @default(now()) @db.Timestamp(6)
+  description       String?
+  domain            String?
+  task              String?
+  category          String?
+  metric            String?
+  status            String?     @default("Active")
+  year              Int?
+  results_count     Int?        @default(0)
+  models_count      Int?        @default(0)
+  top_models        String[]    @default([])
+  paper_title       String?
+  paper_url         String?
+  repo_url          String?
+  dataset_url       String?
+  is_popular        Boolean?    @default(false)
+  is_trending       Boolean?    @default(false)
+  is_recently_added Boolean?    @default(false)
+  modality          String?
+  benchmark_url     String?
+  rankings          Ranking[]
+  claims            SotaClaim[]
 
   @@map("benchmarks")
 }
@@ -176,6 +198,9 @@ model Ranking {
   resultDate    DateTime?  @default(now()) @db.Timestamp(6)
   previousRank  Int?
   sourceUrl     String?    @default("https://paperswithcode.com/sota")
+  model_name    String?
+  organization  String?
+  score_str     String?
   benchmark     Benchmark? @relation(fields: [benchmark_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   paper         Paper?     @relation(fields: [paper_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
