@@ -236,9 +236,9 @@ const tasks = [
   commonMethods: [],
 },
 {
-  slug: "speech",
-  displayName: "Speech",
-  title: "SPEECH",
+  slug: "automatic-speech-recognition",
+  displayName: "Automatic Speech Recognition",
+  title: "AUTOMATIC SPEECH RECOGNITION",
   description:
     "Speech AI focuses on speech recognition, speech synthesis, speaker identification, speech translation, and spoken language understanding.",
   imageUrl: "",

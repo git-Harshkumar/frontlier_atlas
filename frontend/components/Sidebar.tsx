@@ -132,14 +132,14 @@ export default function Sidebar({
   ];
 
   const tasks = [
-  { label: "Language Models", icon: <MessageSquare size={16} />, slug: "language-models" },
+  { label: "Large Language Models", icon: <MessageSquare size={16} />, slug: "large-language-models" },
   { label: "Agents", icon: <Bot size={16} />, slug: "agents" },
   { label: "Reasoning", icon: <Brain size={16} />, slug: "reasoning" },
   { label: "Vision-Language Models", icon: <ImageIcon size={16} />, slug: "vision-language-models" },
   { label: "Multimodal Models", icon: <Layers size={16} />, slug: "multimodal-models" },
   { label: "World Models", icon: <Globe size={16} />, slug: "world-models" },
   { label: "Image Generation", icon: <ImageIcon size={16} />, slug: "image-generation" },
-  { label: "Speech", icon: <Volume2 size={16} />, slug: "speech" },
+  { label: "Automatic Speech Recognition", icon: <Volume2 size={16} />, slug: "automatic-speech-recognition" },
   { label: "Robotics", icon: <Cpu size={16} />, slug: "robotics" },
   { label: "All Tasks", icon: <FileText size={16} />, slug: "" },
 ];
