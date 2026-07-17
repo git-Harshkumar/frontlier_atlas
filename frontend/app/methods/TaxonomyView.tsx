@@ -16,21 +16,28 @@ export function TaxonomyView({ initialTaxonomy }: { initialTaxonomy: any[] }) {
         const json = await fetchApi<any>("/api/v1/methods/taxonomy");
         if (cancelled || !json.data) return;
 
-        const counts: Record<string, number> = {};
+        const liveData: Record<string, { paperCount: number; description?: string }> = {};
         json.data.forEach((cat: any) => {
           if (cat.methods) {
             cat.methods.forEach((m: any) => {
-              counts[m.slug || m.id] = m.paperCount || 0;
+              liveData[m.slug || m.id] = {
+                paperCount: m.paperCount || 0,
+                description: m.description,
+              };
             });
           }
         });
 
         setTaxonomy(prev => prev.map(cat => ({
           ...cat,
-          methods: cat.methods.map((m: any) => ({
-            ...m,
-            paperCount: counts[m.slug || m.id] || m.paperCount
-          }))
+          methods: cat.methods.map((m: any) => {
+            const live = liveData[m.slug || m.id];
+            return {
+              ...m,
+              paperCount: live?.paperCount ?? m.paperCount,
+              description: live?.description ?? m.description
+            };
+          })
         })));
       } catch (err) {
         console.error("Failed to load live paper counts:", err);

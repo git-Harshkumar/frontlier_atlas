@@ -92,7 +92,7 @@ const Icon =
 </p>
 
     <div className="mt-auto pt-5 text-[13px] text-[#777] font-medium">
-      {paperCount.toLocaleString()} papers
+      {paperCount > 0 ? `${paperCount.toLocaleString()} papers` : null}
     </div>
   </Link>
   
