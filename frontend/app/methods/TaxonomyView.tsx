@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { CategoryRow } from "@/components/CategoryRow";
 import { MethodsHero } from "@/components/MethodsHero";
 import { fetchApi } from "@/lib/api";
-import { Search } from "lucide-react";
 
 export function TaxonomyView({ initialTaxonomy }: { initialTaxonomy: any[] }) {
   const [taxonomy, setTaxonomy] = useState(initialTaxonomy);

@@ -3,7 +3,6 @@ export const runtime = "edge";
 import * as React from "react";
 import Link from "next/link";
 import { TaxonomyView } from "./TaxonomyView";
-import { MethodsHero } from "@/components/MethodsHero";
 import Navbar from "@/components/Navbar";
 import { atlasUiFont } from "@/lib/fonts";
 
