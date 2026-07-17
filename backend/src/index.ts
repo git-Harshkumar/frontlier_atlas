@@ -14,6 +14,7 @@ import taskRoutes from "./routes/task.routes.js";
 import discussionRoutes from "./routes/discussion.routes.js";
 import methodRoutes from "./routes/method.routes.js";
 import benchmarkRoutes from "./routes/benchmark.routes.js";
+import searchRoutes from "./routes/search.routes.js";
 
 // Environment Bindings and Context Variables
 type Env = {
@@ -92,6 +93,7 @@ app.route("/api/v1/tasks", taskRoutes);
 app.route("/api/v1/discussions", discussionRoutes);
 app.route("/api/v1/methods", methodRoutes);
 app.route("/api/v1/benchmarks", benchmarkRoutes);
+app.route("/api/v1/search", searchRoutes);
 
 export default {
   fetch: app.fetch,

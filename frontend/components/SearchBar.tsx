@@ -62,7 +62,7 @@ export default function SearchBar({
       } else {
         setSuggestions([]);
       }
-    }, 300);
+    }, 80);
 
     return () => clearTimeout(timer);
   }, [query, fetchSuggestions]);
@@ -224,12 +224,7 @@ export default function SearchBar({
             <X size={variant === "compact" ? 16 : 18} />
           </button>
         )}
-        {loading && (
-          <Loader2
-            size={variant === "compact" ? 16 : 18}
-            className="absolute right-10 top-1/2 -translate-y-1/2 text-[#8B8B8B] animate-spin"
-          />
-        )}
+        
       </motion.form>
 
       {/* Suggestions Dropdown */}
