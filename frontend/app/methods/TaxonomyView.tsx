@@ -2,12 +2,13 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { CategoryRow } from "@/components/CategoryRow";
-import { CategoryPillBar } from "@/components/CategoryPillBar";
 import { MethodsHero } from "@/components/MethodsHero";
 import { fetchApi } from "@/lib/api";
+import { Search } from "lucide-react";
 
 export function TaxonomyView({ initialTaxonomy }: { initialTaxonomy: any[] }) {
   const [taxonomy, setTaxonomy] = useState(initialTaxonomy);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -15,7 +16,7 @@ export function TaxonomyView({ initialTaxonomy }: { initialTaxonomy: any[] }) {
       try {
         const json = await fetchApi<any>("/api/v1/methods/taxonomy");
         if (cancelled || !json.data) return;
-        
+
         const counts: Record<string, number> = {};
         json.data.forEach((cat: any) => {
           if (cat.methods) {
@@ -40,20 +41,63 @@ export function TaxonomyView({ initialTaxonomy }: { initialTaxonomy: any[] }) {
     return () => { cancelled = true; };
   }, []);
 
+  const filteredTaxonomy = taxonomy
+  .map((category: any) => ({
+    ...category,
+    methods: category.methods.filter((method: any) =>
+      method.name.toLowerCase().includes(search.toLowerCase())
+    ),
+  }))
+  .filter((category: any) => category.methods.length > 0);
+
   return (
-    <>
-      <MethodsHero taxonomy={taxonomy} />
-      <CategoryPillBar categories={taxonomy} />
-      <main className="flex flex-col mt-4 gap-4">
-        <h2 className="sr-only">Browse Methods by Category</h2>
-        {taxonomy.length > 0 ? taxonomy.map((category: any) => (
-          <CategoryRow key={category.id} category={category} />
-        )) : (
-          <div className="flex flex-col items-center justify-center py-24 px-4 text-center animate-fade-in bg-white rounded-3xl border border-[#E5E5E0]">
-            <h3 className="text-[18px] font-bold text-[#111111] mb-2 tracking-tight">No methods found</h3>
+  <>
+    <MethodsHero taxonomy={taxonomy} />
+
+    <main className="grid grid-cols-[220px_minmax(0,1fr)] gap-8 mt-10">
+      <aside className="w-[240px] shrink-0 sticky top-24 h-fit border-r border-[#ececec] pr-6">
+  <h3 className="text-[#F55036] font-bold uppercase text-sm mb-4">
+  Browse Methods
+</h3>
+
+<input
+  type="text"
+  placeholder="Filter methods..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="w-full border border-[#E5E7EB] rounded-xl px-4 py-2 text-sm mb-6"
+/>
+
+<div className="space-y-3">
+  {filteredTaxonomy.map((category: any) => (
+    <a
+  key={category.id}
+  href={`#${category.id}`}
+  className="block text-[15px] text-[#555] hover:text-[#F55036] transition-colors"
+>
+  {category.name}
+</a>
+  ))}
+</div>
+</aside>
+
+      <div>
+        {filteredTaxonomy.length > 0 ? (
+  filteredTaxonomy.map((category: any) => (
+            <CategoryRow
+              key={category.id}
+              category={category}
+            />
+          ))
+        ) : (
+          <div className="ds-card flex flex-col items-center justify-center py-24 px-4 text-center">
+            <h3 className="text-[16px] font-bold text-[#111111]">
+              No methods found
+            </h3>
           </div>
         )}
-      </main>
-    </>
-  );
+      </div>
+    </main>
+  </>
+);
 }

@@ -1,31 +1,100 @@
 "use client";
 
-import { FileText } from "lucide-react";
-import type { MethodItem } from "@/lib/methods";
 import Link from "next/link";
+import {
+  Brain,
+  Languages,
+  Eye,
+  Volume2,
+  Video,
+  Boxes,
+  Bot,
+  Cuboid,
+  Network,
+  Activity,
+  Sparkles,
+  Cpu,
+  Search,
+  Shield,
+  Zap,
+  Database,
+} from "lucide-react";
 
-export default function MethodCard({ method }: { method: MethodItem }) {
+export interface MethodCardData {
+  id: string;
+  name: string;
+  slug?: string;
+  description?: string;
+  paperCount?: number;
+  year?: number;
+}
+
+
+const iconMap: Record<string, any> = {
+  general: Brain,
+  language: Languages,
+  "computer vision": Eye,
+  "audio & speech": Volume2,
+  video: Video,
+  multimodal: Boxes,
+  robotics: Bot,
+  "embodied ai": Cuboid,
+  "3d & spatial": Cuboid,
+  "graph learning": Network,
+  "time series": Activity,
+  "scientific ai": Sparkles,
+  "neural architecture": Cpu,
+  "neural architectures": Cpu,
+  retrieval: Search,
+  alignment: Shield,
+  optimization: Zap,
+  training: Zap,
+  diffusion: Sparkles,
+  agents: Bot,
+};
+
+export default function MethodCard({
+  method,
+  accentColor,
+}: {
+  method: MethodCardData;
+  accentColor?: string;
+}) {
+  const paperCount = method.paperCount || 0;
+const Icon =
+  iconMap[method.name.toLowerCase()] ||
+  iconMap[method.slug?.replace(/-/g, " ").toLowerCase() || ""] ||
+    Brain;
   return (
-    <Link
-      href={`/methods/${method.slug}`}
-      className="ds-card p-5 flex flex-col gap-3 hover:shadow-soft transition-shadow duration-200 group no-underline"
-    >
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-[16px] font-semibold text-[#111111] group-hover:text-[#F55036] transition-colors leading-snug">
-          {method.name}
-        </h3>
-        <span className="ds-text-muted text-[11px] shrink-0 mt-0.5">
-          {method.slug}
-        </span>
-      </div>
+  <Link
+    href={`/methods/${method.slug ?? method.id}`}
+    className="bg-white rounded-md border border-[#ECECEC] p-5 min-h-[150px] flex flex-col hover:shadow-md transition-shadow duration-200 group no-underline"
+  >
+    <div className="flex items-start gap-4">
+      <div
+  className="w-9 h-9 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-125"
+  style={{ backgroundColor: `${accentColor}15` }}
+>
+  <Icon
+    size={18}
+    strokeWidth={2.2}
+    style={{ color: accentColor }}
+  />
+</div>
 
-      <div className="flex items-center gap-2 text-[13px] text-[#555555]">
-        <FileText size={14} className="text-[#8B8B8B]" />
-        <span>
-          <strong className="font-semibold text-[#111111]">{method.paperCount}</strong>{" "}
-          {method.paperCount === 1 ? "paper" : "papers"}
-        </span>
-      </div>
-    </Link>
-  );
+      <h3 className=" text-[#111111] text-[16px] leading-tight">
+        {method.name}
+      </h3>
+    </div>
+
+    <p className="text-[14px] text-[#666] mt-3 line-clamp-2">
+  {method.description}
+</p>
+
+    <div className="mt-auto pt-5 text-[13px] text-[#777] font-medium">
+      {paperCount.toLocaleString()} papers
+    </div>
+  </Link>
+  
+);
 }
