@@ -27,7 +27,6 @@ export function TaxonomyView({ initialTaxonomy }: { initialTaxonomy: any[] }) {
             });
           }
         });
-
         setTaxonomy(prev => prev.map(cat => ({
           ...cat,
           methods: cat.methods.map((m: any) => {
@@ -55,24 +54,16 @@ export function TaxonomyView({ initialTaxonomy }: { initialTaxonomy: any[] }) {
     ),
   }))
   .filter((category: any) => category.methods.length > 0);
-
   return (
   <>
     <MethodsHero taxonomy={taxonomy} />
 
     <main className="grid grid-cols-[220px_minmax(0,1fr)] gap-8 mt-10">
       <aside className="w-[240px] shrink-0 sticky top-24 h-fit border-r border-[#ececec] pr-6">
-  <h3 className="text-[#F55036] font-bold uppercase text-sm mb-4">
-  Browse Methods
+  <h3 className="text-[#F55036] font-bold uppercase text-lg mb-4">
+  Methods
 </h3>
 
-<input
-  type="text"
-  placeholder="Filter methods..."
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  className="w-full border border-[#E5E7EB] rounded-xl px-4 py-2 text-sm mb-6"
-/>
 
 <div className="space-y-3">
   {filteredTaxonomy.map((category: any) => (
