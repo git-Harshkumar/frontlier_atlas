@@ -109,6 +109,29 @@ const paperSelect = {
   },
 },
 } satisfies Prisma.PaperSelect;
+const parseAuthors = (authors?: string | null) => {
+  if (!authors) return [];
+
+  return authors.split(",").map((name) => {
+    const t = name.trim();
+
+    return {
+      id: t,
+      name: t,
+      slug: t.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+    };
+  });
+};
+
+const paperSearchSelect = {
+  id: true,
+  slug: true,
+  title: true,
+  githubStars: true,
+  citationCount: true,
+  thumbnailUrl: true,
+  authors: true,
+} satisfies Prisma.PaperSelect;
 
 // Infer the type from the select object
 type PaperFindManyResult = Prisma.PaperGetPayload<{
@@ -271,7 +294,7 @@ export const getPapers = async (
         }
       : queryOrLimit;
 
-  const limit = Math.max(Number(query.limit) || 20, 1);
+ const limit = Math.min(Math.max(Number(query.limit) || 5, 1), 10);
   const page = Math.max(Number(query.page) || 1, 1);
   const skip = Number(query.skip) || (page - 1) * limit;
   const sort = query.sort || "trending";
@@ -344,17 +367,7 @@ repositories: paper.repositories.map(
   ({ repository }: any) => repository
 ),
 
-authors:
-  paper.authors && typeof paper.authors === "string"
-    ? paper.authors.split(",").map((name: string) => {
-        const t = name.trim();
-        return {
-          id: t,
-          name: t,
-          slug: t.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        };
-      })
-    : [],
+authors: parseAuthors(paper.authors),
       tasks: paper.tasks.map(({ task }: any) => task),
       methods: paper.methods.map(({ method }: any) => method),
       
@@ -518,7 +531,7 @@ export const getPaperBySlug = async (
 
       const [authors, models, datasets, tasks, methods, conferences, rankings, sotaClaims] =
         await Promise.all([
-          Promise.resolve((paperData as any).authors && typeof (paperData as any).authors === 'string' ? ((paperData as any).authors as string).split(',').map((name: string) => { const t = name.trim(); return { id: t, name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }; }) : []),
+          Promise.resolve(parseAuthors(paperData.authors)),
           prisma.paperModel
             .findMany({
               where: { paper_id: paperData.id },
@@ -648,7 +661,6 @@ export const searchPapers = async (
   query: { q?: string; limit?: number; page?: number; sort?: string } = {},
 ) => {
   const searchTerm = query.q?.trim() || "";
-  console.log("Search term received:", searchTerm);
   if (!searchTerm) {
     return { papers: [], total: 0, page: 1, hasMore: false, query: "" };
   }
@@ -664,7 +676,7 @@ export const searchPapers = async (
         where: {
           OR: [
             { title: { contains: searchTerm, mode: "insensitive" } },
-            { abstract: { contains: searchTerm, mode: "insensitive" } },
+            
           ],
         },
         orderBy:
@@ -673,17 +685,13 @@ export const searchPapers = async (
             : [{ githubStars: "desc" }, { publicationDate: "desc" }],
         take: limit,
         skip,
-        select: paperSelect,
+        select: paperSearchSelect,
       });
     },
   );
+  console.log(JSON.stringify(papers[0], null, 2));
 
-  
-  console.log("Search returned", papers.length, "papers");
-console.log(
-  papers.map((p:any) => p.title)
-);
-
+ 
   
 
 
@@ -691,9 +699,8 @@ console.log(
   return {
     papers: papers.map((paper: any) => ({
       ...exposeThumbnailUrl(paper),
-      authors: paper.authors && typeof paper.authors === 'string' ? paper.authors.split(',').map((name: string) => { const t = name.trim(); return { id: t, name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }; }) : [],
-      tasks: paper.tasks.map(({ task }: any) => task),
-      methods: paper.methods.map(({ method }: any) => method),
+      authors: parseAuthors(paper.authors),
+      
     })),
     total: papers.length,
     page,
