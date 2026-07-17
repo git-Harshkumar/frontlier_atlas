@@ -429,7 +429,7 @@ function getTaskMetadata(slug: string) {
     return {
       displayName,
       title: displayName.toUpperCase(),
-      description: "Task description coming soon.",
+      description: `${displayName} is an AI research task. Explore the latest papers, benchmarks, and methods related to ${displayName}.`,
       imageUrl: null,
       stats: {
         benchmarks: 0,
