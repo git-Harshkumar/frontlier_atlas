@@ -2,32 +2,30 @@ export const runtime = "edge";
 
 import * as React from "react";
 import Link from "next/link";
-import { MethodsHero } from "@/components/MethodsHero";
-import { CategoryRow } from "@/components/CategoryRow";
-import { CategoryPillBar } from "@/components/CategoryPillBar";
+import { TaxonomyView } from "./TaxonomyView";
 import Navbar from "@/components/Navbar";
 import { atlasUiFont } from "@/lib/fonts";
 
 const staticTaxonomy = [
   {
-    id: "core-ai",
-    name: "Core AI",
-    iconName: "Brain",
-    methods: [
-      { id: "general", name: "General", slug: "general", paperCount: 0 },
-      { id: "language", name: "Language", slug: "language", paperCount: 0 },
-      { id: "computer-vision", name: "Computer Vision", slug: "computer-vision", paperCount: 0 },
-      { id: "audio-speech", name: "Audio & Speech", slug: "audio-speech", paperCount: 0 },
-      { id: "video", name: "Video", slug: "video", paperCount: 0 },
-      { id: "multimodal", name: "Multimodal", slug: "multimodal", paperCount: 0 },
-      { id: "robotics", name: "Robotics", slug: "robotics", paperCount: 0 },
-      { id: "embodied-ai", name: "Embodied AI", slug: "embodied-ai", paperCount: 0 },
-      { id: "3d-spatial", name: "3D & Spatial", slug: "3d-spatial", paperCount: 0 },
-      { id: "graph-learning", name: "Graph Learning", slug: "graph-learning", paperCount: 0 },
-      { id: "time-series", name: "Time Series", slug: "time-series", paperCount: 0 },
-      { id: "scientific-ai", name: "Scientific AI", slug: "scientific-ai", paperCount: 0 }
-    ]
-  },
+  id: "core-ai",
+  name: "Core AI",
+  iconName: "Brain",
+  methods: [
+    { id: "general", name: "General", slug: "general", description: "General-purpose AI methods spanning multiple research domains.", paperCount: 0 },
+    { id: "language", name: "Language", slug: "language", description: "Methods for understanding and generating natural language.", paperCount: 0 },
+    { id: "computer-vision", name: "Computer Vision", slug: "computer-vision", description: "Techniques for analyzing images and visual information.", paperCount: 0 },
+    { id: "audio-speech", name: "Audio & Speech", slug: "audio-speech", description: "Models for speech recognition, synthesis, and audio understanding.", paperCount: 0 },
+    { id: "video", name: "Video", slug: "video", description: "Methods for video understanding, generation, and temporal reasoning.", paperCount: 0 },
+    { id: "multimodal", name: "Multimodal", slug: "multimodal", description: "Models combining text, images, audio, and video modalities.", paperCount: 0 },
+    { id: "robotics", name: "Robotics", slug: "robotics", description: "AI techniques enabling robotic perception, planning, and control.", paperCount: 0 },
+    { id: "embodied-ai", name: "Embodied AI", slug: "embodied-ai", description: "Learning agents interacting with physical or simulated environments.", paperCount: 0 },
+    { id: "3d-spatial", name: "3D & Spatial", slug: "3d-spatial", description: "Methods for understanding and generating three-dimensional scenes.", paperCount: 0 },
+    { id: "graph-learning", name: "Graph Learning", slug: "graph-learning", description: "Learning algorithms designed for graph-structured data.", paperCount: 0 },
+    { id: "time-series", name: "Time Series", slug: "time-series", description: "Models for forecasting and analyzing sequential temporal data.", paperCount: 0 },
+    { id: "scientific-ai", name: "Scientific AI", slug: "scientific-ai", description: "AI methods accelerating scientific discovery and simulation.", paperCount: 0 }
+  ]
+},
   {
     id: "neural-architectures",
     name: "Neural Architectures",
@@ -378,16 +376,35 @@ export default async function MethodsPage() {
 
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://frontieratlas-backend.morningsignal-india.workers.dev';
-    const res = await fetch(`${apiUrl}/api/v1/methods/taxonomy`, { 
+    const res = await fetch(`${apiUrl}/api/v1/methods/taxonomy`, {
       next: { revalidate: 60 },
       signal: AbortSignal.timeout(5000) // 5 second timeout so builds never hang
     });
     if (res.ok) {
-      const data = await res.json();
-      if (data && data.data && Array.isArray(data.data)) {
-        taxonomy = data.data;
-      }
-    }
+  const data = await res.json();
+
+  if (data?.data && Array.isArray(data.data)) {
+    taxonomy = staticTaxonomy.map((category) => {
+      const liveCategory = data.data.find(
+        (c: any) => c.id === category.id
+      );
+
+      return {
+        ...category,
+        methods: category.methods.map((method) => {
+          const liveMethod = liveCategory?.methods?.find(
+            (m: any) => m.slug === method.slug
+          );
+
+          return {
+            ...method,
+            paperCount: liveMethod?.paperCount ?? method.paperCount,
+          };
+        }),
+      };
+    });
+  }
+}
   } catch (error) {
     console.error("Failed to fetch methods taxonomy", error);
   }
@@ -395,42 +412,19 @@ export default async function MethodsPage() {
   return (
     <div className={`${atlasUiFont.className} min-h-screen bg-[#F8F7F2] text-[#111111] tracking-normal`}>
       <Navbar />
-      <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 xl:px-12 py-8 pb-20">
-        
+      {/* Same container width/padding rhythm as the Tasks page (HomeContent) */}
+      <div className="w-full max-w-[1370px] mx-auto px-10 lg:px-16 xl:px-24 pt-6 pb-12">
+
         <nav className="flex items-center gap-2 text-[13px] text-[#8B8B8B] mb-6">
-          <Link href="/" className="hover:text-[#FF5A1F] transition-colors no-underline">
+          <Link href="/" className="hover:text-[#F55036] transition-colors no-underline">
             Home
           </Link>
           <span>/</span>
           <span className="text-[#555555] font-medium">Methods</span>
         </nav>
-
-        <MethodsHero taxonomy={taxonomy} />
-        
-        <CategoryPillBar categories={taxonomy} />
-        
-        <main className="flex flex-col mt-4 gap-4">
-          <h2 className="sr-only">Browse Methods by Category</h2>
-          {taxonomy.length > 0 ? taxonomy.map((category: any) => (
-            <CategoryRow key={category.id} category={category} />
-          )) : (
-            <div className="flex flex-col items-center justify-center py-24 px-4 text-center animate-fade-in bg-white rounded-3xl border border-[#E5E5E0]">
-              <div className="w-20 h-20 bg-[#F8F7F2] rounded-full flex items-center justify-center mb-6 border border-[#E5E5E0] shadow-sm">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B8B8B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  <line x1="11" y1="8" x2="11" y2="14"></line>
-                  <line x1="8" y1="11" x2="14" y2="11"></line>
-                </svg>
-              </div>
-              <h3 className="text-[18px] font-bold text-[#111111] mb-2 tracking-tight">No methods found</h3>
-              <p className="text-[14px] text-[#666666] max-w-[300px] leading-relaxed">
-                We couldn't find any methods matching your criteria. Please adjust your filters and try again.
-              </p>
-            </div>
-          )}
-        </main>
-      </div>
+      <TaxonomyView initialTaxonomy={taxonomy} />
+    </div>
     </div>
   );
+  
 }

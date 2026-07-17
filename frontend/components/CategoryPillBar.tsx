@@ -38,82 +38,53 @@ export function CategoryPillBar({ categories }: { categories: any[] }) {
     });
   }, [activeId]);
 
-  const scrollPillBar = useCallback((offset: number) => {
-    if (pillBarRef.current) {
-      pillBarRef.current.scrollBy({ left: offset, behavior: "smooth" });
-    }
-  }, []);
-
   const handlePillClick = useCallback((id: string) => {
     setActiveId(id);
     const el = document.getElementById(id);
-    
     if (!el) return;
-    
-    // Navbar height (56px) + Pill Bar height (48px) + tiny visual breathing room = 110px
-    const offset = 110; 
+
+    // Navbar height + pill bar height + a little breathing room
+    const offset = 110;
     const top = el.getBoundingClientRect().top + window.scrollY - offset;
-    
-    window.scrollTo({
-      top: top,
-      behavior: "smooth"
-    });
+
+    window.scrollTo({ top, behavior: "smooth" });
   }, []);
 
   return (
-    <div className="sticky top-[56px] xl:top-[52px] z-50 bg-[#F8F7F2]/95 backdrop-blur-md border-b border-[#E8E8E3] mb-8 -mx-4 md:-mx-8 xl:-mx-12 px-4 md:px-8 xl:px-12">
-      <div className="relative group flex items-center">
-        {/* Left Scroll Button */}
-        <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-[#F8F7F2] to-transparent z-10 pointer-events-none flex items-center justify-start opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <button 
-            onClick={() => scrollPillBar(-300)}
-            className="w-7 h-7 ml-1 rounded-full bg-white border border-[#E8E8E3] shadow-sm flex items-center justify-center text-[#555] hover:text-[#FF5A1F] hover:border-[#FF5A1F] pointer-events-auto transition-colors"
-            aria-label="Scroll left"
-          >
-            <LucideIcons.ChevronLeft className="w-4 h-4 -ml-0.5" />
-          </button>
-        </div>
+    <div className="sticky top-[56px] xl:top-[52px] z-40 bg-[#F8F7F2] border-b border-[#E5E5E0] mb-6 -mx-4 md:-mx-8 xl:-mx-12 px-4 md:px-8 xl:px-12">
+      <div
+        ref={pillBarRef}
+        className="flex items-center gap-2 overflow-x-auto py-3 hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth"
+      >
+        {categories.map((group) => {
+          const active = activeId === group.id;
+          const colors = getCategoryColors(group.id);
+          const Icon = group.iconName
+            ? ((LucideIcons as any)[group.iconName] as React.ElementType)
+            : LucideIcons.Layers;
 
-        <div
-          ref={pillBarRef}
-          className="flex-1 flex items-center gap-2 overflow-x-auto py-3 hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth"
-        >
-          {categories.map((group) => {
-            const active = activeId === group.id;
-            const colors = getCategoryColors(group.id);
-            const Icon = group.iconName ? LucideIcons[group.iconName as keyof typeof LucideIcons] as React.ElementType : LucideIcons.Layers;
-            
-            return (
-              <button
-                key={group.id}
-                data-id={group.id}
-                onClick={() => handlePillClick(group.id)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold whitespace-nowrap shrink-0 transition-all duration-200 border"
-                style={{
-                  background: active ? colors.accent : "#fff",
-                  color: active ? "#fff" : "#555",
-                  borderColor: active ? colors.accent : "#E2E2DE",
-                  boxShadow: active ? `0 2px 8px ${colors.accent}35` : "none",
-                  transform: active ? "scale(1.04)" : "scale(1)",
-                }}
-              >
-                <Icon className="w-3 h-3 shrink-0" strokeWidth={2} />
+          return (
+            <button
+              key={group.id}
+              data-id={group.id}
+              onClick={() => handlePillClick(group.id)}
+              className={`flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 min-h-[32px] transition-all duration-200 ease-out cursor-pointer select-none border
+                ${
+                  active
+                    ? "bg-[#F55036] text-white border-[#F55036]"
+                    : "bg-white border-[#E5E5E0] text-[#555555] hover:border-[#FF5A1F]/50 hover:bg-[#FFF7F3]"
+                }`}
+            >
+              <Icon
+                className={`w-3.5 h-3.5 shrink-0 ${active ? "text-white" : "text-[#F55036]"}`}
+                strokeWidth={2}
+              />
+              <span className="text-[12px] font-semibold whitespace-nowrap">
                 {group.name}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Right Scroll Button */}
-        <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#F8F7F2] to-transparent z-10 pointer-events-none flex items-center justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <button 
-            onClick={() => scrollPillBar(300)}
-            className="w-7 h-7 mr-1 rounded-full bg-white border border-[#E8E8E3] shadow-sm flex items-center justify-center text-[#555] hover:text-[#FF5A1F] hover:border-[#FF5A1F] pointer-events-auto transition-colors"
-            aria-label="Scroll right"
-          >
-            <LucideIcons.ChevronRight className="w-4 h-4 -mr-0.5" />
-          </button>
-        </div>
+              </span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
