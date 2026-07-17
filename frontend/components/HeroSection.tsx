@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Search, Bot, Brain, Eye, Code2, Cpu, Grid, Loader2, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, Bot, Brain, Eye, Code2, Cpu, Plug, Loader2, ChevronDown, ChevronUp } from "lucide-react";
 import { searchPapers, type Paper, type PaperAuthor } from "@/lib/paperApi";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -74,21 +74,19 @@ export default function HeroSection({
     { label: "Vision", icon: Eye },
     { label: "Coding", icon: Code2 },
     { label: "Robotics", icon: Cpu },
-    { label: "All Topics", icon: Grid },
+    { label: "MCP", icon: Plug },
   ];
 
   // Track if tags should show in expanded (multi-row) mode
   const [showAllTags, setShowAllTags] = useState(false);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center pt-2 md:pt-6 pb-3 md:pb-10 relative shrink-0 text-center">
+    <div className="w-full flex flex-col items-center justify-center pt-2 md:pt-6 pb-1 md:pb-4 relative shrink-0 text-center">
       <div className="w-full flex flex-col items-center z-10">
-        <h1 className="text-[17px] min-[375px]:text-[19px] sm:text-[24px] md:text-[32px] lg:text-[36px] font-extrabold leading-[1.2] md:leading-[1.05] tracking-tight text-[#111111] mb-2 md:mb-1.5 whitespace-nowrap">
+        <h1 className="text-[17px] min-[375px]:text-[19px] sm:text-[24px] md:text-[32px] lg:text-[36px] font-extrabold leading-[1.2] md:leading-[1.05] tracking-tight text-[#111111] mb-4 md:mb-6 whitespace-nowrap">
           Discover what&apos;s next in <span className="text-[#F55036]">AI research.</span>
         </h1>
-        <p className="text-[#555555] text-[14px] md:text-[15px] leading-[1.6] md:leading-[1.5] mb-3 md:mb-4 whitespace-normal md:whitespace-nowrap max-w-[400px] md:max-w-none">
-          Search, discover, and track papers, methods, benchmarks, and open-source releases.
-        </p>
+
 
         {/* Search Bar */}
         {!isScrolled && (
@@ -107,7 +105,7 @@ export default function HeroSection({
                 setShowDropdown(true);
               }}
               onFocus={() => setShowDropdown(true)}
-              placeholder="Search papers, authors, topics, methods..."
+              placeholder="Search papers, authors, topics, methods"
               className="bg-transparent outline-none flex-1 text-[#111111] placeholder:text-[#737373] text-[13px] md:text-[15px] truncate mr-2 text-left w-full"
             />
             {isSearching ? (
@@ -172,7 +170,7 @@ export default function HeroSection({
                     selectedTag === tag.label ? undefined : tag.label
                   )
                 }
-                className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 min-h-[28px] transition-all duration-200 ease-out cursor-pointer select-none
+                className={`flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 min-h-[24px] transition-all duration-200 ease-out cursor-pointer select-none
                   ${
                     selectedTag === tag.label
                       ? "bg-[#F55036] text-white border border-[#F55036] scale-[1.04] shadow-[0_2px_8px_rgba(245,80,54,0.30)]"
@@ -180,12 +178,12 @@ export default function HeroSection({
                   }`}
               >
                 <tag.icon
-                  className={`w-3 h-3 transition-transform duration-200 ${
+                  className={`w-[11px] h-[11px] transition-transform duration-200 ${
                     selectedTag === tag.label ? "text-white" : "text-[#F55036]"
                   }`}
                 />
                 <span
-                  className={`text-[11.5px] font-semibold ${
+                  className={`text-[10.5px] font-semibold ${
                     selectedTag === tag.label ? "text-white" : "text-[#111111]"
                   }`}
                 >
@@ -223,7 +221,7 @@ export default function HeroSection({
                   }`}
                   style={{ lineHeight: 1 }}
                 >
-                  {tag.label === "All Topics" ? "All" : tag.label}
+                  {tag.label}
                 </span>
               </button>
             ))}

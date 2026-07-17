@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import PaperList from "@/components/PaperFeed";
 import PaperTabs from "@/components/PaperTabs";
-import RightSidebar from "@/components/RightSidebar";
+
 import HeroSection from "@/components/HeroSection";
 
 const SLUG_TO_LABEL: Record<string, string> = {
@@ -157,9 +157,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
               period={getPeriodParam(selectedPeriod)}
             />
           </main>
-          <div className="hidden xl:block w-[280px] shrink-0 sticky top-6 h-fit max-h-[calc(100vh-80px)]">
-            <RightSidebar />
-          </div>
+
         </div>
       </div>
     </div>

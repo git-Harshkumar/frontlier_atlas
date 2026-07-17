@@ -185,12 +185,7 @@ export async function getPapers(params: GetPapersParams = {}): Promise<GetPapers
     };
   } catch (error) {
     console.error('Failed to fetch research papers:', error);
-    return {
-      papers: [],
-      total: 0,
-      page: 1,
-      hasMore: false,
-    };
+    throw error;
   }
 }
 
