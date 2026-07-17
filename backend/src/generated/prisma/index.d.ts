@@ -3790,6 +3790,9 @@ export namespace Prisma {
     venue: string | null
     organization: string | null
     authors: string | null
+    huggingface_url: string | null
+    domain: string | null
+    task: string | null
   }
 
   export type PaperMaxAggregateOutputType = {
@@ -3828,6 +3831,9 @@ export namespace Prisma {
     venue: string | null
     organization: string | null
     authors: string | null
+    huggingface_url: string | null
+    domain: string | null
+    task: string | null
   }
 
   export type PaperCountAggregateOutputType = {
@@ -3866,6 +3872,9 @@ export namespace Prisma {
     venue: number
     organization: number
     authors: number
+    huggingface_url: number
+    domain: number
+    task: number
     _all: number
   }
 
@@ -3928,6 +3937,9 @@ export namespace Prisma {
     venue?: true
     organization?: true
     authors?: true
+    huggingface_url?: true
+    domain?: true
+    task?: true
   }
 
   export type PaperMaxAggregateInputType = {
@@ -3966,6 +3978,9 @@ export namespace Prisma {
     venue?: true
     organization?: true
     authors?: true
+    huggingface_url?: true
+    domain?: true
+    task?: true
   }
 
   export type PaperCountAggregateInputType = {
@@ -4004,6 +4019,9 @@ export namespace Prisma {
     venue?: true
     organization?: true
     authors?: true
+    huggingface_url?: true
+    domain?: true
+    task?: true
     _all?: true
   }
 
@@ -4129,6 +4147,9 @@ export namespace Prisma {
     venue: string | null
     organization: string | null
     authors: string | null
+    huggingface_url: string | null
+    domain: string | null
+    task: string | null
     _count: PaperCountAggregateOutputType | null
     _avg: PaperAvgAggregateOutputType | null
     _sum: PaperSumAggregateOutputType | null
@@ -4186,6 +4207,9 @@ export namespace Prisma {
     venue?: boolean
     organization?: boolean
     authors?: boolean
+    huggingface_url?: boolean
+    domain?: boolean
+    task?: boolean
     conferences?: boolean | Paper$conferencesArgs<ExtArgs>
     datasets?: boolean | Paper$datasetsArgs<ExtArgs>
     journals?: boolean | Paper$journalsArgs<ExtArgs>
@@ -4237,6 +4261,9 @@ export namespace Prisma {
     venue?: boolean
     organization?: boolean
     authors?: boolean
+    huggingface_url?: boolean
+    domain?: boolean
+    task?: boolean
   }, ExtArgs["result"]["paper"]>
 
   export type PaperSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4275,6 +4302,9 @@ export namespace Prisma {
     venue?: boolean
     organization?: boolean
     authors?: boolean
+    huggingface_url?: boolean
+    domain?: boolean
+    task?: boolean
   }, ExtArgs["result"]["paper"]>
 
   export type PaperSelectScalar = {
@@ -4313,9 +4343,12 @@ export namespace Prisma {
     venue?: boolean
     organization?: boolean
     authors?: boolean
+    huggingface_url?: boolean
+    domain?: boolean
+    task?: boolean
   }
 
-  export type PaperOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "shortTitle" | "abstract" | "tlDr" | "publicationDate" | "submissionDate" | "arxivId" | "doi" | "paperUrl" | "pdfUrl" | "thumbnailUrl" | "sourceUrl" | "projectUrl" | "citationCount" | "referenceCount" | "pageCount" | "paperType" | "status" | "language" | "license" | "createdAt" | "updatedAt" | "githubForks" | "githubStars" | "githubUrl" | "isOfficialCode" | "hfUpvotes" | "trendingScore" | "discoverySource" | "importance_score" | "venue" | "organization" | "authors", ExtArgs["result"]["paper"]>
+  export type PaperOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "shortTitle" | "abstract" | "tlDr" | "publicationDate" | "submissionDate" | "arxivId" | "doi" | "paperUrl" | "pdfUrl" | "thumbnailUrl" | "sourceUrl" | "projectUrl" | "citationCount" | "referenceCount" | "pageCount" | "paperType" | "status" | "language" | "license" | "createdAt" | "updatedAt" | "githubForks" | "githubStars" | "githubUrl" | "isOfficialCode" | "hfUpvotes" | "trendingScore" | "discoverySource" | "importance_score" | "venue" | "organization" | "authors" | "huggingface_url" | "domain" | "task", ExtArgs["result"]["paper"]>
   export type PaperInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     conferences?: boolean | Paper$conferencesArgs<ExtArgs>
     datasets?: boolean | Paper$datasetsArgs<ExtArgs>
@@ -4386,6 +4419,9 @@ export namespace Prisma {
       venue: string | null
       organization: string | null
       authors: string | null
+      huggingface_url: string | null
+      domain: string | null
+      task: string | null
     }, ExtArgs["result"]["paper"]>
     composites: {}
   }
@@ -4856,6 +4892,9 @@ export namespace Prisma {
     readonly venue: FieldRef<"Paper", 'String'>
     readonly organization: FieldRef<"Paper", 'String'>
     readonly authors: FieldRef<"Paper", 'String'>
+    readonly huggingface_url: FieldRef<"Paper", 'String'>
+    readonly domain: FieldRef<"Paper", 'String'>
+    readonly task: FieldRef<"Paper", 'String'>
   }
     
 
@@ -7714,6 +7753,7 @@ export namespace Prisma {
     color: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    domain: string | null
   }
 
   export type TaskMaxAggregateOutputType = {
@@ -7723,6 +7763,7 @@ export namespace Prisma {
     color: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    domain: string | null
   }
 
   export type TaskCountAggregateOutputType = {
@@ -7732,6 +7773,7 @@ export namespace Prisma {
     color: number
     createdAt: number
     updatedAt: number
+    domain: number
     _all: number
   }
 
@@ -7743,6 +7785,7 @@ export namespace Prisma {
     color?: true
     createdAt?: true
     updatedAt?: true
+    domain?: true
   }
 
   export type TaskMaxAggregateInputType = {
@@ -7752,6 +7795,7 @@ export namespace Prisma {
     color?: true
     createdAt?: true
     updatedAt?: true
+    domain?: true
   }
 
   export type TaskCountAggregateInputType = {
@@ -7761,6 +7805,7 @@ export namespace Prisma {
     color?: true
     createdAt?: true
     updatedAt?: true
+    domain?: true
     _all?: true
   }
 
@@ -7843,6 +7888,7 @@ export namespace Prisma {
     color: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    domain: string | null
     _count: TaskCountAggregateOutputType | null
     _min: TaskMinAggregateOutputType | null
     _max: TaskMaxAggregateOutputType | null
@@ -7869,6 +7915,7 @@ export namespace Prisma {
     color?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    domain?: boolean
     papers?: boolean | Task$papersArgs<ExtArgs>
     _count?: boolean | TaskCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
@@ -7880,6 +7927,7 @@ export namespace Prisma {
     color?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    domain?: boolean
   }, ExtArgs["result"]["task"]>
 
   export type TaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7889,6 +7937,7 @@ export namespace Prisma {
     color?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    domain?: boolean
   }, ExtArgs["result"]["task"]>
 
   export type TaskSelectScalar = {
@@ -7898,9 +7947,10 @@ export namespace Prisma {
     color?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    domain?: boolean
   }
 
-  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "color" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "color" | "createdAt" | "updatedAt" | "domain", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     papers?: boolean | Task$papersArgs<ExtArgs>
     _count?: boolean | TaskCountOutputTypeDefaultArgs<ExtArgs>
@@ -7920,6 +7970,7 @@ export namespace Prisma {
       color: string | null
       createdAt: Date | null
       updatedAt: Date | null
+      domain: string | null
     }, ExtArgs["result"]["task"]>
     composites: {}
   }
@@ -8350,6 +8401,7 @@ export namespace Prisma {
     readonly color: FieldRef<"Task", 'String'>
     readonly createdAt: FieldRef<"Task", 'DateTime'>
     readonly updatedAt: FieldRef<"Task", 'DateTime'>
+    readonly domain: FieldRef<"Task", 'String'>
   }
     
 
@@ -11956,8 +12008,22 @@ export namespace Prisma {
 
   export type AggregateBenchmark = {
     _count: BenchmarkCountAggregateOutputType | null
+    _avg: BenchmarkAvgAggregateOutputType | null
+    _sum: BenchmarkSumAggregateOutputType | null
     _min: BenchmarkMinAggregateOutputType | null
     _max: BenchmarkMaxAggregateOutputType | null
+  }
+
+  export type BenchmarkAvgAggregateOutputType = {
+    year: number | null
+    results_count: number | null
+    models_count: number | null
+  }
+
+  export type BenchmarkSumAggregateOutputType = {
+    year: number | null
+    results_count: number | null
+    models_count: number | null
   }
 
   export type BenchmarkMinAggregateOutputType = {
@@ -11966,6 +12032,24 @@ export namespace Prisma {
     slug: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    description: string | null
+    domain: string | null
+    task: string | null
+    category: string | null
+    metric: string | null
+    status: string | null
+    year: number | null
+    results_count: number | null
+    models_count: number | null
+    paper_title: string | null
+    paper_url: string | null
+    repo_url: string | null
+    dataset_url: string | null
+    is_popular: boolean | null
+    is_trending: boolean | null
+    is_recently_added: boolean | null
+    modality: string | null
+    benchmark_url: string | null
   }
 
   export type BenchmarkMaxAggregateOutputType = {
@@ -11974,6 +12058,24 @@ export namespace Prisma {
     slug: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    description: string | null
+    domain: string | null
+    task: string | null
+    category: string | null
+    metric: string | null
+    status: string | null
+    year: number | null
+    results_count: number | null
+    models_count: number | null
+    paper_title: string | null
+    paper_url: string | null
+    repo_url: string | null
+    dataset_url: string | null
+    is_popular: boolean | null
+    is_trending: boolean | null
+    is_recently_added: boolean | null
+    modality: string | null
+    benchmark_url: string | null
   }
 
   export type BenchmarkCountAggregateOutputType = {
@@ -11982,9 +12084,40 @@ export namespace Prisma {
     slug: number
     createdAt: number
     updatedAt: number
+    description: number
+    domain: number
+    task: number
+    category: number
+    metric: number
+    status: number
+    year: number
+    results_count: number
+    models_count: number
+    top_models: number
+    paper_title: number
+    paper_url: number
+    repo_url: number
+    dataset_url: number
+    is_popular: number
+    is_trending: number
+    is_recently_added: number
+    modality: number
+    benchmark_url: number
     _all: number
   }
 
+
+  export type BenchmarkAvgAggregateInputType = {
+    year?: true
+    results_count?: true
+    models_count?: true
+  }
+
+  export type BenchmarkSumAggregateInputType = {
+    year?: true
+    results_count?: true
+    models_count?: true
+  }
 
   export type BenchmarkMinAggregateInputType = {
     id?: true
@@ -11992,6 +12125,24 @@ export namespace Prisma {
     slug?: true
     createdAt?: true
     updatedAt?: true
+    description?: true
+    domain?: true
+    task?: true
+    category?: true
+    metric?: true
+    status?: true
+    year?: true
+    results_count?: true
+    models_count?: true
+    paper_title?: true
+    paper_url?: true
+    repo_url?: true
+    dataset_url?: true
+    is_popular?: true
+    is_trending?: true
+    is_recently_added?: true
+    modality?: true
+    benchmark_url?: true
   }
 
   export type BenchmarkMaxAggregateInputType = {
@@ -12000,6 +12151,24 @@ export namespace Prisma {
     slug?: true
     createdAt?: true
     updatedAt?: true
+    description?: true
+    domain?: true
+    task?: true
+    category?: true
+    metric?: true
+    status?: true
+    year?: true
+    results_count?: true
+    models_count?: true
+    paper_title?: true
+    paper_url?: true
+    repo_url?: true
+    dataset_url?: true
+    is_popular?: true
+    is_trending?: true
+    is_recently_added?: true
+    modality?: true
+    benchmark_url?: true
   }
 
   export type BenchmarkCountAggregateInputType = {
@@ -12008,6 +12177,25 @@ export namespace Prisma {
     slug?: true
     createdAt?: true
     updatedAt?: true
+    description?: true
+    domain?: true
+    task?: true
+    category?: true
+    metric?: true
+    status?: true
+    year?: true
+    results_count?: true
+    models_count?: true
+    top_models?: true
+    paper_title?: true
+    paper_url?: true
+    repo_url?: true
+    dataset_url?: true
+    is_popular?: true
+    is_trending?: true
+    is_recently_added?: true
+    modality?: true
+    benchmark_url?: true
     _all?: true
   }
 
@@ -12049,6 +12237,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: BenchmarkAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BenchmarkSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BenchmarkMinAggregateInputType
@@ -12079,6 +12279,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: BenchmarkCountAggregateInputType | true
+    _avg?: BenchmarkAvgAggregateInputType
+    _sum?: BenchmarkSumAggregateInputType
     _min?: BenchmarkMinAggregateInputType
     _max?: BenchmarkMaxAggregateInputType
   }
@@ -12089,7 +12291,28 @@ export namespace Prisma {
     slug: string
     createdAt: Date | null
     updatedAt: Date | null
+    description: string | null
+    domain: string | null
+    task: string | null
+    category: string | null
+    metric: string | null
+    status: string | null
+    year: number | null
+    results_count: number | null
+    models_count: number | null
+    top_models: string[]
+    paper_title: string | null
+    paper_url: string | null
+    repo_url: string | null
+    dataset_url: string | null
+    is_popular: boolean | null
+    is_trending: boolean | null
+    is_recently_added: boolean | null
+    modality: string | null
+    benchmark_url: string | null
     _count: BenchmarkCountAggregateOutputType | null
+    _avg: BenchmarkAvgAggregateOutputType | null
+    _sum: BenchmarkSumAggregateOutputType | null
     _min: BenchmarkMinAggregateOutputType | null
     _max: BenchmarkMaxAggregateOutputType | null
   }
@@ -12114,6 +12337,25 @@ export namespace Prisma {
     slug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    description?: boolean
+    domain?: boolean
+    task?: boolean
+    category?: boolean
+    metric?: boolean
+    status?: boolean
+    year?: boolean
+    results_count?: boolean
+    models_count?: boolean
+    top_models?: boolean
+    paper_title?: boolean
+    paper_url?: boolean
+    repo_url?: boolean
+    dataset_url?: boolean
+    is_popular?: boolean
+    is_trending?: boolean
+    is_recently_added?: boolean
+    modality?: boolean
+    benchmark_url?: boolean
     rankings?: boolean | Benchmark$rankingsArgs<ExtArgs>
     claims?: boolean | Benchmark$claimsArgs<ExtArgs>
     _count?: boolean | BenchmarkCountOutputTypeDefaultArgs<ExtArgs>
@@ -12125,6 +12367,25 @@ export namespace Prisma {
     slug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    description?: boolean
+    domain?: boolean
+    task?: boolean
+    category?: boolean
+    metric?: boolean
+    status?: boolean
+    year?: boolean
+    results_count?: boolean
+    models_count?: boolean
+    top_models?: boolean
+    paper_title?: boolean
+    paper_url?: boolean
+    repo_url?: boolean
+    dataset_url?: boolean
+    is_popular?: boolean
+    is_trending?: boolean
+    is_recently_added?: boolean
+    modality?: boolean
+    benchmark_url?: boolean
   }, ExtArgs["result"]["benchmark"]>
 
   export type BenchmarkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12133,6 +12394,25 @@ export namespace Prisma {
     slug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    description?: boolean
+    domain?: boolean
+    task?: boolean
+    category?: boolean
+    metric?: boolean
+    status?: boolean
+    year?: boolean
+    results_count?: boolean
+    models_count?: boolean
+    top_models?: boolean
+    paper_title?: boolean
+    paper_url?: boolean
+    repo_url?: boolean
+    dataset_url?: boolean
+    is_popular?: boolean
+    is_trending?: boolean
+    is_recently_added?: boolean
+    modality?: boolean
+    benchmark_url?: boolean
   }, ExtArgs["result"]["benchmark"]>
 
   export type BenchmarkSelectScalar = {
@@ -12141,9 +12421,28 @@ export namespace Prisma {
     slug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    description?: boolean
+    domain?: boolean
+    task?: boolean
+    category?: boolean
+    metric?: boolean
+    status?: boolean
+    year?: boolean
+    results_count?: boolean
+    models_count?: boolean
+    top_models?: boolean
+    paper_title?: boolean
+    paper_url?: boolean
+    repo_url?: boolean
+    dataset_url?: boolean
+    is_popular?: boolean
+    is_trending?: boolean
+    is_recently_added?: boolean
+    modality?: boolean
+    benchmark_url?: boolean
   }
 
-  export type BenchmarkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt", ExtArgs["result"]["benchmark"]>
+  export type BenchmarkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt" | "description" | "domain" | "task" | "category" | "metric" | "status" | "year" | "results_count" | "models_count" | "top_models" | "paper_title" | "paper_url" | "repo_url" | "dataset_url" | "is_popular" | "is_trending" | "is_recently_added" | "modality" | "benchmark_url", ExtArgs["result"]["benchmark"]>
   export type BenchmarkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rankings?: boolean | Benchmark$rankingsArgs<ExtArgs>
     claims?: boolean | Benchmark$claimsArgs<ExtArgs>
@@ -12164,6 +12463,25 @@ export namespace Prisma {
       slug: string
       createdAt: Date | null
       updatedAt: Date | null
+      description: string | null
+      domain: string | null
+      task: string | null
+      category: string | null
+      metric: string | null
+      status: string | null
+      year: number | null
+      results_count: number | null
+      models_count: number | null
+      top_models: string[]
+      paper_title: string | null
+      paper_url: string | null
+      repo_url: string | null
+      dataset_url: string | null
+      is_popular: boolean | null
+      is_trending: boolean | null
+      is_recently_added: boolean | null
+      modality: string | null
+      benchmark_url: string | null
     }, ExtArgs["result"]["benchmark"]>
     composites: {}
   }
@@ -12594,6 +12912,25 @@ export namespace Prisma {
     readonly slug: FieldRef<"Benchmark", 'String'>
     readonly createdAt: FieldRef<"Benchmark", 'DateTime'>
     readonly updatedAt: FieldRef<"Benchmark", 'DateTime'>
+    readonly description: FieldRef<"Benchmark", 'String'>
+    readonly domain: FieldRef<"Benchmark", 'String'>
+    readonly task: FieldRef<"Benchmark", 'String'>
+    readonly category: FieldRef<"Benchmark", 'String'>
+    readonly metric: FieldRef<"Benchmark", 'String'>
+    readonly status: FieldRef<"Benchmark", 'String'>
+    readonly year: FieldRef<"Benchmark", 'Int'>
+    readonly results_count: FieldRef<"Benchmark", 'Int'>
+    readonly models_count: FieldRef<"Benchmark", 'Int'>
+    readonly top_models: FieldRef<"Benchmark", 'String[]'>
+    readonly paper_title: FieldRef<"Benchmark", 'String'>
+    readonly paper_url: FieldRef<"Benchmark", 'String'>
+    readonly repo_url: FieldRef<"Benchmark", 'String'>
+    readonly dataset_url: FieldRef<"Benchmark", 'String'>
+    readonly is_popular: FieldRef<"Benchmark", 'Boolean'>
+    readonly is_trending: FieldRef<"Benchmark", 'Boolean'>
+    readonly is_recently_added: FieldRef<"Benchmark", 'Boolean'>
+    readonly modality: FieldRef<"Benchmark", 'String'>
+    readonly benchmark_url: FieldRef<"Benchmark", 'String'>
   }
     
 
@@ -14178,6 +14515,9 @@ export namespace Prisma {
     resultDate: Date | null
     previousRank: number | null
     sourceUrl: string | null
+    model_name: string | null
+    organization: string | null
+    score_str: string | null
   }
 
   export type RankingMaxAggregateOutputType = {
@@ -14196,6 +14536,9 @@ export namespace Prisma {
     resultDate: Date | null
     previousRank: number | null
     sourceUrl: string | null
+    model_name: string | null
+    organization: string | null
+    score_str: string | null
   }
 
   export type RankingCountAggregateOutputType = {
@@ -14214,6 +14557,9 @@ export namespace Prisma {
     resultDate: number
     previousRank: number
     sourceUrl: number
+    model_name: number
+    organization: number
+    score_str: number
     _all: number
   }
 
@@ -14248,6 +14594,9 @@ export namespace Prisma {
     resultDate?: true
     previousRank?: true
     sourceUrl?: true
+    model_name?: true
+    organization?: true
+    score_str?: true
   }
 
   export type RankingMaxAggregateInputType = {
@@ -14266,6 +14615,9 @@ export namespace Prisma {
     resultDate?: true
     previousRank?: true
     sourceUrl?: true
+    model_name?: true
+    organization?: true
+    score_str?: true
   }
 
   export type RankingCountAggregateInputType = {
@@ -14284,6 +14636,9 @@ export namespace Prisma {
     resultDate?: true
     previousRank?: true
     sourceUrl?: true
+    model_name?: true
+    organization?: true
+    score_str?: true
     _all?: true
   }
 
@@ -14389,6 +14744,9 @@ export namespace Prisma {
     resultDate: Date | null
     previousRank: number | null
     sourceUrl: string | null
+    model_name: string | null
+    organization: string | null
+    score_str: string | null
     _count: RankingCountAggregateOutputType | null
     _avg: RankingAvgAggregateOutputType | null
     _sum: RankingSumAggregateOutputType | null
@@ -14426,6 +14784,9 @@ export namespace Prisma {
     resultDate?: boolean
     previousRank?: boolean
     sourceUrl?: boolean
+    model_name?: boolean
+    organization?: boolean
+    score_str?: boolean
     benchmark?: boolean | Ranking$benchmarkArgs<ExtArgs>
     paper?: boolean | Ranking$paperArgs<ExtArgs>
   }, ExtArgs["result"]["ranking"]>
@@ -14446,6 +14807,9 @@ export namespace Prisma {
     resultDate?: boolean
     previousRank?: boolean
     sourceUrl?: boolean
+    model_name?: boolean
+    organization?: boolean
+    score_str?: boolean
     benchmark?: boolean | Ranking$benchmarkArgs<ExtArgs>
     paper?: boolean | Ranking$paperArgs<ExtArgs>
   }, ExtArgs["result"]["ranking"]>
@@ -14466,6 +14830,9 @@ export namespace Prisma {
     resultDate?: boolean
     previousRank?: boolean
     sourceUrl?: boolean
+    model_name?: boolean
+    organization?: boolean
+    score_str?: boolean
     benchmark?: boolean | Ranking$benchmarkArgs<ExtArgs>
     paper?: boolean | Ranking$paperArgs<ExtArgs>
   }, ExtArgs["result"]["ranking"]>
@@ -14486,9 +14853,12 @@ export namespace Prisma {
     resultDate?: boolean
     previousRank?: boolean
     sourceUrl?: boolean
+    model_name?: boolean
+    organization?: boolean
+    score_str?: boolean
   }
 
-  export type RankingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paper_id" | "benchmark_id" | "rank" | "previous_rank" | "metric" | "score" | "result_date" | "source_url" | "verified" | "updated_at" | "updatedAt" | "resultDate" | "previousRank" | "sourceUrl", ExtArgs["result"]["ranking"]>
+  export type RankingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paper_id" | "benchmark_id" | "rank" | "previous_rank" | "metric" | "score" | "result_date" | "source_url" | "verified" | "updated_at" | "updatedAt" | "resultDate" | "previousRank" | "sourceUrl" | "model_name" | "organization" | "score_str", ExtArgs["result"]["ranking"]>
   export type RankingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     benchmark?: boolean | Ranking$benchmarkArgs<ExtArgs>
     paper?: boolean | Ranking$paperArgs<ExtArgs>
@@ -14524,6 +14894,9 @@ export namespace Prisma {
       resultDate: Date | null
       previousRank: number | null
       sourceUrl: string | null
+      model_name: string | null
+      organization: string | null
+      score_str: string | null
     }, ExtArgs["result"]["ranking"]>
     composites: {}
   }
@@ -14964,6 +15337,9 @@ export namespace Prisma {
     readonly resultDate: FieldRef<"Ranking", 'DateTime'>
     readonly previousRank: FieldRef<"Ranking", 'Int'>
     readonly sourceUrl: FieldRef<"Ranking", 'String'>
+    readonly model_name: FieldRef<"Ranking", 'String'>
+    readonly organization: FieldRef<"Ranking", 'String'>
+    readonly score_str: FieldRef<"Ranking", 'String'>
   }
     
 
@@ -34294,7 +34670,10 @@ export namespace Prisma {
     importance_score: 'importance_score',
     venue: 'venue',
     organization: 'organization',
-    authors: 'authors'
+    authors: 'authors',
+    huggingface_url: 'huggingface_url',
+    domain: 'domain',
+    task: 'task'
   };
 
   export type PaperScalarFieldEnum = (typeof PaperScalarFieldEnum)[keyof typeof PaperScalarFieldEnum]
@@ -34334,7 +34713,8 @@ export namespace Prisma {
     slug: 'slug',
     color: 'color',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    domain: 'domain'
   };
 
   export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
@@ -34374,7 +34754,26 @@ export namespace Prisma {
     name: 'name',
     slug: 'slug',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    description: 'description',
+    domain: 'domain',
+    task: 'task',
+    category: 'category',
+    metric: 'metric',
+    status: 'status',
+    year: 'year',
+    results_count: 'results_count',
+    models_count: 'models_count',
+    top_models: 'top_models',
+    paper_title: 'paper_title',
+    paper_url: 'paper_url',
+    repo_url: 'repo_url',
+    dataset_url: 'dataset_url',
+    is_popular: 'is_popular',
+    is_trending: 'is_trending',
+    is_recently_added: 'is_recently_added',
+    modality: 'modality',
+    benchmark_url: 'benchmark_url'
   };
 
   export type BenchmarkScalarFieldEnum = (typeof BenchmarkScalarFieldEnum)[keyof typeof BenchmarkScalarFieldEnum]
@@ -34404,7 +34803,10 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     resultDate: 'resultDate',
     previousRank: 'previousRank',
-    sourceUrl: 'sourceUrl'
+    sourceUrl: 'sourceUrl',
+    model_name: 'model_name',
+    organization: 'organization',
+    score_str: 'score_str'
   };
 
   export type RankingScalarFieldEnum = (typeof RankingScalarFieldEnum)[keyof typeof RankingScalarFieldEnum]
@@ -34805,6 +35207,9 @@ export namespace Prisma {
     venue?: StringNullableFilter<"Paper"> | string | null
     organization?: StringNullableFilter<"Paper"> | string | null
     authors?: StringNullableFilter<"Paper"> | string | null
+    huggingface_url?: StringNullableFilter<"Paper"> | string | null
+    domain?: StringNullableFilter<"Paper"> | string | null
+    task?: StringNullableFilter<"Paper"> | string | null
     conferences?: PaperConferenceListRelationFilter
     datasets?: PaperDatasetListRelationFilter
     journals?: PaperJournalListRelationFilter
@@ -34855,6 +35260,9 @@ export namespace Prisma {
     venue?: SortOrderInput | SortOrder
     organization?: SortOrderInput | SortOrder
     authors?: SortOrderInput | SortOrder
+    huggingface_url?: SortOrderInput | SortOrder
+    domain?: SortOrderInput | SortOrder
+    task?: SortOrderInput | SortOrder
     conferences?: PaperConferenceOrderByRelationAggregateInput
     datasets?: PaperDatasetOrderByRelationAggregateInput
     journals?: PaperJournalOrderByRelationAggregateInput
@@ -34908,6 +35316,9 @@ export namespace Prisma {
     venue?: StringNullableFilter<"Paper"> | string | null
     organization?: StringNullableFilter<"Paper"> | string | null
     authors?: StringNullableFilter<"Paper"> | string | null
+    huggingface_url?: StringNullableFilter<"Paper"> | string | null
+    domain?: StringNullableFilter<"Paper"> | string | null
+    task?: StringNullableFilter<"Paper"> | string | null
     conferences?: PaperConferenceListRelationFilter
     datasets?: PaperDatasetListRelationFilter
     journals?: PaperJournalListRelationFilter
@@ -34958,6 +35369,9 @@ export namespace Prisma {
     venue?: SortOrderInput | SortOrder
     organization?: SortOrderInput | SortOrder
     authors?: SortOrderInput | SortOrder
+    huggingface_url?: SortOrderInput | SortOrder
+    domain?: SortOrderInput | SortOrder
+    task?: SortOrderInput | SortOrder
     _count?: PaperCountOrderByAggregateInput
     _avg?: PaperAvgOrderByAggregateInput
     _max?: PaperMaxOrderByAggregateInput
@@ -35004,6 +35418,9 @@ export namespace Prisma {
     venue?: StringNullableWithAggregatesFilter<"Paper"> | string | null
     organization?: StringNullableWithAggregatesFilter<"Paper"> | string | null
     authors?: StringNullableWithAggregatesFilter<"Paper"> | string | null
+    huggingface_url?: StringNullableWithAggregatesFilter<"Paper"> | string | null
+    domain?: StringNullableWithAggregatesFilter<"Paper"> | string | null
+    task?: StringNullableWithAggregatesFilter<"Paper"> | string | null
   }
 
   export type EntityRelationshipWhereInput = {
@@ -35155,6 +35572,7 @@ export namespace Prisma {
     color?: StringNullableFilter<"Task"> | string | null
     createdAt?: DateTimeNullableFilter<"Task"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
+    domain?: StringNullableFilter<"Task"> | string | null
     papers?: PaperTaskListRelationFilter
   }
 
@@ -35165,6 +35583,7 @@ export namespace Prisma {
     color?: SortOrderInput | SortOrder
     createdAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    domain?: SortOrderInput | SortOrder
     papers?: PaperTaskOrderByRelationAggregateInput
   }
 
@@ -35178,6 +35597,7 @@ export namespace Prisma {
     color?: StringNullableFilter<"Task"> | string | null
     createdAt?: DateTimeNullableFilter<"Task"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
+    domain?: StringNullableFilter<"Task"> | string | null
     papers?: PaperTaskListRelationFilter
   }, "id" | "name" | "slug">
 
@@ -35188,6 +35608,7 @@ export namespace Prisma {
     color?: SortOrderInput | SortOrder
     createdAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    domain?: SortOrderInput | SortOrder
     _count?: TaskCountOrderByAggregateInput
     _max?: TaskMaxOrderByAggregateInput
     _min?: TaskMinOrderByAggregateInput
@@ -35203,6 +35624,7 @@ export namespace Prisma {
     color?: StringNullableWithAggregatesFilter<"Task"> | string | null
     createdAt?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
+    domain?: StringNullableWithAggregatesFilter<"Task"> | string | null
   }
 
   export type PaperTaskWhereInput = {
@@ -35367,6 +35789,25 @@ export namespace Prisma {
     slug?: StringFilter<"Benchmark"> | string
     createdAt?: DateTimeNullableFilter<"Benchmark"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Benchmark"> | Date | string | null
+    description?: StringNullableFilter<"Benchmark"> | string | null
+    domain?: StringNullableFilter<"Benchmark"> | string | null
+    task?: StringNullableFilter<"Benchmark"> | string | null
+    category?: StringNullableFilter<"Benchmark"> | string | null
+    metric?: StringNullableFilter<"Benchmark"> | string | null
+    status?: StringNullableFilter<"Benchmark"> | string | null
+    year?: IntNullableFilter<"Benchmark"> | number | null
+    results_count?: IntNullableFilter<"Benchmark"> | number | null
+    models_count?: IntNullableFilter<"Benchmark"> | number | null
+    top_models?: StringNullableListFilter<"Benchmark">
+    paper_title?: StringNullableFilter<"Benchmark"> | string | null
+    paper_url?: StringNullableFilter<"Benchmark"> | string | null
+    repo_url?: StringNullableFilter<"Benchmark"> | string | null
+    dataset_url?: StringNullableFilter<"Benchmark"> | string | null
+    is_popular?: BoolNullableFilter<"Benchmark"> | boolean | null
+    is_trending?: BoolNullableFilter<"Benchmark"> | boolean | null
+    is_recently_added?: BoolNullableFilter<"Benchmark"> | boolean | null
+    modality?: StringNullableFilter<"Benchmark"> | string | null
+    benchmark_url?: StringNullableFilter<"Benchmark"> | string | null
     rankings?: RankingListRelationFilter
     claims?: SotaClaimListRelationFilter
   }
@@ -35377,6 +35818,25 @@ export namespace Prisma {
     slug?: SortOrder
     createdAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    domain?: SortOrderInput | SortOrder
+    task?: SortOrderInput | SortOrder
+    category?: SortOrderInput | SortOrder
+    metric?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    year?: SortOrderInput | SortOrder
+    results_count?: SortOrderInput | SortOrder
+    models_count?: SortOrderInput | SortOrder
+    top_models?: SortOrder
+    paper_title?: SortOrderInput | SortOrder
+    paper_url?: SortOrderInput | SortOrder
+    repo_url?: SortOrderInput | SortOrder
+    dataset_url?: SortOrderInput | SortOrder
+    is_popular?: SortOrderInput | SortOrder
+    is_trending?: SortOrderInput | SortOrder
+    is_recently_added?: SortOrderInput | SortOrder
+    modality?: SortOrderInput | SortOrder
+    benchmark_url?: SortOrderInput | SortOrder
     rankings?: RankingOrderByRelationAggregateInput
     claims?: SotaClaimOrderByRelationAggregateInput
   }
@@ -35390,6 +35850,25 @@ export namespace Prisma {
     NOT?: BenchmarkWhereInput | BenchmarkWhereInput[]
     createdAt?: DateTimeNullableFilter<"Benchmark"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Benchmark"> | Date | string | null
+    description?: StringNullableFilter<"Benchmark"> | string | null
+    domain?: StringNullableFilter<"Benchmark"> | string | null
+    task?: StringNullableFilter<"Benchmark"> | string | null
+    category?: StringNullableFilter<"Benchmark"> | string | null
+    metric?: StringNullableFilter<"Benchmark"> | string | null
+    status?: StringNullableFilter<"Benchmark"> | string | null
+    year?: IntNullableFilter<"Benchmark"> | number | null
+    results_count?: IntNullableFilter<"Benchmark"> | number | null
+    models_count?: IntNullableFilter<"Benchmark"> | number | null
+    top_models?: StringNullableListFilter<"Benchmark">
+    paper_title?: StringNullableFilter<"Benchmark"> | string | null
+    paper_url?: StringNullableFilter<"Benchmark"> | string | null
+    repo_url?: StringNullableFilter<"Benchmark"> | string | null
+    dataset_url?: StringNullableFilter<"Benchmark"> | string | null
+    is_popular?: BoolNullableFilter<"Benchmark"> | boolean | null
+    is_trending?: BoolNullableFilter<"Benchmark"> | boolean | null
+    is_recently_added?: BoolNullableFilter<"Benchmark"> | boolean | null
+    modality?: StringNullableFilter<"Benchmark"> | string | null
+    benchmark_url?: StringNullableFilter<"Benchmark"> | string | null
     rankings?: RankingListRelationFilter
     claims?: SotaClaimListRelationFilter
   }, "id" | "name" | "slug">
@@ -35400,9 +35879,30 @@ export namespace Prisma {
     slug?: SortOrder
     createdAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    domain?: SortOrderInput | SortOrder
+    task?: SortOrderInput | SortOrder
+    category?: SortOrderInput | SortOrder
+    metric?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    year?: SortOrderInput | SortOrder
+    results_count?: SortOrderInput | SortOrder
+    models_count?: SortOrderInput | SortOrder
+    top_models?: SortOrder
+    paper_title?: SortOrderInput | SortOrder
+    paper_url?: SortOrderInput | SortOrder
+    repo_url?: SortOrderInput | SortOrder
+    dataset_url?: SortOrderInput | SortOrder
+    is_popular?: SortOrderInput | SortOrder
+    is_trending?: SortOrderInput | SortOrder
+    is_recently_added?: SortOrderInput | SortOrder
+    modality?: SortOrderInput | SortOrder
+    benchmark_url?: SortOrderInput | SortOrder
     _count?: BenchmarkCountOrderByAggregateInput
+    _avg?: BenchmarkAvgOrderByAggregateInput
     _max?: BenchmarkMaxOrderByAggregateInput
     _min?: BenchmarkMinOrderByAggregateInput
+    _sum?: BenchmarkSumOrderByAggregateInput
   }
 
   export type BenchmarkScalarWhereWithAggregatesInput = {
@@ -35414,6 +35914,25 @@ export namespace Prisma {
     slug?: StringWithAggregatesFilter<"Benchmark"> | string
     createdAt?: DateTimeNullableWithAggregatesFilter<"Benchmark"> | Date | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"Benchmark"> | Date | string | null
+    description?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    domain?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    task?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    category?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    metric?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    status?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    year?: IntNullableWithAggregatesFilter<"Benchmark"> | number | null
+    results_count?: IntNullableWithAggregatesFilter<"Benchmark"> | number | null
+    models_count?: IntNullableWithAggregatesFilter<"Benchmark"> | number | null
+    top_models?: StringNullableListFilter<"Benchmark">
+    paper_title?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    paper_url?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    repo_url?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    dataset_url?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    is_popular?: BoolNullableWithAggregatesFilter<"Benchmark"> | boolean | null
+    is_trending?: BoolNullableWithAggregatesFilter<"Benchmark"> | boolean | null
+    is_recently_added?: BoolNullableWithAggregatesFilter<"Benchmark"> | boolean | null
+    modality?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
+    benchmark_url?: StringNullableWithAggregatesFilter<"Benchmark"> | string | null
   }
 
   export type SotaClaimWhereInput = {
@@ -35484,6 +36003,9 @@ export namespace Prisma {
     resultDate?: DateTimeNullableFilter<"Ranking"> | Date | string | null
     previousRank?: IntNullableFilter<"Ranking"> | number | null
     sourceUrl?: StringNullableFilter<"Ranking"> | string | null
+    model_name?: StringNullableFilter<"Ranking"> | string | null
+    organization?: StringNullableFilter<"Ranking"> | string | null
+    score_str?: StringNullableFilter<"Ranking"> | string | null
     benchmark?: XOR<BenchmarkNullableScalarRelationFilter, BenchmarkWhereInput> | null
     paper?: XOR<PaperNullableScalarRelationFilter, PaperWhereInput> | null
   }
@@ -35504,6 +36026,9 @@ export namespace Prisma {
     resultDate?: SortOrderInput | SortOrder
     previousRank?: SortOrderInput | SortOrder
     sourceUrl?: SortOrderInput | SortOrder
+    model_name?: SortOrderInput | SortOrder
+    organization?: SortOrderInput | SortOrder
+    score_str?: SortOrderInput | SortOrder
     benchmark?: BenchmarkOrderByWithRelationInput
     paper?: PaperOrderByWithRelationInput
   }
@@ -35528,6 +36053,9 @@ export namespace Prisma {
     resultDate?: DateTimeNullableFilter<"Ranking"> | Date | string | null
     previousRank?: IntNullableFilter<"Ranking"> | number | null
     sourceUrl?: StringNullableFilter<"Ranking"> | string | null
+    model_name?: StringNullableFilter<"Ranking"> | string | null
+    organization?: StringNullableFilter<"Ranking"> | string | null
+    score_str?: StringNullableFilter<"Ranking"> | string | null
     benchmark?: XOR<BenchmarkNullableScalarRelationFilter, BenchmarkWhereInput> | null
     paper?: XOR<PaperNullableScalarRelationFilter, PaperWhereInput> | null
   }, "id" | "paper_id_benchmark_id">
@@ -35548,6 +36076,9 @@ export namespace Prisma {
     resultDate?: SortOrderInput | SortOrder
     previousRank?: SortOrderInput | SortOrder
     sourceUrl?: SortOrderInput | SortOrder
+    model_name?: SortOrderInput | SortOrder
+    organization?: SortOrderInput | SortOrder
+    score_str?: SortOrderInput | SortOrder
     _count?: RankingCountOrderByAggregateInput
     _avg?: RankingAvgOrderByAggregateInput
     _max?: RankingMaxOrderByAggregateInput
@@ -35574,6 +36105,9 @@ export namespace Prisma {
     resultDate?: DateTimeNullableWithAggregatesFilter<"Ranking"> | Date | string | null
     previousRank?: IntNullableWithAggregatesFilter<"Ranking"> | number | null
     sourceUrl?: StringNullableWithAggregatesFilter<"Ranking"> | string | null
+    model_name?: StringNullableWithAggregatesFilter<"Ranking"> | string | null
+    organization?: StringNullableWithAggregatesFilter<"Ranking"> | string | null
+    score_str?: StringNullableWithAggregatesFilter<"Ranking"> | string | null
   }
 
   export type ModelWhereInput = {
@@ -36798,6 +37332,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -36848,6 +37385,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -36898,6 +37438,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -36948,6 +37491,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -36998,6 +37544,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
   }
 
   export type PaperUpdateManyMutationInput = {
@@ -37036,6 +37585,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaperUncheckedUpdateManyInput = {
@@ -37074,6 +37626,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EntityRelationshipCreateInput = {
@@ -37237,6 +37792,7 @@ export namespace Prisma {
     color?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    domain?: string | null
     papers?: PaperTaskCreateNestedManyWithoutTaskInput
   }
 
@@ -37247,6 +37803,7 @@ export namespace Prisma {
     color?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    domain?: string | null
     papers?: PaperTaskUncheckedCreateNestedManyWithoutTaskInput
   }
 
@@ -37257,6 +37814,7 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
     papers?: PaperTaskUpdateManyWithoutTaskNestedInput
   }
 
@@ -37267,6 +37825,7 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
     papers?: PaperTaskUncheckedUpdateManyWithoutTaskNestedInput
   }
 
@@ -37277,6 +37836,7 @@ export namespace Prisma {
     color?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    domain?: string | null
   }
 
   export type TaskUpdateManyMutationInput = {
@@ -37286,6 +37846,7 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TaskUncheckedUpdateManyInput = {
@@ -37295,6 +37856,7 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaperTaskCreateInput = {
@@ -37445,6 +38007,25 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    description?: string | null
+    domain?: string | null
+    task?: string | null
+    category?: string | null
+    metric?: string | null
+    status?: string | null
+    year?: number | null
+    results_count?: number | null
+    models_count?: number | null
+    top_models?: BenchmarkCreatetop_modelsInput | string[]
+    paper_title?: string | null
+    paper_url?: string | null
+    repo_url?: string | null
+    dataset_url?: string | null
+    is_popular?: boolean | null
+    is_trending?: boolean | null
+    is_recently_added?: boolean | null
+    modality?: string | null
+    benchmark_url?: string | null
     rankings?: RankingCreateNestedManyWithoutBenchmarkInput
     claims?: SotaClaimCreateNestedManyWithoutBenchmarkInput
   }
@@ -37455,6 +38036,25 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    description?: string | null
+    domain?: string | null
+    task?: string | null
+    category?: string | null
+    metric?: string | null
+    status?: string | null
+    year?: number | null
+    results_count?: number | null
+    models_count?: number | null
+    top_models?: BenchmarkCreatetop_modelsInput | string[]
+    paper_title?: string | null
+    paper_url?: string | null
+    repo_url?: string | null
+    dataset_url?: string | null
+    is_popular?: boolean | null
+    is_trending?: boolean | null
+    is_recently_added?: boolean | null
+    modality?: string | null
+    benchmark_url?: string | null
     rankings?: RankingUncheckedCreateNestedManyWithoutBenchmarkInput
     claims?: SotaClaimUncheckedCreateNestedManyWithoutBenchmarkInput
   }
@@ -37465,6 +38065,25 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    metric?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: NullableIntFieldUpdateOperationsInput | number | null
+    results_count?: NullableIntFieldUpdateOperationsInput | number | null
+    models_count?: NullableIntFieldUpdateOperationsInput | number | null
+    top_models?: BenchmarkUpdatetop_modelsInput | string[]
+    paper_title?: NullableStringFieldUpdateOperationsInput | string | null
+    paper_url?: NullableStringFieldUpdateOperationsInput | string | null
+    repo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    dataset_url?: NullableStringFieldUpdateOperationsInput | string | null
+    is_popular?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_trending?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_recently_added?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    modality?: NullableStringFieldUpdateOperationsInput | string | null
+    benchmark_url?: NullableStringFieldUpdateOperationsInput | string | null
     rankings?: RankingUpdateManyWithoutBenchmarkNestedInput
     claims?: SotaClaimUpdateManyWithoutBenchmarkNestedInput
   }
@@ -37475,6 +38094,25 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    metric?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: NullableIntFieldUpdateOperationsInput | number | null
+    results_count?: NullableIntFieldUpdateOperationsInput | number | null
+    models_count?: NullableIntFieldUpdateOperationsInput | number | null
+    top_models?: BenchmarkUpdatetop_modelsInput | string[]
+    paper_title?: NullableStringFieldUpdateOperationsInput | string | null
+    paper_url?: NullableStringFieldUpdateOperationsInput | string | null
+    repo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    dataset_url?: NullableStringFieldUpdateOperationsInput | string | null
+    is_popular?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_trending?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_recently_added?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    modality?: NullableStringFieldUpdateOperationsInput | string | null
+    benchmark_url?: NullableStringFieldUpdateOperationsInput | string | null
     rankings?: RankingUncheckedUpdateManyWithoutBenchmarkNestedInput
     claims?: SotaClaimUncheckedUpdateManyWithoutBenchmarkNestedInput
   }
@@ -37485,6 +38123,25 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    description?: string | null
+    domain?: string | null
+    task?: string | null
+    category?: string | null
+    metric?: string | null
+    status?: string | null
+    year?: number | null
+    results_count?: number | null
+    models_count?: number | null
+    top_models?: BenchmarkCreatetop_modelsInput | string[]
+    paper_title?: string | null
+    paper_url?: string | null
+    repo_url?: string | null
+    dataset_url?: string | null
+    is_popular?: boolean | null
+    is_trending?: boolean | null
+    is_recently_added?: boolean | null
+    modality?: string | null
+    benchmark_url?: string | null
   }
 
   export type BenchmarkUpdateManyMutationInput = {
@@ -37493,6 +38150,25 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    metric?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: NullableIntFieldUpdateOperationsInput | number | null
+    results_count?: NullableIntFieldUpdateOperationsInput | number | null
+    models_count?: NullableIntFieldUpdateOperationsInput | number | null
+    top_models?: BenchmarkUpdatetop_modelsInput | string[]
+    paper_title?: NullableStringFieldUpdateOperationsInput | string | null
+    paper_url?: NullableStringFieldUpdateOperationsInput | string | null
+    repo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    dataset_url?: NullableStringFieldUpdateOperationsInput | string | null
+    is_popular?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_trending?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_recently_added?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    modality?: NullableStringFieldUpdateOperationsInput | string | null
+    benchmark_url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BenchmarkUncheckedUpdateManyInput = {
@@ -37501,6 +38177,25 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    metric?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: NullableIntFieldUpdateOperationsInput | number | null
+    results_count?: NullableIntFieldUpdateOperationsInput | number | null
+    models_count?: NullableIntFieldUpdateOperationsInput | number | null
+    top_models?: BenchmarkUpdatetop_modelsInput | string[]
+    paper_title?: NullableStringFieldUpdateOperationsInput | string | null
+    paper_url?: NullableStringFieldUpdateOperationsInput | string | null
+    repo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    dataset_url?: NullableStringFieldUpdateOperationsInput | string | null
+    is_popular?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_trending?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_recently_added?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    modality?: NullableStringFieldUpdateOperationsInput | string | null
+    benchmark_url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SotaClaimCreateInput = {
@@ -37557,6 +38252,9 @@ export namespace Prisma {
     resultDate?: Date | string | null
     previousRank?: number | null
     sourceUrl?: string | null
+    model_name?: string | null
+    organization?: string | null
+    score_str?: string | null
     benchmark?: BenchmarkCreateNestedOneWithoutRankingsInput
     paper?: PaperCreateNestedOneWithoutRankingsInput
   }
@@ -37577,6 +38275,9 @@ export namespace Prisma {
     resultDate?: Date | string | null
     previousRank?: number | null
     sourceUrl?: string | null
+    model_name?: string | null
+    organization?: string | null
+    score_str?: string | null
   }
 
   export type RankingUpdateInput = {
@@ -37593,6 +38294,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
     benchmark?: BenchmarkUpdateOneWithoutRankingsNestedInput
     paper?: PaperUpdateOneWithoutRankingsNestedInput
   }
@@ -37613,6 +38317,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RankingCreateManyInput = {
@@ -37631,6 +38338,9 @@ export namespace Prisma {
     resultDate?: Date | string | null
     previousRank?: number | null
     sourceUrl?: string | null
+    model_name?: string | null
+    organization?: string | null
+    score_str?: string | null
   }
 
   export type RankingUpdateManyMutationInput = {
@@ -37647,6 +38357,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RankingUncheckedUpdateManyInput = {
@@ -37665,6 +38378,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ModelCreateInput = {
@@ -39197,6 +39913,9 @@ export namespace Prisma {
     venue?: SortOrder
     organization?: SortOrder
     authors?: SortOrder
+    huggingface_url?: SortOrder
+    domain?: SortOrder
+    task?: SortOrder
   }
 
   export type PaperAvgOrderByAggregateInput = {
@@ -39246,6 +39965,9 @@ export namespace Prisma {
     venue?: SortOrder
     organization?: SortOrder
     authors?: SortOrder
+    huggingface_url?: SortOrder
+    domain?: SortOrder
+    task?: SortOrder
   }
 
   export type PaperMinOrderByAggregateInput = {
@@ -39284,6 +40006,9 @@ export namespace Prisma {
     venue?: SortOrder
     organization?: SortOrder
     authors?: SortOrder
+    huggingface_url?: SortOrder
+    domain?: SortOrder
+    task?: SortOrder
   }
 
   export type PaperSumOrderByAggregateInput = {
@@ -39586,6 +40311,7 @@ export namespace Prisma {
     color?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    domain?: SortOrder
   }
 
   export type TaskMaxOrderByAggregateInput = {
@@ -39595,6 +40321,7 @@ export namespace Prisma {
     color?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    domain?: SortOrder
   }
 
   export type TaskMinOrderByAggregateInput = {
@@ -39604,6 +40331,7 @@ export namespace Prisma {
     color?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    domain?: SortOrder
   }
 
   export type PaperScalarRelationFilter = {
@@ -39691,12 +40419,45 @@ export namespace Prisma {
     method_id?: SortOrder
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type BenchmarkCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    description?: SortOrder
+    domain?: SortOrder
+    task?: SortOrder
+    category?: SortOrder
+    metric?: SortOrder
+    status?: SortOrder
+    year?: SortOrder
+    results_count?: SortOrder
+    models_count?: SortOrder
+    top_models?: SortOrder
+    paper_title?: SortOrder
+    paper_url?: SortOrder
+    repo_url?: SortOrder
+    dataset_url?: SortOrder
+    is_popular?: SortOrder
+    is_trending?: SortOrder
+    is_recently_added?: SortOrder
+    modality?: SortOrder
+    benchmark_url?: SortOrder
+  }
+
+  export type BenchmarkAvgOrderByAggregateInput = {
+    year?: SortOrder
+    results_count?: SortOrder
+    models_count?: SortOrder
   }
 
   export type BenchmarkMaxOrderByAggregateInput = {
@@ -39705,6 +40466,24 @@ export namespace Prisma {
     slug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    description?: SortOrder
+    domain?: SortOrder
+    task?: SortOrder
+    category?: SortOrder
+    metric?: SortOrder
+    status?: SortOrder
+    year?: SortOrder
+    results_count?: SortOrder
+    models_count?: SortOrder
+    paper_title?: SortOrder
+    paper_url?: SortOrder
+    repo_url?: SortOrder
+    dataset_url?: SortOrder
+    is_popular?: SortOrder
+    is_trending?: SortOrder
+    is_recently_added?: SortOrder
+    modality?: SortOrder
+    benchmark_url?: SortOrder
   }
 
   export type BenchmarkMinOrderByAggregateInput = {
@@ -39713,6 +40492,30 @@ export namespace Prisma {
     slug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    description?: SortOrder
+    domain?: SortOrder
+    task?: SortOrder
+    category?: SortOrder
+    metric?: SortOrder
+    status?: SortOrder
+    year?: SortOrder
+    results_count?: SortOrder
+    models_count?: SortOrder
+    paper_title?: SortOrder
+    paper_url?: SortOrder
+    repo_url?: SortOrder
+    dataset_url?: SortOrder
+    is_popular?: SortOrder
+    is_trending?: SortOrder
+    is_recently_added?: SortOrder
+    modality?: SortOrder
+    benchmark_url?: SortOrder
+  }
+
+  export type BenchmarkSumOrderByAggregateInput = {
+    year?: SortOrder
+    results_count?: SortOrder
+    models_count?: SortOrder
   }
 
   export type BenchmarkNullableScalarRelationFilter = {
@@ -39774,6 +40577,9 @@ export namespace Prisma {
     resultDate?: SortOrder
     previousRank?: SortOrder
     sourceUrl?: SortOrder
+    model_name?: SortOrder
+    organization?: SortOrder
+    score_str?: SortOrder
   }
 
   export type RankingAvgOrderByAggregateInput = {
@@ -39799,6 +40605,9 @@ export namespace Prisma {
     resultDate?: SortOrder
     previousRank?: SortOrder
     sourceUrl?: SortOrder
+    model_name?: SortOrder
+    organization?: SortOrder
+    score_str?: SortOrder
   }
 
   export type RankingMinOrderByAggregateInput = {
@@ -39817,6 +40626,9 @@ export namespace Prisma {
     resultDate?: SortOrder
     previousRank?: SortOrder
     sourceUrl?: SortOrder
+    model_name?: SortOrder
+    organization?: SortOrder
+    score_str?: SortOrder
   }
 
   export type RankingSumOrderByAggregateInput = {
@@ -41146,6 +41958,10 @@ export namespace Prisma {
     update?: XOR<XOR<PaperUpdateToOneWithWhereWithoutMethodsInput, PaperUpdateWithoutMethodsInput>, PaperUncheckedUpdateWithoutMethodsInput>
   }
 
+  export type BenchmarkCreatetop_modelsInput = {
+    set: string[]
+  }
+
   export type RankingCreateNestedManyWithoutBenchmarkInput = {
     create?: XOR<RankingCreateWithoutBenchmarkInput, RankingUncheckedCreateWithoutBenchmarkInput> | RankingCreateWithoutBenchmarkInput[] | RankingUncheckedCreateWithoutBenchmarkInput[]
     connectOrCreate?: RankingCreateOrConnectWithoutBenchmarkInput | RankingCreateOrConnectWithoutBenchmarkInput[]
@@ -41172,6 +41988,11 @@ export namespace Prisma {
     connectOrCreate?: SotaClaimCreateOrConnectWithoutBenchmarkInput | SotaClaimCreateOrConnectWithoutBenchmarkInput[]
     createMany?: SotaClaimCreateManyBenchmarkInputEnvelope
     connect?: SotaClaimWhereUniqueInput | SotaClaimWhereUniqueInput[]
+  }
+
+  export type BenchmarkUpdatetop_modelsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type RankingUpdateManyWithoutBenchmarkNestedInput = {
@@ -42359,6 +43180,9 @@ export namespace Prisma {
     resultDate?: Date | string | null
     previousRank?: number | null
     sourceUrl?: string | null
+    model_name?: string | null
+    organization?: string | null
+    score_str?: string | null
     benchmark?: BenchmarkCreateNestedOneWithoutRankingsInput
   }
 
@@ -42377,6 +43201,9 @@ export namespace Prisma {
     resultDate?: Date | string | null
     previousRank?: number | null
     sourceUrl?: string | null
+    model_name?: string | null
+    organization?: string | null
+    score_str?: string | null
   }
 
   export type RankingCreateOrConnectWithoutPaperInput = {
@@ -42690,6 +43517,9 @@ export namespace Prisma {
     resultDate?: DateTimeNullableFilter<"Ranking"> | Date | string | null
     previousRank?: IntNullableFilter<"Ranking"> | number | null
     sourceUrl?: StringNullableFilter<"Ranking"> | string | null
+    model_name?: StringNullableFilter<"Ranking"> | string | null
+    organization?: StringNullableFilter<"Ranking"> | string | null
+    score_str?: StringNullableFilter<"Ranking"> | string | null
   }
 
   export type SotaClaimUpsertWithWhereUniqueWithoutPaperInput = {
@@ -42817,6 +43647,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -42866,6 +43699,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -42891,6 +43727,7 @@ export namespace Prisma {
     color?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    domain?: string | null
   }
 
   export type TaskUncheckedCreateWithoutPapersInput = {
@@ -42900,6 +43737,7 @@ export namespace Prisma {
     color?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    domain?: string | null
   }
 
   export type TaskCreateOrConnectWithoutPapersInput = {
@@ -42954,6 +43792,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -43003,6 +43844,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -43034,6 +43878,7 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TaskUncheckedUpdateWithoutPapersInput = {
@@ -43043,6 +43888,7 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaperMethodCreateWithoutMethodInput = {
@@ -43140,6 +43986,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -43189,6 +44038,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -43285,6 +44137,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -43334,6 +44189,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -43361,6 +44219,9 @@ export namespace Prisma {
     resultDate?: Date | string | null
     previousRank?: number | null
     sourceUrl?: string | null
+    model_name?: string | null
+    organization?: string | null
+    score_str?: string | null
     paper?: PaperCreateNestedOneWithoutRankingsInput
   }
 
@@ -43379,6 +44240,9 @@ export namespace Prisma {
     resultDate?: Date | string | null
     previousRank?: number | null
     sourceUrl?: string | null
+    model_name?: string | null
+    organization?: string | null
+    score_str?: string | null
   }
 
   export type RankingCreateOrConnectWithoutBenchmarkInput = {
@@ -43449,6 +44313,25 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    description?: string | null
+    domain?: string | null
+    task?: string | null
+    category?: string | null
+    metric?: string | null
+    status?: string | null
+    year?: number | null
+    results_count?: number | null
+    models_count?: number | null
+    top_models?: BenchmarkCreatetop_modelsInput | string[]
+    paper_title?: string | null
+    paper_url?: string | null
+    repo_url?: string | null
+    dataset_url?: string | null
+    is_popular?: boolean | null
+    is_trending?: boolean | null
+    is_recently_added?: boolean | null
+    modality?: string | null
+    benchmark_url?: string | null
     rankings?: RankingCreateNestedManyWithoutBenchmarkInput
   }
 
@@ -43458,6 +44341,25 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    description?: string | null
+    domain?: string | null
+    task?: string | null
+    category?: string | null
+    metric?: string | null
+    status?: string | null
+    year?: number | null
+    results_count?: number | null
+    models_count?: number | null
+    top_models?: BenchmarkCreatetop_modelsInput | string[]
+    paper_title?: string | null
+    paper_url?: string | null
+    repo_url?: string | null
+    dataset_url?: string | null
+    is_popular?: boolean | null
+    is_trending?: boolean | null
+    is_recently_added?: boolean | null
+    modality?: string | null
+    benchmark_url?: string | null
     rankings?: RankingUncheckedCreateNestedManyWithoutBenchmarkInput
   }
 
@@ -43502,6 +44404,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -43551,6 +44456,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -43586,6 +44494,25 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    metric?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: NullableIntFieldUpdateOperationsInput | number | null
+    results_count?: NullableIntFieldUpdateOperationsInput | number | null
+    models_count?: NullableIntFieldUpdateOperationsInput | number | null
+    top_models?: BenchmarkUpdatetop_modelsInput | string[]
+    paper_title?: NullableStringFieldUpdateOperationsInput | string | null
+    paper_url?: NullableStringFieldUpdateOperationsInput | string | null
+    repo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    dataset_url?: NullableStringFieldUpdateOperationsInput | string | null
+    is_popular?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_trending?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_recently_added?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    modality?: NullableStringFieldUpdateOperationsInput | string | null
+    benchmark_url?: NullableStringFieldUpdateOperationsInput | string | null
     rankings?: RankingUpdateManyWithoutBenchmarkNestedInput
   }
 
@@ -43595,6 +44522,25 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    metric?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: NullableIntFieldUpdateOperationsInput | number | null
+    results_count?: NullableIntFieldUpdateOperationsInput | number | null
+    models_count?: NullableIntFieldUpdateOperationsInput | number | null
+    top_models?: BenchmarkUpdatetop_modelsInput | string[]
+    paper_title?: NullableStringFieldUpdateOperationsInput | string | null
+    paper_url?: NullableStringFieldUpdateOperationsInput | string | null
+    repo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    dataset_url?: NullableStringFieldUpdateOperationsInput | string | null
+    is_popular?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_trending?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_recently_added?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    modality?: NullableStringFieldUpdateOperationsInput | string | null
+    benchmark_url?: NullableStringFieldUpdateOperationsInput | string | null
     rankings?: RankingUncheckedUpdateManyWithoutBenchmarkNestedInput
   }
 
@@ -43645,6 +44591,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -43694,6 +44643,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -43713,6 +44665,25 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    description?: string | null
+    domain?: string | null
+    task?: string | null
+    category?: string | null
+    metric?: string | null
+    status?: string | null
+    year?: number | null
+    results_count?: number | null
+    models_count?: number | null
+    top_models?: BenchmarkCreatetop_modelsInput | string[]
+    paper_title?: string | null
+    paper_url?: string | null
+    repo_url?: string | null
+    dataset_url?: string | null
+    is_popular?: boolean | null
+    is_trending?: boolean | null
+    is_recently_added?: boolean | null
+    modality?: string | null
+    benchmark_url?: string | null
     claims?: SotaClaimCreateNestedManyWithoutBenchmarkInput
   }
 
@@ -43722,6 +44693,25 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    description?: string | null
+    domain?: string | null
+    task?: string | null
+    category?: string | null
+    metric?: string | null
+    status?: string | null
+    year?: number | null
+    results_count?: number | null
+    models_count?: number | null
+    top_models?: BenchmarkCreatetop_modelsInput | string[]
+    paper_title?: string | null
+    paper_url?: string | null
+    repo_url?: string | null
+    dataset_url?: string | null
+    is_popular?: boolean | null
+    is_trending?: boolean | null
+    is_recently_added?: boolean | null
+    modality?: string | null
+    benchmark_url?: string | null
     claims?: SotaClaimUncheckedCreateNestedManyWithoutBenchmarkInput
   }
 
@@ -43766,6 +44756,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -43815,6 +44808,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -43850,6 +44846,25 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    metric?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: NullableIntFieldUpdateOperationsInput | number | null
+    results_count?: NullableIntFieldUpdateOperationsInput | number | null
+    models_count?: NullableIntFieldUpdateOperationsInput | number | null
+    top_models?: BenchmarkUpdatetop_modelsInput | string[]
+    paper_title?: NullableStringFieldUpdateOperationsInput | string | null
+    paper_url?: NullableStringFieldUpdateOperationsInput | string | null
+    repo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    dataset_url?: NullableStringFieldUpdateOperationsInput | string | null
+    is_popular?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_trending?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_recently_added?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    modality?: NullableStringFieldUpdateOperationsInput | string | null
+    benchmark_url?: NullableStringFieldUpdateOperationsInput | string | null
     claims?: SotaClaimUpdateManyWithoutBenchmarkNestedInput
   }
 
@@ -43859,6 +44874,25 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    metric?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: NullableIntFieldUpdateOperationsInput | number | null
+    results_count?: NullableIntFieldUpdateOperationsInput | number | null
+    models_count?: NullableIntFieldUpdateOperationsInput | number | null
+    top_models?: BenchmarkUpdatetop_modelsInput | string[]
+    paper_title?: NullableStringFieldUpdateOperationsInput | string | null
+    paper_url?: NullableStringFieldUpdateOperationsInput | string | null
+    repo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    dataset_url?: NullableStringFieldUpdateOperationsInput | string | null
+    is_popular?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_trending?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_recently_added?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    modality?: NullableStringFieldUpdateOperationsInput | string | null
+    benchmark_url?: NullableStringFieldUpdateOperationsInput | string | null
     claims?: SotaClaimUncheckedUpdateManyWithoutBenchmarkNestedInput
   }
 
@@ -43909,6 +44943,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -43958,6 +44995,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -44132,6 +45172,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -44181,6 +45224,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -44343,6 +45389,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -44392,6 +45441,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -44500,6 +45552,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
     labs?: PaperLabCreateNestedManyWithoutPaperInput
@@ -44549,6 +45604,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
     labs?: PaperLabUncheckedCreateNestedManyWithoutPaperInput
@@ -44645,6 +45703,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUpdateManyWithoutPaperNestedInput
@@ -44694,6 +45755,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUncheckedUpdateManyWithoutPaperNestedInput
@@ -44802,6 +45866,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -44851,6 +45918,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -44947,6 +46017,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -44996,6 +46069,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -45079,6 +46155,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -45128,6 +46207,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -45218,6 +46300,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -45267,6 +46352,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -45406,6 +46494,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
     labs?: PaperLabCreateNestedManyWithoutPaperInput
@@ -45455,6 +46546,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
     labs?: PaperLabUncheckedCreateNestedManyWithoutPaperInput
@@ -45551,6 +46645,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUpdateManyWithoutPaperNestedInput
@@ -45600,6 +46697,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUncheckedUpdateManyWithoutPaperNestedInput
@@ -45708,6 +46808,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     labs?: PaperLabCreateNestedManyWithoutPaperInput
@@ -45757,6 +46860,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     labs?: PaperLabUncheckedCreateNestedManyWithoutPaperInput
@@ -45853,6 +46959,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUpdateManyWithoutPaperNestedInput
@@ -45902,6 +47011,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     labs?: PaperLabUncheckedUpdateManyWithoutPaperNestedInput
@@ -45985,6 +47097,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -46034,6 +47149,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -46126,6 +47244,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -46175,6 +47296,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -46456,6 +47580,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetCreateNestedManyWithoutPaperInput
     journals?: PaperJournalCreateNestedManyWithoutPaperInput
@@ -46505,6 +47632,9 @@ export namespace Prisma {
     venue?: string | null
     organization?: string | null
     authors?: string | null
+    huggingface_url?: string | null
+    domain?: string | null
+    task?: string | null
     conferences?: PaperConferenceUncheckedCreateNestedManyWithoutPaperInput
     datasets?: PaperDatasetUncheckedCreateNestedManyWithoutPaperInput
     journals?: PaperJournalUncheckedCreateNestedManyWithoutPaperInput
@@ -46615,6 +47745,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUpdateManyWithoutPaperNestedInput
@@ -46664,6 +47797,9 @@ export namespace Prisma {
     venue?: NullableStringFieldUpdateOperationsInput | string | null
     organization?: NullableStringFieldUpdateOperationsInput | string | null
     authors?: NullableStringFieldUpdateOperationsInput | string | null
+    huggingface_url?: NullableStringFieldUpdateOperationsInput | string | null
+    domain?: NullableStringFieldUpdateOperationsInput | string | null
+    task?: NullableStringFieldUpdateOperationsInput | string | null
     conferences?: PaperConferenceUncheckedUpdateManyWithoutPaperNestedInput
     datasets?: PaperDatasetUncheckedUpdateManyWithoutPaperNestedInput
     journals?: PaperJournalUncheckedUpdateManyWithoutPaperNestedInput
@@ -46779,6 +47915,9 @@ export namespace Prisma {
     resultDate?: Date | string | null
     previousRank?: number | null
     sourceUrl?: string | null
+    model_name?: string | null
+    organization?: string | null
+    score_str?: string | null
   }
 
   export type SotaClaimCreateManyPaperInput = {
@@ -46918,6 +48057,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
     benchmark?: BenchmarkUpdateOneWithoutRankingsNestedInput
   }
 
@@ -46936,6 +48078,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RankingUncheckedUpdateManyWithoutPaperInput = {
@@ -46953,6 +48098,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SotaClaimUpdateWithoutPaperInput = {
@@ -47047,6 +48195,9 @@ export namespace Prisma {
     resultDate?: Date | string | null
     previousRank?: number | null
     sourceUrl?: string | null
+    model_name?: string | null
+    organization?: string | null
+    score_str?: string | null
   }
 
   export type SotaClaimCreateManyBenchmarkInput = {
@@ -47068,6 +48219,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
     paper?: PaperUpdateOneWithoutRankingsNestedInput
   }
 
@@ -47086,6 +48240,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RankingUncheckedUpdateManyWithoutBenchmarkInput = {
@@ -47103,6 +48260,9 @@ export namespace Prisma {
     resultDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     previousRank?: NullableIntFieldUpdateOperationsInput | number | null
     sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    model_name?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    score_str?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SotaClaimUpdateWithoutBenchmarkInput = {
