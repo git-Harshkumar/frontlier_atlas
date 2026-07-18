@@ -375,6 +375,55 @@ function ModelsContent() {
     return filteredCatalogModels[0];
   }, [activeFilterLabel, filteredCatalogModels]);
 
+  const filteredCapabilities = useMemo(() => {
+    if (!facets?.capabilities) return [];
+    const q = searchQuery.toLowerCase();
+    return facets.capabilities.filter(c => !searchQuery || c.name.toLowerCase().includes(q));
+  }, [facets?.capabilities, searchQuery]);
+
+  const filteredModelFamilies = useMemo(() => {
+    if (!facets?.modelFamilies) return [];
+    const q = searchQuery.toLowerCase();
+    return facets.modelFamilies.filter(f => !searchQuery || f.name.toLowerCase().includes(q));
+  }, [facets?.modelFamilies, searchQuery]);
+
+  const filteredVendors = useMemo(() => {
+    if (!facets?.vendors) return [];
+    const q = searchQuery.toLowerCase();
+    return facets.vendors.filter(v => !searchQuery || v.name.toLowerCase().includes(q));
+  }, [facets?.vendors, searchQuery]);
+
+  const filteredResearchAreas = useMemo(() => {
+    if (!facets?.researchAreas) return [];
+    const q = searchQuery.toLowerCase();
+    return facets.researchAreas.filter(r => !searchQuery || r.name.toLowerCase().includes(q));
+  }, [facets?.researchAreas, searchQuery]);
+
+  const filteredTrending = useMemo(() => {
+    if (!trendingModels) return [];
+    const q = searchQuery.toLowerCase();
+    return trendingModels.filter(m => !searchQuery || m.name.toLowerCase().includes(q) || m.vendor.toLowerCase().includes(q));
+  }, [trendingModels, searchQuery]);
+
+  const filteredRecentlyReleasedTable = useMemo(() => {
+    if (!allModels || !allModels.length) return [];
+    const recent = allModels.slice(0, 8).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    if (!searchQuery) return recent;
+    const q = searchQuery.toLowerCase();
+    return recent.filter(m => m.name.toLowerCase().includes(q) || m.vendor.toLowerCase().includes(q) || (m.description && m.description.toLowerCase().includes(q)));
+  }, [allModels, searchQuery]);
+
+  const hasSearchResults = useMemo(() => {
+    if (!searchQuery) return true;
+    return filteredCapabilities.length > 0 ||
+      filteredModelFamilies.length > 0 ||
+      filteredVendors.length > 0 ||
+      filteredResearchAreas.length > 0 ||
+      filteredTrending.length > 0 ||
+      filteredRecentlyReleasedTable.length > 0 ||
+      filteredCatalogModels.length > 0;
+  }, [searchQuery, filteredCapabilities, filteredModelFamilies, filteredVendors, filteredResearchAreas, filteredTrending, filteredRecentlyReleasedTable, filteredCatalogModels]);
+
   const handleCopyQuickstart = () => {
     if (inspectedModel?.description) {
       navigator.clipboard.writeText(inspectedModel.description);
@@ -551,16 +600,16 @@ function ModelsContent() {
             <div className="flex-1 min-w-0">
               
               {/* 2. BROWSE BY CAPABILITY (Exact tasks UI reference cards) */}
-              {facets?.capabilities && facets.capabilities.length > 0 && (
+              {filteredCapabilities.length > 0 && (
               <section id="section-capability" className="mb-12 scroll-mt-24">
                 <div className="models-block-header flex justify-between items-center mb-6 border-b-0 pb-0">
                   <div className="models-block-title flex items-center gap-3 text-[30px] font-bold text-gray-800">
                     <h2>Browse by Capability</h2>
                   </div>
-                  <span className="models-block-count text-[11px] font-normal uppercase tracking-wider text-gray-400">{facets.capabilities.length} Tasks &amp; Modalities</span>
+                  <span className="models-block-count text-[11px] font-normal uppercase tracking-wider text-gray-400">{facets?.capabilities?.length} Tasks &amp; Modalities</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {facets.capabilities.filter(c => !searchQuery || c.name.toLowerCase().includes(searchQuery.toLowerCase())).map((cap, idx) => {
+                  {filteredCapabilities.map((cap, idx) => {
                     const { Icon: SkeletalIcon, color: strokeColor } = getSkeletalIcon(idx, cap.name);
                     const isActive = selectedCapability === cap.name;
                     return (
@@ -614,16 +663,16 @@ function ModelsContent() {
               )}
 
               {/* 3. BROWSE BY MODEL FAMILY */}
-              {facets?.modelFamilies && facets.modelFamilies.length > 0 && (
+              {filteredModelFamilies.length > 0 && (
               <section id="section-family" className="mb-12 scroll-mt-24">
                 <div className="models-block-header flex justify-between items-center mb-6 border-b-0 pb-0">
                   <div className="models-block-title flex items-center gap-3 text-[30px] font-bold text-gray-800">
                     <h2>Browse by Model Family</h2>
                   </div>
-                  <span className="models-block-count text-[11px] font-normal uppercase tracking-wider text-gray-400">{facets.modelFamilies.length} Model Families</span>
+                  <span className="models-block-count text-[11px] font-normal uppercase tracking-wider text-gray-400">{facets?.modelFamilies?.length} Model Families</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {facets.modelFamilies.filter(f => !searchQuery || f.name.toLowerCase().includes(searchQuery.toLowerCase())).map((fam, idx) => {
+                  {filteredModelFamilies.map((fam, idx) => {
                     const { Icon: SkeletalIcon, color: strokeColor } = getSkeletalIcon(idx + 3, fam.name);
                     const isActive = selectedFamily === fam.name;
                     return (
@@ -677,18 +726,24 @@ function ModelsContent() {
               )}
 
               {/* 4. BROWSE BY ORGANIZATION */}
-              {facets?.vendors && facets.vendors.length > 0 && (
+              {filteredVendors.length > 0 && (
               <section id="section-organization" className="mb-12 scroll-mt-24">
                 <div className="models-block-header flex justify-between items-center mb-6 border-b-0 pb-0">
                   <div className="models-block-title flex items-center gap-3 text-[30px] font-bold text-gray-800">
                     <h2>Browse by Organization</h2>
                   </div>
-                  <span className="models-block-count text-[11px] font-normal uppercase tracking-wider text-gray-400">{facets.vendors.length} Leading Labs</span>
+                  <span className="models-block-count text-[11px] font-normal uppercase tracking-wider text-gray-400">{facets?.vendors?.length} Leading Labs</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {facets.vendors.filter(o => !searchQuery || o.name.toLowerCase().includes(searchQuery.toLowerCase())).map((v, idx) => {
+                  {filteredVendors.map((v, idx) => {
                     const { Icon: SkeletalIcon, color: strokeColor } = getSkeletalIcon(idx + 7, v.name);
                     const isActive = selectedVendor === v.name;
+                    const vendorModel = allModels.find(
+  (model) => model.vendor.toLowerCase() === v.name.toLowerCase()
+);
+
+const vendorLogo = vendorModel?.vendorLogoUrl;
+                    
                     return (
                       <div
                         key={v.name}
@@ -708,9 +763,17 @@ function ModelsContent() {
                         className="group"
                       >
                         <div className="flex items-center gap-2">
-                          <div className="flex-shrink-0 p-2 rounded-lg transition-transform group-hover:scale-150">
-                            <SkeletalIcon size={20} style={{ color: strokeColor }} />
-                          </div>
+                          <div className="flex-shrink-0 p-2 rounded-lg transition-transform group-hover:scale-110">
+  {vendorLogo ? (
+    <img
+      src={vendorLogo}
+      alt={v.name}
+      className="w-5 h-5 object-contain"
+    />
+  ) : (
+    <SkeletalIcon size={20} style={{ color: strokeColor }} />
+  )}
+</div>
                           <h3 style={{
                             fontFamily: 'inherit',
                             fontSize: '15px',
@@ -740,16 +803,16 @@ function ModelsContent() {
               )}
 
               {/* 5. BROWSE BY RESEARCH AREA */}
-              {facets?.researchAreas && facets.researchAreas.length > 0 && (
+              {filteredResearchAreas.length > 0 && (
               <section id="section-research" className="mb-12 scroll-mt-24">
                 <div className="models-block-header flex justify-between items-center mb-6 border-b-0 pb-0">
                   <div className="models-block-title flex items-center gap-3 text-[30px] font-bold text-gray-800">
                     <h2>Browse by Research Area</h2>
                   </div>
-                  <span className="models-block-count text-[11px] font-normal uppercase tracking-wider text-gray-400">{facets.researchAreas.length} Modalities &amp; Domains</span>
+                  <span className="models-block-count text-[11px] font-normal uppercase tracking-wider text-gray-400">{facets?.researchAreas?.length} Modalities &amp; Domains</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {facets.researchAreas.filter(r => !searchQuery || r.name.toLowerCase().includes(searchQuery.toLowerCase())).map((d, idx) => {
+                  {filteredResearchAreas.map((d, idx) => {
                     const { Icon: SkeletalIcon, color: strokeColor } = getSkeletalIcon(idx + 11, d.name);
                     const isActive = selectedDomain === d.name;
                     return (
@@ -803,7 +866,7 @@ function ModelsContent() {
               )}
 
               {/* 6. TRENDING MODELS */}
-              {trendingModels && trendingModels.length > 0 && (
+              {filteredTrending.length > 0 && (
               <section id="section-trending" className="mb-12 scroll-mt-24">
                 <div className="models-block-header flex justify-between items-center mb-6 border-b-0 pb-0">
                   <div className="models-block-title flex items-center gap-3 text-[30px] font-bold text-gray-800">
@@ -812,7 +875,7 @@ function ModelsContent() {
                   <span className="models-block-count text-[11px] font-normal uppercase tracking-wider text-gray-400">Most Active in 2025</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {trendingModels.filter(m => !searchQuery || m.name.toLowerCase().includes(searchQuery.toLowerCase()) || m.vendor.toLowerCase().includes(searchQuery.toLowerCase())).map((m, idx) => {
+                  {filteredTrending.map((m, idx) => {
                     const { Icon: SkeletalIcon, color: strokeColor } = getSkeletalIcon(idx + 15, m.name);
                     return (
                       <div
@@ -864,7 +927,7 @@ function ModelsContent() {
               )}
 
         {/* 7. RECENTLY RELEASED (Page 4) */}
-        {allModels && allModels.length > 0 && (
+        {filteredRecentlyReleasedTable.length > 0 && (
         <section id="section-recently-released" className="mb-12 scroll-mt-24">
           <div className="models-block-header flex justify-between items-center mb-6 border-b-0 pb-0">
             <div className="models-block-title flex items-center gap-3 text-[30px] font-bold text-gray-800">
@@ -886,7 +949,7 @@ function ModelsContent() {
                   </tr>
                 </thead>
                 <tbody>
-                  {allModels.slice(0, 8).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((r) => (
+                  {filteredRecentlyReleasedTable.map((r) => (
                     <tr
                       key={r.id}
                       onClick={() => setInspectedModel(r)}
@@ -917,7 +980,22 @@ function ModelsContent() {
 
 
 
+        {/* Search empty state — shown when no section has matching results */}
+        {searchQuery && !hasSearchResults && (
+          <div style={{ padding: "80px 20px", textAlign: "center", background: "#F8F7F2", borderRadius: "2px", border: "1px dashed #E5E5E0", marginTop: "20px" }}>
+            <p style={{ fontSize: "18px", fontWeight: 600, color: "#333333" }}>No models found</p>
+            <p style={{ fontSize: "14px", fontWeight: 400, color: "#777777", marginTop: "8px" }}>Try a different search term.</p>
+            <button
+              onClick={clearAllFilters}
+              style={{ marginTop: "16px", fontSize: "13px", fontWeight: 400, color: "#FF5A1F", background: "transparent", border: "none", cursor: "pointer", textDecoration: "underline" }}
+            >
+              Reset All Filters &amp; Browse All Foundation Models &rarr;
+            </button>
+          </div>
+        )}
+
         {/* 9. MODEL DIRECTORY (Page 5 & 6 Table Section) */}
+        {(filteredCatalogModels.length > 0 || !searchQuery) && (
         <div id="model-directory" style={{ marginTop: "36px", marginBottom: "64px", background: "#ffffff", border: "1px solid #E5E5E0", borderRadius: "2px", padding: "20px 14px", boxShadow: "0 8px 30px rgba(0, 0, 0, 0.04)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px", paddingBottom: "24px", borderBottom: "2px solid #EAE9E4", marginBottom: "24px" }}>
             <div>
@@ -1044,7 +1122,7 @@ function ModelsContent() {
               </table>
             </div>
           )}
-        </div>
+        </div>)}
             </div>
           </div>
         </div>

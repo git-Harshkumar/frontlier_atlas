@@ -5,6 +5,7 @@ export interface BackendModelItem {
   name: string;
   slug: string;
   vendor: string;
+  vendorLogoUrl?: string;
   releaseDate: string | null;
   parameterCount: string | null;
   modality: string | null;
@@ -60,6 +61,7 @@ export interface ModelItem {
   name: string;
   slug: string;
   vendor: string;
+  vendorLogoUrl?: string;
   releaseDate: string | null;
   parameterCount: string | null;
   modality: string | null;
@@ -90,6 +92,7 @@ export interface ModelDetail {
   name: string;
   slug: string;
   vendor: string;
+  vendorLogoUrl?: string;
   releaseDate: string | null;
   parameterCount: string | null;
   modality: string | null;
@@ -151,6 +154,7 @@ function mapModelItem(m: BackendModelItem): ModelItem {
     name: m.name,
     slug: m.slug,
     vendor: m.vendor,
+    vendorLogoUrl: m.vendorLogoUrl,
     releaseDate: m.releaseDate,
     parameterCount: m.parameterCount,
     modality: m.modality,
@@ -201,6 +205,7 @@ export async function getModelBySlug(slug: string): Promise<ModelDetail> {
     name: data.name,
     slug: data.slug,
     vendor: data.vendor,
+    vendorLogoUrl: data.vendorLogoUrl,
     releaseDate: data.releaseDate,
     parameterCount: data.parameterCount,
     modality: data.modality,
