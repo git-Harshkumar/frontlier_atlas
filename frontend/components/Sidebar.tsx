@@ -38,7 +38,7 @@ interface SidebarProps {
 const SectionLabel = ({ title }: { title: string }) => {
   return (
     <div className="px-3 mb-0.5 mt-3 first:mt-0">
-      <p className="text-[11.5px] font-bold text-[#111111] uppercase tracking-wider">
+      <p className="text-[11px] font-bold italic text-[#8B8B8B] uppercase tracking-wider">
         {title}
       </p>
     </div>

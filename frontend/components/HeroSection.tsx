@@ -193,8 +193,8 @@ export default function HeroSection({
             ))}
           </div>
 
-          {/* Mobile: Squeeze all tags into one single non-scrollable line */}
-          <div className="flex md:hidden w-full items-center justify-between gap-0.5 min-[375px]:gap-1 mt-1">
+          {/* Mobile: Squeeze all tags into one single line */}
+          <div className="flex md:hidden w-full items-center justify-center gap-0.5 min-[375px]:gap-1 mt-1 px-1">
             {tags.map((tag) => (
               <button
                 key={tag.label}
@@ -203,7 +203,7 @@ export default function HeroSection({
                     selectedTag === tag.label ? undefined : tag.label
                   )
                 }
-                className={`flex shrink items-center justify-center gap-1 rounded-full px-1.5 py-1 transition-all duration-200 ease-out cursor-pointer select-none
+                className={`flex shrink items-center justify-center gap-0.5 rounded-full px-1 py-1 transition-all duration-200 ease-out cursor-pointer select-none
                   ${
                     selectedTag === tag.label
                       ? "bg-[#F55036] text-white border border-[#F55036] shadow-sm"
@@ -211,12 +211,12 @@ export default function HeroSection({
                   }`}
               >
                 <tag.icon
-                  className={`w-2.5 h-2.5 shrink-0 transition-transform duration-200 ${
+                  className={`w-2 h-2 shrink-0 transition-transform duration-200 ${
                     selectedTag === tag.label ? "text-white" : "text-[#F55036]"
                   }`}
                 />
                 <span
-                  className={`text-[8px] min-[375px]:text-[9px] font-bold tracking-tighter whitespace-nowrap ${
+                  className={`text-[7px] min-[375px]:text-[7.5px] font-bold tracking-tighter whitespace-nowrap ${
                     selectedTag === tag.label ? "text-white" : "text-[#111111]"
                   }`}
                   style={{ lineHeight: 1 }}
