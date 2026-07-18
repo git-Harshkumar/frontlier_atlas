@@ -71,101 +71,110 @@ function ProgressionChart({ rankings }: { rankings: BenchmarkDetailRanking[] }) 
     );
   }
 
-  const W = 800, H = 260;
-  const PAD = { t: 20, r: 30, b: 44, l: 58 };
+  const W = 800, H = 280;
+  const PAD = { t: 24, r: 24, b: 40, l: 56 };
   const innerW = W - PAD.l - PAD.r;
   const innerH = H - PAD.t - PAD.b;
 
   const xMin = Math.min(...pts.map(p => p.x));
-  const xMax = Math.max(...pts.map(p => p.x)) + 0.15;
-  const yMax = Math.max(...pts.map(p => p.y)) * 1.28;
-  const yMin = 0;
+  const xMax = Math.max(...pts.map(p => p.x)) + 0.1;
+  const yValues = pts.map(p => p.y);
+  const yDataMin = Math.min(...yValues);
+  const yDataMax = Math.max(...yValues);
+  const yPad = (yDataMax - yDataMin) * 0.3;
+  const yMin = Math.max(0, yDataMin - yPad);
+  const yMax = yDataMax + yPad;
 
   const cx = (x: number) => PAD.l + ((x - xMin) / (xMax - xMin)) * innerW;
   const cy = (y: number) => PAD.t + innerH - ((y - yMin) / (yMax - yMin)) * innerH;
 
+  // Straight line path (matches reference image style)
   function buildPath(points: Pt[]) {
     if (points.length === 1) return `M ${cx(points[0].x)} ${cy(points[0].y)}`;
-    let d = `M ${cx(points[0].x)} ${cy(points[0].y)}`;
-    for (let i = 1; i < points.length; i++) {
-      const span = points[i].x - points[i - 1].x;
-      const cp1x = cx(points[i - 1].x + span / 3);
-      const cp2x = cx(points[i].x - span / 3);
-      d += ` C ${cp1x},${cy(points[i - 1].y)} ${cp2x},${cy(points[i].y)} ${cx(points[i].x)},${cy(points[i].y)}`;
-    }
-    return d;
+    return points.map((p, i) => `${i === 0 ? "M" : "L"} ${cx(p.x)} ${cy(p.y)}`).join(" ");
   }
 
   const linePath = buildPath(pts);
-  const areaPath = `${linePath} L ${cx(pts[pts.length - 1].x)},${cy(0)} L ${cx(pts[0].x)},${cy(0)} Z`;
+  const areaPath = `${linePath} L ${cx(pts[pts.length - 1].x)},${cy(yMin)} L ${cx(pts[0].x)},${cy(yMin)} Z`;
 
-  const yTicks = [0, 0.25, 0.5, 0.75, 1].map(f => yMax * f);
-  const xStart = Math.floor(xMin), xEnd = Math.ceil(xMax);
-  const xTicks = Array.from({ length: xEnd - xStart + 1 }, (_, i) => xStart + i);
+  // 5 evenly spaced y-ticks between yMin and yMax
+  const yTicks = Array.from({ length: 5 }, (_, i) => yMin + (yMax - yMin) * (i / 4));
+  // Only show first and last year on x-axis (like reference)
+  const xTicksDisplay = [Math.floor(xMin), Math.ceil(xMax - 0.1)];
 
   return (
-    <div>
+    <div className="rounded-xl border border-[#E8E8E2] bg-white p-4 shadow-sm">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${W} ${H}`}
         className="w-full"
-        style={{ height: 230 }}
+        style={{ height: 280 }}
         onMouseLeave={() => setHovered(null)}
       >
         <defs>
           <linearGradient id="sota-g" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="#FF5A1F" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#FF5A1F" stopOpacity="0" />
+            <stop offset="0%"   stopColor="#3B82F6" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.02" />
           </linearGradient>
         </defs>
 
-        {yTicks.map(t => (
-          <line key={t} x1={PAD.l} y1={cy(t)} x2={W - PAD.r} y2={cy(t)}
-            stroke={t === 0 ? "#E8E5E0" : "#F0EDE8"} strokeWidth="1"
-            strokeDasharray={t === 0 ? undefined : "3 3"} />
+        {/* Horizontal grid lines — dashed like reference */}
+        {yTicks.map((t, i) => (
+          <line key={i} x1={PAD.l} y1={cy(t)} x2={W - PAD.r} y2={cy(t)}
+            stroke="#D1D5DB" strokeWidth="1"
+            strokeDasharray="4 4" />
         ))}
-        {yTicks.map(t => (
-          <text key={t} x={PAD.l - 8} y={cy(t) + 4}
+
+        {/* Y-axis labels */}
+        {yTicks.map((t, i) => (
+          <text key={i} x={PAD.l - 8} y={cy(t) + 4}
             textAnchor="end" fontSize="10" fill="#9CA3AF" fontFamily="ui-monospace,monospace">
             {t.toFixed(2)}
           </text>
         ))}
-        {xTicks.map(yr => (
+
+        {/* X-axis: only first and last year like reference */}
+        {xTicksDisplay.map(yr => (
           <text key={yr} x={cx(yr)} y={H - 8}
-            textAnchor="middle" fontSize="10" fill="#9CA3AF" fontFamily="ui-monospace,monospace">
+            textAnchor="middle" fontSize="10" fill="#6B7280" fontFamily="ui-monospace,monospace">
             {yr}
           </text>
         ))}
 
+        {/* Filled area */}
         <path d={areaPath} fill="url(#sota-g)" />
-        <path d={linePath} fill="none" stroke="#FF5A1F" strokeWidth="2.5"
+
+        {/* Main line — blue, straight segments like reference */}
+        <path d={linePath} fill="none" stroke="#3B82F6" strokeWidth="2"
           strokeLinecap="round" strokeLinejoin="round" />
 
+        {/* Data point dots */}
         {pts.map((pt, i) => (
           <g key={i} style={{ cursor: "pointer" }} onMouseEnter={() => setHovered(pt)}>
-            <circle cx={cx(pt.x)} cy={cy(pt.y)} r={12} fill="transparent" />
-            <circle cx={cx(pt.x)} cy={cy(pt.y)} r={hovered === pt ? 6 : 4}
-              fill={pt.rank === 1 ? "#FF5A1F" : "#fff"}
-              stroke="#FF5A1F" strokeWidth="2.5"
+            <circle cx={cx(pt.x)} cy={cy(pt.y)} r={14} fill="transparent" />
+            <circle cx={cx(pt.x)} cy={cy(pt.y)} r={hovered === pt ? 5 : 3.5}
+              fill="white"
+              stroke="#3B82F6" strokeWidth="2"
               style={{ transition: "r .15s" }} />
           </g>
         ))}
 
+        {/* Hover tooltip */}
         {hovered && (() => {
           const tx = cx(hovered.x), ty = cy(hovered.y);
-          const bW = 175, bH = 48;
+          const bW = 180, bH = 48;
           const bx = tx + bW + 14 > W ? tx - bW - 10 : tx + 10;
           const by = ty - bH / 2;
           return (
             <g>
               <rect x={bx} y={by} width={bW} height={bH} rx={6}
-                fill="white" stroke="#E8E8E2"
-                style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.08))" }} />
-              <text x={bx + 10} y={by + 18} fontSize="11" fontWeight="600" fill="#111111"
+                fill="white" stroke="#E5E7EB"
+                style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.1))" }} />
+              <text x={bx + 10} y={by + 18} fontSize="11" fontWeight="600" fill="#111827"
                 fontFamily="ui-sans-serif,sans-serif">
-                {hovered.label.length > 24 ? hovered.label.slice(0, 24) + "…" : hovered.label}
+                {hovered.label.length > 26 ? hovered.label.slice(0, 26) + "…" : hovered.label}
               </text>
-              <text x={bx + 10} y={by + 34} fontSize="10" fill="#FF5A1F"
+              <text x={bx + 10} y={by + 34} fontSize="10" fill="#3B82F6"
                 fontFamily="ui-monospace,monospace" fontWeight="700">
                 Score: {hovered.y.toFixed(3)}
               </text>
@@ -174,12 +183,12 @@ function ProgressionChart({ rankings }: { rankings: BenchmarkDetailRanking[] }) 
         })()}
       </svg>
 
-      <div className="flex items-center gap-4 mt-1 text-[11px] text-[#8B8B8B]">
+      <div className="flex items-center gap-4 mt-2 text-[11px] text-[#9CA3AF]">
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-0.5 rounded-full bg-[#FF5A1F] inline-block" />
+          <span className="w-4 h-px bg-[#3B82F6] inline-block" />
           SOTA curve
         </span>
-        <span>·  hover a dot for model details</span>
+        <span>· hover a point for details</span>
       </div>
     </div>
   );
@@ -332,13 +341,13 @@ export default function BenchmarkDetailPage() {
 
       <div className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll">
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-12 pt-5 pb-20
-          flex items-start gap-4 xl:gap-5">
+          flex items-start gap-6 xl:gap-8">
 
-          <div className="hidden lg:block w-[240px] shrink-0 sticky top-3 h-[calc(100vh-80px)]">
+          <div className="hidden lg:block w-[240px] shrink-0 sticky top-4">
             <Sidebar />
           </div>
 
-          <main className="flex-1 min-w-0 xl:max-w-[1380px] animate-fade-in">
+          <main className="flex-1 min-w-0 animate-fade-in">
 
             {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-[12px] text-[#9CA3AF] mb-4">

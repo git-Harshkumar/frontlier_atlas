@@ -108,23 +108,23 @@ function getMeta(name: string) {
    ══════════════════════════════════════════════════════════════ */
 
 const DOMAINS = [
-  { label: "General AI",       icon: Trophy,    color: "#e11d48", desc: "Overall AI capability across diverse tasks" },
-  { label: "Language",         icon: BookOpen,  color: "#0284c7", desc: "NLP: comprehension, generation & translation" },
-  { label: "Reasoning",        icon: Brain,     color: "#9333ea", desc: "Logical, causal & commonsense inference" },
-  { label: "Coding",           icon: Code,      color: "#16a34a", desc: "Code generation & software engineering evals" },
-  { label: "Agents",           icon: Bot,       color: "#d97706", desc: "Tool use, planning & multi-turn decisions" },
-  { label: "Computer Vision",  icon: Eye,       color: "#0891b2", desc: "Detection, segmentation & visual tasks" },
-  { label: "OCR & Document AI",icon: FileText,  color: "#7c3aed", desc: "Text & layout parsing from documents" },
-  { label: "Multimodal",       icon: Layers,    color: "#db2777", desc: "Cross-modal image, text & audio reasoning" },
-  { label: "Audio & Speech",   icon: Mic,       color: "#0d9488", desc: "Speech recognition, synthesis & audio tasks" },
-  { label: "Video",            icon: Video,     color: "#ea580c", desc: "Action recognition & temporal understanding" },
-  { label: "Robotics",         icon: Cpu,       color: "#4f46e5", desc: "Manipulation, navigation & control tasks" },
-  { label: "Embodied AI",      icon: Activity,  color: "#ca8a04", desc: "Agents acting in simulated environments" },
-  { label: "Healthcare",       icon: Heart,     color: "#dc2626", desc: "Medical QA, imaging & clinical NLP" },
-  { label: "Mathematics",      icon: BarChart3, color: "#2563eb", desc: "Arithmetic to formal proof benchmarks" },
-  { label: "Time Series",      icon: TrendingUp,color: "#65a30d", desc: "Forecasting & anomaly detection tasks" },
-  { label: "Graphs",           icon: Network,   color: "#c026d3", desc: "Node classification & link prediction" },
-  { label: "Scientific AI",    icon: Target,    color: "#0284c7", desc: "Biology, chemistry & physics AI evals" },
+  { label: "General AI",       icon: Trophy,    color: "#e11d48", desc: "Measures overall AI capability across diverse tasks spanning language, vision, reasoning & planning" },
+  { label: "Language",         icon: BookOpen,  color: "#0284c7", desc: "NLP benchmarks for comprehension, fluent text generation & cross-lingual translation quality" },
+  { label: "Reasoning",        icon: Brain,     color: "#9333ea", desc: "Evaluates logical, causal & commonsense inference across multi-step problem chains" },
+  { label: "Coding",           icon: Code,      color: "#16a34a", desc: "Code generation, debugging & software engineering evaluations across real-world repositories" },
+  { label: "Agents",           icon: Bot,       color: "#d97706", desc: "Tool use, long-horizon planning & multi-turn decision-making in interactive environments" },
+  { label: "Computer Vision",  icon: Eye,       color: "#0891b2", desc: "Detection, segmentation, classification & other pixel-level visual understanding tasks" },
+  { label: "OCR & Document AI",icon: FileText,  color: "#7c3aed", desc: "Text recognition, layout parsing & structured extraction from scanned documents & PDFs" },
+  { label: "Multimodal",       icon: Layers,    color: "#db2777", desc: "Cross-modal reasoning across image, text & audio inputs requiring joint understanding" },
+  { label: "Audio & Speech",   icon: Mic,       color: "#0d9488", desc: "Speech recognition, synthesis quality & audio classification measured by WER and MOS" },
+  { label: "Video",            icon: Video,     color: "#ea580c", desc: "Temporal action recognition, video QA & long-form understanding across frame sequences" },
+  { label: "Robotics",         icon: Cpu,       color: "#4f46e5", desc: "Manipulation, navigation & embodied control tasks across simulated & real-world settings" },
+  { label: "Embodied AI",      icon: Activity,  color: "#ca8a04", desc: "Agents acting, exploring & solving goals in simulated 3D environments with physical constraints" },
+  { label: "Healthcare",       icon: Heart,     color: "#dc2626", desc: "Medical QA, clinical NLP & diagnostic imaging benchmarks for biomedical AI systems" },
+  { label: "Mathematics",      icon: BarChart3, color: "#2563eb", desc: "From arithmetic word problems to formal proof verification across multiple difficulty levels" },
+  { label: "Time Series",      icon: TrendingUp,color: "#65a30d", desc: "Forecasting future values & anomaly detection across temporal signals and sensor streams" },
+  { label: "Graphs",           icon: Network,   color: "#c026d3", desc: "Node classification, link prediction & graph-level reasoning on structured relational data" },
+  { label: "Scientific AI",    icon: Target,    color: "#0284c7", desc: "Biology, chemistry & physics evaluations measuring AI progress on scientific discovery tasks" },
 ];
 
 const TASKS = [
@@ -133,169 +133,169 @@ const TASKS = [
     icon: MessageSquare,
     color: "#9333ea",
     bg: "#f3e8ff",
-    desc: "Comprehension & factual recall from context",
+    desc: "Comprehension & factual recall evaluated on open-domain and reading-comprehension datasets",
   },
   {
     label: "Text Generation",
     icon: Puzzle,
     color: "#0284c7",
     bg: "#e0f2fe",
-    desc: "Coherent text from prompts & dialogue",
+    desc: "Producing coherent, fluent text from prompts, dialogue history or structured inputs",
   },
   {
     label: "Summarization",
     icon: Zap,
     color: "#16a34a",
     bg: "#dcfce7",
-    desc: "Condense documents into concise summaries",
+    desc: "Condense long documents into concise, accurate summaries scored by ROUGE & BERTScore",
   },
   {
     label: "Machine Translation",
     icon: Languages,
     color: "#d97706",
     bg: "#fef3c7",
-    desc: "Translate text evaluated by BLEU score",
+    desc: "Translate text across language pairs and evaluate fidelity using BLEU & COMET scores",
   },
   {
     label: "Reasoning",
     icon: Shield,
     color: "#7c3aed",
     bg: "#ede9fe",
-    desc: "Multi-step logical & commonsense inference",
+    desc: "Multi-step logical & commonsense inference evaluated on chains of thought and proofs",
   },
   {
     label: "Mathematical Reasoning",
     icon: Binary,
     color: "#1d4ed8",
     bg: "#dbeafe",
-    desc: "Arithmetic to formal proof benchmarks",
+    desc: "Arithmetic word problems to olympiad-level formal proofs across difficulty tiers",
   },
   {
     label: "Code Generation",
     icon: Database,
     color: "#059669",
     bg: "#d1fae5",
-    desc: "Generate code from natural language specs",
+    desc: "Generate correct, executable code from natural language specifications & test suites",
   },
   {
     label: "Software Engineering",
     icon: Box,
     color: "#0891b2",
     bg: "#cffafe",
-    desc: "Resolve real-world software issues end-to-end",
+    desc: "Resolve real-world GitHub issues end-to-end, measured by patch resolve rate",
   },
   {
     label: "Retrieval",
     icon: FileSearch,
     color: "#e11d48",
     bg: "#ffe4e6",
-    desc: "Fetch relevant docs by precision & recall",
+    desc: "Fetch semantically relevant documents ranked by precision, recall & NDCG metrics",
   },
   {
     label: "Image Classification",
     icon: ImageIcon,
     color: "#6366f1",
     bg: "#e0e7ff",
-    desc: "Assign labels to images via top-1 accuracy",
+    desc: "Assign category labels to images measured by top-1 and top-5 accuracy on held-out sets",
   },
   {
     label: "Object Detection",
     icon: Radar,
     color: "#ea580c",
     bg: "#fff7ed",
-    desc: "Locate & classify objects using mAP",
+    desc: "Locate & classify objects in images using mean average precision across IoU thresholds",
   },
   {
     label: "Semantic Segmentation",
     icon: Scissors,
     color: "#65a30d",
     bg: "#f7fee7",
-    desc: "Per-pixel labeling measured by mean IoU",
+    desc: "Per-pixel scene labeling on benchmarks like ADE20K, evaluated by mean IoU score",
   },
   {
     label: "Visual Question Answering",
     icon: Fingerprint,
     color: "#db2777",
     bg: "#fce7f3",
-    desc: "Answer questions grounded in images",
+    desc: "Answer open-ended questions grounded in image content across diverse VQA datasets",
   },
   {
     label: "Document Parsing",
     icon: FlaskConical,
     color: "#7e22ce",
     bg: "#f5f3ff",
-    desc: "Extract structured content from documents",
+    desc: "Extract structured tables, figures & text from complex PDF and scanned documents",
   },
   {
     label: "OCR",
     icon: Scan,
     color: "#4f46e5",
     bg: "#eef2ff",
-    desc: "Digitize text from images & scanned docs",
+    desc: "Digitize printed & handwritten text from images and scanned pages with high accuracy",
   },
   {
     label: "Image Captioning",
     icon: Sparkles,
     color: "#f59e0b",
     bg: "#fef9c3",
-    desc: "Generate captions scored by BLEU & CIDEr",
+    desc: "Generate descriptive captions for images, evaluated by BLEU, CIDEr & SPICE metrics",
   },
   {
     label: "Speech Recognition",
     icon: Headphones,
     color: "#0d9488",
     bg: "#ccfbf1",
-    desc: "Transcribe audio measured by WER",
+    desc: "Transcribe spoken audio to text across accents & noise conditions measured by WER",
   },
   {
     label: "Speech Synthesis",
     icon: Speaker,
     color: "#c026d3",
     bg: "#fae8ff",
-    desc: "Generate natural speech from text",
+    desc: "Generate natural, intelligible speech from text evaluated by MOS & naturalness scores",
   },
   {
     label: "Audio Classification",
     icon: Move,
     color: "#ca8a04",
     bg: "#fefce8",
-    desc: "Categorize audio clips by class accuracy",
+    desc: "Categorize audio clips into sound events, music genres or environmental class labels",
   },
   {
     label: "Video Understanding",
     icon: Film,
     color: "#dc2626",
     bg: "#fee2e2",
-    desc: "Action recognition & temporal semantics",
+    desc: "Action recognition, video QA & temporal reasoning across long-form video sequences",
   },
   {
     label: "Planning",
     icon: Satellite,
     color: "#10b981",
     bg: "#ecfdf5",
-    desc: "Step-by-step goal planning & decomposition",
+    desc: "Step-by-step goal planning, task decomposition & sequential decision-making in agents",
   },
   {
     label: "Navigation",
     icon: Network,
     color: "#f97316",
     bg: "#fff7ed",
-    desc: "Reach targets via path efficiency & SPL",
+    desc: "Reach spatial targets efficiently via path planning measured by SPL & success rate",
   },
 ];
 
 const COLLECTIONS = [
-  { label: "Reasoning",        icon: Stethoscope,  color: "#9333ea", bg: "#f3e8ff", desc: "GPQA, ARC-AGI & commonsense evals" },
-  { label: "Coding",           icon: Palette,      color: "#16a34a", bg: "#dcfce7", desc: "HumanEval, SWE-Bench & code tasks" },
-  { label: "Agent Evaluation", icon: ScanEye,      color: "#d97706", bg: "#fef3c7", desc: "Tool use & long-horizon agent tasks" },
-  { label: "Vision",           icon: Clock,        color: "#0891b2", bg: "#e0f2fe", desc: "Detection, segmentation & recognition" },
-  { label: "OCR & Document AI",icon: Flame,        color: "#7c3aed", bg: "#ede9fe", desc: "Parsing, OCR & table extraction" },
-  { label: "Language",         icon: ArrowUpRight, color: "#0284c7", bg: "#dbeafe", desc: "QA, summarization & translation evals" },
-  { label: "Multimodal",       icon: Star,         color: "#db2777", bg: "#fce7f3", desc: "Cross-modal vision-language reasoning" },
-  { label: "Audio & Speech",   icon: Music,        color: "#0d9488", bg: "#ccfbf1", desc: "ASR, TTS & audio classification" },
-  { label: "Robotics",         icon: Plus,         color: "#4f46e5", bg: "#e0e7ff", desc: "Manipulation & embodied control" },
-  { label: "Healthcare",       icon: Filter,       color: "#dc2626", bg: "#fee2e2", desc: "Medical QA, imaging & clinical NLP" },
-  { label: "Mathematics",      icon: Trophy,       color: "#2563eb", bg: "#dbeafe", desc: "Arithmetic to olympiad-level proofs" },
+  { label: "Reasoning",        icon: Stethoscope,  color: "#9333ea", bg: "#f3e8ff", desc: "GPQA, ARC-AGI & commonsense evals covering logical, causal & abstract reasoning" },
+  { label: "Coding",           icon: Palette,      color: "#16a34a", bg: "#dcfce7", desc: "HumanEval, SWE-Bench & code generation tasks across multiple languages & environments" },
+  { label: "Agent Evaluation", icon: ScanEye,      color: "#d97706", bg: "#fef3c7", desc: "Tool use, long-horizon planning & multi-turn agent tasks in interactive environments" },
+  { label: "Vision",           icon: Clock,        color: "#0891b2", bg: "#e0f2fe", desc: "Object detection, semantic segmentation & image classification recognition benchmarks" },
+  { label: "OCR & Document AI",icon: Flame,        color: "#7c3aed", bg: "#ede9fe", desc: "Parsing, OCR accuracy & table extraction from scanned and digitally-born documents" },
+  { label: "Language",         icon: ArrowUpRight, color: "#0284c7", bg: "#dbeafe", desc: "QA, summarization & translation evals measuring fluency, faithfulness & comprehension" },
+  { label: "Multimodal",       icon: Star,         color: "#db2777", bg: "#fce7f3", desc: "Cross-modal vision-language reasoning across images, charts, video & audio inputs" },
+  { label: "Audio & Speech",   icon: Music,        color: "#0d9488", bg: "#ccfbf1", desc: "ASR transcription, TTS naturalness & audio classification across diverse sound domains" },
+  { label: "Robotics",         icon: Plus,         color: "#4f46e5", bg: "#e0e7ff", desc: "Manipulation dexterity & embodied navigation control in simulated & physical settings" },
+  { label: "Healthcare",       icon: Filter,       color: "#dc2626", bg: "#fee2e2", desc: "Medical QA, clinical note NLP & diagnostic imaging benchmarks for biomedical AI" },
+  { label: "Mathematics",      icon: Trophy,       color: "#2563eb", bg: "#dbeafe", desc: "Arithmetic to olympiad-level proof verification across structured mathematical domains" },
 ];
 
 const POPULAR_BENCHMARK_NAMES = [
@@ -451,24 +451,26 @@ export default function BenchmarksPage() {
 
   const activeFilterCount = [domainFilter, taskFilter, statusFilter, yearFilter].filter(Boolean).length;
 
-  // Benchmark card — uses POPULAR_ICON_POOL so no two cards share an icon
   const BenchmarkCard = ({ b, index }: { b: BenchmarkItem; index: number }) => {
     const meta = getMeta(b.name);
     const { icon: Icon, color } = POPULAR_ICON_POOL[index % POPULAR_ICON_POOL.length];
     return (
       <div
         onClick={() => handleItemClick(b.slug)}
-        className="bg-white border border-gray-100 rounded-sm hover:shadow-md hover:border-gray-200 transition-all cursor-pointer group flex flex-col h-[170px] p-5 w-full"
+        className="bg-white border border-gray-100 rounded-sm hover:shadow-md hover:border-gray-200 transition-all cursor-pointer group flex flex-col h-[180px] p-5 w-full"
       >
         <div className="flex items-start gap-2.5 mb-2">
           <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
-            <Icon size={20} style={{ color }} />
+            <Icon size={18} style={{ color }} />
           </div>
-          <h3 className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{b.name}</h3>
+          <h3 className="font-semibold text-gray-800 text-[14px] leading-snug pt-0.5 flex-1 min-w-0 line-clamp-1">{b.name}</h3>
         </div>
-        <p className="text-sm text-gray-500 ml-[2.375rem] leading-snug">{meta.task}</p>
-        <p className="text-xs text-gray-400 ml-[2.375rem] mt-0.5">{meta.category}</p>
-        <div className="ml-[2.375rem] pt-2 mt-auto border-t border-gray-50 flex items-center justify-between">
+        <div className="text-xs text-gray-500 leading-normal h-[3.375rem] overflow-hidden flex flex-col justify-between">
+          <span className="truncate">Task: {meta.task}</span>
+          <span className="truncate">Domain: {meta.category}</span>
+          <span className="truncate">Status: {meta.status}</span>
+        </div>
+        <div className="pt-2 mt-auto border-t border-gray-50 flex items-center justify-between">
           <span className="text-[11px] text-gray-400">Metric: {meta.metric}</span>
           <span className="text-[10px] text-gray-400 font-mono">{meta.year}</span>
         </div>
@@ -498,17 +500,6 @@ export default function BenchmarksPage() {
                   Discover benchmark datasets, evaluation metrics, and state-of-the-art results used to measure AI systems across language, reasoning, and more.
                 </p>
 
-                <div className="flex flex-wrap gap-2.5 mb-3">
-                  <button
-                    onClick={() => scrollToDirectory()}
-                    className="flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-medium text-xs transition-colors shadow-sm"
-                  >
-                    Browse Benchmarks <ArrowUpRight size={12} />
-                  </button>
-                  <button className="flex items-center gap-2 border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg font-medium text-xs transition-colors shadow-sm">
-                    <Plus size={12} /> Submit Benchmark
-                  </button>
-                </div>
 
                 <div className="flex items-center gap-5 whitespace-nowrap text-sm flex-wrap">
                   <div>
@@ -528,17 +519,6 @@ export default function BenchmarksPage() {
                 </div>
               </div>
 
-              {/* Right Image — ~1/3 of hero height, scales with breakpoints */}
-              <div className="flex-shrink-0 hidden md:flex items-center justify-end pl-4">
-                <Image
-                  src={bgImage}
-                  alt="AI Benchmarks Background"
-                  width={500}
-                  height={340}
-                  className="object-contain w-auto h-[80px] md:h-[100px] lg:h-[120px] xl:h-[140px] transition-all"
-                  priority
-                />
-              </div>
             </div>
 
             {/* ══ CONTENT TWO-COLUMN LAYOUT (Preserved sidebar layout) ══ */}
@@ -550,21 +530,9 @@ export default function BenchmarksPage() {
                 aria-label="Benchmark navigation"
               >
                 <div className="sticky top-0 flex flex-col h-[calc(100vh-10rem)]">
-                  <div className="pt-2 pb-4">
-                    <h3 className="text-[15px] font-semibold uppercase text-[#e11d48] mb-3">
+                  <h3 className="text-[15px] font-semibold uppercase text-[#FF5A1F] mb-3">
                       Browse Benchmarks
                     </h3>
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                      <input
-                        type="text"
-                        placeholder="Search categories..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-3 py-2 text-sm rounded-sm border border-gray-200 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 bg-white/80 transition-colors"
-                      />
-                    </div>
-                  </div>
 
                   <nav className="overflow-y-auto px-2 pb-4 flex-1 hide-scroll" aria-label="Domains">
                     <ul className="space-y-0.5" role="list">
@@ -628,16 +596,15 @@ export default function BenchmarksPage() {
                       <button
                         key={label}
                         onClick={() => scrollToDirectory(label)}
-                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-gray-200 transition-all group text-left flex flex-col h-[170px] w-full cursor-pointer"
+                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-gray-200 transition-all group text-left flex flex-col h-[180px] w-full cursor-pointer"
                       >
                         <div className="flex items-start gap-2.5 mb-2">
                           <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: color + "18" }}>
-                            <Icon size={20} style={{ color }} />
+                            <Icon size={18} style={{ color }} />
                           </div>
-                          <span className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{label}</span>
+                          <span className="font-semibold text-gray-800 text-[14px] leading-snug pt-0.5 flex-1 min-w-0 line-clamp-1">{label}</span>
                         </div>
-                        <p className="text-sm text-gray-500 ml-[2.375rem] leading-snug">{desc}</p>
-                        <p className="text-xs text-gray-400 ml-[2.375rem] mt-auto group-hover:text-[#e11d48] transition-colors font-medium">Browse benchmarks →</p>
+                        <p className="text-xs text-gray-500 leading-normal overflow-hidden h-[3.375rem]">{desc}</p>
                       </button>
                     ))}
                   </div>
@@ -656,15 +623,15 @@ export default function BenchmarksPage() {
                           setTaskFilter(label);
                           scrollToDirectory();
                         }}
-                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-gray-200 transition-all group text-left flex flex-col h-[170px] w-full cursor-pointer"
+                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-gray-200 transition-all group text-left flex flex-col h-[180px] w-full cursor-pointer"
                       >
                         <div className="flex items-start gap-2.5 mb-2">
                           <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: bg }}>
-                            <Icon size={20} style={{ color }} />
+                            <Icon size={18} style={{ color }} />
                           </div>
-                          <span className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0 group-hover:text-[#e11d48] transition-colors">{label}</span>
+                          <span className="font-semibold text-gray-800 text-[14px] leading-snug pt-0.5 flex-1 min-w-0 group-hover:text-[#FF5A1F] transition-colors line-clamp-1">{label}</span>
                         </div>
-                        <p className="text-sm text-gray-500 ml-[2.375rem] leading-snug">{desc}</p>
+                        <p className="text-xs text-gray-500 leading-normal overflow-hidden h-[3.375rem]">{desc}</p>
                       </button>
                     ))}
                   </div>
@@ -680,16 +647,15 @@ export default function BenchmarksPage() {
                       <button
                         key={label}
                         onClick={() => scrollToDirectory(label)}
-                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-gray-200 transition-all group text-left flex flex-col h-[170px] w-full cursor-pointer"
+                        className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md hover:border-gray-200 transition-all group text-left flex flex-col h-[180px] w-full cursor-pointer"
                       >
                         <div className="flex items-start gap-2.5 mb-2">
                           <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: bg }}>
-                            <Icon size={20} style={{ color }} />
+                            <Icon size={18} style={{ color }} />
                           </div>
-                          <span className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{label}</span>
+                          <span className="font-semibold text-gray-800 text-[14px] leading-snug pt-0.5 flex-1 min-w-0 line-clamp-1">{label}</span>
                         </div>
-                        <p className="text-sm text-gray-500 ml-[2.375rem] leading-snug">{desc}</p>
-                        <p className="text-xs text-gray-400 ml-[2.375rem] mt-auto group-hover:text-[#e11d48] transition-colors font-medium">View collection →</p>
+                        <p className="text-xs text-gray-500 leading-normal overflow-hidden h-[3.375rem]">{desc}</p>
                       </button>
                     ))}
                   </div>
@@ -742,17 +708,20 @@ export default function BenchmarksPage() {
                           <div
                             key={b.id}
                             onClick={() => handleItemClick(b.slug)}
-                            className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md cursor-pointer group transition-all flex flex-col h-[170px]"
+                            className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md cursor-pointer group transition-all flex flex-col h-[180px]"
                           >
                             <div className="flex items-start gap-2.5 mb-2">
                               <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: bg }}>
-                                <Icon size={20} style={{ color }} />
+                                <Icon size={18} style={{ color }} />
                               </div>
-                              <h3 className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{b.name}</h3>
+                              <h3 className="font-semibold text-gray-800 text-[14px] leading-snug pt-0.5 flex-1 min-w-0 line-clamp-1">{b.name}</h3>
                             </div>
-                            <p className="text-sm text-gray-500 ml-[2.375rem] leading-snug">{meta.task}</p>
-                            <p className="text-xs text-gray-400 ml-[2.375rem] mt-0.5">{meta.category}</p>
-                            <div className="ml-[2.375rem] pt-2 mt-auto border-t border-gray-50 flex items-center justify-between">
+                            <div className="text-xs text-gray-500 leading-normal h-[3.375rem] overflow-hidden flex flex-col justify-between">
+                              <span className="truncate">Task: {meta.task}</span>
+                              <span className="truncate">Domain: {meta.category}</span>
+                              <span className="truncate">Status: {meta.status}</span>
+                            </div>
+                            <div className="pt-2 mt-auto border-t border-gray-50 flex items-center justify-between">
                               <span className="text-[11px] text-gray-400">Metric: {meta.metric}</span>
                               <span className="text-[10px] text-gray-400 font-mono">{meta.year}</span>
                             </div>
@@ -787,19 +756,22 @@ export default function BenchmarksPage() {
                           <div
                             key={b.id}
                             onClick={() => handleItemClick(b.slug)}
-                            className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md cursor-pointer group transition-all flex flex-col h-[170px]"
+                            className="bg-white border border-gray-100 rounded-sm p-5 hover:shadow-md cursor-pointer group transition-all flex flex-col h-[180px]"
                           >
                             <div className="flex items-start gap-2.5 mb-2">
                               <div className="flex-shrink-0 p-1.5 rounded-lg group-hover:scale-110 transition-transform" style={{ background: bg }}>
-                                <Icon size={20} style={{ color }} />
+                                <Icon size={18} style={{ color }} />
                               </div>
-                              <h3 className="font-semibold text-gray-800 text-[15px] leading-snug pt-0.5 flex-1 min-w-0">{b.name}</h3>
+                              <h3 className="font-semibold text-gray-800 text-[14px] leading-snug pt-0.5 flex-1 min-w-0 line-clamp-1">{b.name}</h3>
                             </div>
-                            <p className="text-sm text-gray-500 ml-[2.375rem] leading-snug">{meta.task}</p>
-                            <p className="text-xs text-gray-400 ml-[2.375rem] mt-0.5">{meta.category}</p>
-                            <div className="ml-[2.375rem] pt-2 mt-auto border-t border-gray-50 flex items-center justify-between">
+                            <div className="text-xs text-gray-500 leading-normal h-[3.375rem] overflow-hidden flex flex-col justify-between">
+                              <span className="truncate">Task: {meta.task}</span>
+                              <span className="truncate">Domain: {meta.category}</span>
+                              <span className="truncate">Status: {meta.status}</span>
+                            </div>
+                            <div className="pt-2 mt-auto border-t border-gray-50 flex items-center justify-between">
                               <span className="text-[11px] text-gray-400">Metric: {meta.metric}</span>
-                              <span className="text-[12px] font-bold text-[#e11d48] font-mono tabular-nums">{b._count?.rankings ?? 0} results</span>
+                              <span className="text-[12px] font-bold text-[#FF5A1F] font-mono tabular-nums">{b._count?.rankings ?? 0} results</span>
                             </div>
                           </div>
                         );
