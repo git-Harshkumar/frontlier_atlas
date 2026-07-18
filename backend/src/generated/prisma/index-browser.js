@@ -272,6 +272,7 @@ exports.Prisma.ModelScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   vendor: 'vendor',
+  vendor_logo_url: 'vendor_logo_url',
   release_date: 'release_date',
   parameter_count: 'parameter_count',
   modality: 'modality',

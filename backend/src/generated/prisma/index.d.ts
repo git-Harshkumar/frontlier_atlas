@@ -15812,6 +15812,7 @@ export namespace Prisma {
     name: string | null
     slug: string | null
     vendor: string | null
+    vendor_logo_url: string | null
     release_date: Date | null
     parameter_count: string | null
     modality: string | null
@@ -15848,6 +15849,7 @@ export namespace Prisma {
     name: string | null
     slug: string | null
     vendor: string | null
+    vendor_logo_url: string | null
     release_date: Date | null
     parameter_count: string | null
     modality: string | null
@@ -15884,6 +15886,7 @@ export namespace Prisma {
     name: number
     slug: number
     vendor: number
+    vendor_logo_url: number
     release_date: number
     parameter_count: number
     modality: number
@@ -15929,6 +15932,7 @@ export namespace Prisma {
     name?: true
     slug?: true
     vendor?: true
+    vendor_logo_url?: true
     release_date?: true
     parameter_count?: true
     modality?: true
@@ -15965,6 +15969,7 @@ export namespace Prisma {
     name?: true
     slug?: true
     vendor?: true
+    vendor_logo_url?: true
     release_date?: true
     parameter_count?: true
     modality?: true
@@ -16001,6 +16006,7 @@ export namespace Prisma {
     name?: true
     slug?: true
     vendor?: true
+    vendor_logo_url?: true
     release_date?: true
     parameter_count?: true
     modality?: true
@@ -16117,6 +16123,7 @@ export namespace Prisma {
     name: string
     slug: string
     vendor: string | null
+    vendor_logo_url: string | null
     release_date: Date | null
     parameter_count: string | null
     modality: string | null
@@ -16177,6 +16184,7 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     vendor?: boolean
+    vendor_logo_url?: boolean
     release_date?: boolean
     parameter_count?: boolean
     modality?: boolean
@@ -16222,6 +16230,7 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     vendor?: boolean
+    vendor_logo_url?: boolean
     release_date?: boolean
     parameter_count?: boolean
     modality?: boolean
@@ -16265,6 +16274,7 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     vendor?: boolean
+    vendor_logo_url?: boolean
     release_date?: boolean
     parameter_count?: boolean
     modality?: boolean
@@ -16308,6 +16318,7 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     vendor?: boolean
+    vendor_logo_url?: boolean
     release_date?: boolean
     parameter_count?: boolean
     modality?: boolean
@@ -16346,7 +16357,7 @@ export namespace Prisma {
     apiUrl?: boolean
   }
 
-  export type ModelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "vendor" | "release_date" | "parameter_count" | "modality" | "access_type" | "openness_type" | "description" | "benchmark_score" | "created_at" | "updated_at" | "createdAt" | "updatedAt" | "releaseDate" | "parameterCount" | "accessType" | "opennessType" | "benchmarkScore" | "model_family" | "modelFamily" | "category" | "capabilities" | "research_areas" | "researchAreas" | "architecture" | "context_window" | "contextWindow" | "license" | "model_versions" | "modelVersions" | "release_notes" | "releaseNotes" | "paper_url" | "paperUrl" | "repository_url" | "repositoryUrl" | "api_url" | "apiUrl", ExtArgs["result"]["model"]>
+  export type ModelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "vendor" | "vendor_logo_url" | "release_date" | "parameter_count" | "modality" | "access_type" | "openness_type" | "description" | "benchmark_score" | "created_at" | "updated_at" | "createdAt" | "updatedAt" | "releaseDate" | "parameterCount" | "accessType" | "opennessType" | "benchmarkScore" | "model_family" | "modelFamily" | "category" | "capabilities" | "research_areas" | "researchAreas" | "architecture" | "context_window" | "contextWindow" | "license" | "model_versions" | "modelVersions" | "release_notes" | "releaseNotes" | "paper_url" | "paperUrl" | "repository_url" | "repositoryUrl" | "api_url" | "apiUrl", ExtArgs["result"]["model"]>
   export type ModelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     papers?: boolean | Model$papersArgs<ExtArgs>
     _count?: boolean | ModelCountOutputTypeDefaultArgs<ExtArgs>
@@ -16364,6 +16375,7 @@ export namespace Prisma {
       name: string
       slug: string
       vendor: string | null
+      vendor_logo_url: string | null
       release_date: Date | null
       parameter_count: string | null
       modality: string | null
@@ -16828,6 +16840,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Model", 'String'>
     readonly slug: FieldRef<"Model", 'String'>
     readonly vendor: FieldRef<"Model", 'String'>
+    readonly vendor_logo_url: FieldRef<"Model", 'String'>
     readonly release_date: FieldRef<"Model", 'DateTime'>
     readonly parameter_count: FieldRef<"Model", 'String'>
     readonly modality: FieldRef<"Model", 'String'>
@@ -34817,6 +34830,7 @@ export namespace Prisma {
     name: 'name',
     slug: 'slug',
     vendor: 'vendor',
+    vendor_logo_url: 'vendor_logo_url',
     release_date: 'release_date',
     parameter_count: 'parameter_count',
     modality: 'modality',
@@ -36118,6 +36132,7 @@ export namespace Prisma {
     name?: StringFilter<"Model"> | string
     slug?: StringFilter<"Model"> | string
     vendor?: StringNullableFilter<"Model"> | string | null
+    vendor_logo_url?: StringNullableFilter<"Model"> | string | null
     release_date?: DateTimeNullableFilter<"Model"> | Date | string | null
     parameter_count?: StringNullableFilter<"Model"> | string | null
     modality?: StringNullableFilter<"Model"> | string | null
@@ -36162,6 +36177,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     vendor?: SortOrderInput | SortOrder
+    vendor_logo_url?: SortOrderInput | SortOrder
     release_date?: SortOrderInput | SortOrder
     parameter_count?: SortOrderInput | SortOrder
     modality?: SortOrderInput | SortOrder
@@ -36209,6 +36225,7 @@ export namespace Prisma {
     NOT?: ModelWhereInput | ModelWhereInput[]
     name?: StringFilter<"Model"> | string
     vendor?: StringNullableFilter<"Model"> | string | null
+    vendor_logo_url?: StringNullableFilter<"Model"> | string | null
     release_date?: DateTimeNullableFilter<"Model"> | Date | string | null
     parameter_count?: StringNullableFilter<"Model"> | string | null
     modality?: StringNullableFilter<"Model"> | string | null
@@ -36253,6 +36270,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     vendor?: SortOrderInput | SortOrder
+    vendor_logo_url?: SortOrderInput | SortOrder
     release_date?: SortOrderInput | SortOrder
     parameter_count?: SortOrderInput | SortOrder
     modality?: SortOrderInput | SortOrder
@@ -36302,6 +36320,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Model"> | string
     slug?: StringWithAggregatesFilter<"Model"> | string
     vendor?: StringNullableWithAggregatesFilter<"Model"> | string | null
+    vendor_logo_url?: StringNullableWithAggregatesFilter<"Model"> | string | null
     release_date?: DateTimeNullableWithAggregatesFilter<"Model"> | Date | string | null
     parameter_count?: StringNullableWithAggregatesFilter<"Model"> | string | null
     modality?: StringNullableWithAggregatesFilter<"Model"> | string | null
@@ -38388,6 +38407,7 @@ export namespace Prisma {
     name: string
     slug: string
     vendor?: string | null
+    vendor_logo_url?: string | null
     release_date?: Date | string | null
     parameter_count?: string | null
     modality?: string | null
@@ -38432,6 +38452,7 @@ export namespace Prisma {
     name: string
     slug: string
     vendor?: string | null
+    vendor_logo_url?: string | null
     release_date?: Date | string | null
     parameter_count?: string | null
     modality?: string | null
@@ -38476,6 +38497,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    vendor_logo_url?: NullableStringFieldUpdateOperationsInput | string | null
     release_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     parameter_count?: NullableStringFieldUpdateOperationsInput | string | null
     modality?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38520,6 +38542,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    vendor_logo_url?: NullableStringFieldUpdateOperationsInput | string | null
     release_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     parameter_count?: NullableStringFieldUpdateOperationsInput | string | null
     modality?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38564,6 +38587,7 @@ export namespace Prisma {
     name: string
     slug: string
     vendor?: string | null
+    vendor_logo_url?: string | null
     release_date?: Date | string | null
     parameter_count?: string | null
     modality?: string | null
@@ -38607,6 +38631,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    vendor_logo_url?: NullableStringFieldUpdateOperationsInput | string | null
     release_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     parameter_count?: NullableStringFieldUpdateOperationsInput | string | null
     modality?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38650,6 +38675,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    vendor_logo_url?: NullableStringFieldUpdateOperationsInput | string | null
     release_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     parameter_count?: NullableStringFieldUpdateOperationsInput | string | null
     modality?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40651,6 +40677,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     vendor?: SortOrder
+    vendor_logo_url?: SortOrder
     release_date?: SortOrder
     parameter_count?: SortOrder
     modality?: SortOrder
@@ -40694,6 +40721,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     vendor?: SortOrder
+    vendor_logo_url?: SortOrder
     release_date?: SortOrder
     parameter_count?: SortOrder
     modality?: SortOrder
@@ -40730,6 +40758,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     vendor?: SortOrder
+    vendor_logo_url?: SortOrder
     release_date?: SortOrder
     parameter_count?: SortOrder
     modality?: SortOrder
@@ -45050,6 +45079,7 @@ export namespace Prisma {
     name: string
     slug: string
     vendor?: string | null
+    vendor_logo_url?: string | null
     release_date?: Date | string | null
     parameter_count?: string | null
     modality?: string | null
@@ -45093,6 +45123,7 @@ export namespace Prisma {
     name: string
     slug: string
     vendor?: string | null
+    vendor_logo_url?: string | null
     release_date?: Date | string | null
     parameter_count?: string | null
     modality?: string | null
@@ -45261,6 +45292,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    vendor_logo_url?: NullableStringFieldUpdateOperationsInput | string | null
     release_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     parameter_count?: NullableStringFieldUpdateOperationsInput | string | null
     modality?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45304,6 +45336,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    vendor_logo_url?: NullableStringFieldUpdateOperationsInput | string | null
     release_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     parameter_count?: NullableStringFieldUpdateOperationsInput | string | null
     modality?: NullableStringFieldUpdateOperationsInput | string | null

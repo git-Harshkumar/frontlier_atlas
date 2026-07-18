@@ -213,6 +213,7 @@ model Model {
   name            String
   slug            String       @unique
   vendor          String?
+  vendor_logo_url String?
   release_date    DateTime?    @db.Timestamp(6)
   parameter_count String?
   modality        String?
