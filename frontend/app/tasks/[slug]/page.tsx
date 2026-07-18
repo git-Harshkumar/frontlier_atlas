@@ -219,10 +219,19 @@ const tasks = [
     "Vision-Language Models combine visual understanding and natural language processing, enabling AI systems to understand images, answer questions, generate captions, and perform multimodal reasoning.",
   
   stats: {
-    benchmarks: 0,
+    benchmarks: 13,
   },
   sisterTasks: [],
-  commonMethods: [],
+  commonMethods: [
+    { name: "Attention", count: 48 },
+    { name: "Transformer", count: 42 },
+    { name: "State Space Models", count: 41 },
+    { name: "RLHF (Reinforcement Learning from Human Feedback)", count: 32 },
+    { name: "Retrieval-Augmented Generation (RAG)", count: -28 },
+    { name: "Dense Retrieval", count: 27 },
+    { name: "Embeddings", count: 27 },
+    { name: "Graph Learning", count: 27 },
+  ],
 },
 {
   slug: "multimodal-models",
@@ -232,10 +241,19 @@ const tasks = [
     "Multimodal Models process multiple types of data such as text, images, audio, and video together, allowing richer understanding and generation across different modalities.",
   
   stats: {
-    benchmarks: 0,
+    benchmarks: 26,
   },
   sisterTasks: [],
-  commonMethods: [],
+  commonMethods: [
+      { name: "State Space Models", count: 76 },
+      { name: "Attention", count: 54 },
+      { name: "RLHF (Reinforcement Learning from Human Feedback)", count: 48 },
+      { name: "Graph Learning", count: 43 },
+      { name: "State Space Models (Mamba)", count: 42 },
+      { name: "Graph Neural Networks", count: 33 },
+      { name: "Transformer", count: 29 },
+      { name: "Retrieval-Augmented Generation (RAG)",count:29}
+  ],
 },
 {
   slug: "automatic-speech-recognition",
@@ -245,10 +263,19 @@ const tasks = [
     "Speech AI focuses on speech recognition, speech synthesis, speaker identification, speech translation, and spoken language understanding.",
   
   stats: {
-    benchmarks: 0,
+    benchmarks: 6,
   },
   sisterTasks: [],
-  commonMethods: [],
+  commonMethods: [
+      { name: "Audio & Speech", count: 58 },
+      { name: "Attention", count: 57 },
+      { name: "Transformer", count: 51 },
+      { name: "State Space Models", count: 40 },
+      { name: "Retrieval-Augmented Generation (RAG)", count: 34 },
+      { name: "RLHF (Reinforcement Learning from Human Feedback)", count: 34 },
+      { name: "Language Modeling", count: 34 },
+      { name: "Dense Retrieval", count: 33 },
+  ],
 },
 {
   slug: "image-generation",
@@ -307,7 +334,15 @@ const tasks = [
       benchmarks: 2,
     },
     sisterTasks: [],
-    commonMethods: [],
+    commonMethods: [
+      { name: "Attention", count: 30 },
+      { name: "RLHF (Reinforcement Learning from Human Feedback)", count: 27 },
+      { name: "Embeddings", count: 23 },
+      { name: "Transformer", count: 22 },
+      { name: "Dense Retrieval", count: 18 },
+      { name: "DPO (Direct Preference Optimization)", count: 17 },
+      { name: "Retrieval-Augmented Generation (RAG)", count: 16 },
+    ],
   },
   {
     slug: "reasoning",
@@ -409,7 +444,15 @@ const tasks = [
       benchmarks: 6,
     },
     sisterTasks: [],
-    commonMethods: [],
+    commonMethods: [
+      { name: "Attention", count: 76 },
+      { name: "Graph Neural Networks", count: 47 },
+      { name: "FlashAttention", count: 44 },
+      { name: "FlashAttention-2", count: 41 },
+      { name: "RLHF (Reinforcement Learning from Human Feedback)", count: 41 },
+      { name: "Dense Retrieval", count: 38 },
+      { name: "Embeddings", count: 37 },
+    ],
   },
 ];
 
@@ -600,8 +643,6 @@ export default async function TaskPage({ params }: TaskPageProps) {
                 </div>
               )}
             </div>
-
-            
           </div>
         </div>
 

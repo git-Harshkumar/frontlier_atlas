@@ -453,7 +453,7 @@ export default async function MethodDetailPage({
       <div id="scroll-container" className="flex-1 overflow-y-auto overflow-x-hidden hide-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <main className="max-w-7xl mx-auto px-5 lg:px-6 py-5 lg:py-6 w-full">
           {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs lg:text-sm text-gray-500 mb-4 lg:mb-6">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs lg:text-sm text-gray-500 mb-2 lg:mb-4">
             <Link href="/" className="hover:text-gray-800">Home</Link>
             <span>›</span>
             <Link href="/methods" className="hover:text-gray-800">Methods</Link>
@@ -463,7 +463,7 @@ export default async function MethodDetailPage({
 
           <section className="mb-8 lg:mb-10">
             <div className="w-full max-w-4xl">
-              <h1 className="text-3xl lg:text-5xl font-bold mb-3 lg:mb-4 text-slate-800 leading-tight">
+              <h1 className="text-2xl lg:text-4xl font-bold mb-1.5 lg:mb-2 text-slate-800 leading-tight">
                 {methodDetail.name}
               </h1>
 
